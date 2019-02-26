@@ -147,11 +147,30 @@ export default class Editor extends React.Component {
     }
 
     componentDidMount() {
+        // 插入图表
         eventEmitter.on('EDITOR_INSERT_CHART', (chartId) => {
             const editor = this.editorRef.current.editor;
             editor.execCommand('insertchart');
             const chartOption = this.props.editorStore.chartDataObj[chartId];
             editor.widgets.instances[1].setData('chartOption', chartOption);
+        });
+
+        // 插入表格
+        eventEmitter.on('EDITOR_INSERT_TABLE', (tableConfig) => {
+            const editor = this.editorRef.current.editor;
+            editor.execCommand('inserttable');
+            const widgetInstances = editor.widgets.instances;
+
+            if(widgetInstances) {
+                for(let key in widgetInstances) {
+                    if(widgetInstances.hasOwnProperty(key)) {
+                      if(widgetInstances[key].name === 'inserttable') {
+                          widgetInstances[key].setData('tableConfig', tableConfig);
+                      }
+                    }
+                }
+            }
+            
         });
     }
 
@@ -190,7 +209,7 @@ export default class Editor extends React.Component {
     render() {
         const { data } = this.state;
         const config = {
-            extraPlugins: 'autocomplete,textmatch,noteTemplates,insertchart,easyimage,tableresizerowandcolumn',
+            extraPlugins: 'autocomplete,textmatch,noteTemplates,insertchart,inserttable,easyimage,tableresizerowandcolumn',
             allowedContent: true,
             height: 800,
             toolbarGroups: [

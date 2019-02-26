@@ -89,6 +89,56 @@ export default class CommandPopup extends React.Component {
         this.onClose();
     }
 
+    // 插入表格
+    insertTable() {
+        const columns = [
+            {
+                title: '利润表',
+                dataIndex: 'profit'
+            },
+            {
+                title: '合并报表',
+                dataIndex: 'merge1'
+            },
+            {
+                title: '合并报表',
+                dataIndex: 'merge2'
+            }
+        ];
+        const dataSource = [
+            {
+                profit: '营业总收入',
+                merge1: '234,43543,2300',
+                merge2: '12,2132,1233'
+            },
+            {
+                profit: '营业总收入',
+                merge1: '234,43543,2300',
+                merge2: '12,2132,1233'
+            },
+            {
+                profit: '营业总收入',
+                merge1: '234,43543,2300',
+                merge2: '12,2132,1233'
+            },
+            {
+                profit: '营业总收入',
+                merge1: '234,43543,2300',
+                merge2: '12,2132,1233'
+            },
+            {
+                profit: '营业总收入',
+                merge1: '234,43543,2300',
+                merge2: '12,2132,1233'
+            }
+        ];
+
+        eventEmitter.emit('EDITOR_INSERT_TABLE', {
+          columns,
+          dataSource
+        });
+    }
+
     render() {
         const columns = [
             {
@@ -104,7 +154,6 @@ export default class CommandPopup extends React.Component {
                 dataIndex: 'merge2'
             }
         ];
-
         const dataSource = [
             {
                 profit: '营业总收入',
@@ -133,7 +182,6 @@ export default class CommandPopup extends React.Component {
             }
         ]
 
-
         return <div className="command-popup">
             <Drawer
                 width={ 500 }
@@ -144,9 +192,10 @@ export default class CommandPopup extends React.Component {
                     height: 'calc(100% - 108px)',
                     paddingBottom: '108px',
                 }}>
-                    <ChartDemo />
-                    <Table columns={ columns } dataSource={ dataSource } pagination={ null }></Table>
-                    <Button type="primary" onClick={ this.insertChart }>插入</Button>
+                  <ChartDemo />
+                  <Table columns={ columns } dataSource={ dataSource } pagination={ null }></Table>
+                  <Button type="primary" onClick={ this.insertChart }>插入图表</Button>
+                  <Button type="primary" onClick={ this.insertTable }>插入表格</Button>
             </Drawer>
         </div>
     }
