@@ -17,7 +17,7 @@ export default class Layout extends React.Component {
         super(props);
         this.state = {
             width: 300,
-            height: 400
+            height: 400,
         }
     }
 
@@ -31,15 +31,8 @@ export default class Layout extends React.Component {
                 }}>
                     <NavSection />
                 </ResizableBox>
-                
-                <ResizableBox width={360} minConstraints={[100, 100]} maxConstraints={[400, 300]}>
-                    <FileListSection />
-                </ResizableBox>
-
-                <ResizableBox maxConstraints={[300, 300]}>
-                    <FinEditor />
-                </ResizableBox>
-
+                <FileListSection />
+                <FinEditor />
             </AppContent>
         </div>
     }

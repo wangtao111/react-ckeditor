@@ -2,6 +2,7 @@ import React from 'react';
 import { Dropdown, Menu, Upload, Modal } from 'antd';
 import styled from 'styled-components';
 import TemplateModal from '../../components/TemplateModal';
+import eventEmitter from "../../event";
 
 const NavSectionWrapper = styled.section`
     background-color: #F5F5F5;
@@ -15,6 +16,11 @@ const NavSectionWrapper = styled.section`
         .upload-btn {
             margin-left: 20px;
         }
+        img{
+            width: 16px;
+            height: 16px;
+            margin-right: 5px;
+        }
     }
 
     .menu-item {
@@ -25,7 +31,6 @@ const NavSectionWrapper = styled.section`
             color: #333;
             padding-left: 56px;
             transition: all 0.3s;
-
             &:hover {
                 background-color: #407CD5;
                 color: #fff;
@@ -70,7 +75,7 @@ export default class NavSection extends React.Component {
         const { menuList, templateModalVisible } = this.state;
 
         const menu = (<Menu>
-            <Menu.Item>新建笔记</Menu.Item>
+            <Menu.Item onClick={ () => eventEmitter.emit('NEW_PAGE') }>新建笔记</Menu.Item>
             <Menu.Item onClick={ () => this.setModalVisible('templateModalVisible', true) }>新建模板笔记</Menu.Item>
             <Menu.Item>新建文件夹</Menu.Item>
             <Menu.Item>导入word文档</Menu.Item>
@@ -79,8 +84,8 @@ export default class NavSection extends React.Component {
 
         return <NavSectionWrapper>
             <div className="operation-tools">
-                <Dropdown overlay={ menu }><a>新文档</a></Dropdown>
-                <Upload className="upload-btn">上传</Upload>
+                <Dropdown overlay={ menu }><a><img src={require('../../img/add.png')} alt=""/>新文档</a></Dropdown>
+                <Upload className="upload-btn"><img src={require('../../img/upload.png')} alt=""/>上传</Upload>
             </div>
 
             <ul className="menu-list">

@@ -120,8 +120,9 @@ export default class Editor extends React.Component {
         });
     }
 
-    instanceReady = (evt) => {
-        this.props.editorStore.setEditor(evt.editor);
+    instanceReady = () => {
+        const editor = this.editorRef.current.editor;
+        this.props.editorStore.setEditor(editor);
         window.CKEDITOR.plugins.addExternal('noteTemplates', 'http://localhost:5500/build/static/ckeditor/plugins/notetemplates/', 'plugin.js');
 
         const itemTemplate = '<li data-id="{id}"><div><strong class="item-title">{title}</strong></div></li>';
@@ -129,7 +130,7 @@ export default class Editor extends React.Component {
 
         const autocomplete = new window.CKEDITOR
             .plugins
-            .autocomplete(evt.editor, {
+            .autocomplete(editor, {
                 textTestCallback: this.textTestCallback,
                 dataCallback: this.dataCallback,
                 itemTemplate: itemTemplate,
@@ -142,8 +143,8 @@ export default class Editor extends React.Component {
                 .outputTemplate
                 .output(item);
         }
-    
-        evt.editor.execCommand('noteTemplates');
+
+        editor.execCommand('noteTemplates');
     }
 
     componentDidMount() {
@@ -171,6 +172,14 @@ export default class Editor extends React.Component {
                 }
             }
             
+        });
+        // 新建文档
+        eventEmitter.on('NEW_PAGE', (type) => {
+            if(!type){
+                this.editorRef.current.editor.setData(' ');
+                return
+            }
+            this.instanceReady();
         });
     }
 
@@ -248,7 +257,8 @@ export default class Editor extends React.Component {
                 data={ data }
                 config={ config }
                 onChange={ this.onEditorChange }
-                onInstanceReady={ this.instanceReady } />
+                // onInstanceReady={ this.instanceReady }
+             />
                 <CommandPopup></CommandPopup>
         </div>
     }

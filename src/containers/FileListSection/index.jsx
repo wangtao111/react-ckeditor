@@ -74,7 +74,7 @@ export default class FileListSection extends React.Component {
             <ul className="article-list">
                 {
                     (articleList && !!articleList.length) && articleList.map((article, index) => {
-                        return <li>
+                        return <li key={index}>
                             <a className="article-item">
                                 <h3>{ article.title }</h3>
                                 <p>{ article.content }</p>

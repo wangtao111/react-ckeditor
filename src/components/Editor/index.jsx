@@ -116,7 +116,7 @@ export default class Editor extends React.Component {
     generateDropDown(mentions, position) {
         const _this = this;
         const { mentionSelectedIndex } = this.state;
-        const mentionItems = mentions.map((mention, index) => `<li><a class="mention-item ${ index === mentionSelectedIndex ? 'active': undefined }">${ mention.value }</a></li>`).join('')
+        const mentionItems = mentions.map((mention, index) => `<li key={index}><a class="mention-item ${ index === mentionSelectedIndex ? 'active': undefined }">${ mention.value }</a></li>`).join('')
         const mentionMenu = `<div class="editor-drop-mention" style="position:absolute; left: ${position.x}px; top: ${position.y}px;"><ul>${ mentionItems }</ul></div>`;
         $('body').append(mentionMenu);
 

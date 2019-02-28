@@ -183,6 +183,11 @@ export default class CommandPopup extends React.Component {
         ]
 
         return <div className="command-popup">
+            <Button icon='left-circle' style={{position: 'fixed', top: '50%', right: 0}} onClick={() => {
+                this.setState({
+                    visible: true
+                });
+            }}></Button>
             <Drawer
                 width={ 500 }
                 onClose={this.onClose}
