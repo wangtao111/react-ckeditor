@@ -5,7 +5,7 @@ import TemplateModal from '../../components/TemplateModal';
 
 const NavSectionWrapper = styled.section`
     background-color: #F5F5F5;
-    width: 220px;
+    width: 100%;
     flex-shrink: 0;
 
     .operation-tools {

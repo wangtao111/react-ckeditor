@@ -15,6 +15,10 @@ const AppContent = styled.section`
 export default class Layout extends React.Component {
     constructor(props) {
         super(props);
+        this.state = {
+            width: 300,
+            height: 400
+        }
     }
 
     render() {
@@ -22,7 +26,9 @@ export default class Layout extends React.Component {
             <Header></Header>
             {/* <ChartDemo /> */}
             <AppContent>
-                <ResizableBox width={220} minConstraints={[100, 100]} maxConstraints={[300, 300]}>
+                <ResizableBox width={this.state.width} height={this.state.height} minConstraints={[100, 200]} maxConstraints={[400, 400]} onResize={(event, { element, size }) => {
+                    this.setState({ width: size.width, height: size.height });
+                }}>
                     <NavSection />
                 </ResizableBox>
                 
