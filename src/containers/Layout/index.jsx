@@ -26,7 +26,7 @@ export default class Layout extends React.Component {
             <Header></Header>
             {/* <ChartDemo /> */}
             <AppContent>
-                <ResizableBox width={this.state.width} height={this.state.height} minConstraints={[100, 200]} maxConstraints={[400, 400]} onResize={(event, { element, size }) => {
+                <ResizableBox width={this.state.width} height={this.state.height} minConstraints={[260, 200]} maxConstraints={[400, 400]} onResize={(event, { element, size }) => {
                     this.setState({ width: size.width, height: size.height });
                 }}>
                     <NavSection />

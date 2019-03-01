@@ -115,11 +115,12 @@ export default class Editor extends React.Component {
                         </select>
                     </div>
                     <div style="border: 1px dashed #98BCFF;overflow: hidden" class="content1">
-                        <img src="../../img/yanjiu.png" alt="">logo
-                        <div style="float: right;">
-                            <div>晨会纪要</div>
-                            <p><span>2018年9月6日</span></p>
+                        <img src=${require('../../img/temp_title.png')} alt="" style="float: left; width: 130px;height: 60px;margin-left: 20px">
+                        <div style="float: right;margin-right: 20px;margin-top: 10px">
+                            <div style="font-size: 20px">晨会纪要</div>
+                            <p style="margin: 0"><span>2018年9月6日</span></p>
                         </div>
+                        <div style="float: left;width: 100%; border-bottom: 3px solid #666;margin-bottom: 5px;"></div>
                     </div>
                     <div class="select1">
                         <select>
@@ -133,12 +134,19 @@ export default class Editor extends React.Component {
                 <div class="select1">
                     <select>
                         <option value="头部">头部</option>
+                        <option value="标题">标题</option>
+                        <option value="摘要">摘要</option>
+                        <option value="声明">声明</option>
+                        <option value="栏目" selected="selected">栏目</option>
+                        <option value="公司股票">公司股票</option>
+                        <option value="结束语">结束语</option>
+                        <option value="尾部">尾部</option>
                     </select>
 
                     <div style="border: 1px dashed #98BCFF;overflow: hidden">
                         <h2 class="section-title">特别声明</h2>
                         <div class="divider-line"></div>
-                        <div style="margin: 15px;" class="editable-content content1">
+                        <div style="margin: 15px;" class="editable-content content2">
                             <p></p>
                         </div>
                     </div>
@@ -159,7 +167,7 @@ export default class Editor extends React.Component {
                     <div style="border: 1px dashed #98BCFF;overflow: hidden">
                         <h2 class="section-title">个股点评及推荐</h2>
                         <div class="divider-line"></div>
-                        <div style="margin: 15px;" class="editable-content content2">
+                        <div style="margin: 15px;" class="editable-content content3">
                             <p></p>
                         </div>
                     </div>
@@ -170,7 +178,7 @@ export default class Editor extends React.Component {
                         <option value="尾部">尾部</option>
                     </select>
                     <div style="border: 1px dashed #98BCFF;overflow: hidden">
-                        <div style="margin: 15px;" class="editable-content content3">
+                        <div style="margin: 15px;" class="editable-content content4">
                             <p></p>
                         </div>
                     </div>
@@ -184,7 +192,7 @@ export default class Editor extends React.Component {
                     <div style="border: 1px dashed #98BCFF;overflow: hidden">
                         <h2 class="section-title">早报快讯</h2>
                         <div class="divider-line"></div>
-                        <div style="margin: 15px;" class="editable-content content4">
+                        <div style="margin: 15px;" class="editable-content content5">
                             <p></p>
                         </div>
                     </div>
@@ -197,14 +205,11 @@ export default class Editor extends React.Component {
     }
 
     onEditorChange(evt) {
-        // setTimeout(() => {
-        //     this.setState( {
-        //         data: evt.editor.getData()
-        //     });
-        // }, 1000)
+        this.setState( {
+            data: evt.editor.getData()
+        });
     }
-
-    instanceReady = () => {
+    setTemplate = () => {
         const editor = this.editorRef.current.editor;
         this.props.editorStore.setEditor(editor);
         editor.widgets.add('noteTemplates', {
@@ -224,6 +229,9 @@ export default class Editor extends React.Component {
                 },
                 content4: {
                     selector: '.content4'
+                },
+                content5: {
+                    selector: '.content5'
                 }
             },
             allowedContent: 'div(!template-box); div(!template-box-content); h2(!template-box-title); div(!template-section); select;option(!value);',
@@ -233,10 +241,13 @@ export default class Editor extends React.Component {
             // }
         })
         // window.CKEDITOR.plugins.addExternal('noteTemplates', 'http://localhost:5500/build/static/ckeditor/plugins/notetemplates/', 'plugin.js');
+        editor.execCommand('noteTemplates');
+    }
 
+    instanceReady = () => {
+        const editor = this.editorRef.current.editor;
         const itemTemplate = '<li data-id="{id}"><div><strong class="item-title">{title}</strong></div></li>';
         const outputTemplate = '{detail}<span>&nbsp;</span>';
-
         const autocomplete = new window.CKEDITOR
             .plugins
             .autocomplete(editor, {
@@ -245,7 +256,6 @@ export default class Editor extends React.Component {
                 itemTemplate: itemTemplate,
                 outputTemplate: outputTemplate
             });
-
         // Override default getHtmlToInsert to enable rich content output.
         autocomplete.getHtmlToInsert = function (item) {
             return this
@@ -253,7 +263,6 @@ export default class Editor extends React.Component {
                 .output(item);
         }
 
-        editor.execCommand('noteTemplates');
     }
 
     componentDidMount() {
@@ -261,9 +270,18 @@ export default class Editor extends React.Component {
         // 插入图表
         eventEmitter.on('EDITOR_INSERT_CHART', (chartId) => {
             const editor = this.editorRef.current.editor;
-            editor.execCommand('insertchart');
             const chartOption = this.props.editorStore.chartDataObj[chartId];
-            editor.widgets.instances[1].setData('chartOption', chartOption);
+            const widgetInstances = editor.widgets.instances;
+            if(widgetInstances) {
+                for(let key in widgetInstances) {
+                    if(widgetInstances.hasOwnProperty(key)) {
+                        if(widgetInstances[key].name === 'insertchart') {
+                            widgetInstances[key].setData('chartOption', chartOption);
+                        }
+                    }
+                }
+            }
+            editor.execCommand('insertchart');
             // var element = window.CKEDITOR.dom.element.createFromHtml( '<h1>asdasdasd777</h1>' );
             // editor.insertElement( element );
         });
@@ -300,7 +318,7 @@ export default class Editor extends React.Component {
                 return
             }
             setTimeout(() => {
-                this.instanceReady();
+                this.setTemplate();
             }, 100)
         });
     }
@@ -410,7 +428,7 @@ export default class Editor extends React.Component {
                 data={ data }
                 config={ config }
                 onChange={ this.onEditorChange }
-                // onInstanceReady={ this.instanceReady }
+                onInstanceReady={ this.instanceReady }
              />
                 <CommandPopup></CommandPopup>
         </div>

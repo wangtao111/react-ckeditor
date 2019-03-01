@@ -22,7 +22,16 @@ const NavSectionWrapper = styled.section`
             margin-right: 5px;
         }
     }
-
+    .menu-list{
+        margin: 0 auto;
+        width: 200px;
+        img{
+            width: 16px;
+            height: 16px;
+            margin-right: 10px;
+            display: inline-block
+        }
+    }
     .menu-item {
         a {
             display: block;
@@ -46,19 +55,24 @@ export default class NavSection extends React.Component {
         this.state = {
             menuList: [
                 {
-                    name: '最新文档'
+                    name: '最新文档',
+                    img: require('../../img/file.png')
                 },
                 {
-                    name: '与我分享'
+                    name: '与我分享',
+                    img: require('../../img/share.png')
                 },
                 {
-                    name: '我的文件夹'
+                    name: '我的文件夹',
+                    img: require('../../img/dirctionary.png')
                 },
                 {
-                    name: '标签'
+                    name: '标签',
+                    img: require('../../img/tag.png')
                 },
                 {
-                    name: '回收站'
+                    name: '回收站',
+                    img: require('../../img/reback.png')
                 }
             ],
             templateModalVisible: false
@@ -91,7 +105,7 @@ export default class NavSection extends React.Component {
             <ul className="menu-list">
                 {
                     (menuList && !!menuList.length) && menuList.map((menuItem, index) => {
-                        return <li key={ index } className="menu-item"><a>{ menuItem.name }</a></li>
+                        return <li key={ index } className="menu-item"><a><img src={menuItem.img} alt=""/>{ menuItem.name }</a></li>
                     })
                 }
             </ul>
