@@ -99,7 +99,7 @@ export default class ChartDemo extends React.Component {
     }
 
     render() {
-        let { datas, seriesMapping, customConfig, test } = this.state;
+        let { datas, seriesMapping, customConfig } = this.state;
         return (
             <div className="demo-column-chart">
                 <StandardChart chartId='yyy' datas={datas} seriesMapping={seriesMapping}

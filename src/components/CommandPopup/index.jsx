@@ -11,7 +11,7 @@ export default class CommandPopup extends React.Component {
         super(props);
 
         this.state = {
-            visible: true
+            visible: false
         }
 
         this.editor = this.props.editorStore.editor;
@@ -156,26 +156,31 @@ export default class CommandPopup extends React.Component {
         ];
         const dataSource = [
             {
+                key: 1,
                 profit: '营业总收入',
                 merge1: '234,43543,2300',
                 merge2: '12,2132,1233'
             },
             {
+                key: 2,
                 profit: '营业总收入',
                 merge1: '234,43543,2300',
                 merge2: '12,2132,1233'
             },
             {
+                key: 3,
                 profit: '营业总收入',
                 merge1: '234,43543,2300',
                 merge2: '12,2132,1233'
             },
             {
+                key: 4,
                 profit: '营业总收入',
                 merge1: '234,43543,2300',
                 merge2: '12,2132,1233'
             },
             {
+                key: 5,
                 profit: '营业总收入',
                 merge1: '234,43543,2300',
                 merge2: '12,2132,1233'

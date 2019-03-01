@@ -38,7 +38,6 @@ CKEDITOR.plugins.add('inserttable', {
                 return element.name === 'div' && element.hasClass('container')
             },
             data() {
-                debugger;
                 const { tableConfig } = this.data;
                
                 if(tableConfig) {

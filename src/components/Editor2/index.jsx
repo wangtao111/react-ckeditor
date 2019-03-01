@@ -107,7 +107,89 @@ export default class Editor extends React.Component {
         super(props);
 
         this.state = {
-            data: '<p>Hello from CKEditor 4!</p>'
+            data: '<p>asdasd</p>',
+            templateHtml: `<div>
+                    <div class="select1">
+                        <select>
+                            <option value="头部" selected="selected">头部</option>
+                        </select>
+                    </div>
+                    <div style="border: 1px dashed #98BCFF;overflow: hidden" class="content1">
+                        <img src="../../img/yanjiu.png" alt="">logo
+                        <div style="float: right;">
+                            <div>晨会纪要</div>
+                            <p><span>2018年9月6日</span></p>
+                        </div>
+                    </div>
+                    <div class="select1">
+                        <select>
+                            <option value="头部">头部</option>
+                        </select>
+                        <div style="border: 1px dashed #98BCFF;overflow: hidden" class="summary-title">
+                            <h1>晨会纪要标题</h1>
+                        </div>
+                </div>
+
+                <div class="select1">
+                    <select>
+                        <option value="头部">头部</option>
+                    </select>
+
+                    <div style="border: 1px dashed #98BCFF;overflow: hidden">
+                        <h2 class="section-title">特别声明</h2>
+                        <div class="divider-line"></div>
+                        <div style="margin: 15px;" class="editable-content content1">
+                            <p></p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="select1">
+                    <select>
+                        <option value="头部">头部</option>
+                        <option value="标题">标题</option>
+                        <option value="摘要">摘要</option>
+                        <option value="声明">声明</option>
+                        <option value="栏目" selected="selected">栏目</option>
+                        <option value="公司股票">公司股票</option>
+                        <option value="结束语">结束语</option>
+                        <option value="尾部">尾部</option>
+                    </select>
+
+                    <div style="border: 1px dashed #98BCFF;overflow: hidden">
+                        <h2 class="section-title">个股点评及推荐</h2>
+                        <div class="divider-line"></div>
+                        <div style="margin: 15px;" class="editable-content content2">
+                            <p></p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="select1">
+                    <select>
+                        <option value="尾部">尾部</option>
+                    </select>
+                    <div style="border: 1px dashed #98BCFF;overflow: hidden">
+                        <div style="margin: 15px;" class="editable-content content3">
+                            <p></p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="select1">
+                    <select>
+                        <option value="尾部">尾部</option>
+                    </select>
+
+                    <div style="border: 1px dashed #98BCFF;overflow: hidden">
+                        <h2 class="section-title">早报快讯</h2>
+                        <div class="divider-line"></div>
+                        <div style="margin: 15px;" class="editable-content content4">
+                            <p></p>
+                        </div>
+                    </div>
+                </div>
+            </div>`
         }
 
         this.editorRef = React.createRef();
@@ -115,15 +197,42 @@ export default class Editor extends React.Component {
     }
 
     onEditorChange(evt) {
-        this.setState( {
-            data: evt.editor.getData()
-        });
+        // setTimeout(() => {
+        //     this.setState( {
+        //         data: evt.editor.getData()
+        //     });
+        // }, 1000)
     }
 
     instanceReady = () => {
         const editor = this.editorRef.current.editor;
         this.props.editorStore.setEditor(editor);
-        window.CKEDITOR.plugins.addExternal('noteTemplates', 'http://localhost:5500/build/static/ckeditor/plugins/notetemplates/', 'plugin.js');
+        editor.widgets.add('noteTemplates', {
+            template: this.state.templateHtml,
+            editables: {
+                summaryTitle: {
+                    selector: '.summary-title'
+                },
+                content1: {
+                    selector: '.content1'
+                },
+                content2: {
+                    selector: '.content2'
+                },
+                content3: {
+                    selector: '.content3'
+                },
+                content4: {
+                    selector: '.content4'
+                }
+            },
+            allowedContent: 'div(!template-box); div(!template-box-content); h2(!template-box-title); div(!template-section); select;option(!value);',
+            requiredContent: 'div(template-box)',
+            // upcast: function( element ) {
+            //     return element.name == 'div' && element.hasClass( 'template-box' );
+            // }
+        })
+        // window.CKEDITOR.plugins.addExternal('noteTemplates', 'http://localhost:5500/build/static/ckeditor/plugins/notetemplates/', 'plugin.js');
 
         const itemTemplate = '<li data-id="{id}"><div><strong class="item-title">{title}</strong></div></li>';
         const outputTemplate = '{detail}<span>&nbsp;</span>';
@@ -148,39 +257,83 @@ export default class Editor extends React.Component {
     }
 
     componentDidMount() {
+        const that = this;
         // 插入图表
         eventEmitter.on('EDITOR_INSERT_CHART', (chartId) => {
             const editor = this.editorRef.current.editor;
             editor.execCommand('insertchart');
             const chartOption = this.props.editorStore.chartDataObj[chartId];
             editor.widgets.instances[1].setData('chartOption', chartOption);
+            // var element = window.CKEDITOR.dom.element.createFromHtml( '<h1>asdasdasd777</h1>' );
+            // editor.insertElement( element );
         });
 
         // 插入表格
         eventEmitter.on('EDITOR_INSERT_TABLE', (tableConfig) => {
             const editor = this.editorRef.current.editor;
-            editor.execCommand('inserttable');
             const widgetInstances = editor.widgets.instances;
-
             if(widgetInstances) {
                 for(let key in widgetInstances) {
                     if(widgetInstances.hasOwnProperty(key)) {
-                      if(widgetInstances[key].name === 'inserttable') {
-                          widgetInstances[key].setData('tableConfig', tableConfig);
-                      }
+                        if(widgetInstances[key].name === 'inserttable') {
+                            widgetInstances[key].setData('tableConfig', tableConfig);
+                        }
                     }
                 }
             }
-            
+            editor.widgets.add('inserttable', {
+                template: '<div id="table-wrapper" class="container"></div>',
+                requireContent: 'div(container)',
+                upcast: function(element) {
+                    return element.name === 'div' && element.hasClass('container')
+                },
+                data() {
+                    that.insertTable(tableConfig);
+                }
+            });
+            editor.execCommand('inserttable');
         });
         // 新建文档
         eventEmitter.on('NEW_PAGE', (type) => {
+            this.editorRef.current.editor.setData(' ');
             if(!type){
-                this.editorRef.current.editor.setData(' ');
                 return
             }
-            this.instanceReady();
+            setTimeout(() => {
+                this.instanceReady();
+            }, 100)
         });
+    }
+    makeElement = (name) => {
+        const editor = this.editorRef.current.editor;
+        return new window.CKEDITOR.dom.element(name, editor.document);
+    }
+
+    insertTable = ({ columns, dataSource }) => {
+        const editor = this.editorRef.current.editor;
+        let table = this.makeElement('table');
+        let thead = table.append(this.makeElement('thead'));
+        let tbody = table.append(this.makeElement('tbody'));
+        const headerRow = thead.append(this.makeElement('tr'));
+
+        for(let i = 0, len = columns.length; i < len; i++) {
+            const headerCell = this.makeElement('th');
+            headerCell.appendText(columns[i].title);
+            headerRow.append(headerCell);
+        }
+        thead.append(headerRow);
+
+        for(let j = 0, len = dataSource.length; j < len; j++) {
+            const tableRow =this. makeElement('tr');
+
+            for(let i = 0, len = columns.length; i < len; i++ ) {
+                const rowCell = this.makeElement('td');
+                rowCell.appendText(dataSource[j][columns[i].dataIndex]);
+                tableRow.append(rowCell);
+            }
+            tbody.append(tableRow);
+        }
+        editor.insertElement(table);
     }
 
     textTestCallback = (range) => {
@@ -236,7 +389,7 @@ export default class Editor extends React.Component {
               { name: 'others', groups: [ 'others' ] },
               { name: 'about', groups: [ 'about' ] }
             ],
-            removeButtons: 'Source,Templates,Chart,Flash,SpecialChar,PageBreak,Iframe,ShowBlocks,About,Language,CreateDiv,Form,Checkbox,Radio,TextField,Textarea,Select,Button,ImageButton,HiddenField,Scayt,Print,SelectAll,BidiRtl,BidiLtr',
+            removeButtons: 'ColorButton, Source,Templates,Chart,Flash,SpecialChar,PageBreak,Iframe,ShowBlocks,About,Language,CreateDiv,Form,Checkbox,Radio,TextField,Textarea,Select,Button,ImageButton,HiddenField,Scayt,Print,SelectAll,BidiRtl,BidiLtr',
             // font_names: `
             //             Arial/Arial, Helvetica, sans-serif;
             //             Comic Sans MS/Comic Sans MS, cursive;

@@ -31,9 +31,9 @@
 import React, { Component } from 'react'
 import { withRouter } from 'react-router-dom'
 import { inject, observer } from 'mobx-react'
-import Loading from '../../components/Loading'
-import { Button, Alert } from 'antd'
-import styled from 'styled-components'
+// import Loading from '../../components/Loading'
+// import { Button, Alert } from 'antd'
+// import styled from 'styled-components'
 import Layout from '../Layout';
 
 @withRouter

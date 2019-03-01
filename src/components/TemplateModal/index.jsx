@@ -1,5 +1,5 @@
 import React from 'react';
-import { Tabs, Button, Row, Col } from 'antd';
+import { Tabs, Button } from 'antd';
 import { inject, observer } from 'mobx-react';
 import { TemplateHtmlStr } from '../../config/templateConfig';
 import styled from "styled-components";
