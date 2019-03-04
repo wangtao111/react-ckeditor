@@ -2,15 +2,13 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="c856506e-fd5f-4e8b-a15f-1fa24624da4d" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/img/dirctionary.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/img/file.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/img/reback.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/img/share.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/img/tag.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/App.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/Editor2/index.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Editor2/index.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/containers/Layout/index.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/containers/Layout/index.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/containers/NavSection/index.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/containers/NavSection/index.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/img/file.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/img/file.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/img/reback.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/img/reback.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/img/share.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/img/share.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/img/tag.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/img/tag.png" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -26,8 +24,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/components/Editor2/index.jsx">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="253">
-              <caret line="206" column="25" lean-forward="true" selection-start-line="206" selection-start-column="25" selection-end-line="206" selection-end-column="25" />
+            <state relative-caret-position="3496">
+              <caret line="395" column="69" lean-forward="true" selection-start-line="395" selection-start-column="69" selection-end-line="395" selection-end-column="69" />
               <folding>
                 <element signature="e#0#26#0" expanded="true" />
                 <element signature="e#271#1558#0" />
@@ -50,6 +48,7 @@
                 <element signature="n#style#0;n#div#0;n#div#0;n#section#3;n#div#0;n#!!top" expanded="true" />
                 <element signature="n#style#0;n#div#0;n#section#4;n#div#0;n#!!top" expanded="true" />
                 <element signature="n#style#0;n#div#1;n#div#0;n#section#4;n#div#0;n#!!top" expanded="true" />
+                <element signature="e#6903#7893#0" />
                 <element signature="e#14#20#1" expanded="true" />
                 <element signature="e#11865#12081#0" />
                 <element signature="e#11846#12759#0" />
@@ -59,10 +58,46 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/index.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="207">
+              <caret line="15" column="10" selection-start-line="15" selection-start-column="10" selection-end-line="15" selection-end-column="10" />
+              <folding>
+                <element signature="e#0#23#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/App.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="207">
+              <caret line="15" column="45" selection-start-line="15" selection-start-column="45" selection-end-line="15" selection-end-column="45" />
+              <folding>
+                <element signature="e#0#40#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/containers/Home/index.jsx">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="316">
+              <caret line="49" column="25" selection-start-line="49" selection-start-column="25" selection-end-line="49" selection-end-column="25" />
+              <folding>
+                <element signature="e#440#480#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/containers/Layout/index.jsx">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="318">
-              <caret line="31" column="28" selection-start-line="31" selection-start-column="28" selection-end-line="31" selection-end-column="28" />
+            <state relative-caret-position="247">
+              <caret line="31" column="34" lean-forward="true" selection-start-line="31" selection-start-column="34" selection-end-line="31" selection-end-column="34" />
               <folding>
                 <element signature="e#0#26#0" expanded="true" />
               </folding>
@@ -86,7 +121,7 @@
         <entry file="file://$PROJECT_DIR$/build/static/ckeditor/plugins/inserttable/plugin.js">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="506">
-              <caret line="46" column="11" lean-forward="true" selection-start-line="33" selection-start-column="8" selection-end-line="46" selection-end-column="11" />
+              <caret line="46" column="11" selection-start-line="33" selection-start-column="8" selection-end-line="46" selection-end-column="11" />
             </state>
           </provider>
         </entry>
@@ -108,19 +143,10 @@
         <entry file="file://$PROJECT_DIR$/src/components/CommandPopup/index.jsx">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="1909">
-              <caret line="202" column="43" lean-forward="true" selection-start-line="202" selection-start-column="43" selection-end-line="202" selection-end-column="43" />
+              <caret line="202" column="43" selection-start-line="202" selection-start-column="43" selection-end-line="202" selection-end-column="43" />
               <folding>
                 <element signature="e#587#2667#0" />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/containers/FileListSection/index.jsx">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="275">
-              <caret line="76" column="45" selection-start-line="76" selection-start-column="45" selection-end-line="76" selection-end-column="45" />
             </state>
           </provider>
         </entry>
@@ -129,10 +155,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>noteTemplates</find>
-      <find>instanceReady</find>
-      <find>summaryTitle</find>
-      <find>template-box</find>
       <find>template-box-content</find>
       <find>template-box-title</find>
       <find>!template-section</find>
@@ -153,12 +175,16 @@
       <find>set</find>
       <find>setd</find>
       <find>makeElement</find>
-      <find>editor</find>
       <find>CKEDITOR</find>
       <find>88</find>
       <find>img</find>
       <find>menu-list</find>
       <find>content1</find>
+      <find>matchCallback</find>
+      <find>textTestCallback</find>
+      <find>instanceReady</find>
+      <find>editor</find>
+      <find>noteTemplates</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -185,6 +211,7 @@
         <option value="$PROJECT_DIR$/build/static/ckeditor/plugins/notetemplates/plugin.js" />
         <option value="$PROJECT_DIR$/src/containers/Layout/index.jsx" />
         <option value="$PROJECT_DIR$/src/containers/NavSection/index.jsx" />
+        <option value="$PROJECT_DIR$/src/App.js" />
         <option value="$PROJECT_DIR$/src/components/Editor2/index.jsx" />
       </list>
     </option>
@@ -216,26 +243,25 @@
             <path>
               <item name="fin-editor" type="b2602c69:ProjectViewProjectNode" />
               <item name="fin-editor" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="build" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="fin-editor" type="b2602c69:ProjectViewProjectNode" />
+              <item name="fin-editor" type="462c0819:PsiDirectoryNode" />
+              <item name="build" type="462c0819:PsiDirectoryNode" />
+              <item name="static" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="fin-editor" type="b2602c69:ProjectViewProjectNode" />
+              <item name="fin-editor" type="462c0819:PsiDirectoryNode" />
+              <item name="build" type="462c0819:PsiDirectoryNode" />
+              <item name="static" type="462c0819:PsiDirectoryNode" />
+              <item name="ckeditor" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="fin-editor" type="b2602c69:ProjectViewProjectNode" />
               <item name="fin-editor" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="containers" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="fin-editor" type="b2602c69:ProjectViewProjectNode" />
-              <item name="fin-editor" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="containers" type="462c0819:PsiDirectoryNode" />
-              <item name="Layout" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="fin-editor" type="b2602c69:ProjectViewProjectNode" />
-              <item name="fin-editor" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="img" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -300,16 +326,15 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1551167464346</updated>
-      <workItem from="1551167465693" duration="54843000" />
+      <workItem from="1551167465693" duration="61228000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="54843000" />
+    <option name="totallyTimeSpent" value="61228000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
-    <editor active="true" />
     <layout>
       <window_info id="npm" side_tool="true" />
       <window_info id="Favorites" side_tool="true" />
@@ -318,12 +343,12 @@
       <window_info anchor="bottom" id="TypeScript" />
       <window_info anchor="bottom" id="Docker" show_stripe_button="false" />
       <window_info anchor="bottom" id="Version Control" />
-      <window_info anchor="bottom" id="Terminal" visible="true" weight="0.2508324" />
+      <window_info anchor="bottom" id="Terminal" weight="0.2508324" />
       <window_info anchor="bottom" id="Event Log" side_tool="true" />
       <window_info anchor="bottom" id="Messages" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.32963374" />
-      <window_info anchor="bottom" id="Run" order="2" weight="0.32963374" />
+      <window_info anchor="bottom" id="Run" order="2" visible="true" weight="0.32963374" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -430,16 +455,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="161">
           <caret line="7" column="26" selection-start-line="7" selection-start-column="26" selection-end-line="7" selection-end-column="26" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/index.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="207">
-          <caret line="9" selection-start-line="9" selection-end-line="9" />
-          <folding>
-            <element signature="e#0#23#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -588,16 +603,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/App.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="178">
-          <caret line="15" column="45" selection-start-line="15" selection-start-column="45" selection-end-line="15" selection-end-column="45" />
-          <folding>
-            <element signature="e#0#40#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/containers/Header/index.jsx">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="296">
@@ -612,16 +617,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="23">
           <caret line="1" column="21" selection-start-line="1" selection-start-column="21" selection-end-line="1" selection-end-column="21" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/containers/Home/index.jsx">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="364">
-          <caret line="36" column="24" selection-start-line="36" selection-start-column="24" selection-end-line="36" selection-end-column="24" />
-          <folding>
-            <element signature="e#440#480#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -645,7 +640,7 @@
     <entry file="file://$PROJECT_DIR$/src/components/CommandPopup/index.jsx">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1909">
-          <caret line="202" column="43" lean-forward="true" selection-start-line="202" selection-start-column="43" selection-end-line="202" selection-end-column="43" />
+          <caret line="202" column="43" selection-start-line="202" selection-start-column="43" selection-end-line="202" selection-end-column="43" />
           <folding>
             <element signature="e#587#2667#0" />
           </folding>
@@ -670,42 +665,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/build/static/ckeditor/plugins/notetemplates/plugin.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="598">
-          <caret line="44" column="40" lean-forward="true" selection-start-line="44" selection-start-column="40" selection-end-line="44" selection-end-column="40" />
-          <folding>
-            <element signature="n#section#0;n#div#0;n#!!top" />
-            <element signature="n#select#0;n#section#0;n#div#0;n#!!top" />
-            <element signature="n#style#0;n#div#0;n#section#0;n#div#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#div#0;n#div#0;n#section#0;n#div#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#div#0;n#section#1;n#div#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#div#0;n#section#2;n#div#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#div#1;n#div#0;n#section#2;n#div#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#div#0;n#section#3;n#div#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#div#1;n#div#0;n#section#3;n#div#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#div#0;n#section#4;n#div#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#div#0;n#div#0;n#section#4;n#div#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#div#0;n#section#5;n#div#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#div#1;n#div#0;n#section#5;n#div#0;n#!!top" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/build/static/ckeditor/plugins/inserttable/plugin.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="506">
-          <caret line="46" column="11" lean-forward="true" selection-start-line="33" selection-start-column="8" selection-end-line="46" selection-end-column="11" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/containers/Layout/index.jsx">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="318">
-          <caret line="31" column="28" selection-start-line="31" selection-start-column="28" selection-end-line="31" selection-end-column="28" />
-          <folding>
-            <element signature="e#0#26#0" expanded="true" />
-          </folding>
+          <caret line="46" column="11" selection-start-line="33" selection-start-column="8" selection-end-line="46" selection-end-column="11" />
         </state>
       </provider>
     </entry>
@@ -719,10 +682,67 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/index.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="207">
+          <caret line="15" column="10" selection-start-line="15" selection-start-column="10" selection-end-line="15" selection-end-column="10" />
+          <folding>
+            <element signature="e#0#23#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/App.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="207">
+          <caret line="15" column="45" selection-start-line="15" selection-start-column="45" selection-end-line="15" selection-end-column="45" />
+          <folding>
+            <element signature="e#0#40#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/containers/Home/index.jsx">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="316">
+          <caret line="49" column="25" selection-start-line="49" selection-start-column="25" selection-end-line="49" selection-end-column="25" />
+          <folding>
+            <element signature="e#440#480#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/containers/Layout/index.jsx">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="247">
+          <caret line="31" column="34" lean-forward="true" selection-start-line="31" selection-start-column="34" selection-end-line="31" selection-end-column="34" />
+          <folding>
+            <element signature="e#0#26#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/build/static/ckeditor/plugins/notetemplates/plugin.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1012">
+          <caret line="44" column="40" lean-forward="true" selection-start-line="44" selection-start-column="40" selection-end-line="44" selection-end-column="40" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/build/static/ckeditor/plugins/tableresizerowandcolumn/plugin.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-621">
+          <folding>
+            <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/components/Editor2/index.jsx">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="253">
-          <caret line="206" column="25" lean-forward="true" selection-start-line="206" selection-start-column="25" selection-end-line="206" selection-end-column="25" />
+        <state relative-caret-position="3496">
+          <caret line="395" column="69" lean-forward="true" selection-start-line="395" selection-start-column="69" selection-end-line="395" selection-end-column="69" />
           <folding>
             <element signature="e#0#26#0" expanded="true" />
             <element signature="e#271#1558#0" />
@@ -745,6 +765,7 @@
             <element signature="n#style#0;n#div#0;n#div#0;n#section#3;n#div#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#div#0;n#section#4;n#div#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#div#1;n#div#0;n#section#4;n#div#0;n#!!top" expanded="true" />
+            <element signature="e#6903#7893#0" />
             <element signature="e#14#20#1" expanded="true" />
             <element signature="e#11865#12081#0" />
             <element signature="e#11846#12759#0" />

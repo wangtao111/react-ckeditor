@@ -407,7 +407,7 @@ export default class Editor extends React.Component {
               { name: 'others', groups: [ 'others' ] },
               { name: 'about', groups: [ 'about' ] }
             ],
-            removeButtons: 'ColorButton, Source,Templates,Chart,Flash,SpecialChar,PageBreak,Iframe,ShowBlocks,About,Language,CreateDiv,Form,Checkbox,Radio,TextField,Textarea,Select,Button,ImageButton,HiddenField,Scayt,Print,SelectAll,BidiRtl,BidiLtr',
+            removeButtons: 'ColorButton, Source,Templates,Chart,Flash,SpecialChar,PageBreak,Iframe,ShowBlocks,About,Language,CreateDiv,Form,Checkbox,Radio,TextField,Textarea,Select,Button,ImageButton,HiddenField,Scayt,SelectAll,BidiRtl,BidiLtr',
             // font_names: `
             //             Arial/Arial, Helvetica, sans-serif;
             //             Comic Sans MS/Comic Sans MS, cursive;
