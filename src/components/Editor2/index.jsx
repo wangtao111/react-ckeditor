@@ -356,6 +356,10 @@ export default class Editor extends React.Component {
         callback(data);
     }
 
+    titleChange = (val) => {
+        this.setState({title: val.target.value});
+    }
+
     render() {
         const {data, title} = this.state;
         const config = {
@@ -394,7 +398,7 @@ export default class Editor extends React.Component {
 
         CKEditor.editorUrl = 'http://localhost:5500/CKEditor/static/ckeditor/ckeditor.js';
         return <div>
-            <p style={{fontSize: '22px', lineHeight: '60px', color: '#666'}}>{title}</p>
+            <input style={{fontSize: '22px', lineHeight: '60px', color: '#666', width: '100%', border: 'none', outline: 'none', display: title ? 'block' : 'none'}} type='textarea' value={title} onChange={this.titleChange}/>
             <CKEditor
                 ref={this.editorRef}
                 data={data}
