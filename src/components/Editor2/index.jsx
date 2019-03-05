@@ -363,7 +363,7 @@ export default class Editor extends React.Component {
     render() {
         const {data, title} = this.state;
         const config = {
-            extraPlugins: 'autocomplete,textmatch,noteTemplates,insertchart,inserttable,easyimage,tableresizerowandcolumn,save-to-pdf',
+            extraPlugins: 'autocomplete,textmatch,notetemplates,insertchart,inserttable,easyimage,tableresizerowandcolumn,save-to-pdf',
             allowedContent: true,
             pdfHandler: 'http://www.baidu.com', // 下载pdf的地址
             height: 800,
@@ -396,8 +396,9 @@ export default class Editor extends React.Component {
             //             `
         };
 
-        CKEditor.editorUrl = 'http://localhost:5500/build/static/ckeditor/ckeditor.js';
-        return <div>
+        CKEditor.editorUrl = '/static/ckeditor/ckeditor.js';
+        // CKEditor.editorUrl = 'http://localhost:5500/build/static/ckeditor/ckeditor.js';
+        return <div>{/*  */}
             <input style={{fontSize: '22px', lineHeight: '60px', color: '#666', width: '100%', border: 'none', outline: 'none', display: title ? 'block' : 'none'}} type='textarea' value={title} onChange={this.titleChange}/>
             <CKEditor
                 ref={this.editorRef}
