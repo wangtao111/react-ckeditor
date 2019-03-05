@@ -14,8 +14,8 @@ class App extends Component {
       <div className="App">
         <Switch>
           <Route exact path="/" component={Home}></Route>
-          {/* <Route component={NotFound}></Route> */}
-          <Route path="*" component={ Home }></Route>
+          <Route component={NotFound}></Route>
+          {/* <Route path="*" component={ Home }></Route> */}
         </Switch>
         {/*{process.env.NODE_ENV === 'development' && <DevTools />}*/}
       </div>
