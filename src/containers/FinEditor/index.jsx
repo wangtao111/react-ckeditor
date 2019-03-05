@@ -11,9 +11,9 @@ const FinEditorWrapper = styled.div`
 @inject('noteStore')
 @observer
 export default class FinEditor extends React.Component {
-    constructor(props) {
-        super(props);
-    }
+    // constructor(props) {
+    //     super(props);
+    // }
 
     render() {
         const { noteList, activeIndex } = this.props.noteStore;

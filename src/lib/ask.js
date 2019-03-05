@@ -10,7 +10,7 @@ import api from '../config'
 
 //可以拿到 不同环境 需要在
 // webpack.config不同配置文件中设置
-const env = process.env.NODE_ENV
+// const env = process.env.NODE_ENV
 
 //可以 确定前缀地址
 // 在这个框架里面可以配置 packjson 里面的 proxy 来确定代理

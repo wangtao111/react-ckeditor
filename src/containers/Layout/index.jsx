@@ -4,7 +4,7 @@ import NavSection from '../NavSection';
 import styled from 'styled-components';
 import FileListSection from '../FileListSection';
 import FinEditor from '../FinEditor';
-import ChartDemo from '../Charts';
+// import ChartDemo from '../Charts';
 import { ResizableBox } from 'react-resizable';
 import 'react-resizable/css/styles.css';
 

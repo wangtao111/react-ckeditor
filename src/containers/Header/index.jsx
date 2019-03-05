@@ -29,9 +29,9 @@ const AppHeader = styled.header`
     }
 `
 export default class Header extends React.Component {
-    constructor(props) {
-        super(props);
-    }
+    // constructor(props) {
+    //     super(props);
+    // }
 
     render() {
         return <AppHeader>

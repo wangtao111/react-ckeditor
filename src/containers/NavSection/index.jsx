@@ -5,6 +5,7 @@ import styled, { css } from 'styled-components';
 import TemplateModal from '../../components/TemplateModal';
 import { observer, inject } from 'mobx-react';
 import moment from 'moment';
+import eventEmitter from "../../event";
 
 const NavSectionWrapper = styled.section`
     background-color: #F5F5F5;
@@ -141,6 +142,8 @@ export default class NavSection extends React.Component {
         }
 
         this.props.noteStore.addNote(noteData);
+        this.props.noteStore.setActiveIndex(0);
+        eventEmitter.emit('SKIM_ARTICLE', noteData)
     }
 
     // 设置激活菜单下标
