@@ -8,18 +8,19 @@ const FinEditorWrapper = styled.div`
     margin-left: -1px;
 `;
 
-// @inject('editorStore')
-// @observer
+@inject('noteStore')
+@observer
 export default class FinEditor extends React.Component {
     constructor(props) {
         super(props);
-
     }
 
-    
     render() {
+        const { noteList, activeIndex } = this.props.noteStore;
+        const currentNote = noteList[activeIndex] || {};
+
         return <FinEditorWrapper>
-            <Editor></Editor>
+            <Editor value={ currentNote.content  }></Editor>
         </FinEditorWrapper>
     }
 }

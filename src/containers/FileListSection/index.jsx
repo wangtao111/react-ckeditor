@@ -1,6 +1,7 @@
 import React from 'react';
-import { Input } from 'antd';
+import { Input, Button } from 'antd';
 import styled from 'styled-components';
+import { inject, observer } from 'mobx-react';
 const FileListSectionWrapper = styled.div`
     width: 360px;
     flex-shrink: 0;
@@ -32,39 +33,32 @@ const FileListSectionWrapper = styled.div`
         }
     }
 `;
+@inject('noteStore')
+@observer
 export default class FileListSection extends React.Component {
     constructor(props) {
         super(props);
 
-        this.state = {
-            articleList: [
-                {
-                    title: '《看研报》产品分析报告',
-                    content: '产品亮点1、核心能力：核心提供 『搜索 +订阅』内容服务，在 推荐 层面较弱…',
-                    time: '2018-09-03',
-                    size: '7.1MB',
-                    imgUrl: 'http://baidu.com'
-                },
-                {
-                    title: '《看研报》产品分析报告',
-                    content: '产品亮点1、核心能力：核心提供 『搜索 +订阅』内容服务，在 推荐 层面较弱…',
-                    time: '2018-09-03',
-                    size: '7.1MB',
-                    imgUrl: 'http://baidu.com'
-                },
-                {
-                    title: '《看研报》产品分析报告',
-                    content: '产品亮点1、核心能力：核心提供 『搜索 +订阅』内容服务，在 推荐 层面较弱…',
-                    time: '2018-09-03',
-                    size: '7.1MB',
-                    imgUrl: 'http://baidu.com'
-                }
-            ]
-        }
+        this.state = {};
+    }
+
+    // 移除笔记
+    removeNote(index) {
+        const { noteList, setNoteList } = this.props.noteStore;
+        const noteListCopy = [ ...noteList ];
+
+        noteListCopy.splice(index, 1);
+        setNoteList(noteListCopy);
+    }
+
+    // 设置激活的笔记
+    setActiveNote(index) {
+        this.props.noteStore.setActiveIndex(index);
     }
 
     render() {
-        const { articleList } = this.state;
+
+        const noteList = this.props.noteStore.noteList;
 
         return <FileListSectionWrapper>
             <div className="file-list-header">
@@ -73,15 +67,16 @@ export default class FileListSection extends React.Component {
 
             <ul className="article-list">
                 {
-                    (articleList && !!articleList.length) && articleList.map((article, index) => {
-                        return <li key={index}>
-                            <a className="article-item">
-                                <h3>{ article.title }</h3>
-                                <p>{ article.content }</p>
+                    (noteList && !!noteList.length) && noteList.map((noteItem, index) => {
+                        return <li key={ index }>
+                            <a className="article-item" onClick={ this.setActiveNote.bind(this, index)}>
+                                <h3>{ noteItem.title }</h3>
+                                <p>{ noteItem.briefContent }</p>
                                 <div className="article-footer">
-                                    <time>{ article.time }</time>
-                                    <span>{ article.size }</span>
+                                    <time>{ noteItem.date }</time>
+                                    <span>{ noteItem.size }</span>
                                 </div>
+                                <Button onClick={ this.removeNote.bind(this, index) }>删除</Button>
                             </a>
                         </li>
                     })

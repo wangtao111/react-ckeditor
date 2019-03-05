@@ -1,6 +1,6 @@
 body, h1, h2, h3, h4, h5, h6, hr, p, blockquote,
 dl, dt, dd, ul, ol, li,
-fieldset, lengend, button, input, textarea,
+fieldset, legend, button, input, textarea,
 th, td {
     margin: 0;
     padding: 0;
@@ -62,4 +62,9 @@ a {
 }
 ::-webkit-scrollbar-track:hover {
     background-color: rgba(50, 50, 50, 0.2);
+}
+
+table.cke_show_border {
+    border: #d3d3d3 1px solid;
+    border-collapse: collapse;
 }

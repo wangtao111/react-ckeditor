@@ -10,6 +10,7 @@ import 'react-resizable/css/styles.css';
 
 const AppContent = styled.section`
     display: flex;
+    height: calc(100vh - 50px);
 `;
 
 export default class Layout extends React.Component {

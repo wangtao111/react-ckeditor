@@ -1,6 +1,17 @@
 CKEDITOR.plugins.add('inserttable', {
-    require: 'widget',
+    require: 'widget,table',
     init(editor) {
+        editor.addContentsCss( CKEDITOR.getUrl( this.path + 'style.css' ) );
+        let conf = editor.config,
+			quickBorder = conf.qtBorder || '1',
+			quickStyle = conf.qtStyle || null,
+			quickClass = conf.qtClass || '',
+			quickCellPadding = conf.qtCellPadding || '1',
+			quickCellSpacing = conf.qtCellSpacing || '1',
+			quickWidth = conf.qtWidth || '500px',
+			quickPreviewSize = conf.qtPreviewSize || '14px',
+			quickPreviewBorder = conf.qtPreviewBorder || '1px solid #aaa',
+			quickPreviewBackground = conf.qtPreviewBackground || '#e5e5e5';
         function makeElement(name) {
             return new CKEDITOR.dom.element(name, editor.document);
         }
@@ -28,7 +39,11 @@ CKEDITOR.plugins.add('inserttable', {
                 }
                 tbody.append(tableRow);
             }
-            editor.insertElement(table);
+            table.setAttribute('class', 'editor-table-widget');
+            setTimeout(() => {
+                editor.document.findOne('#table-wrapper').$.append(table.$);
+            }, 0);
+			editor.fire('removeFormatCleanup', table);
         }
 
         editor.widgets.add('inserttable', {

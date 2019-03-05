@@ -107,97 +107,7 @@ export default class Editor extends React.Component {
         super(props);
 
         this.state = {
-            data: '<p>asdasd</p>',
-            templateHtml: `<div>
-                    <div class="select1">
-                        <select>
-                            <option value="头部" selected="selected">头部</option>
-                        </select>
-                    </div>
-                    <div style="border: 1px dashed #98BCFF;overflow: hidden" class="content1">
-                        <img src=${require('../../img/temp_title.png')} alt="" style="float: left; width: 130px;height: 60px;margin-left: 20px">
-                        <div style="float: right;margin-right: 20px;margin-top: 10px">
-                            <div style="font-size: 20px">晨会纪要</div>
-                            <p style="margin: 0"><span>2018年9月6日</span></p>
-                        </div>
-                        <div style="float: left;width: 100%; border-bottom: 3px solid #666;margin-bottom: 5px;"></div>
-                    </div>
-                    <div class="select1">
-                        <select>
-                            <option value="头部">头部</option>
-                        </select>
-                        <div style="border: 1px dashed #98BCFF;overflow: hidden" class="summary-title">
-                            <h1>晨会纪要标题</h1>
-                        </div>
-                </div>
-
-                <div class="select1">
-                    <select>
-                        <option value="头部">头部</option>
-                        <option value="标题">标题</option>
-                        <option value="摘要">摘要</option>
-                        <option value="声明">声明</option>
-                        <option value="栏目" selected="selected">栏目</option>
-                        <option value="公司股票">公司股票</option>
-                        <option value="结束语">结束语</option>
-                        <option value="尾部">尾部</option>
-                    </select>
-
-                    <div style="border: 1px dashed #98BCFF;overflow: hidden">
-                        <h2 class="section-title">特别声明</h2>
-                        <div class="divider-line"></div>
-                        <div style="margin: 15px;" class="editable-content content2">
-                            <p></p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="select1">
-                    <select>
-                        <option value="头部">头部</option>
-                        <option value="标题">标题</option>
-                        <option value="摘要">摘要</option>
-                        <option value="声明">声明</option>
-                        <option value="栏目" selected="selected">栏目</option>
-                        <option value="公司股票">公司股票</option>
-                        <option value="结束语">结束语</option>
-                        <option value="尾部">尾部</option>
-                    </select>
-
-                    <div style="border: 1px dashed #98BCFF;overflow: hidden">
-                        <h2 class="section-title">个股点评及推荐</h2>
-                        <div class="divider-line"></div>
-                        <div style="margin: 15px;" class="editable-content content3">
-                            <p></p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="select1">
-                    <select>
-                        <option value="尾部">尾部</option>
-                    </select>
-                    <div style="border: 1px dashed #98BCFF;overflow: hidden">
-                        <div style="margin: 15px;" class="editable-content content4">
-                            <p></p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="select1">
-                    <select>
-                        <option value="尾部">尾部</option>
-                    </select>
-
-                    <div style="border: 1px dashed #98BCFF;overflow: hidden">
-                        <h2 class="section-title">早报快讯</h2>
-                        <div class="divider-line"></div>
-                        <div style="margin: 15px;" class="editable-content content5">
-                            <p></p>
-                        </div>
-                    </div>
-                </div>
-            </div>`
+            data: this.props.value
         }
 
         this.editorRef = React.createRef();
@@ -244,13 +154,23 @@ export default class Editor extends React.Component {
         editor.execCommand('noteTemplates');
     }
 
-    instanceReady = () => {
-        const editor = this.editorRef.current.editor;
+    componentDidUpdate(prevProps) {
+      if(prevProps.value !== this.props.value) {
+        this.setState({
+          data: this.props.value
+        })
+      }
+    }
+
+    instanceReady = (evt) => {
+        this.props.editorStore.setEditor(evt.editor);
+        window.CKEDITOR.plugins.addExternal('noteTemplates', 'http://localhost:5500/build/static/ckeditor/plugins/notetemplates/', 'plugin.js');
+
         const itemTemplate = '<li data-id="{id}"><div><strong class="item-title">{title}</strong></div></li>';
         const outputTemplate = '{detail}<span>&nbsp;</span>';
         const autocomplete = new window.CKEDITOR
             .plugins
-            .autocomplete(editor, {
+            .autocomplete(evt.editor, {
                 textTestCallback: this.textTestCallback,
                 dataCallback: this.dataCallback,
                 itemTemplate: itemTemplate,
@@ -262,7 +182,8 @@ export default class Editor extends React.Component {
                 .outputTemplate
                 .output(item);
         }
-
+    
+        // evt.editor.execCommand('noteTemplates');
     }
 
     componentDidMount() {
@@ -407,7 +328,10 @@ export default class Editor extends React.Component {
               { name: 'others', groups: [ 'others' ] },
               { name: 'about', groups: [ 'about' ] }
             ],
-            removeButtons: 'ColorButton, Source,Templates,Chart,Flash,SpecialChar,PageBreak,Iframe,ShowBlocks,About,Language,CreateDiv,Form,Checkbox,Radio,TextField,Textarea,Select,Button,ImageButton,HiddenField,Scayt,SelectAll,BidiRtl,BidiLtr',
+            removeButtons: 'Source,Templates,Chart,Flash,SpecialChar,PageBreak,Iframe,ShowBlocks,About,Language,CreateDiv,Form,Checkbox,Radio,TextField,Textarea,Select,Button,ImageButton,HiddenField,Scayt,Print,SelectAll,BidiRtl,BidiLtr',
+            qtCellPadding: '0',
+            qtCellSpacing: '0',
+            qtClass: 'editor-table-widget'
             // font_names: `
             //             Arial/Arial, Helvetica, sans-serif;
             //             Comic Sans MS/Comic Sans MS, cursive;

@@ -8,6 +8,7 @@
 import { configure } from 'mobx'
 import DefaultStore from './default';
 import EditorStore from './editor';
+import NoteStore from './note';
 
 // 只允许 内部改变 state
 configure({ enforceActions: true })
@@ -16,6 +17,7 @@ class Store {
     constructor() {
         this.defaultStore = new DefaultStore(this)
         this.editorStore = new EditorStore(this);
+        this.noteStore = new NoteStore(this);
     }
 }
 
