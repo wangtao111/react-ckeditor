@@ -1,8 +1,7 @@
-CKEDITOR.plugins.add('noteTemplates', {
+CKEDITOR.plugins.add('notetemplates', {
     requires: 'widget',
-    icons: 'noteTemplates',
     init: function(editor) {
-        editor.widgets.add('noteTemplates', {
+        editor.widgets.add('notetemplates', {
             template: `<div class="template-box">
                 <section class="template-section">
                     <select>

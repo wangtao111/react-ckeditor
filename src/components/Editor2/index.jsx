@@ -122,7 +122,7 @@ export default class Editor extends React.Component {
     setTemplate = () => {
         const editor = this.editorRef.current.editor;
         this.props.editorStore.setEditor(editor);
-        editor.widgets.add('noteTemplates', {
+        editor.widgets.add('notetemplates', {
             template: this.state.templateHtml,
             editables: {
                 summaryTitle: {
@@ -150,8 +150,8 @@ export default class Editor extends React.Component {
             //     return element.name == 'div' && element.hasClass( 'template-box' );
             // }
         })
-        // window.CKEDITOR.plugins.addExternal('noteTemplates', 'http://localhost:5500/build/static/ckeditor/plugins/notetemplates/', 'plugin.js');
-        editor.execCommand('noteTemplates');
+        // window.CKEDITOR.plugins.addExternal('notetemplates', 'http://localhost:5500/build/static/ckeditor/plugins/notetemplates/', 'plugin.js');
+        editor.execCommand('notetemplates');
     }
 
     componentDidUpdate(prevProps) {
@@ -164,7 +164,7 @@ export default class Editor extends React.Component {
 
     instanceReady = (evt) => {
         this.props.editorStore.setEditor(evt.editor);
-        window.CKEDITOR.plugins.addExternal('noteTemplates', `${window.origin}/static/ckeditor/plugins/notetemplates/`, 'plugin.js');
+        window.CKEDITOR.plugins.addExternal('notetemplates', `${window.origin}/static/ckeditor/plugins/notetemplates/`, 'plugin.js');
 
         const itemTemplate = '<li data-id="{id}"><div><strong class="item-title">{title}</strong></div></li>';
         const outputTemplate = '{detail}<span>&nbsp;</span>';
@@ -183,7 +183,7 @@ export default class Editor extends React.Component {
                 .output(item);
         }
     
-        // evt.editor.execCommand('noteTemplates');
+        // evt.editor.execCommand('notetemplates');
     }
 
     componentDidMount() {
@@ -310,7 +310,7 @@ export default class Editor extends React.Component {
     render() {
         const { data } = this.state;
         const config = {
-            extraPlugins: 'autocomplete,textmatch,noteTemplates,insertchart,inserttable,tableresizerowandcolumn',
+            extraPlugins: 'autocomplete,textmatch,notetemplates,insertchart,inserttable,tableresizerowandcolumn',
             allowedContent: true,
             height: 800,
             toolbarGroups: [
