@@ -1,0 +1,64 @@
+CKEDITOR.plugins.add('inserttable', {
+    require: 'widget,table',
+    init(editor) {
+        editor.addContentsCss( CKEDITOR.getUrl( this.path + 'style.css' ) );
+        let conf = editor.config,
+			quickBorder = conf.qtBorder || '1',
+			quickStyle = conf.qtStyle || null,
+			quickClass = conf.qtClass || '',
+			quickCellPadding = conf.qtCellPadding || '1',
+			quickCellSpacing = conf.qtCellSpacing || '1',
+			quickWidth = conf.qtWidth || '500px',
+			quickPreviewSize = conf.qtPreviewSize || '14px',
+			quickPreviewBorder = conf.qtPreviewBorder || '1px solid #aaa',
+			quickPreviewBackground = conf.qtPreviewBackground || '#e5e5e5';
+        function makeElement(name) {
+            return new CKEDITOR.dom.element(name, editor.document);
+        }
+
+        function insertTable({ columns, dataSource }) {
+            let table = makeElement('table');
+            let thead = table.append(makeElement('thead'));
+            let tbody = table.append(makeElement('tbody'));
+            const headerRow = thead.append(makeElement('tr'));
+          
+            for(let i = 0, len = columns.length; i < len; i++) {
+                const headerCell = makeElement('th');
+                headerCell.appendText(columns[i].title);
+                headerRow.append(headerCell);
+            }
+            thead.append(headerRow);
+
+            for(let j = 0, len = dataSource.length; j < len; j++) {
+                const tableRow = makeElement('tr');
+
+                for(let i = 0, len = columns.length; i < len; i++ ) {
+                    const rowCell = makeElement('td');
+                    rowCell.appendText(dataSource[j][columns[i].dataIndex]);
+                    tableRow.append(rowCell);
+                }
+                tbody.append(tableRow);
+            }
+            table.setAttribute('class', 'editor-table-widget');
+            setTimeout(() => {
+                editor.document.findOne('#table-wrapper').$.append(table.$);
+            }, 0);
+			editor.fire('removeFormatCleanup', table);
+        }
+
+        editor.widgets.add('inserttable', {
+            template: '<div id="table-wrapper" class="container"></div>',
+            requireContent: 'div(container)',
+            upcast: function(element) {
+                return element.name === 'div' && element.hasClass('container')
+            },
+            data() {
+                const { tableConfig } = this.data;
+               
+                if(tableConfig) {
+                    insertTable(tableConfig);
+                }
+            }
+        });
+    }
+})

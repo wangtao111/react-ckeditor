@@ -345,8 +345,8 @@ export default class Editor extends React.Component {
             //             `
         };
 
-        CKEditor.editorUrl = `http://localhost:5500/build/static/ckeditor/ckeditor.js`;
-        // CKEditor.editorUrl = `${window.origin}/static/ckeditor/ckeditor.js`;
+        // CKEditor.editorUrl = `http://localhost:5500/build/static/ckeditor/ckeditor.js`;
+        CKEditor.editorUrl = `${window.origin}/static/ckeditor/ckeditor.js`;
         return <div>
              <CKEditor
                 ref={ this.editorRef }
