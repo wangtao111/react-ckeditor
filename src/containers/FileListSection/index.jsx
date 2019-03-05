@@ -86,7 +86,7 @@ export default class FileListSection extends React.Component {
     render() {
 
         const noteList = this.props.noteStore.noteList;
-        const activeIndex = this.props.noteStore.activeIndex;
+        const {activeIndex} = this.state;
 
         return <FileListSectionWrapper>
             <div className="file-list-header">
@@ -96,7 +96,7 @@ export default class FileListSection extends React.Component {
             <ul className="article-list">
                 {
                     (noteList && !!noteList.length) && noteList.map((noteItem, index) => {
-                        return <li key={ index } onClick={ () => { this.setActiveNote.bind(this, index); eventEmitter.emit('SKIM_ARTICLE', noteItem) }}>
+                        return <li key={ index } onClick={ () => { this.setActiveNote.bind(this, index); this.setState({activeIndex: index}); eventEmitter.emit('SKIM_ARTICLE', noteItem) }}>
                             <a className={`article-item ${index === activeIndex && 'article-item-hover'}`}>
                                 <h3>{ noteItem.title }</h3>
                                 <div className='content'><p>{ noteItem.briefContent }</p><img src={noteItem.imgUrl} alt=""/></div>
