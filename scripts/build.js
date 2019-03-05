@@ -38,6 +38,10 @@ measureFileSizesBeforeBuild(paths.appBuild)
     copyPublicFolder();
     return build(previousFileSizes);
   })
+  .then((args) => {
+    copyCkEditorFolder();
+    return args;
+  })
   .then(
     ({ stats, previousFileSizes, warnings }) => {
       if (warnings.length) {
@@ -130,4 +134,8 @@ function copyPublicFolder() {
     dereference: true,
     filter: file => file !== paths.appHtml,
   });
+}
+
+function copyCkEditorFolder() {
+  fs.copySync(paths.ckEditorPath, paths.buildCkEditor);
 }

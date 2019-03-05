@@ -41,4 +41,6 @@ module.exports = {
   appNodeModules: resolveApp('node_modules'),
   publicUrl: getPublicUrl(resolveApp('package.json')),
   servedPath: getServedPath(resolveApp('package.json')),
+  ckEditorPath: resolveApp('src/ckeditor'),
+  buildCkEditor: resolveApp('build/static/ckeditor')
 };
