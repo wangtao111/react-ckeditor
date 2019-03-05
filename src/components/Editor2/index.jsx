@@ -164,7 +164,7 @@ export default class Editor extends React.Component {
 
     instanceReady = (evt) => {
         this.props.editorStore.setEditor(evt.editor);
-        window.CKEDITOR.plugins.addExternal('noteTemplates', `${window.origin}/build/static/ckeditor/plugins/notetemplates/`, 'plugin.js');
+        window.CKEDITOR.plugins.addExternal('noteTemplates', `${window.origin}/static/ckeditor/plugins/notetemplates/`, 'plugin.js');
 
         const itemTemplate = '<li data-id="{id}"><div><strong class="item-title">{title}</strong></div></li>';
         const outputTemplate = '{detail}<span>&nbsp;</span>';
@@ -346,7 +346,7 @@ export default class Editor extends React.Component {
         };
 
         // CKEditor.editorUrl = `http://localhost:5500/build/static/ckeditor/ckeditor.js`;
-        CKEditor.editorUrl = `${window.origin}/build/static/ckeditor/ckeditor.js`;
+        CKEditor.editorUrl = `${window.origin}/static/ckeditor/ckeditor.js`;
         return <div>
              <CKEditor
                 ref={ this.editorRef }
