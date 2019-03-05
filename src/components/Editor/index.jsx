@@ -1,238 +1,417 @@
 import React from 'react';
-import ReactUeditor from 'ifanrx-react-ueditor';
-import $ from 'jquery';
+import CKEditor from 'ckeditor4-react';
+import CommandPopup from '../../components/CommandPopup';
+import {inject, observer} from 'mobx-react';
+import eventEmitter from '../../event';
+import Highcharts from 'highcharts';
 
+const MENTIONS = [
+    {
+        id: 1,
+        title: '中国移动',
+        detail: `<div>
+    <strong style="color: #417CD5;">中国平安(601318)</strong> 
+    <p>
+      2018年中报点评：新业务价值转正中国平安(601318) 集团净利润在市场环境承压背景下仍高速增长（寿险准备金补提影响出清），NBV 增速在销售环境承压背景下仍强势转正，基本面显著优于同业，未来代理人优势将持续保障公司利润及 EV 稳健增长，科技板块迈入盈利周期将利于提升集团整体估值。
+    </p>
+    </div>`
+    },
+    {
+        id: 2,
+        title: '中国平安',
+        detail: '平安'
+    },
+    {
+        id: 3,
+        title: '中国联通',
+        detail: '联通'
+    },
+    {
+        id: 4,
+        title: '中国银行',
+        detail: '银行'
+    },
+    {
+        id: 5,
+        title: '中国人寿',
+        detail: '人寿'
+    }
+]
+
+@inject('editorStore')
+@observer
 export default class Editor extends React.Component {
     constructor(props) {
         super(props);
 
         this.state = {
-            mentionSelectedIndex: 0,        // 默认选中下标
+            data: '<p></p>',
+            title: '',
+            templateHtml: `<div>
+                    <div class="select1">
+                        <select style="-webkit-appearance: menulist" onmousedown="javascript:return true;">
+                            <option value="头部" selected="selected">头部</option>
+                        </select>
+                    </div>
+                    <div style="border: 1px dashed #98BCFF;overflow: hidden" class="content1">
+                        <img src=${require('../../img/temp_title.png')} alt="" style="float: left; width: 130px;height: 60px;margin-left: 20px">
+                        <div style="float: right;margin-right: 20px;margin-top: 10px">
+                            <div style="font-size: 20px">晨会纪要</div>
+                            <p style="margin: 0"><span>2018年9月6日</span></p>
+                        </div>
+                        <div style="float: left;width: 100%; border-bottom: 3px solid #666;margin-bottom: 5px;"></div>
+                    </div>
+                    <div class="select1">
+                        <select style="-webkit-appearance: menulist">
+                            <option value="头部">头部</option>
+                        </select>
+                        <div style="border: 1px dashed #98BCFF;overflow: hidden" class="summary-title">
+                            <h1>晨会纪要标题</h1>
+                        </div>
+                </div>
+
+                <div class="select1">
+                    <select style="-webkit-appearance: menulist">
+                        <option value="头部">头部</option>
+                        <option value="标题">标题</option>
+                        <option value="摘要">摘要</option>
+                        <option value="声明">声明</option>
+                        <option value="栏目" selected="selected">栏目</option>
+                        <option value="公司股票">公司股票</option>
+                        <option value="结束语">结束语</option>
+                        <option value="尾部">尾部</option>
+                    </select>
+
+                    <div style="border: 1px dashed #98BCFF;overflow: hidden">
+                        <h2 class="section-title">特别声明</h2>
+                        <div class="divider-line"></div>
+                        <div style="margin: 15px;" class="editable-content content2">
+                            <p></p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="select1">
+                    <select style="-webkit-appearance: menulist">
+                        <option value="头部">头部</option>
+                        <option value="标题">标题</option>
+                        <option value="摘要">摘要</option>
+                        <option value="声明">声明</option>
+                        <option value="栏目" selected="selected">栏目</option>
+                        <option value="公司股票">公司股票</option>
+                        <option value="结束语">结束语</option>
+                        <option value="尾部">尾部</option>
+                    </select>
+
+                    <div style="border: 1px dashed #98BCFF;overflow: hidden">
+                        <h2 class="section-title">个股点评及推荐</h2>
+                        <div class="divider-line"></div>
+                        <div style="margin: 15px;" class="editable-content content3">
+                            <p></p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="select1">
+                    <select style="-webkit-appearance: menulist">
+                        <option value="尾部">尾部</option>
+                    </select>
+                    <div style="border: 1px dashed #98BCFF;overflow: hidden">
+                        <div style="margin: 15px;" class="editable-content content4">
+                            <p></p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="select1">
+                    <select style="-webkit-appearance: menulist">
+                        <option value="尾部">尾部</option>
+                    </select>
+
+                    <div style="border: 1px dashed #98BCFF;overflow: hidden">
+                        <h2 class="section-title">早报快讯</h2>
+                        <div class="divider-line"></div>
+                        <div style="margin: 15px;" class="editable-content content5">
+                            <p></p>
+                        </div>
+                    </div>
+                </div>
+            </div>`
         }
+
+        this.editorRef = React.createRef();
+        this.onEditorChange = this.onEditorChange.bind(this);
     }
 
-    updateEditorContent = (content) => {
-        this.calculatePosition();
-    }
-
-    handleReady = () => {
-        this.editorRef.setHeight(400);
-
-        this.props.setEditor && this.props.setEditor(this.editorRef);
-
-        this.editorRef.addListener('keydown', function(editor, e) {
-            if($('.editor-drop-mention:visible').length) {
-                console.log('e: ', e);
-                
-                if(e.code === 'ArrowUp') {
-
-                }
-
-                if(e.code === 'ArrowDown') {
-
-                }
-            }
+    onEditorChange(evt) {
+        this.setState({
+            data: evt.editor.getData()
         });
     }
 
-    getUeditorContent = ref => {
-        this.setState({
-            content: this.editorRef.getContent(),
+    setTemplate = () => {
+        const editor = this.editorRef.current.editor;
+        this.props.editorStore.setEditor(editor);
+        editor.widgets.add('noteTemplates', {
+            template: this.state.templateHtml,
+            editables: {
+                summaryTitle: {
+                    selector: '.summary-title'
+                },
+                content1: {
+                    selector: '.content1'
+                },
+                content2: {
+                    selector: '.content2'
+                },
+                content3: {
+                    selector: '.content3'
+                },
+                content4: {
+                    selector: '.content4'
+                },
+                content5: {
+                    selector: '.content5'
+                }
+            },
+            allowedContent: 'div(!template-box); div(!template-box-content); h2(!template-box-title); div(!template-section); select;option;',
+            requiredContent: 'div(template-box)',
+            // upcast: function( element ) {
+            //     return element.name == 'div' && element.hasClass( 'template-box' );
+            // }
         })
+        // window.CKEDITOR.plugins.addExternal('noteTemplates', 'http://localhost:5500/CKEditor/static/ckeditor/plugins/notetemplates/', 'plugin.js');
+        editor.execCommand('noteTemplates');
+    }
+    componentDidUpdate(prevProps) {
+        if(prevProps.value !== this.props.value) {
+            this.setState({
+                data: this.props.value
+            })
+        }
     }
 
-    getAllHtmlContent = () => {
-        this.setState({
-            allHtmlContent: this.editorRef.getAllHtml()
-        })
+    instanceReady = () => {
+        const editor = this.editorRef.current.editor;
+        const itemTemplate = '<li data-id="{id}"><div><strong class="item-title">{title}</strong></div></li>';
+        const outputTemplate = '{detail}<span>&nbsp;</span>';
+        const autocomplete = new window.CKEDITOR
+            .plugins
+            .autocomplete(editor, {
+                textTestCallback: this.textTestCallback,
+                dataCallback: this.dataCallback,
+                itemTemplate: itemTemplate,
+                outputTemplate: outputTemplate
+            });
+        // Override default getHtmlToInsert to enable rich content output.
+        autocomplete.getHtmlToInsert = function (item) {
+            return this
+                .outputTemplate
+                .output(item);
+        }
+
     }
 
-    // 计算位置
-    calculatePosition() {
-        this.selection = this.editorRef.selection.getNative();
-
-        if(this.selection.rangeCount) {
-            this.range = this.selection.getRangeAt(0);
-            let x = 0, y = 0;
-
-            if(this.range.collapsed) {
-                console.log('position: ', this.range.getBoundingClientRect());
-                const clientRect = this.range.getBoundingClientRect();
-                x = clientRect.x;
-                y = clientRect.y + clientRect.height;
-            }
-
-            const relativeViewport = window.UE.dom.domUtils.getXY(this.editorRef.iframe);
-            console.log('relative Position: ', window.UE.dom.domUtils.getXY(this.editorRef.iframe))
-
-            console.log('startContainer:', this.range.startContainer);
-            // new ABC({
-            //     trigger: '@',
-            //     capture: /@([\w]*)/,
-            //     suggestions
-            // })
-            // 当trigger输入时，则显示下拉提示,当符合capture则保持下拉提示，否则关闭
-            this.range.setStart(this.range.startContainer, 0);
-            const text = this.selection.toString();
-            this.range.collapse();
-
-            const $dropMention = $('.editor-drop-mention');
-
-            if(!$dropMention.length && text[0] === '@') {
-                // 生成下拉
-                let mentions = [
-                    {
-                        value: '小明'
-                    },
-                    {
-                        value: '小红'
-                    },
-                    {
-                        value: '小张'
+    componentDidMount() {
+        const that = this;
+        // 插入图表
+        eventEmitter.on('EDITOR_INSERT_CHART', (chartId) => {
+            const editor = this.editorRef.current.editor;
+            const chartOption = this.props.editorStore.chartDataObj[chartId];
+            const widgetInstances = editor.widgets.instances;
+            if (widgetInstances) {
+                for (let key in widgetInstances) {
+                    if (widgetInstances.hasOwnProperty(key)) {
+                        if (widgetInstances[key].name === 'insertchart') {
+                            editor.widgets.instances[key].setData('chartOption', chartOption);
+                        }
                     }
-                ]
-                this.generateDropDown(mentions, { x: x + relativeViewport.x, y: y + relativeViewport.y });
-            }else if(text[0] !== '@'){
-                $dropMention.hide();                
-            }else if($dropMention.length){
-                $dropMention.show();
-                $dropMention.css({
-                    left: x + relativeViewport.x + 'px',
-                    top: y + relativeViewport.y + 'px'
-                });
+                }
             }
-        }
-    }
-
-    // 选择提示项
-    chooseMentionItem(value) {
-        this.range.setStart(this.range.startContainer, 1);
-        this.range.deleteContents();
-        this.range.insertNode(window.document.createTextNode(value));
-        $('.editor-drop-mention').hide();
-    }
-
-    // 生成下拉菜单
-    generateDropDown(mentions, position) {
-        const _this = this;
-        const { mentionSelectedIndex } = this.state;
-        const mentionItems = mentions.map((mention, index) => `<li key={index}><a class="mention-item ${ index === mentionSelectedIndex ? 'active': undefined }">${ mention.value }</a></li>`).join('')
-        const mentionMenu = `<div class="editor-drop-mention" style="position:absolute; left: ${position.x}px; top: ${position.y}px;"><ul>${ mentionItems }</ul></div>`;
-        $('body').append(mentionMenu);
-
-        $('.mention-item').on('click', function() {
-            _this.chooseMentionItem($(this).text());
+            editor.widgets.add('insertchart', {
+                template: '<div id="chartWrapper" class="container"><div id="chartContainer"></div></div>',
+                requireContent: 'div(container)',
+                upcast: function (element) {
+                    return element.name === 'div' && element.hasClass('container')
+                },
+                data() {
+                    // 当数据变化时，再画chart，或擦了重画
+                    if (chartOption) {
+                        setTimeout(() => {
+                            Highcharts.chart(editor.document.getById('chartContainer').$, chartOption);
+                        }, 0)
+                    }
+                }
+            });
+            editor.execCommand('insertchart');
+            // var element = window.CKEDITOR.dom.element.createFromHtml( '<h1>asdasdasd777</h1>' );
+            // editor.insertElement( element );
         });
+
+        // 插入表格
+        eventEmitter.on('EDITOR_INSERT_TABLE', (tableConfig) => {
+            const editor = this.editorRef.current.editor;
+            const widgetInstances = editor.widgets.instances;
+            if (widgetInstances) {
+                for (let key in widgetInstances) {
+                    if (widgetInstances.hasOwnProperty(key)) {
+                        if (widgetInstances[key].name === 'inserttable') {
+                            widgetInstances[key].setData('tableConfig', tableConfig);
+                        }
+                    }
+                }
+            }
+            editor.widgets.add('inserttable', {
+                template: '<div id="table-wrapper" class="container"></div>',
+                requireContent: 'div(container)',
+                upcast: function (element) {
+                    return element.name === 'div' && element.hasClass('container')
+                },
+                data() {
+                    that.insertTable(tableConfig);
+                }
+            });
+            editor.execCommand('inserttable');
+        });
+        // 新建文档
+        eventEmitter.on('NEW_PAGE', (type) => {
+            this.editorRef.current.editor.setData(' ');
+            this.setState({title: ''});
+            if (!type) {
+                return
+            }
+            setTimeout(() => {
+                this.setTemplate();
+                this.setState({title: '晨会纪要模板'});
+            }, 100)
+        });
+        // 浏览文章
+        eventEmitter.on('SKIM_ARTICLE', (data) => {
+            this.editorRef.current.editor.setData(data.content);
+            this.setState({title: data.title})
+        });
+    }
+
+    makeElement = (name) => {
+        const editor = this.editorRef.current.editor;
+        return new window.CKEDITOR.dom.element(name, editor.document);
+    }
+
+    insertTable = ({columns, dataSource}) => {
+        const editor = this.editorRef.current.editor;
+        let table = this.makeElement('table');
+        let thead = table.append(this.makeElement('thead'));
+        let tbody = table.append(this.makeElement('tbody'));
+        const headerRow = thead.append(this.makeElement('tr'));
+
+        for (let i = 0, len = columns.length; i < len; i++) {
+            const headerCell = this.makeElement('th');
+            headerCell.appendText(columns[i].title);
+            headerRow.append(headerCell);
+        }
+        thead.append(headerRow);
+
+        for (let j = 0, len = dataSource.length; j < len; j++) {
+            const tableRow = this.makeElement('tr');
+
+            for (let i = 0, len = columns.length; i < len; i++) {
+                const rowCell = this.makeElement('td');
+                rowCell.appendText(dataSource[j][columns[i].dataIndex]);
+                tableRow.append(rowCell);
+            }
+            tbody.append(tableRow);
+        }
+        editor.insertElement(table);
+    }
+
+    textTestCallback = (range) => {
+        if (!range.collapsed) {
+            return null;
+        }
+
+        return window.CKEDITOR.plugins.textMatch.match(range, this.matchCallback);
+    }
+
+    matchCallback(text, offset) {
+        var pattern = /~{1}([A-z])*$/,
+            match = text.slice(0, offset)
+                .match(pattern);
+
+        if (!match) {
+            return null;
+        }
+
+        return {
+            start: match.index,
+            end: offset
+        };
+    }
+
+    dataCallback = (matchInfo, callback) => {
+        var data = MENTIONS.filter(function (item) {
+            var itemName = '~' + item.title;
+            return itemName.indexOf(matchInfo.query.toLowerCase()) === 0;
+        });
+
+        callback(data);
+    }
+
+    titleChange = (val) => {
+        this.setState({title: val.target.value});
     }
 
     render() {
+        const {data, title} = this.state;
         const config = {
-            initialFrameWidth: (window.innerWidth || document.body.clientWidth) - 580 + 'px',
-            allowDivTransToP: false,
-            toolbars: [
-                [
-                    'anchor', //锚点
-                    'undo', //撤销
-                    'redo', //重做
-                    'bold', //加粗
-                    'indent', //首行缩进
-                    'snapscreen', //截图
-                    'italic', //斜体
-                    'underline', //下划线
-                    'strikethrough', //删除线
-                    'subscript', //下标
-                    'fontborder', //字符边框
-                    'superscript', //上标
-                    'formatmatch', //格式刷
-                    'source', //源代码
-                    'blockquote', //引用
-                    'pasteplain', //纯文本粘贴模式
-                    'selectall', //全选
-                    'print', //打印
-                    'preview', //预览
-                    'horizontal', //分隔线
-                    'removeformat', //清除格式
-                    'time', //时间
-                    'date', //日期
-                    'unlink', //取消链接
-                    'insertrow', //前插入行
-                    'insertcol', //前插入列
-                    'mergeright', //右合并单元格
-                    'mergedown', //下合并单元格
-                    'deleterow', //删除行
-                    'deletecol', //删除列
-                    'splittorows', //拆分成行
-                    'splittocols', //拆分成列
-                    'splittocells', //完全拆分单元格
-                    'deletecaption', //删除表格标题
-                    'inserttitle', //插入标题
-                    'mergecells', //合并多个单元格
-                    'deletetable', //删除表格
-                    'cleardoc', //清空文档
-                    'insertparagraphbeforetable', //"表格前插入行"
-                    'insertcode', //代码语言
-                    'fontfamily', //字体
-                    'fontsize', //字号
-                    'paragraph', //段落格式
-                    'simpleupload', //单图上传
-                    'insertimage', //多图上传
-                    'edittable', //表格属性
-                    'edittd', //单元格属性
-                    'link', //超链接
-                    'emotion', //表情
-                    'spechars', //特殊字符
-                    'searchreplace', //查询替换
-                    'map', //Baidu地图
-                    'gmap', //Google地图
-                    'insertvideo', //视频
-                    'help', //帮助
-                    'justifyleft', //居左对齐
-                    'justifyright', //居右对齐
-                    'justifycenter', //居中对齐
-                    'justifyjustify', //两端对齐
-                    'forecolor', //字体颜色
-                    'backcolor', //背景色
-                    'insertorderedlist', //有序列表
-                    'insertunorderedlist', //无序列表
-                    'fullscreen', //全屏
-                    'directionalityltr', //从左向右输入
-                    'directionalityrtl', //从右向左输入
-                    'rowspacingtop', //段前距
-                    'rowspacingbottom', //段后距
-                    'pagebreak', //分页
-                    'insertframe', //插入Iframe
-                    'imagenone', //默认
-                    'imageleft', //左浮动
-                    'imageright', //右浮动
-                    'attachment', //附件
-                    'imagecenter', //居中
-                    'wordimage', //图片转存
-                    'lineheight', //行间距
-                    'edittip ', //编辑提示
-                    'customstyle', //自定义标题
-                    'autotypeset', //自动排版
-                    'webapp', //百度应用
-                    'touppercase', //字母大写
-                    'tolowercase', //字母小写
-                    'background', //背景
-                    'template', //模板
-                    'scrawl', //涂鸦
-                    'music', //音乐
-                    'inserttable', //插入表格
-                    'drafts', // 从草稿箱加载
-                    'charts', // 图表
-                ]
-            ]
-        }
-        return <div>
-                <ReactUeditor
-                    debug
-                    config={ config }
-                    ueditorPath="http://127.0.0.1:5500/build/static/ueditor"
-                    getRef={ ref => this.editorRef = ref }
-                    onChange={this.updateEditorContent}
-                    onReady={this.handleReady}>
-                </ReactUeditor>
+            extraPlugins: 'autocomplete,textmatch,notetemplates,insertchart,inserttable,easyimage,tableresizerowandcolumn,save-to-pdf,quicktable',
+            allowedContent: true,
+            pdfHandler: 'http://www.baidu.com', // 下载pdf的地址
+            height: 800,
+            toolbarGroups: [
+                {name: 'clipboard', groups: ['undo', 'clipboard']},
+                {name: 'document', groups: ['mode', 'document', 'doctools']},
+                {name: 'editing', groups: ['find', 'selection', 'spellchecker', 'editing']},
+                {name: 'forms', groups: ['forms']},
+                {name: 'basicstyles', groups: ['basicstyles', 'cleanup']},
+                {name: 'paragraph', groups: ['list', 'indent', 'blocks', 'align', 'bidi', 'paragraph']},
+                {name: 'links', groups: ['links']},
+                {name: 'insert', groups: ['insert']},
+                {name: 'styles', groups: ['styles']},
+                {name: 'colors', groups: ['colors']},
+                {name: 'tools', groups: ['tools']},
+                {name: 'others', groups: ['others']},
+                {name: 'about', groups: ['about']}
+            ],
+            removeButtons: 'ColorButton, Source,Templates,Chart,Source,Flash,SpecialChar,PageBreak,Iframe,ShowBlocks,About,Language,CreateDiv,Form,Checkbox,Radio,TextField,Textarea,Select,Button,ImageButton,HiddenField,Scayt,SelectAll,BidiRtl,BidiLtr',
+            qtClass: 'cke_table'
+            // font_names: `
+            //             Arial/Arial, Helvetica, sans-serif;
+            //             Comic Sans MS/Comic Sans MS, cursive;
+            //             Courier New/Courier New, Courier, monospace;
+            //             Georgia/Georgia, serif;
+            //             Lucida Sans Unicode/Lucida Sans Unicode, Lucida Grande, sans-serif;
+            //             Tahoma/Tahoma, Geneva, sans-serif;
+            //             Times New Roman/Times New Roman, Times, serif;
+            //             Trebuchet MS/Trebuchet MS, Helvetica, sans-serif;
+            //             Verdana/Verdana, Geneva, sans-seri;
+            //             `
+        };
+
+        const EDITOR_DEV_URL = 'http://localhost:5500/build/static/ckeditor/ckeditor.js';
+        const EDITOR_PRO_URL = `${window.origin}/static/ckeditor/ckeditor.js`;
+
+        CKEditor.editorUrl = process.env.NODE_ENV === 'development' ? EDITOR_DEV_URL : EDITOR_PRO_URL;
+        return <div>{/*  */}
+            <input style={{fontSize: '22px', lineHeight: '60px', color: '#666', width: '100%', border: 'none', outline: 'none', display: title ? 'block' : 'none'}} type='textarea' value={title} onChange={this.titleChange}/>
+            <CKEditor
+                ref={this.editorRef}
+                data={data}
+                config={config}
+                style={{border: 'none'}}
+                onChange={this.onEditorChange}
+                onInstanceReady={this.instanceReady}
+            />
+            <CommandPopup></CommandPopup>
         </div>
     }
 }

@@ -1,5 +1,5 @@
 import React from 'react';
-import Editor from '../../components/Editor2';
+import Editor from '../../components/Editor';
 import styled from 'styled-components';
 import { inject, observer } from 'mobx-react';
 

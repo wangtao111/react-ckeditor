@@ -9,7 +9,6 @@ import eventEmitter from "../../event";
 
 const NavSectionWrapper = styled.section`
     background-color: #F5F5F5;
-    width: 220px;
     height: 100%;
     flex-shrink: 0;
 
