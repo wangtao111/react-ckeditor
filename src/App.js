@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 // import DevTools from 'mobx-react-devtools'
 import { Switch, Route } from 'react-router-dom'
 import Home from './containers/Home'
-// import NotFound from './containers/NotFound'
+import NotFound from './containers/NotFound'
 import './theme/app.scss'
 class App extends Component {
   // constructor(props) {
