@@ -8,14 +8,49 @@ const FileListSectionWrapper = styled.div`
     flex-shrink: 0;
     
     .file-list-header {
+        position: relative;
         height: 60px;
+        padding-right: 67px;
+        padding-left: 53px;
         line-height: 60px;
-        padding: 0 20px;
         border: 1px solid #E1E2E6;
+
+        .icon-back,
+        .icon-setting {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            opacity: 0.6;
+            cursor: pointer;
+
+            &:hover {
+                opacity: 1;
+            }
+        }
+
+        .icon-back {
+            left: 24px;
+            top: 22px;
+            background: url('${require('../../theme/images/icon_back.png')}') no-repeat scroll 0 0 / 16px auto;
+        }
+
+        .icon-setting {
+            right: 22px;
+            top: 24px;
+            background: url('${require('../../theme/images/icon_list_setting.png')}') no-repeat scroll 0 0 / 26px auto;
+        }
+
+        .icon-search {
+            display: inline-block;
+            width: 15px;
+            height: 15px;
+            background: url('${require('../../theme/images/icon_search.png')}') no-repeat scroll 0 0 / contain;
+        }
 
         .search-ipt {
             .ant-input {
                 border-radius: 22px;
+                font-size: 12px;
             }
         }
     }
@@ -90,7 +125,9 @@ export default class FileListSection extends React.Component {
 
         return <FileListSectionWrapper>
             <div className="file-list-header">
-                <Input prefix={<i>搜索图标</i>} className="search-ipt"/>
+                <i className="icon-back"></i>
+                <Input prefix={<i className="icon-search"></i>} placeholder="搜索..." className="search-ipt"/>
+                <i className="icon-setting"></i>
             </div>
 
             <ul className="article-list">

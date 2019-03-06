@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import IntelliCommand from '../intelliCommand';
 import Preview from '../Preview';
 
-const CommandPopupWrapper = styled.div `
+const CommandPopupWrapper = styled.div`
     width: 360px;
 `;
 
