@@ -1,9 +1,10 @@
 import React from 'react';
 import CKEditor from 'ckeditor4-react';
 import CommandPopup from '../../components/CommandPopup';
+import ShareModal from './shareModal';
 import {inject, observer} from 'mobx-react';
 import eventEmitter from '../../event';
-// import Highcharts from 'highcharts';
+import styled from 'styled-components';
 
 const MENTIONS = [
     {
@@ -37,6 +38,25 @@ const MENTIONS = [
         detail: '人寿'
     }
 ]
+const EditorTemplate = styled.div`
+    .title_input{
+        flex: 1; 
+        font-size: 22px;
+        line-height: 60px;
+        color: #666;
+        border: none;
+        outline: none
+    }
+    .tools{
+        float: left;
+       >li{
+            float: left;
+            margin-right: 30px;
+            line-height: 60px;
+            cursor: pointer
+       } 
+    }
+`;
 
 @inject('editorStore')
 @observer
@@ -47,6 +67,14 @@ export default class Editor extends React.Component {
         this.state = {
             data: '<p></p>',
             title: '',
+            tools: [
+                {title: '分享', img: require('../../img/share.png')},
+                {title: '演示模式', img: require('../../img/demo.png')},
+                {title: '评论', img: require('../../img/comment.png')},
+                {title: '标签', img: require('../../img/tag.png')},
+                {title: '更多', img: require('../../img/more.png')},
+                {title: '文件信息', img: require('../../img/info.png')},
+            ],
             templateHtml: `<div>
                     <div class="select1">
                         <select style="-webkit-appearance: menulist" onmousedown="javascript:return true;">
@@ -140,6 +168,7 @@ export default class Editor extends React.Component {
         }
 
         this.editorRef = React.createRef();
+        this.shareModal = null;
         this.onEditorChange = this.onEditorChange.bind(this);
     }
 
@@ -299,9 +328,22 @@ export default class Editor extends React.Component {
     titleChange = (val) => {
         this.setState({title: val.target.value});
     }
+    toolBarCharge = (li) => {
+        switch (li.title) {
+            case '分享':
+                this.shareModal.showModal();
+                break;
+            default:
+                break;
+        }
+    }
+    onRef = (ref) => {
+        this.shareModal = ref
+    }
+
 
     render() {
-        const {data, title} = this.state;
+        const {data, title, tools} = this.state;
         const config = {
             extraPlugins: 'autocomplete,textmatch,insertchart,inserttable,easyimage,tableresizerowandcolumn,save-to-pdf,quicktable',
             allowedContent: true,
@@ -344,8 +386,17 @@ export default class Editor extends React.Component {
         const EDITOR_PRO_URL = `${window.origin}/static/ckeditor/ckeditor.js`;
 
         CKEditor.editorUrl = process.env.NODE_ENV === 'development' ? EDITOR_DEV_URL : EDITOR_PRO_URL;
-        return <div>{/*  */}
-            <input style={{fontSize: '22px', lineHeight: '60px', color: '#666', width: '100%', border: 'none', outline: 'none', display: title ? 'block' : 'none'}} type='textarea' value={title} onChange={this.titleChange}/>
+        return <EditorTemplate>
+            <div style={{display: 'flex', marginBottom: '2px'}}>
+                <input className='title_input' type='textarea' value={title} onChange={this.titleChange}/>
+                <ul className='tools'>
+                    {
+                        tools.map((li, index) => {
+                            return <li key={index} onClick={ () => this.toolBarCharge(li)}><img src={li.img} alt={li.title} title={li.title} /></li>
+                        })
+                    }
+                </ul>
+            </div>
             <CKEditor
                 ref={this.editorRef}
                 data={data}
@@ -355,6 +406,7 @@ export default class Editor extends React.Component {
                 onInstanceReady={this.instanceReady}
             />
             <CommandPopup></CommandPopup>
-        </div>
+            <ShareModal onRef={this.onRef}></ShareModal>
+        </EditorTemplate>
     }
 }
