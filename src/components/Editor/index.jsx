@@ -152,7 +152,7 @@ export default class Editor extends React.Component {
     setTemplate = () => {
         const editor = this.editorRef.current.editor;
         this.props.editorStore.setEditor(editor);
-        editor.widgets.add('noteTemplates', {
+        editor.widgets.add('notetemplates', {
             template: this.state.templateHtml,
             editables: {
                 summaryTitle: {
@@ -181,7 +181,7 @@ export default class Editor extends React.Component {
             // }
         })
         // window.CKEDITOR.plugins.addExternal('noteTemplates', 'http://localhost:5500/CKEditor/static/ckeditor/plugins/notetemplates/', 'plugin.js');
-        editor.execCommand('noteTemplates');
+        editor.execCommand('notetemplates');
     }
     componentDidUpdate(prevProps) {
         if(prevProps.value !== this.props.value) {
@@ -209,7 +209,6 @@ export default class Editor extends React.Component {
                 .outputTemplate
                 .output(item);
         }
-
     }
 
     componentDidMount() {
@@ -219,6 +218,8 @@ export default class Editor extends React.Component {
             const editor = this.editorRef.current.editor;
             const chartOption = this.props.editorStore.chartDataObj[chartId];
             const widgetInstances = editor.widgets.instances;
+
+            editor.execCommand('insertchart');
             if (widgetInstances) {
                 for (let key in widgetInstances) {
                     if (widgetInstances.hasOwnProperty(key)) {
@@ -228,30 +229,13 @@ export default class Editor extends React.Component {
                     }
                 }
             }
-            editor.widgets.add('insertchart', {
-                template: '<div id="chartWrapper" class="container"><div id="chartContainer"></div></div>',
-                requireContent: 'div(container)',
-                upcast: function (element) {
-                    return element.name === 'div' && element.hasClass('container')
-                },
-                data() {
-                    // 当数据变化时，再画chart，或擦了重画
-                    if (chartOption) {
-                        setTimeout(() => {
-                            Highcharts.chart(editor.document.getById('chartContainer').$, chartOption);
-                        }, 0)
-                    }
-                }
-            });
-            editor.execCommand('insertchart');
-            // var element = window.CKEDITOR.dom.element.createFromHtml( '<h1>asdasdasd777</h1>' );
-            // editor.insertElement( element );
         });
 
         // 插入表格
         eventEmitter.on('EDITOR_INSERT_TABLE', (tableConfig) => {
             const editor = this.editorRef.current.editor;
             const widgetInstances = editor.widgets.instances;
+            editor.execCommand('inserttable');
             if (widgetInstances) {
                 for (let key in widgetInstances) {
                     if (widgetInstances.hasOwnProperty(key)) {
@@ -261,17 +245,6 @@ export default class Editor extends React.Component {
                     }
                 }
             }
-            editor.widgets.add('inserttable', {
-                template: '<div id="table-wrapper" class="container"></div>',
-                requireContent: 'div(container)',
-                upcast: function (element) {
-                    return element.name === 'div' && element.hasClass('container')
-                },
-                data() {
-                    that.insertTable(tableConfig);
-                }
-            });
-            editor.execCommand('inserttable');
         });
         // 新建文档
         eventEmitter.on('NEW_PAGE', (type) => {
@@ -290,38 +263,6 @@ export default class Editor extends React.Component {
             this.editorRef.current.editor.setData(data.content);
             this.setState({title: data.title})
         });
-    }
-
-    makeElement = (name) => {
-        const editor = this.editorRef.current.editor;
-        return new window.CKEDITOR.dom.element(name, editor.document);
-    }
-
-    insertTable = ({columns, dataSource}) => {
-        const editor = this.editorRef.current.editor;
-        let table = this.makeElement('table');
-        let thead = table.append(this.makeElement('thead'));
-        let tbody = table.append(this.makeElement('tbody'));
-        const headerRow = thead.append(this.makeElement('tr'));
-
-        for (let i = 0, len = columns.length; i < len; i++) {
-            const headerCell = this.makeElement('th');
-            headerCell.appendText(columns[i].title);
-            headerRow.append(headerCell);
-        }
-        thead.append(headerRow);
-
-        for (let j = 0, len = dataSource.length; j < len; j++) {
-            const tableRow = this.makeElement('tr');
-
-            for (let i = 0, len = columns.length; i < len; i++) {
-                const rowCell = this.makeElement('td');
-                rowCell.appendText(dataSource[j][columns[i].dataIndex]);
-                tableRow.append(rowCell);
-            }
-            tbody.append(tableRow);
-        }
-        editor.insertElement(table);
     }
 
     textTestCallback = (range) => {
@@ -363,7 +304,7 @@ export default class Editor extends React.Component {
     render() {
         const {data, title} = this.state;
         const config = {
-            extraPlugins: 'autocomplete,textmatch,notetemplates,insertchart,inserttable,easyimage,tableresizerowandcolumn,save-to-pdf,quicktable',
+            extraPlugins: 'autocomplete,textmatch,insertchart,inserttable,easyimage,tableresizerowandcolumn,save-to-pdf,quicktable',
             allowedContent: true,
             pdfHandler: 'http://www.baidu.com', // 下载pdf的地址
             height: 800,
@@ -383,7 +324,10 @@ export default class Editor extends React.Component {
                 {name: 'about', groups: ['about']}
             ],
             removeButtons: 'ColorButton, Source,Templates,Chart,Source,Flash,SpecialChar,PageBreak,Iframe,ShowBlocks,About,Language,CreateDiv,Form,Checkbox,Radio,TextField,Textarea,Select,Button,ImageButton,HiddenField,Scayt,SelectAll,BidiRtl,BidiLtr',
-            qtClass: 'cke_table'
+            qtCellPadding: '0',
+            qtCellSpacing: '0',
+            qtClass: 'editor-table-widget',
+            qtStyle: 'border: 1px solid #a7a7a7;'
             // font_names: `
             //             Arial/Arial, Helvetica, sans-serif;
             //             Comic Sans MS/Comic Sans MS, cursive;
