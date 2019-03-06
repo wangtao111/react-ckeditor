@@ -3,7 +3,7 @@ import CKEditor from 'ckeditor4-react';
 import CommandPopup from '../../components/CommandPopup';
 import {inject, observer} from 'mobx-react';
 import eventEmitter from '../../event';
-import Highcharts from 'highcharts';
+// import Highcharts from 'highcharts';
 
 const MENTIONS = [
     {
@@ -212,7 +212,6 @@ export default class Editor extends React.Component {
     }
 
     componentDidMount() {
-        const that = this;
         // 插入图表
         eventEmitter.on('EDITOR_INSERT_CHART', (chartId) => {
             const editor = this.editorRef.current.editor;

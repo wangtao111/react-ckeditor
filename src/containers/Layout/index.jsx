@@ -27,8 +27,8 @@ export default class Layout extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            width: 220,
-            // height: 0
+            width: 200,
+            height: 400,
         }
     }
 
@@ -47,7 +47,9 @@ export default class Layout extends React.Component {
             <Header></Header>
             {/* <ChartDemo /> */}
             <AppContent>
-                <ResizableBox width={ this.state.width } minConstraints={[220]} onResize={ this.resizeBox }>
+                <ResizableBox width={this.state.width} height={this.state.height} minConstraints={[260, 200]} maxConstraints={[400, 400]} onResize={(event, { element, size }) => {
+                    this.setState({ width: size.width, height: size.height });
+                }}>
                     <NavSection />
                 </ResizableBox>
                 <FileListSection />
