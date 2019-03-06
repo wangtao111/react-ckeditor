@@ -4,9 +4,7 @@ import NavSection from '../NavSection';
 import styled from 'styled-components';
 import FileListSection from '../FileListSection';
 import FinEditor from '../FinEditor';
-// import ChartDemo from '../Charts';
 import { ResizableBox } from 'react-resizable';
-import 'react-resizable/css/styles.css';
 
 const AppContent = styled.section`
     display: flex;
@@ -19,6 +17,8 @@ const AppContent = styled.section`
         position: absolute;
         width: 1px;
         height: 100%;
+        bottom: 0;
+        right: 0;
         cursor: col-resize;
     }
 `;
@@ -28,26 +28,15 @@ export default class Layout extends React.Component {
         super(props);
         this.state = {
             width: 200,
-            height: 400,
+            height: 800,
         }
     }
-
-    resizeBox = ((event, { element, size }) => {
-        this.setState({ width: size.width });
-    })
-
-    // componentDidMount() {
-    //     this.setState({
-    //         height: window.document.documentElement.scrollHeight - 20
-    //     })
-    // }
 
     render() {
         return <div>
             <Header></Header>
-            {/* <ChartDemo /> */}
             <AppContent>
-                <ResizableBox width={this.state.width} height={this.state.height} minConstraints={[260, 200]} maxConstraints={[400, 400]} onResize={(event, { element, size }) => {
+                <ResizableBox width={this.state.width} minConstraints={[260]} onResize={(event, { element, size }) => {
                     this.setState({ width: size.width, height: size.height });
                 }}>
                     <NavSection />

@@ -63,3 +63,9 @@ a {
 ::-webkit-scrollbar-track:hover {
     background-color: rgba(50, 50, 50, 0.2);
 }
+
+.side-drawer-popup {
+    .ant-drawer-body {
+        padding: 0;
+    }
+}

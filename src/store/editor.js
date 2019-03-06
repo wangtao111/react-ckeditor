@@ -3,6 +3,7 @@ import { observable, action } from "mobx";
 class EditorStore {
     @observable editor = '';    
     @observable chartDataObj = {};
+    @observable tableDataList = [];
 
     @action.bound
     setEditor(editor) {
@@ -12,6 +13,12 @@ class EditorStore {
     @action.bound
     setChartData(chartData) {
         Object.assign(this.chartDataObj, chartData);
+    }
+
+    // 待插入的表格数据
+    @action.bound
+    setTableData() {
+        
     }
 }
 
