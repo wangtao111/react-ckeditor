@@ -150,8 +150,12 @@ export default class ShareModal extends React.Component {
                                     }
                                 </ul>
                                 <div style={{float: 'right'}}>
-                                    <Button size='small' style={{fontSize: '13px', marginRight: '10px', padding: '0 25px'}}>取消</Button>
-                                    <Button size='small' type='primary' style={{fontSize: '13px', padding: '0 25px'}}>确定</Button>
+                                    <Button size='small'
+                                            onClick={() => this.setState({visible: false})}
+                                            style={{fontSize: '13px', marginRight: '10px', padding: '0 25px'}}>取消</Button>
+                                    <Button size='small'
+                                            onClick={() => this.setState({visible: false})}
+                                            type='primary' style={{fontSize: '13px', padding: '0 25px'}}>确定</Button>
                                 </div>
                             </div>
                         </div>

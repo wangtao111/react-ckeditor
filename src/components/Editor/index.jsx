@@ -1,6 +1,7 @@
 import React from 'react';
 import CKEditor from 'ckeditor4-react';
 import CommandPopup from '../../components/CommandPopup';
+import FullScreen from '../../components/FullScreen';
 import ShareModal from './shareModal';
 import {inject, observer} from 'mobx-react';
 import eventEmitter from '../../event';
@@ -56,6 +57,23 @@ const EditorTemplate = styled.div`
             cursor: pointer
        } 
     }
+    #fullScreenBtn>ul{
+        position: absolute;
+        top: 30px;
+        right: 30px;
+        cursor: url(${require('../../img/cursor.png')}), auto;
+        background: #a7a7a7;
+        >li{
+            width: 48px;
+            height: 48px;
+            line-height: 48px;
+            text-align: center;
+            color: #fff;
+            &:hover{
+                background: #777777
+            }
+        }
+    }
 `;
 
 @inject('editorStore')
@@ -75,6 +93,7 @@ export default class Editor extends React.Component {
                 {title: '更多', img: require('../../img/more.png')},
                 {title: '文件信息', img: require('../../img/info.png')},
             ],
+            visible: false,
             templateHtml: `<div>
                     <div class="select1">
                         <select style="-webkit-appearance: menulist" onmousedown="javascript:return true;">
@@ -172,74 +191,6 @@ export default class Editor extends React.Component {
         this.onEditorChange = this.onEditorChange.bind(this);
     }
 
-    onEditorChange(evt) {
-        this.setState({
-            data: evt.editor.getData()
-        });
-    }
-
-    setTemplate = () => {
-        const editor = this.editorRef.current.editor;
-        this.props.editorStore.setEditor(editor);
-        editor.widgets.add('notetemplates', {
-            template: this.state.templateHtml,
-            editables: {
-                summaryTitle: {
-                    selector: '.summary-title'
-                },
-                content1: {
-                    selector: '.content1'
-                },
-                content2: {
-                    selector: '.content2'
-                },
-                content3: {
-                    selector: '.content3'
-                },
-                content4: {
-                    selector: '.content4'
-                },
-                content5: {
-                    selector: '.content5'
-                }
-            },
-            allowedContent: 'div(!template-box); div(!template-box-content); h2(!template-box-title); div(!template-section); select;option;',
-            requiredContent: 'div(template-box)',
-            // upcast: function( element ) {
-            //     return element.name == 'div' && element.hasClass( 'template-box' );
-            // }
-        })
-        // window.CKEDITOR.plugins.addExternal('noteTemplates', 'http://localhost:5500/CKEditor/static/ckeditor/plugins/notetemplates/', 'plugin.js');
-        editor.execCommand('notetemplates');
-    }
-    componentDidUpdate(prevProps) {
-        if(prevProps.value !== this.props.value) {
-            this.setState({
-                data: this.props.value
-            })
-        }
-    }
-
-    instanceReady = () => {
-        const editor = this.editorRef.current.editor;
-        const itemTemplate = '<li data-id="{id}"><div><strong class="item-title">{title}</strong></div></li>';
-        const outputTemplate = '{detail}<span>&nbsp;</span>';
-        const autocomplete = new window.CKEDITOR
-            .plugins
-            .autocomplete(editor, {
-                textTestCallback: this.textTestCallback,
-                dataCallback: this.dataCallback,
-                itemTemplate: itemTemplate,
-                outputTemplate: outputTemplate
-            });
-        // Override default getHtmlToInsert to enable rich content output.
-        autocomplete.getHtmlToInsert = function (item) {
-            return this
-                .outputTemplate
-                .output(item);
-        }
-    }
-
     componentDidMount() {
         // 插入图表
         eventEmitter.on('EDITOR_INSERT_CHART', (chartId) => {
@@ -293,6 +244,82 @@ export default class Editor extends React.Component {
         });
     }
 
+    componentDidUpdate(prevProps) {
+        if(prevProps.value !== this.props.value) {
+            this.setState({
+                data: this.props.value
+            })
+        }
+    }
+    afterEnter = () => {
+        const editor = this.editorRef.current.editor;
+        editor.setReadOnly(true);
+    }
+    afterExit = () => {
+        const editor = this.editorRef.current.editor;
+        editor.setReadOnly(false);
+    }
+    onEditorChange(evt) {
+        this.setState({
+            data: evt.editor.getData()
+        });
+    }
+
+    setTemplate = () => {
+        const editor = this.editorRef.current.editor;
+        this.props.editorStore.setEditor(editor);
+        editor.widgets.add('notetemplates', {
+            template: this.state.templateHtml,
+            editables: {
+                summaryTitle: {
+                    selector: '.summary-title'
+                },
+                content1: {
+                    selector: '.content1'
+                },
+                content2: {
+                    selector: '.content2'
+                },
+                content3: {
+                    selector: '.content3'
+                },
+                content4: {
+                    selector: '.content4'
+                },
+                content5: {
+                    selector: '.content5'
+                }
+            },
+            allowedContent: 'div(!template-box); div(!template-box-content); h2(!template-box-title); div(!template-section); select;option;',
+            requiredContent: 'div(template-box)',
+            // upcast: function( element ) {
+            //     return element.name == 'div' && element.hasClass( 'template-box' );
+            // }
+        })
+        // window.CKEDITOR.plugins.addExternal('noteTemplates', 'http://localhost:5500/CKEditor/static/ckeditor/plugins/notetemplates/', 'plugin.js');
+        editor.execCommand('notetemplates');
+    }
+
+    instanceReady = () => {
+        const editor = this.editorRef.current.editor;
+        const itemTemplate = '<li data-id="{id}"><div><strong class="item-title">{title}</strong></div></li>';
+        const outputTemplate = '{detail}<span>&nbsp;</span>';
+        const autocomplete = new window.CKEDITOR
+            .plugins
+            .autocomplete(editor, {
+                textTestCallback: this.textTestCallback,
+                dataCallback: this.dataCallback,
+                itemTemplate: itemTemplate,
+                outputTemplate: outputTemplate
+            });
+        // Override default getHtmlToInsert to enable rich content output.
+        autocomplete.getHtmlToInsert = function (item) {
+            return this
+                .outputTemplate
+                .output(item);
+        }
+    }
+
     textTestCallback = (range) => {
         if (!range.collapsed) {
             return null;
@@ -328,22 +355,28 @@ export default class Editor extends React.Component {
     titleChange = (val) => {
         this.setState({title: val.target.value});
     }
+
     toolBarCharge = (li) => {
         switch (li.title) {
             case '分享':
                 this.shareModal.showModal();
                 break;
+            case '演示模式':
+                // this.fullScreen();
+                this.setState({visible: true});
+                break;
             default:
                 break;
         }
     }
+
     onRef = (ref) => {
         this.shareModal = ref
     }
 
 
     render() {
-        const {data, title, tools} = this.state;
+        const {data, title, tools, visible} = this.state;
         const config = {
             extraPlugins: 'autocomplete,textmatch,insertchart,inserttable,easyimage,tableresizerowandcolumn,save-to-pdf,quicktable',
             allowedContent: true,
@@ -397,14 +430,16 @@ export default class Editor extends React.Component {
                     }
                 </ul>
             </div>
-            <CKEditor
-                ref={this.editorRef}
-                data={data}
-                config={config}
-                style={{border: 'none'}}
-                onChange={this.onEditorChange}
-                onInstanceReady={this.instanceReady}
-            />
+            <FullScreen visible={visible} fullScreenId={'cke_1_contents'} exit={() => this.setState({visible: false})} afterEnter={this.afterEnter} afterExit={this.afterExit}>
+                <CKEditor
+                    ref={this.editorRef}
+                    data={data}
+                    config={config}
+                    style={{border: 'none'}}
+                    onChange={this.onEditorChange}
+                    onInstanceReady={this.instanceReady}
+                />
+            </FullScreen>
             <CommandPopup></CommandPopup>
             <ShareModal onRef={this.onRef}></ShareModal>
         </EditorTemplate>
