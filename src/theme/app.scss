@@ -73,3 +73,15 @@ a {
         padding: 0;
     }
 }
+
+.folder-menu {
+    border-radius: 0;
+    padding: 2px 0;
+}
+
+.folder-submenu {
+    .ant-dropdown-menu-item {
+        min-width: 120px;
+        height: 30px;
+    }
+}
