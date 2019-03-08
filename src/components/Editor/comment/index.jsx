@@ -142,7 +142,7 @@ class Comment extends React.Component {
                                     {
                                         val.commentContent &&　<div className='comment-content'>
                                             <span></span>
-                                            回复 {val.commentUser}: {val.commentContent}saddddddddddddddddddddddddddddddddddddddddddddd
+                                            回复 {val.commentUser}: {val.commentContent}
                                         </div>
                                     }
 

@@ -96,7 +96,8 @@ export default class Editor extends React.Component {
                 {title: '文件信息', img: require('../../img/info.png')},
             ],
             visible: false,
-            templateHtml: `<div>
+            templateHtml: [
+                {widgetName: 'header', html: `<div>
                     <div class="select1">
                         <select style="-webkit-appearance: menulist" onmousedown="javascript:return true;">
                             <option value="头部" selected="selected">头部</option>
@@ -118,8 +119,8 @@ export default class Editor extends React.Component {
                             <h1>晨会纪要标题</h1>
                         </div>
                 </div>
-
-                <div class="select1">
+            </div>`},
+                {widgetName: 'section1', html: `<div class="select1">
                     <select style="-webkit-appearance: menulist">
                         <option value="头部">头部</option>
                         <option value="标题">标题</option>
@@ -138,9 +139,8 @@ export default class Editor extends React.Component {
                             <p></p>
                         </div>
                     </div>
-                </div>
-
-                <div class="select1">
+                </div>`},
+                {widgetName: 'section2', html: `<div className="select1">
                     <select style="-webkit-appearance: menulist">
                         <option value="头部">头部</option>
                         <option value="标题">标题</option>
@@ -153,39 +153,37 @@ export default class Editor extends React.Component {
                     </select>
 
                     <div style="border: 1px dashed #98BCFF;overflow: hidden">
-                        <h2 class="section-title">个股点评及推荐</h2>
-                        <div class="divider-line"></div>
-                        <div style="margin: 15px;" class="editable-content content3">
+                        <h2 className="section-title">个股点评及推荐</h2>
+                        <div className="divider-line"></div>
+                        <div style="margin: 15px;" className="editable-content content3">
                             <p></p>
                         </div>
                     </div>
-                </div>
-
-                <div class="select1">
+                </div>`},
+                {widgetName: 'section3', html: `<div className="select1">
                     <select style="-webkit-appearance: menulist">
                         <option value="尾部">尾部</option>
                     </select>
                     <div style="border: 1px dashed #98BCFF;overflow: hidden">
-                        <div style="margin: 15px;" class="editable-content content4">
+                        <div style="margin: 15px;" className="editable-content content4">
                             <p></p>
                         </div>
                     </div>
-                </div>
-
-                <div class="select1">
+                </div>`},
+                {widgetName: 'footer', html: `<div className="select1">
                     <select style="-webkit-appearance: menulist">
                         <option value="尾部">尾部</option>
                     </select>
 
                     <div style="border: 1px dashed #98BCFF;overflow: hidden">
-                        <h2 class="section-title">早报快讯</h2>
-                        <div class="divider-line"></div>
-                        <div style="margin: 15px;" class="editable-content content5">
+                        <h2 className="section-title">早报快讯</h2>
+                        <div className="divider-line"></div>
+                        <div style="margin: 15px;" className="editable-content content5">
                             <p></p>
                         </div>
                     </div>
-                </div>
-            </div>`
+                </div>`},
+            ]
         }
 
         this.editorRef = React.createRef();
@@ -272,7 +270,36 @@ export default class Editor extends React.Component {
         const editor = this.editorRef.current.editor;
         this.props.editorStore.setEditor(editor);
         editor.widgets.add('notetemplates', {
-            template: this.state.templateHtml,
+                template: this.state.templateHtml[0].html,
+                editables: {
+                    summaryTitle: {
+                        selector: '.summary-title'
+                    },
+                    content1: {
+                        selector: '.content1'
+                    },
+                    content2: {
+                        selector: '.content2'
+                    },
+                    content3: {
+                        selector: '.content3'
+                    },
+                    content4: {
+                        selector: '.content4'
+                    },
+                    content5: {
+                        selector: '.content5'
+                    }
+                },
+                allowedContent: 'div(!template-box); div(!template-box-content); h2(!template-box-title); div(!template-section); select;option;',
+                requiredContent: 'div(template-box)',
+                // upcast: function( element ) {
+                //     return element.name == 'div' && element.hasClass( 'template-box' );
+                // }
+            })
+        editor.widgets.registered.notetemplates
+        editor.widgets.add('notetemplates1', {
+            template: this.state.templateHtml[1].html,
             editables: {
                 summaryTitle: {
                     selector: '.summary-title'
@@ -299,14 +326,16 @@ export default class Editor extends React.Component {
             //     return element.name == 'div' && element.hasClass( 'template-box' );
             // }
         })
-        // window.CKEDITOR.plugins.addExternal('noteTemplates', 'http://localhost:5500/CKEditor/static/ckeditor/plugins/notetemplates/', 'plugin.js');
+        editor.widgets.registered.notetemplates1
         editor.execCommand('notetemplates');
+        // window.CKEDITOR.plugins.addExternal('noteTemplates', 'http://localhost:5500/CKEditor/static/ckeditor/plugins/notetemplates/', 'plugin.js');
     }
 
     instanceReady = () => {
         const editor = this.editorRef.current.editor;
         const itemTemplate = '<li data-id="{id}"><div><strong class="item-title">{title}</strong></div></li>';
         const outputTemplate = '{detail}<span>&nbsp;</span>';
+        console.log(1212, editor)
         const autocomplete = new window.CKEDITOR
             .plugins
             .autocomplete(editor, {
@@ -384,21 +413,21 @@ export default class Editor extends React.Component {
             pdfHandler: 'http://www.baidu.com', // 下载pdf的地址
             height: 800,
             toolbarGroups: [
-                {name: 'clipboard', groups: ['undo', 'clipboard']},
-                {name: 'document', groups: ['mode', 'document', 'doctools']},
-                {name: 'editing', groups: ['find', 'selection', 'spellchecker', 'editing']},
+                // {name: 'clipboard', groups: ['undo']},
+                // {name: 'document', groups: ['doctools']},
+                {name: 'styles', groups: ['undo', 'cleanup', 'styles']},
+                {name: 'colors', groups: ['colors']},
+                {name: 'editing', groups: [ 'selection', 'spellchecker', 'editing']},
                 {name: 'forms', groups: ['forms']},
-                {name: 'basicstyles', groups: ['basicstyles', 'cleanup']},
+                // {name: 'basicstyles', groups: ['basicstyles']},
                 {name: 'paragraph', groups: ['list', 'indent', 'blocks', 'align', 'bidi', 'paragraph']},
                 {name: 'links', groups: ['links']},
                 {name: 'insert', groups: ['insert']},
-                {name: 'styles', groups: ['styles']},
-                {name: 'colors', groups: ['colors']},
-                {name: 'tools', groups: ['tools']},
+                // {name: 'tools', groups: ['tools']},
                 {name: 'others', groups: ['others']},
                 {name: 'about', groups: ['about']}
             ],
-            removeButtons: 'ColorButton, Source,Templates,Chart,Source,Flash,SpecialChar,PageBreak,Iframe,ShowBlocks,About,Language,CreateDiv,Form,Checkbox,Radio,TextField,Textarea,Select,Button,ImageButton,HiddenField,Scayt,SelectAll,BidiRtl,BidiLtr',
+            removeButtons: 'PasteFromWord,Paste,Resize, Clipboard,Smiley,ColorButton, Source,Templates,Chart,Source,Flash,SpecialChar,PageBreak,Iframe,ShowBlocks,About,Language,CreateDiv,Form,Checkbox,Radio,TextField,Textarea,Select,Button,ImageButton,HiddenField,Scayt,SelectAll,BidiRtl,BidiLtr',
             qtCellPadding: '0',
             qtCellSpacing: '0',
             qtClass: 'editor-table-widget',
@@ -416,7 +445,7 @@ export default class Editor extends React.Component {
             //             `
         };
 
-        const EDITOR_DEV_URL = 'http://localhost:5500/build/static/ckeditor/ckeditor.js';
+        const EDITOR_DEV_URL = 'http://localhost:5500/src/ckeditor/ckeditor.js';
         const EDITOR_PRO_URL = `${window.origin}/static/ckeditor/ckeditor.js`;
 
         CKEditor.editorUrl = process.env.NODE_ENV === 'development' ? EDITOR_DEV_URL : EDITOR_PRO_URL;

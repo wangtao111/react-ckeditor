@@ -9,7 +9,7 @@ import Store from './store'
 import $ from 'jquery';
 window.jQuery = $;
 window.$ = $;
-
+window.confirm = () => {};
 const Wrap = (
     <Provider {...new Store()}>
       <BrowserRouter basename="/">
