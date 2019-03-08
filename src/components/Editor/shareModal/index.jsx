@@ -140,7 +140,7 @@ export default class ShareModal extends React.Component {
                                     {
                                         users.map((val, index) => {
                                             return <li key={index} style={{lineHeight: '40px', fontSize: '13px'}}>
-                                                <Icon type='user' style={{marginRight: '10px', fontSize: '25px', position: 'relative', top: '5px'}}></Icon>
+                                                <img src={require('../../../img/userlogo.png')} alt="" style={{marginRight: '15px', width: '25px', position: 'relative', top: '-2px'}}/>
                                                 {val.name}
                                                 <p style={{float: 'right'}}>
                                                     <Icon type="close-circle"  style={{fontSize: '20px', color: '#999', position: 'relative', top: '5px'}}/>

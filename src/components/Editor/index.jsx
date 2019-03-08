@@ -3,6 +3,7 @@ import CKEditor from 'ckeditor4-react';
 import CommandPopup from '../../components/CommandPopup';
 import FullScreen from '../../components/FullScreen';
 import ShareModal from './shareModal';
+import Comment from './comment';
 import {inject, observer} from 'mobx-react';
 import eventEmitter from '../../event';
 import styled from 'styled-components';
@@ -46,7 +47,8 @@ const EditorTemplate = styled.div`
         line-height: 60px;
         color: #666;
         border: none;
-        outline: none
+        outline: none;
+        padding: 0 10px;
     }
     .tools{
         float: left;
@@ -187,7 +189,8 @@ export default class Editor extends React.Component {
         }
 
         this.editorRef = React.createRef();
-        this.shareModal = null;
+        this.shareModalRef = null;
+        this.commentRef = null;
         this.onEditorChange = this.onEditorChange.bind(this);
     }
 
@@ -359,19 +362,17 @@ export default class Editor extends React.Component {
     toolBarCharge = (li) => {
         switch (li.title) {
             case '分享':
-                this.shareModal.showModal();
+                this.shareModalRef.showModal();
                 break;
             case '演示模式':
-                // this.fullScreen();
                 this.setState({visible: true});
+                break;
+            case '评论':
+                this.commentRef.setVisible(true);
                 break;
             default:
                 break;
         }
-    }
-
-    onRef = (ref) => {
-        this.shareModal = ref
     }
 
 
@@ -441,7 +442,10 @@ export default class Editor extends React.Component {
                 />
             </FullScreen>
             <CommandPopup></CommandPopup>
-            <ShareModal onRef={this.onRef}></ShareModal>
+            {/*分享弹窗*/}
+            <ShareModal onRef={(ref) => this.shareModalRef = ref}></ShareModal>
+            <Comment onRef={(ref) => this.commentRef = ref}></Comment>
+
         </EditorTemplate>
     }
 }

@@ -46,22 +46,26 @@ a {
    
 }
 ::-webkit-scrollbar {
-    width: 6px;
-    height: 6px;
+    height: 8px;
+    width: 10px;
+    background: transparent;
+    border-radius: 5px;
 }
 ::-webkit-scrollbar-thumb {
-    border-radius: 1em;
-    background-color: rgba(50, 50, 50, 0.3);
+    width: 10px;
+    min-height: 15px;
+    background: rgba(118, 176, 243, 0.3);
+    border-radius: 0;
+    margin-right: 1px;
 }
 ::-webkit-scrollbar-thumb:hover {
-    background-color: rgba(50, 50, 50, 0.6);
+    background: rgba(118, 176, 243, 0.6);
 }
 ::-webkit-scrollbar-track {
-    border-radius: 1em;
-    background-color: rgba(50, 50, 50, 0.1);
+    background: transparent;
 }
 ::-webkit-scrollbar-track:hover {
-    background-color: rgba(50, 50, 50, 0.2);
+    background: transparent;
 }
 
 .side-drawer-popup {
