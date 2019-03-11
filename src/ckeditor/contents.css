@@ -304,3 +304,10 @@ select {
     padding: 8px 12px;
     font-size: 12px;
 }
+
+.cke_notification_message {
+	display: inline-block;
+	background-color: rgb(120, 183, 120);
+	padding: 15px;
+	margin-right: 15px;
+}

@@ -9,6 +9,7 @@ import { configure } from 'mobx'
 import DefaultStore from './default';
 import EditorStore from './editor';
 import NoteStore from './note';
+import DrawerStore from './drawer';
 
 // 只允许 内部改变 state
 configure({ enforceActions: true })
@@ -18,6 +19,7 @@ class Store {
         this.defaultStore = new DefaultStore(this)
         this.editorStore = new EditorStore(this);
         this.noteStore = new NoteStore(this);
+        this.drawerStore = new DrawerStore(this);
     }
 }
 

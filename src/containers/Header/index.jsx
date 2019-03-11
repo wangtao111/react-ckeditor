@@ -1,6 +1,7 @@
 import React from 'react';
-import { Radio, Input } from 'antd';
+import { Radio, Input, message } from 'antd';
 import styled from 'styled-components';
+import { inject, observer } from 'mobx-react';
 
 const AppHeader = styled.header`
     height: 50px;
@@ -100,6 +101,8 @@ const AppHeader = styled.header`
         }
     }
 `
+@inject('drawerStore')
+@observer
 export default class Header extends React.Component {
     constructor(props) {
         super(props);
@@ -113,6 +116,18 @@ export default class Header extends React.Component {
         this.setState({
             activeMode: e.target.value
         })
+    }
+
+    search = (e) => {
+        const value = e.target.value;
+        
+        if(!value || value.trim() === '') {
+            message.error('请输入搜索内容！');
+            return;
+        }
+        // 打开弹窗，设置标志
+        this.props.drawerStore.setVisible(true);
+        this.props.drawerStore.setSearchResultFlag();
     }
 
     render() {
@@ -136,7 +151,7 @@ export default class Header extends React.Component {
             </div>
 
             <div className="search-box">
-                <Input prefix={<i className="icon-search"></i>} placeholder="搜索..." className="search-ipt"/>
+                <Input prefix={<i className="icon-search"></i>} placeholder="搜索..." className="search-ipt" onPressEnter={ this.search }/>
             </div>
         </AppHeader>
     }
