@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { inject, observer } from 'mobx-react';
 import { Table, Button } from 'antd';
+import eventEmitter from '../../event';
 
 const SearchResultWrapper = styled.div`
     .search-tabs {
@@ -125,6 +126,10 @@ export default class SearchResult extends React.Component {
         })
     }
 
+    insertTable(index) {
+        eventEmitter.emit('EDITOR_INSERT_TABLE_CODE', document.getElementById(`report-${ index }`).parentNode.innerHTML);
+    }
+
     render() {
         const tabs = [
             {
@@ -183,11 +188,12 @@ export default class SearchResult extends React.Component {
                                 </div>
                                
                                 <div className="right">
-                                    <Button type="primary" className="insert-btn">插入</Button>
+                                    <Button type="primary" className="insert-btn" onClick={ this.insertTable.bind(this, index) }>插入</Button>
                                 </div>
                             </div>
 
                             <Table
+                                id={ `report-${ index }` }
                                 bordered
                                 columns={ columns }
                                 dataSource={ searchItem.data } 

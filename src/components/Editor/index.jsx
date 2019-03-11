@@ -8,6 +8,7 @@ import {inject, observer} from 'mobx-react';
 import eventEmitter from '../../event';
 import styled from 'styled-components';
 import insertTable from '../../widgets/insertTable';
+import insertTable1 from '../../widgets/insertTable1';
 import insertChart from '../../widgets/insertChart';
 import Highcharts from 'highcharts';
 
@@ -240,6 +241,28 @@ export default class Editor extends React.Component {
                 }
             }
         });
+
+        // 插入表格的HTML代码
+        eventEmitter.on('EDITOR_INSERT_TABLE_CODE', (tableHtml) => {
+             // 调用插入表格的widget
+             const editor = this.editorRef.current.editor;
+             const tableTime = new Date().getTime();
+             insertTable1(`${ tableTime }`, editor);
+ 
+             const widgetInstances = editor.widgets.instances;
+             editor.execCommand(`inserttable-widget${ tableTime }`);
+ 
+             if (widgetInstances) {
+                 for (let key in widgetInstances) {
+                     if (widgetInstances.hasOwnProperty(key)) {
+                         if (widgetInstances[key].name === `inserttable-widget${ tableTime }`) {
+                             widgetInstances[key].setData('tableHtml', tableHtml);
+                         }
+                     }
+                 }
+             }
+        })
+
         // 新建文档
         eventEmitter.on('NEW_PAGE', (type) => {
             this.editorRef.current.editor.setData(' ');
@@ -423,7 +446,8 @@ export default class Editor extends React.Component {
             qtCellPadding: '0',
             qtCellSpacing: '0',
             qtClass: 'editor-table-widget',
-            qtStyle: 'border: 1px solid #a7a7a7;'
+            qtStyle: 'border: 1px solid #a7a7a7;',
+            contentsCss: ['http://localhost:5500/build/static/ckeditor/contents.css', 'http://localhost:5500/build/static/ckeditor/external.css' ]
             // font_names: `
             //             Arial/Arial, Helvetica, sans-serif;
             //             Comic Sans MS/Comic Sans MS, cursive;
