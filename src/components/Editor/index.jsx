@@ -7,6 +7,9 @@ import Comment from './comment';
 import {inject, observer} from 'mobx-react';
 import eventEmitter from '../../event';
 import styled from 'styled-components';
+import insertTable from '../../widgets/insertTable';
+import insertChart from '../../widgets/insertChart';
+import Highcharts from 'highcharts';
 
 const MENTIONS = [
     {
@@ -198,15 +201,20 @@ export default class Editor extends React.Component {
         // 插入图表
         eventEmitter.on('EDITOR_INSERT_CHART', (chartId) => {
             const editor = this.editorRef.current.editor;
+            const chartTime = new Date().getTime();
+
+            insertChart(`${ chartTime }`, editor);
+
             const chartOption = this.props.editorStore.chartDataObj[chartId];
             const widgetInstances = editor.widgets.instances;
 
-            editor.execCommand('insertchart');
+            editor.execCommand(`insertchart-widget${ chartTime }`);
+            console.log('highchart:', Highcharts);
             if (widgetInstances) {
                 for (let key in widgetInstances) {
                     if (widgetInstances.hasOwnProperty(key)) {
-                        if (widgetInstances[key].name === 'insertchart') {
-                            editor.widgets.instances[key].setData('chartOption', chartOption);
+                        if (widgetInstances[key].name === `insertchart-widget${ chartTime }`) {
+                            editor.widgets.instances[key].setData('chartOption', chartOption, Highcharts);
                         }
                     }
                 }
@@ -215,13 +223,18 @@ export default class Editor extends React.Component {
 
         // 插入表格
         eventEmitter.on('EDITOR_INSERT_TABLE', (tableConfig) => {
+            // 调用插入表格的widget
             const editor = this.editorRef.current.editor;
+            const tableTime = new Date().getTime();
+            insertTable(`${ tableTime }`, editor);
+
             const widgetInstances = editor.widgets.instances;
-            editor.execCommand('inserttable');
+            editor.execCommand(`inserttable-widget${ tableTime }`);
+
             if (widgetInstances) {
                 for (let key in widgetInstances) {
                     if (widgetInstances.hasOwnProperty(key)) {
-                        if (widgetInstances[key].name === 'inserttable') {
+                        if (widgetInstances[key].name === `inserttable-widget${ tableTime }`) {
                             widgetInstances[key].setData('tableConfig', tableConfig);
                         }
                     }
@@ -380,7 +393,7 @@ export default class Editor extends React.Component {
     render() {
         const {data, title, tools, visible} = this.state;
         const config = {
-            extraPlugins: 'autocomplete,textmatch,insertchart,inserttable,easyimage,tableresizerowandcolumn,save-to-pdf,quicktable',
+            extraPlugins: 'autocomplete,notification,textmatch,easyimage,tableresizerowandcolumn,save-to-pdf,quicktable',
             allowedContent: true,
             pdfHandler: 'http://www.baidu.com', // 下载pdf的地址
             height: 800,

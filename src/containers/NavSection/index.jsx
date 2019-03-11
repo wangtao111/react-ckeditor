@@ -1,11 +1,13 @@
 // 左侧导航区
 import React from 'react';
-import { Dropdown, Menu, Modal } from 'antd';
+import { Dropdown, Menu, Modal, Input } from 'antd';
 import styled, { css } from 'styled-components';
 import TemplateModal from '../../components/TemplateModal';
 import { observer, inject } from 'mobx-react';
 import moment from 'moment';
 import eventEmitter from "../../event";
+import CustomInput from './CustomInput';
+import MenuWithContext from '../../components/MenuWithContext';
 
 const NavSectionWrapper = styled.section`
     background-color: #F5F5F5;
@@ -54,37 +56,99 @@ const NavSectionWrapper = styled.section`
             display: inline-block
         }
 
-        .tree-root {
-            .tree-title {
-                .arrow {
-                    position: absolute;
-                    display: inline-block;
-                    width: 14px;
-                    height: 14px;
-                    margin-left: -51px;
-                    margin-top: 11px;
-                    vertical-align: -2px;
-                    background: url('${require('../../theme/images/icon_arrow_right_grey.png')}') no-repeat scroll center / 5px auto;
-                    cursor: pointer;
-                }
+        & > .menu-tree-item {
+            & > .menu-tree > .tree-title {
+                height: 40px;
+                line-height: 40px;
 
-                &.expanded {
-                    .arrow {
-                        background-image: url('${require('../../theme/images/icon_arrow_down_white.png')}') !important;
-                        background-size: 8px auto;
+                .name {
+                    .icon-folder {
+                        background: url('${require('../../theme/images/icon_file_folder.png')}')  no-repeat scroll center / 18px 18px;
                     }
                 }
             }
         }
-        
-        .tree-container {
-            .filetree-item {
-                font-size: 12px;
-                padding-left: 60px; 
-                height: 30px;
+
+        .menu-tree {
+            .tree-title {
                 line-height: 30px;
+                .toggle-arrow,
+                .name {
+                    display: inline-block;
+                }
+
+                .toggle-arrow {
+                    display: inline-block;
+                    margin-left: 10px;
+                    width: 14px;
+                    height: 14px;
+                    background: url('${require('../../theme/images/icon_arrow_right_grey.png')}') no-repeat scroll center / 5px auto;
+                    cursor: pointer;
+                    vertical-align: -2px;
+                }
+
+                .name {
+                    font-size: 12px;
+                    color: #333;
+                    cursor: pointer;
+
+                    .icon-folder {
+                        display: inline-block;
+                        width: 24px;
+                        height: 24px;
+                        margin-left: 4px;
+                        margin-right: 8px;
+                        vertical-align: -7px;
+                        background: url('${require('../../theme/images/icon_folder.png')}')  no-repeat scroll center / 18px auto;
+                    }
+
+                    .input-folder {
+                        height: 25px;
+                        border-radius: 0;
+                        font-size: 12px;
+                        color: #333;
+                    }
+                }
             }
         }
+
+
+        .tree-title {
+            &:hover {
+                color: inherit;
+                background-color: #e4edf8;
+            }
+            .arrow {
+                position: absolute;
+                display: inline-block;
+                width: 14px;
+                height: 14px;
+                margin-left: -51px;
+                margin-top: 11px;
+                vertical-align: -2px;
+                background: url('${require('../../theme/images/icon_arrow_right_grey.png')}') no-repeat scroll center / 5px auto;
+                cursor: pointer;
+            }
+
+            &.expanded {
+                .arrow {
+                    background-image: url('${require('../../theme/images/icon_arrow_down_white.png')}') !important;
+                    background-size: 8px auto;
+                }
+            }
+
+            &.selected {
+                background-color: #3f7cd5;
+                .name {
+                    color: #fff;
+                }
+            }
+
+            .tree-root >.tree-container {
+                margin-left: 30px;
+            }
+        }
+        
     }
 `;
 
@@ -147,19 +211,18 @@ export default class NavSection extends React.Component {
                     name: '我的文件夹',
                     icon: 'icon_file_folder',
                     expandable: true,
+                    expanded: false,
                     contextMenu: true,
                     children: [
                         {
-                            name: '新建文件夹'
-                        },
-                        {
-                            name: '新建文件夹2'
-                        },
-                        {
-                            name: '新建文件夹3'
-                        },
-                        {
-                            name: '新建文件夹4'
+                            name: '新建文件1',
+                            expandable: true,
+                            children: [
+                                {
+                                    name: '新建文件夹2',
+                                    expandable: true,
+                                }
+                            ]
                         }
                     ]
                 },
@@ -173,7 +236,7 @@ export default class NavSection extends React.Component {
                 }
             ],
             templateModalVisible: false,
-            selectedIndex: 0,       // 选择的下标
+            activeKey: '0,-1',       // 激活的项
             folderExpanded: false,          // 文件夹是否展开(默认不展开)
         }
 
@@ -204,10 +267,11 @@ export default class NavSection extends React.Component {
         eventEmitter.emit('SKIM_ARTICLE', noteData)
     }
 
-    // 设置激活菜单下标
-    setActiveIndex(index) {
+    // 设置激活菜单项
+    setActiveKey = (key) => {
+        // debugger;
         this.setState({
-            selectedIndex: index
+            activeKey: key
         });
     }
 
@@ -220,29 +284,132 @@ export default class NavSection extends React.Component {
         });
     }
 
+    // 创建文件夹
+    createFolder = () => {
+        const { menuList } = this.state;
+        const myFolder = menuList[2];
+
+        if(myFolder) {
+            if(typeof myFolder.children === 'undefined') {
+                myFolder.children = [];
+            }
+
+            myFolder.children.push({
+                name: '新建文件夹',
+                expandable: true,
+                editable: true
+            });
+        }
+
+        this.setState({
+            menuList
+        });
+    }
+
+    // 设置编辑名称状态
+    setEditable(index, editFlag) {
+        this.setFolderData(index, 'editable', editFlag);
+    }
+
+    // 设置文件夹名称
+    setFolderName(e, index) {
+        this.setFolderData(index, 'name', e.target.value);
+    }
+
+    // 设置文件夹数据
+    setFolderData(index, attr, value) {
+        const { menuList } = this.state;
+        const myFolder = menuList[2];
+
+        if(myFolder) {
+            myFolder.children[index][attr] = value;
+        }
+
+        this.setState({
+            menuList: menuList
+        });
+    }
+
+    // 渲染菜单树结构
+    renderMenuTree(menuList, parentIndex = -1) {
+        if(!menuList || !menuList.length) return;
+
+        const { activeKey } = this.state;
+        return menuList.map((menuItem, index) => {
+            if(!menuItem.expandable) {
+                return <li className="menu-tree-item" onClick={ () => this.setActiveKey(`${index},${parentIndex}`) }>
+                    <Link icon={ menuItem.icon } selected={ activeKey === `${index},${parentIndex}` ? 'selected': '' }>
+                            { menuItem.name }
+                    </Link>
+                </li>
+            }else {
+                const childMenuLink = (
+                    <div className={`tree-title expandable${ activeKey === `${ index },${ parentIndex }` ? ' selected': ''}`} style={{ paddingLeft: 20 * (parentIndex.toString().split(',').length - 1) }}>
+                        <div className="toggle-arrow"></div>
+
+                        <div className="name">
+                            <i className="icon-folder"></i>
+                            {
+                                menuItem.editable ? <CustomInput
+                                                        style={{ width: 120 }}
+                                                        className="input-folder"
+                                                        onPressEnter={ () => this.setEditable(index, false)}
+                                                        onBlur={ () => this.setEditable(index, false) }
+                                                        value={ menuItem.name }
+                                                        onChange={ (e) => this.setFolderName(e, index) }/> : menuItem.name
+                            }
+                        </div>
+                    </div>
+                );
+
+                const folderMenu = (
+                    <Menu mode="vertical" style={{ width: 120 }} className="folder-menu">
+                        <Menu.SubMenu key="sub1" title="新建" className="folder-submenu">
+                            <Menu.Item key="1" onClick={ this.createFolder }>文件夹</Menu.Item>
+                        </Menu.SubMenu>
+                    </Menu>
+                );
+
+                return <li className="menu-tree-item" onClick={ (e) => { e.stopPropagation(); this.setActiveKey(`${ index },${ parentIndex }`)} }>
+                    <div className="menu-tree">
+                        {
+                            menuItem.contextMenu ? <MenuWithContext contextMenus={ folderMenu }>
+                                {
+                                    childMenuLink
+                                }
+                            </MenuWithContext> : childMenuLink
+                        }
+        
+                        {
+                            menuItem.children && <ul className="tree-container">
+                                {
+                                    this.renderMenuTree(menuItem.children, `${ index },${ parentIndex }`)
+                                }
+                            </ul>
+                        }
+                    </div>
+                </li>
+            }
+        })
+
+    }
+
     render() {
         const { 
             menuList,
             templateModalVisible,
-            selectedIndex,
             folderExpanded 
         } = this.state;
 
         const menu = (<Menu>
             <Menu.Item onClick={ this.addNewNote }>新建笔记</Menu.Item>
             <Menu.Item onClick={ () => this.setModalVisible('templateModalVisible', true) }>新建模板笔记</Menu.Item>
-            <Menu.Item>新建文件夹</Menu.Item>
+            <Menu.Item onClick={ this.createFolder }>新建文件夹</Menu.Item>
             <Menu.Item>导入word文档</Menu.Item>
             <Menu.Item>导入PDF文档</Menu.Item>
         </Menu>);
 
-        const folderMenu = (
-            <Menu mode="vertical" style={{ width: 120 }} className="folder-menu">
-                <Menu.SubMenu key="sub1" title="新建" className="folder-submenu">
-                    <Menu.Item key="1">文件夹</Menu.Item>
-                </Menu.SubMenu>
-            </Menu>
-        );
+       
 
         return <NavSectionWrapper>
             <div className="operation-tools">
@@ -251,47 +418,7 @@ export default class NavSection extends React.Component {
 
             <ul className="menu-list">
                 {
-                    (menuList && !!menuList.length) && menuList.map((menuItem, index) => {
-                        let menuLink = <Link icon={ menuItem.icon } selected={ selectedIndex === index ? 'selected': '' }>
-                                { menuItem.name }
-                        </Link>;
-                        
-                        // 有下级的
-                        if(menuItem.expandable) {
-                            menuLink = <div className="tree-root">
-                                <div className={`tree-title expandable${ folderExpanded ? ' expanded': '' }`}>
-                                    <Link icon={ menuItem.icon } selected={ selectedIndex === index ? 'selected': '' }>
-                                        {
-                                            menuItem.expandable && <i className="arrow" onClick={ this.toggleExpand }></i>
-                                        }
-                                        { menuItem.name }
-                                    </Link>
-                                </div>
-
-                                {
-                                    (menuItem.children && menuItem.children.length && folderExpanded) && (
-                                        <div className="tree-container">
-                                            <ul>
-                                                {
-                                                    menuItem.children.map((item, index) => {
-                                                        return <li key={ index } className="filetree-item">{ item.name }</li>
-                                                    })
-                                                }
-                                            </ul>
-                                        </div>
-                                    )
-                                }
-                            </div>
-                        }
-
-                        return <li key={ index } className="menu-item" onClick={ this.setActiveIndex.bind(this, index) }>
-                            {
-                                menuItem.contextMenu ? <Dropdown overlay={ folderMenu } trigger={['contextMenu']}>
-                                    { menuLink }
-                                </Dropdown> : menuLink
-                            }
-                        </li>
-                    })
+                    this.renderMenuTree(menuList)
                 }
             </ul>
             

@@ -36,6 +36,12 @@ const PreviewWrapper = styled.div`
         &:focus {
             background-color: #417CD5;
         }
+
+        &[disabled] {
+            color: rgba(0,0,0,0.25);
+            background-color: #f5f5f5;
+            border-color: #d9d9d9;
+        }
     }
 
     .table-show-wrapper {
@@ -271,21 +277,21 @@ export default class Preview extends React.Component {
                 title: '折线图',
                 icon: 'icon_line_chart'
             },
-            {
-                title: '柱状图',
-                icon: 'icon_bar_chart'
-            },
-            {
-                title: '梯形图',
-                icon: 'icon_step_line_chart'
-            },
-            {
-                title: '堆积图',
-                icon: 'icon_stack_chart'
-            }
+            // {
+            //     title: '柱状图',
+            //     icon: 'icon_bar_chart'
+            // },
+            // {
+            //     title: '梯形图',
+            //     icon: 'icon_step_line_chart'
+            // },
+            // {
+            //     title: '堆积图',
+            //     icon: 'icon_stack_chart'
+            // }
         ]
         
-        const { selectedIndex, selectedRowKeys, selectedType } = this.state;
+        const { selectedIndex, selectedRowKeys, selectedType, toBeInsertTableRows } = this.state;
         const rowSelection = {
             selectedRowKeys,
             onChange: this.handleRowSelectChange
@@ -321,7 +327,7 @@ export default class Preview extends React.Component {
             <div className="chart-show-wrapper" style={ { display: selectedType === '图表' ? 'block' : 'none'} }>
                 <div id="chartContainer"></div>
             </div>
-           <Button type="primary" className="drawer-btn-insert" onClick={ this.insertData }>插入</Button>
+            <Button type="primary" className="drawer-btn-insert" onClick={ this.insertData } disabled={ !toBeInsertTableRows.length && selectedType === '表格' }>插入</Button>
         </PreviewWrapper>
     }
 }
