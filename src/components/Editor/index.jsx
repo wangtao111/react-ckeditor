@@ -13,7 +13,7 @@ const MENTIONS = [
         id: 1,
         title: '中国移动',
         detail: `<div>
-    <strong style="color: #417CD5;">中国平安(601318)</strong> 
+    <strong style="color: #417CD5;">中国平安(601318)</strong>
     <p>
       2018年中报点评：新业务价值转正中国平安(601318) 集团净利润在市场环境承压背景下仍高速增长（寿险准备金补提影响出清），NBV 增速在销售环境承压背景下仍强势转正，基本面显著优于同业，未来代理人优势将持续保障公司利润及 EV 稳健增长，科技板块迈入盈利周期将利于提升集团整体估值。
     </p>
@@ -42,7 +42,7 @@ const MENTIONS = [
 ]
 const EditorTemplate = styled.div`
     .title_input{
-        flex: 1; 
+        flex: 1;
         font-size: 22px;
         line-height: 60px;
         color: #666;
@@ -57,7 +57,7 @@ const EditorTemplate = styled.div`
             margin-right: 30px;
             line-height: 60px;
             cursor: pointer
-       } 
+       }
     }
     #fullScreenBtn>ul{
         position: absolute;
@@ -96,8 +96,7 @@ export default class Editor extends React.Component {
                 {title: '文件信息', img: require('../../img/info.png')},
             ],
             visible: false,
-            templateHtml: [
-                {widgetName: 'header', html: `<div>
+            templateHtml: `<div>
                     <div class="select1">
                         <select style="-webkit-appearance: menulist" onmousedown="javascript:return true;">
                             <option value="头部" selected="selected">头部</option>
@@ -119,8 +118,8 @@ export default class Editor extends React.Component {
                             <h1>晨会纪要标题</h1>
                         </div>
                 </div>
-            </div>`},
-                {widgetName: 'section1', html: `<div class="select1">
+
+                <div class="select1">
                     <select style="-webkit-appearance: menulist">
                         <option value="头部">头部</option>
                         <option value="标题">标题</option>
@@ -139,8 +138,9 @@ export default class Editor extends React.Component {
                             <p></p>
                         </div>
                     </div>
-                </div>`},
-                {widgetName: 'section2', html: `<div className="select1">
+                </div>
+
+                <div class="select1">
                     <select style="-webkit-appearance: menulist">
                         <option value="头部">头部</option>
                         <option value="标题">标题</option>
@@ -153,37 +153,39 @@ export default class Editor extends React.Component {
                     </select>
 
                     <div style="border: 1px dashed #98BCFF;overflow: hidden">
-                        <h2 className="section-title">个股点评及推荐</h2>
-                        <div className="divider-line"></div>
-                        <div style="margin: 15px;" className="editable-content content3">
+                        <h2 class="section-title">个股点评及推荐</h2>
+                        <div class="divider-line"></div>
+                        <div style="margin: 15px;" class="editable-content content3">
                             <p></p>
                         </div>
                     </div>
-                </div>`},
-                {widgetName: 'section3', html: `<div className="select1">
+                </div>
+
+                <div class="select1">
                     <select style="-webkit-appearance: menulist">
                         <option value="尾部">尾部</option>
                     </select>
                     <div style="border: 1px dashed #98BCFF;overflow: hidden">
-                        <div style="margin: 15px;" className="editable-content content4">
+                        <div style="margin: 15px;" class="editable-content content4">
                             <p></p>
                         </div>
                     </div>
-                </div>`},
-                {widgetName: 'footer', html: `<div className="select1">
+                </div>
+
+                <div class="select1">
                     <select style="-webkit-appearance: menulist">
                         <option value="尾部">尾部</option>
                     </select>
 
                     <div style="border: 1px dashed #98BCFF;overflow: hidden">
-                        <h2 className="section-title">早报快讯</h2>
-                        <div className="divider-line"></div>
-                        <div style="margin: 15px;" className="editable-content content5">
+                        <h2 class="section-title">早报快讯</h2>
+                        <div class="divider-line"></div>
+                        <div style="margin: 15px;" class="editable-content content5">
                             <p></p>
                         </div>
                     </div>
-                </div>`},
-            ]
+                </div>
+            </div>`
         }
 
         this.editorRef = React.createRef();
@@ -246,12 +248,13 @@ export default class Editor extends React.Component {
     }
 
     componentDidUpdate(prevProps) {
-        if(prevProps.value !== this.props.value) {
+        if (prevProps.value !== this.props.value) {
             this.setState({
                 data: this.props.value
             })
         }
     }
+
     afterEnter = () => {
         const editor = this.editorRef.current.editor;
         editor.setReadOnly(true);
@@ -260,6 +263,7 @@ export default class Editor extends React.Component {
         const editor = this.editorRef.current.editor;
         editor.setReadOnly(false);
     }
+
     onEditorChange(evt) {
         this.setState({
             data: evt.editor.getData()
@@ -270,36 +274,7 @@ export default class Editor extends React.Component {
         const editor = this.editorRef.current.editor;
         this.props.editorStore.setEditor(editor);
         editor.widgets.add('notetemplates', {
-                template: this.state.templateHtml[0].html,
-                editables: {
-                    summaryTitle: {
-                        selector: '.summary-title'
-                    },
-                    content1: {
-                        selector: '.content1'
-                    },
-                    content2: {
-                        selector: '.content2'
-                    },
-                    content3: {
-                        selector: '.content3'
-                    },
-                    content4: {
-                        selector: '.content4'
-                    },
-                    content5: {
-                        selector: '.content5'
-                    }
-                },
-                allowedContent: 'div(!template-box); div(!template-box-content); h2(!template-box-title); div(!template-section); select;option;',
-                requiredContent: 'div(template-box)',
-                // upcast: function( element ) {
-                //     return element.name == 'div' && element.hasClass( 'template-box' );
-                // }
-            })
-        editor.widgets.registered.notetemplates
-        editor.widgets.add('notetemplates1', {
-            template: this.state.templateHtml[1].html,
+            template: this.state.templateHtml,
             editables: {
                 summaryTitle: {
                     selector: '.summary-title'
@@ -320,22 +295,19 @@ export default class Editor extends React.Component {
                     selector: '.content5'
                 }
             },
-            allowedContent: 'div(!template-box); div(!template-box-content); h2(!template-box-title); div(!template-section); select;option;',
-            requiredContent: 'div(template-box)',
+            // allowedContent: 'div(!template-box); div(!template-box-content); h2(!template-box-title); div(!template-section); select;option;',
+            // requiredContent: 'div(template-box)',
             // upcast: function( element ) {
             //     return element.name == 'div' && element.hasClass( 'template-box' );
             // }
         })
-        editor.widgets.registered.notetemplates1
         editor.execCommand('notetemplates');
-        // window.CKEDITOR.plugins.addExternal('noteTemplates', 'http://localhost:5500/CKEditor/static/ckeditor/plugins/notetemplates/', 'plugin.js');
     }
 
     instanceReady = () => {
         const editor = this.editorRef.current.editor;
         const itemTemplate = '<li data-id="{id}"><div><strong class="item-title">{title}</strong></div></li>';
         const outputTemplate = '{detail}<span>&nbsp;</span>';
-        console.log(1212, editor)
         const autocomplete = new window.CKEDITOR
             .plugins
             .autocomplete(editor, {
@@ -417,7 +389,7 @@ export default class Editor extends React.Component {
                 // {name: 'document', groups: ['doctools']},
                 {name: 'styles', groups: ['undo', 'cleanup', 'styles']},
                 {name: 'colors', groups: ['colors']},
-                {name: 'editing', groups: [ 'selection', 'spellchecker', 'editing']},
+                {name: 'editing', groups: ['selection', 'spellchecker', 'editing']},
                 {name: 'forms', groups: ['forms']},
                 // {name: 'basicstyles', groups: ['basicstyles']},
                 {name: 'paragraph', groups: ['list', 'indent', 'blocks', 'align', 'bidi', 'paragraph']},
@@ -455,12 +427,15 @@ export default class Editor extends React.Component {
                 <ul className='tools'>
                     {
                         tools.map((li, index) => {
-                            return <li key={index} onClick={ () => this.toolBarCharge(li)}><img src={li.img} alt={li.title} title={li.title} /></li>
+                            return <li key={index} onClick={() => this.toolBarCharge(li)}><img src={li.img}
+                                                                                               alt={li.title}
+                                                                                               title={li.title}/></li>
                         })
                     }
                 </ul>
             </div>
-            <FullScreen visible={visible} fullScreenId={'cke_1_contents'} exit={() => this.setState({visible: false})} afterEnter={this.afterEnter} afterExit={this.afterExit}>
+            <FullScreen visible={visible} fullScreenId={'cke_1_contents'} exit={() => this.setState({visible: false})}
+                        afterEnter={this.afterEnter} afterExit={this.afterExit}>
                 <CKEditor
                     ref={this.editorRef}
                     data={data}
