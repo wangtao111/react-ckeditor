@@ -1,27 +1,30 @@
 import React from 'react';
-import {Drawer, Button} from 'antd';
+import {Drawer, Button, Table} from 'antd';
 import styled from 'styled-components';
 import IntelliCommand from '../intelliCommand';
 import Preview from '../Preview';
+import { inject, observer } from 'mobx-react';
+import SearchResult from '../SearchResult';
 
 const CommandPopupWrapper = styled.div`
     width: 360px;
 `;
 
+@inject('drawerStore')
+@observer
 export default class CommandPopup extends React.Component {
     constructor(props) {
         super(props);
-
-        this.state = {
-            visible: false
-        }
     }
 
     onClose = () => {
         this.setState({visible: false});
+        this.props.drawerStore.setVisible(false);
     }
 
     render() {
+        const { isVisible, setVisible, setCommandPopFlag } = this.props.drawerStore;
+
         return <CommandPopupWrapper>
             <Button
                 icon='left-circle'
@@ -31,12 +34,13 @@ export default class CommandPopup extends React.Component {
                     right: 0
                 }}
                 onClick={() => {
-                    this.setState({visible: true});
+                    setVisible(true);
+                    setCommandPopFlag();
                 }}></Button>
             <Drawer
-                width={380}
+                width={this.props.drawerStore.isSearchResult ? 500 : 380}
                 onClose={this.onClose}
-                visible={this.state.visible}
+                visible={ isVisible }
                 destroyOnClose={ true }
                 className="side-drawer-popup"
                 style={{
@@ -44,9 +48,21 @@ export default class CommandPopup extends React.Component {
                     height: 'calc(100% - 108px)',
                     paddingBottom: '108px'
                 }}>
-                {/* 智能命令 */}
-                <IntelliCommand/> {/* 预览 */}
-                <Preview closeCallback={this.onClose}/>
+                {
+                    this.props.drawerStore.isCommandPop && <React.Fragment>
+                        {/* 智能命令 */}
+                        <IntelliCommand/>
+                        {/* 预览 */}
+                        <Preview closeCallback={this.onClose}/>
+                    </React.Fragment>
+                }
+
+                {/* 搜索结果 */}
+                {
+                    this.props.drawerStore.isSearchResult &&  
+                    <SearchResult></SearchResult>
+                }
+               
             </Drawer>
         </CommandPopupWrapper>
     }

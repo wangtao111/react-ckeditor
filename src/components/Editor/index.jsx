@@ -8,6 +8,7 @@ import {inject, observer} from 'mobx-react';
 import eventEmitter from '../../event';
 import styled from 'styled-components';
 import insertTable from '../../widgets/insertTable';
+import insertTable1 from '../../widgets/insertTable1';
 import insertChart from '../../widgets/insertChart';
 import Highcharts from 'highcharts';
 
@@ -15,17 +16,17 @@ const MENTIONS = [
     {
         id: 1,
         title: '中国移动',
-        detail: `<div>
-    <strong style="color: #417CD5;">中国平安(601318)</strong>
-    <p>
-      2018年中报点评：新业务价值转正中国平安(601318) 集团净利润在市场环境承压背景下仍高速增长（寿险准备金补提影响出清），NBV 增速在销售环境承压背景下仍强势转正，基本面显著优于同业，未来代理人优势将持续保障公司利润及 EV 稳健增长，科技板块迈入盈利周期将利于提升集团整体估值。
-    </p>
-    </div>`
+        detail: '中国移动'
     },
     {
         id: 2,
         title: '中国平安',
-        detail: '平安'
+        detail: `<div>
+        <strong style="color: #417CD5;">中国平安(601318)</strong> 
+        <p>
+          2018年中报点评：新业务价值转正中国平安(601318) 集团净利润在市场环境承压背景下仍高速增长（寿险准备金补提影响出清），NBV 增速在销售环境承压背景下仍强势转正，基本面显著优于同业，未来代理人优势将持续保障公司利润及 EV 稳健增长，科技板块迈入盈利周期将利于提升集团整体估值。
+        </p>
+        </div>`
     },
     {
         id: 3,
@@ -209,7 +210,6 @@ export default class Editor extends React.Component {
             const widgetInstances = editor.widgets.instances;
 
             editor.execCommand(`insertchart-widget${ chartTime }`);
-            console.log('highchart:', Highcharts);
             if (widgetInstances) {
                 for (let key in widgetInstances) {
                     if (widgetInstances.hasOwnProperty(key)) {
@@ -241,6 +241,28 @@ export default class Editor extends React.Component {
                 }
             }
         });
+
+        // 插入表格的HTML代码
+        eventEmitter.on('EDITOR_INSERT_TABLE_CODE', (tableHtml) => {
+             // 调用插入表格的widget
+             const editor = this.editorRef.current.editor;
+             const tableTime = new Date().getTime();
+             insertTable1(`${ tableTime }`, editor);
+ 
+             const widgetInstances = editor.widgets.instances;
+             editor.execCommand(`inserttable-widget${ tableTime }`);
+ 
+             if (widgetInstances) {
+                 for (let key in widgetInstances) {
+                     if (widgetInstances.hasOwnProperty(key)) {
+                         if (widgetInstances[key].name === `inserttable-widget${ tableTime }`) {
+                             widgetInstances[key].setData('tableHtml', tableHtml);
+                         }
+                     }
+                 }
+             }
+        })
+
         // 新建文档
         eventEmitter.on('NEW_PAGE', (type) => {
             this.editorRef.current.editor.setData(' ');
@@ -318,9 +340,17 @@ export default class Editor extends React.Component {
     }
 
     instanceReady = () => {
+        
         const editor = this.editorRef.current.editor;
+        // Create and show the notification.
+        // var notification1 = new window.CKEDITOR.plugins.notification( editor, {
+        //     message: 'Error occurred',
+        //     type: 'warning'
+        // } );
+        // notification1.show();
         const itemTemplate = '<li data-id="{id}"><div><strong class="item-title">{title}</strong></div></li>';
-        const outputTemplate = '{detail}<span>&nbsp;</span>';
+        const outputTemplate = '{detail}';
+        console.log(1212, editor)
         const autocomplete = new window.CKEDITOR
             .plugins
             .autocomplete(editor, {
@@ -423,7 +453,8 @@ export default class Editor extends React.Component {
             qtCellPadding: '0',
             qtCellSpacing: '0',
             qtClass: 'editor-table-widget',
-            qtStyle: 'border: 1px solid #a7a7a7;'
+            qtStyle: 'border: 1px solid #a7a7a7;',
+            contentsCss: ['http://localhost:5500/build/static/ckeditor/contents.css', 'http://localhost:5500/build/static/ckeditor/external.css' ]
             // font_names: `
             //             Arial/Arial, Helvetica, sans-serif;
             //             Comic Sans MS/Comic Sans MS, cursive;
@@ -437,7 +468,7 @@ export default class Editor extends React.Component {
             //             `
         };
 
-        const EDITOR_DEV_URL = 'http://localhost:5500/src/ckeditor/ckeditor.js';
+        const EDITOR_DEV_URL = 'http://localhost:5500/build/static/ckeditor/ckeditor.js';
         const EDITOR_PRO_URL = `${window.origin}/static/ckeditor/ckeditor.js`;
 
         CKEditor.editorUrl = process.env.NODE_ENV === 'development' ? EDITOR_DEV_URL : EDITOR_PRO_URL;
