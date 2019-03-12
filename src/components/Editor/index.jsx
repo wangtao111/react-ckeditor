@@ -341,29 +341,36 @@ export default class Editor extends React.Component {
         if (!range.collapsed) {
             return null;
         }
-
         return window.CKEDITOR.plugins.textMatch.match(range, this.matchCallback);
     }
 
     matchCallback(text, offset) {
-        var pattern = /~{1}([A-z])*$/,
+        const pattern = /~{1}([a-zA-Z0-9_\u4e00-\u9fa5])*$/,
             match = text.slice(0, offset)
                 .match(pattern);
-
-        if (!match) {
+        const data = MENTIONS.filter(function (item) {
+            const txt = text.toLowerCase().split('~');
+            if(!txt[txt.length - 1]) {
+                return null;
+            }
+            return item.title.indexOf(txt[txt.length - 1]) !== -1;
+        });
+        if (!data.length) {
             return null;
         }
-
         return {
-            start: match.index,
+            start: match ? match.index : 0,
             end: offset
         };
     }
 
     dataCallback = (matchInfo, callback) => {
-        var data = MENTIONS.filter(function (item) {
-            var itemName = '~' + item.title;
-            return itemName.indexOf(matchInfo.query.toLowerCase()) === 0;
+        const data = MENTIONS.filter(function (item) {
+            const txt = matchInfo.query.toLowerCase().split('~');
+            if(!txt[txt.length - 1]) {
+                return null;
+            }
+            return item.title.indexOf(txt[txt.length - 1]) !== -1;
         });
 
         callback(data);
