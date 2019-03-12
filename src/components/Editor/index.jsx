@@ -16,34 +16,30 @@ const MENTIONS = [
     {
         id: 1,
         title: '中国移动',
-        detail: '中国移动'
+        detail: '<div><strong style="color: #417CD5;">中国移动(601314)</strong>'
     },
     {
         id: 2,
         title: '中国平安',
-        detail: `<div>
-        <strong style="color: #417CD5;">中国平安(601318)</strong> 
-        <p>
-          2018年中报点评：新业务价值转正中国平安(601318) 集团净利润在市场环境承压背景下仍高速增长（寿险准备金补提影响出清），NBV 增速在销售环境承压背景下仍强势转正，基本面显著优于同业，未来代理人优势将持续保障公司利润及 EV 稳健增长，科技板块迈入盈利周期将利于提升集团整体估值。
-        </p>
-        </div>`
+        detail: `<div><strong style="color: #417CD5;">中国平安(601318)</strong>`
     },
     {
         id: 3,
         title: '中国联通',
-        detail: '联通'
+        detail: '<div><strong style="color: #417CD5;">中国联通(601384)</strong>'
     },
     {
         id: 4,
         title: '中国银行',
-        detail: '银行'
+        detail: '<div><strong style="color: #417CD5;">中国银行(681384)</strong>'
     },
     {
         id: 5,
         title: '中国人寿',
-        detail: '人寿'
+        detail: '<div><strong style="color: #417CD5;">中国人寿(681984)</strong>'
     }
-]
+];
+let doing = false;
 const EditorTemplate = styled.div`
     .title_input{
         flex: 1;
@@ -56,6 +52,7 @@ const EditorTemplate = styled.div`
     }
     .tools{
         float: left;
+        min-width: 270px;
        >li{
             float: left;
             margin-right: 30px;
@@ -89,7 +86,7 @@ export default class Editor extends React.Component {
         super(props);
 
         this.state = {
-            data: '<p></p>',
+            data: '',
             title: '',
             tools: [
                 {title: '分享', img: require('../../img/share.png')},
@@ -195,10 +192,24 @@ export default class Editor extends React.Component {
         this.editorRef = React.createRef();
         this.shareModalRef = null;
         this.commentRef = null;
+        this.autocomplete = null;
+        this.doing = false
         this.onEditorChange = this.onEditorChange.bind(this);
     }
 
     componentDidMount() {
+        this.addEventEmitter();
+    }
+
+    componentDidUpdate(prevProps) {
+        if (prevProps.value !== this.props.value) {
+            this.setState({
+                data: this.props.value
+            })
+        }
+    }
+
+    addEventEmitter = () => {
         // 插入图表
         eventEmitter.on('EDITOR_INSERT_CHART', (chartId) => {
             const editor = this.editorRef.current.editor;
@@ -244,23 +255,23 @@ export default class Editor extends React.Component {
 
         // 插入表格的HTML代码
         eventEmitter.on('EDITOR_INSERT_TABLE_CODE', (tableHtml) => {
-             // 调用插入表格的widget
-             const editor = this.editorRef.current.editor;
-             const tableTime = new Date().getTime();
-             insertTable1(`${ tableTime }`, editor);
- 
-             const widgetInstances = editor.widgets.instances;
-             editor.execCommand(`inserttable-widget${ tableTime }`);
- 
-             if (widgetInstances) {
-                 for (let key in widgetInstances) {
-                     if (widgetInstances.hasOwnProperty(key)) {
-                         if (widgetInstances[key].name === `inserttable-widget${ tableTime }`) {
-                             widgetInstances[key].setData('tableHtml', tableHtml);
-                         }
-                     }
-                 }
-             }
+            // 调用插入表格的widget
+            const editor = this.editorRef.current.editor;
+            const tableTime = new Date().getTime();
+            insertTable1(`${ tableTime }`, editor);
+
+            const widgetInstances = editor.widgets.instances;
+            editor.execCommand(`inserttable-widget${ tableTime }`);
+
+            if (widgetInstances) {
+                for (let key in widgetInstances) {
+                    if (widgetInstances.hasOwnProperty(key)) {
+                        if (widgetInstances[key].name === `inserttable-widget${ tableTime }`) {
+                            widgetInstances[key].setData('tableHtml', tableHtml);
+                        }
+                    }
+                }
+            }
         })
 
         // 新建文档
@@ -281,15 +292,6 @@ export default class Editor extends React.Component {
             this.setState({title: data.title})
         });
     }
-
-    componentDidUpdate(prevProps) {
-        if (prevProps.value !== this.props.value) {
-            this.setState({
-                data: this.props.value
-            })
-        }
-    }
-
     afterEnter = () => {
         const editor = this.editorRef.current.editor;
         editor.setReadOnly(true);
@@ -342,16 +344,10 @@ export default class Editor extends React.Component {
     instanceReady = () => {
         
         const editor = this.editorRef.current.editor;
-        // Create and show the notification.
-        // var notification1 = new window.CKEDITOR.plugins.notification( editor, {
-        //     message: 'Error occurred',
-        //     type: 'warning'
-        // } );
-        // notification1.show();
+        const that = this;
         const itemTemplate = '<li data-id="{id}"><div><strong class="item-title">{title}</strong></div></li>';
         const outputTemplate = '{detail}';
-        console.log(1212, editor)
-        const autocomplete = new window.CKEDITOR
+        this.autocomplete = new window.CKEDITOR
             .plugins
             .autocomplete(editor, {
                 textTestCallback: this.textTestCallback,
@@ -359,27 +355,60 @@ export default class Editor extends React.Component {
                 itemTemplate: itemTemplate,
                 outputTemplate: outputTemplate
             });
-        // Override default getHtmlToInsert to enable rich content output.
-        autocomplete.getHtmlToInsert = function (item) {
+        this.autocomplete.getHtmlToInsert = function (item) {
             return this
                 .outputTemplate
                 .output(item);
         }
+        const iframe = document.getElementById('cke_1_contents').children[1].contentWindow;
+        let dom = iframe.document.body;
+        dom.addEventListener('compositionstart',function(e){
+            doing = true;
+        },false);
+        dom.addEventListener('compositionend',function(e){
+            doing = false;
+        },false);
     }
 
     textTestCallback = (range) => {
         if (!range.collapsed) {
             return null;
         }
-        return window.CKEDITOR.plugins.textMatch.match(range, this.matchCallback);
+        return window.CKEDITOR.plugins.textMatch.match(range, (text, offset) => {
+            const editor = this.editorRef.current.editor;
+            const match = text.slice(0, offset)
+                .match(/~\.{1}([a-zA-Z0-9_\u4e00-\u9fa5])*$/);
+            if(match && (match.index || match.index === 0)) {
+                const txt = text.toLowerCase().split('~.');
+                const data = MENTIONS.filter(function (item) {
+                    if(!txt[txt.length - 1]) {
+                        return null;
+                    }
+                    return item.title.indexOf(txt[txt.length - 1]) !== -1;
+                });
+                if (!data.length) {
+                    if(!doing) {
+                        range.startOffset = match.index + 2;
+                        editor.getSelection().selectRanges( [ range ] );
+                        editor.insertHtml( `<span style="color: red">${txt[txt.length - 1]}</span>` );
+                    }
+                } else {
+                    return {
+                        start: match ? match.index : 0,
+                        end: offset
+                    };
+                }
+            }
+            return null;
+        });
     }
 
     matchCallback(text, offset) {
-        const pattern = /~{1}([a-zA-Z0-9_\u4e00-\u9fa5])*$/,
-            match = text.slice(0, offset)
-                .match(pattern);
+        const editor = this.editorRef.current.editor;
+        const match = text.slice(0, offset)
+                .match(/~\.{1}([a-zA-Z0-9_\u4e00-\u9fa5])*$/);
         const data = MENTIONS.filter(function (item) {
-            const txt = text.toLowerCase().split('~');
+            const txt = text.toLowerCase().split('~.');
             if(!txt[txt.length - 1]) {
                 return null;
             }
@@ -396,7 +425,7 @@ export default class Editor extends React.Component {
 
     dataCallback = (matchInfo, callback) => {
         const data = MENTIONS.filter(function (item) {
-            const txt = matchInfo.query.toLowerCase().split('~');
+            const txt = matchInfo.query.toLowerCase().split('~.');
             if(!txt[txt.length - 1]) {
                 return null;
             }
@@ -430,7 +459,7 @@ export default class Editor extends React.Component {
     render() {
         const {data, title, tools, visible} = this.state;
         const config = {
-            extraPlugins: 'autocomplete,notification,textmatch,easyimage,tableresizerowandcolumn,save-to-pdf,quicktable',
+            extraPlugins: 'autocomplete,notification,textmatch,textwatcher,easyimage,tableresizerowandcolumn,save-to-pdf,quicktable',
             allowedContent: true,
             pdfHandler: 'http://www.baidu.com', // 下载pdf的地址
             height: 800,
@@ -449,7 +478,7 @@ export default class Editor extends React.Component {
                 {name: 'others', groups: ['others']},
                 {name: 'about', groups: ['about']}
             ],
-            removeButtons: 'PasteFromWord,Paste,Resize, Clipboard,Smiley,ColorButton, Source,Templates,Chart,Source,Flash,SpecialChar,PageBreak,Iframe,ShowBlocks,About,Language,CreateDiv,Form,Checkbox,Radio,TextField,Textarea,Select,Button,ImageButton,HiddenField,Scayt,SelectAll,BidiRtl,BidiLtr',
+            removeButtons: 'PasteFromWord,Paste,Resize,AutoSave,Clipboard,Smiley,ColorButton, Source,Templates,Chart,Source,Flash,SpecialChar,PageBreak,Iframe,ShowBlocks,About,Language,CreateDiv,Form,Checkbox,Radio,TextField,Textarea,Select,Button,ImageButton,HiddenField,Scayt,SelectAll,BidiRtl,BidiLtr',
             qtCellPadding: '0',
             qtCellSpacing: '0',
             qtClass: 'editor-table-widget',
