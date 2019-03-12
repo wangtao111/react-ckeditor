@@ -193,7 +193,6 @@ export default class Editor extends React.Component {
         this.shareModalRef = null;
         this.commentRef = null;
         this.autocomplete = null;
-        this.doing = false
         this.onEditorChange = this.onEditorChange.bind(this);
     }
 
@@ -484,17 +483,6 @@ export default class Editor extends React.Component {
             qtClass: 'editor-table-widget',
             qtStyle: 'border: 1px solid #a7a7a7;',
             contentsCss: ['http://localhost:5500/build/static/ckeditor/contents.css', 'http://localhost:5500/build/static/ckeditor/external.css' ]
-            // font_names: `
-            //             Arial/Arial, Helvetica, sans-serif;
-            //             Comic Sans MS/Comic Sans MS, cursive;
-            //             Courier New/Courier New, Courier, monospace;
-            //             Georgia/Georgia, serif;
-            //             Lucida Sans Unicode/Lucida Sans Unicode, Lucida Grande, sans-serif;
-            //             Tahoma/Tahoma, Geneva, sans-serif;
-            //             Times New Roman/Times New Roman, Times, serif;
-            //             Trebuchet MS/Trebuchet MS, Helvetica, sans-serif;
-            //             Verdana/Verdana, Geneva, sans-seri;
-            //             `
         };
 
         const EDITOR_DEV_URL = 'http://localhost:5500/build/static/ckeditor/ckeditor.js';
