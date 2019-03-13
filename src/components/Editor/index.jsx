@@ -16,27 +16,52 @@ const MENTIONS = [
     {
         id: 1,
         title: '中国移动',
-        detail: '<div><strong style="color: #417CD5;">中国移动(601314)</strong>'
+        detail: '<div><strong style="color: #417CD5;">中国移动(601314)</strong><span style="display: inline-block;width:5px;"> </span></div>'
     },
     {
         id: 2,
         title: '中国平安',
-        detail: `<div><strong style="color: #417CD5;">中国平安(601318)</strong>`
+        detail: `<div><strong style="color: #417CD5;">中国平安(601318)</strong><span style="display: inline-block;width:5px;"> </span></div>`
     },
     {
         id: 3,
         title: '中国联通',
-        detail: '<div><strong style="color: #417CD5;">中国联通(601384)</strong>'
+        detail: '<div><strong style="color: #417CD5;">中国联通(601384)</strong><span style="display: inline-block;width:5px;"> </span></div>'
     },
     {
         id: 4,
         title: '中国银行',
-        detail: '<div><strong style="color: #417CD5;">中国银行(681384)</strong>'
+        detail: '<div><strong style="color: #417CD5;">中国银行(681384)</strong><span style="display: inline-block;width:5px;"> </span></div>'
     },
     {
         id: 5,
         title: '中国人寿',
-        detail: '<div><strong style="color: #417CD5;">中国人寿(681984)</strong>'
+        detail: '<div><strong style="color: #417CD5;">中国人寿(681984)</strong><span style="display: inline-block;width:5px;"> </span></div>'
+    },
+    {
+        id: 6,
+        title: '归母净利润',
+        detail: '<div><strong style="color: #417CD5;border: 1px dashed #999">归母净利润[Q1Q2]587,415,463,762.1</strong> <span style="display: inline-block;width:5px;"> </span></div>'
+    },
+    {
+        id: 7,
+        title: '归母公司净利润',
+        detail: '<div><strong style="color: #417CD5;border: 1px dashed #999">归母公司净利润[Q1Q2]587,415,463,762.1</strong> <span style="display: inline-block;width:5px;"> </span></div>'
+    },
+    {
+        id: 8,
+        title: '归母净利为正',
+        detail: '<div><strong style="color: #417CD5;">归母净利为正[Q1Q2]</strong> <span style="display: inline-block;width:5px;"> </span></div>'
+    },
+    {
+        id: 9,
+        title: '归母净利为负',
+        detail: '<div><strong style="color: #417CD5;">归母净利为负[Q1Q2]</strong> <span style="display: inline-block;width:5px;"> </span></div>'
+    },
+    {
+        id: 10,
+        title: '归属于上市公司股东净利润',
+        detail: '<div><strong style="color: #417CD5;">归属于上市公司股东净利润[Q1Q2]</strong> <span style="display: inline-block;width:5px;"> </span></div>'
     }
 ];
 let doing = false;
@@ -373,23 +398,27 @@ export default class Editor extends React.Component {
         if (!range.collapsed) {
             return null;
         }
+        const editor = this.editorRef.current.editor;
         return window.CKEDITOR.plugins.textMatch.match(range, (text, offset) => {
-            const editor = this.editorRef.current.editor;
-            const match = text.slice(0, offset)
-                .match(/~\.{1}([a-zA-Z0-9_\u4e00-\u9fa5])*$/);
-            if(match && (match.index || match.index === 0)) {
+            let match = text.match(/~\.([a-zA-Z0-9_\u4e00-\u9fa5])*$/);
+            console.log(text, match);
+            if(!doing && match && (match.index || match.index === 0)) {
                 const txt = text.toLowerCase().split('~.');
-                const data = MENTIONS.filter(function (item) {
+                let data = MENTIONS.filter(function (item) {
                     if(!txt[txt.length - 1]) {
                         return null;
                     }
                     return item.title.indexOf(txt[txt.length - 1]) !== -1;
                 });
                 if (!data.length) {
-                    if(!doing) {
+                    if(txt[txt.length - 1].indexOf('归母') !== -1 || txt[txt.length - 1].indexOf('中国') !== -1) {
                         range.startOffset = match.index + 2;
                         editor.getSelection().selectRanges( [ range ] );
-                        editor.insertHtml( `<span style="color: red">${txt[txt.length - 1]}</span>` );
+                        // editor.insertHtml( `<span style="color: red; text-decoration: underline">${txt[txt.length - 1]}</span>` );
+                        return {
+                            start: match ? match.index : 0,
+                            end: offset
+                        };
                     }
                 } else {
                     return {
@@ -402,33 +431,20 @@ export default class Editor extends React.Component {
         });
     }
 
-    matchCallback(text, offset) {
-        const editor = this.editorRef.current.editor;
-        const match = text.slice(0, offset)
-                .match(/~\.{1}([a-zA-Z0-9_\u4e00-\u9fa5])*$/);
-        const data = MENTIONS.filter(function (item) {
-            const txt = text.toLowerCase().split('~.');
-            if(!txt[txt.length - 1]) {
-                return null;
-            }
-            return item.title.indexOf(txt[txt.length - 1]) !== -1;
-        });
-        if (!data.length) {
-            return null;
-        }
-        return {
-            start: match ? match.index : 0,
-            end: offset
-        };
-    }
-
     dataCallback = (matchInfo, callback) => {
         const data = MENTIONS.filter(function (item) {
             const txt = matchInfo.query.toLowerCase().split('~.');
+            let test = txt[txt.length - 1];
             if(!txt[txt.length - 1]) {
                 return null;
             }
-            return item.title.indexOf(txt[txt.length - 1]) !== -1;
+            if(test.indexOf('归母') !== -1) {
+                test = '归母';
+            }
+            if(test.indexOf('中国') !== -1) {
+                test = '中国';
+            }
+            return item.title.indexOf(test) !== -1;
         });
 
         callback(data);

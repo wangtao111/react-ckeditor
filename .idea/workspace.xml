@@ -18,15 +18,29 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/components/Editor/index.jsx">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="199">
-              <caret line="514" column="25" lean-forward="true" selection-start-line="514" selection-start-column="25" selection-end-line="514" selection-end-column="25" />
+            <state relative-caret-position="207">
+              <caret line="417" column="37" lean-forward="true" selection-start-line="415" selection-start-column="27" selection-end-line="417" selection-end-column="37" />
               <folding>
-                <element signature="e#592#1217#0" />
                 <element signature="n#style#0;n#strong#0;n#div#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#span#0;n#div#0;n#!!top" expanded="true" />
                 <element signature="n#style#0;n#strong#0;n#div#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#span#0;n#div#0;n#!!top" expanded="true" />
                 <element signature="n#style#0;n#strong#0;n#div#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#span#0;n#div#0;n#!!top" expanded="true" />
                 <element signature="n#style#0;n#strong#0;n#div#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#span#0;n#div#0;n#!!top" expanded="true" />
                 <element signature="n#style#0;n#strong#0;n#div#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#span#0;n#div#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#strong#0;n#div#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#span#0;n#div#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#strong#0;n#div#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#span#0;n#div#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#strong#0;n#div#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#span#0;n#div#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#strong#0;n#div#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#span#0;n#div#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#strong#0;n#div#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#span#0;n#div#0;n#!!top" expanded="true" />
                 <element signature="e#2212#7202#0" />
                 <element signature="n#style#0;n#select#0;n#div#0;n#div#0;n#!!top" expanded="true" />
                 <element signature="n#style#0;n#div#1;n#div#0;n#!!top" expanded="true" />
@@ -62,10 +76,6 @@
                 <element signature="e#10994#11076#0" />
                 <element signature="e#11102#12292#0" />
                 <element signature="e#12468#13579#0" />
-                <element signature="e#13668#14945#0" />
-                <element signature="n#style#0;n#span#0;n#!!top" expanded="true" />
-                <element signature="e#13603#14176#0" />
-                <element signature="e#14222#14536#0" />
                 <element signature="e#14565#14622#0" />
                 <element signature="e#14652#15027#0" />
                 <element signature="e#15396#16232#0" />
@@ -134,9 +144,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>notetemplates</find>
-      <find>template</find>
-      <find>notetemplates1</find>
       <find>Simple Box Sample</find>
       <find>CKEditor</find>
       <find>setData</find>
@@ -151,7 +158,6 @@
       <find>textWatcher</find>
       <find>$</find>
       <find>item</find>
-      <find>itemTemplate</find>
       <find>setQuery</find>
       <find>View</find>
       <find>setquer</find>
@@ -164,6 +170,10 @@
       <find>commit(</find>
       <find>h(</find>
       <find>ifra</find>
+      <find>text</find>
+      <find>MENTIONS</find>
+      <find>dataCallback</find>
+      <find>itemTemplate</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -324,12 +334,12 @@
       <workItem from="1551766183906" duration="8855000" />
       <workItem from="1551835048637" duration="55058000" />
       <workItem from="1552012819992" duration="17918000" />
-      <workItem from="1552274290462" duration="38552000" />
+      <workItem from="1552274290462" duration="51397000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="181611000" />
+    <option name="totallyTimeSpent" value="194456000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -1358,15 +1368,29 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/components/Editor/index.jsx">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="199">
-          <caret line="514" column="25" lean-forward="true" selection-start-line="514" selection-start-column="25" selection-end-line="514" selection-end-column="25" />
+        <state relative-caret-position="207">
+          <caret line="417" column="37" lean-forward="true" selection-start-line="415" selection-start-column="27" selection-end-line="417" selection-end-column="37" />
           <folding>
-            <element signature="e#592#1217#0" />
             <element signature="n#style#0;n#strong#0;n#div#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#span#0;n#div#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#strong#0;n#div#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#span#0;n#div#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#strong#0;n#div#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#span#0;n#div#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#strong#0;n#div#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#span#0;n#div#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#strong#0;n#div#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#span#0;n#div#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#strong#0;n#div#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#span#0;n#div#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#strong#0;n#div#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#span#0;n#div#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#strong#0;n#div#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#span#0;n#div#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#strong#0;n#div#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#span#0;n#div#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#strong#0;n#div#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#span#0;n#div#0;n#!!top" expanded="true" />
             <element signature="e#2212#7202#0" />
             <element signature="n#style#0;n#select#0;n#div#0;n#div#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#div#1;n#div#0;n#!!top" expanded="true" />
@@ -1402,10 +1426,6 @@
             <element signature="e#10994#11076#0" />
             <element signature="e#11102#12292#0" />
             <element signature="e#12468#13579#0" />
-            <element signature="e#13668#14945#0" />
-            <element signature="n#style#0;n#span#0;n#!!top" expanded="true" />
-            <element signature="e#13603#14176#0" />
-            <element signature="e#14222#14536#0" />
             <element signature="e#14565#14622#0" />
             <element signature="e#14652#15027#0" />
             <element signature="e#15396#16232#0" />
