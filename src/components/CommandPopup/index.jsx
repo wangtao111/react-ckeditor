@@ -1,5 +1,5 @@
 import React from 'react';
-import {Drawer, Button, Table} from 'antd';
+import {Button} from 'antd';
 import styled from 'styled-components';
 import IntelliCommand from '../intelliCommand';
 import Preview from '../Preview';
@@ -15,55 +15,49 @@ const CommandPopupWrapper = styled.div`
 export default class CommandPopup extends React.Component {
     constructor(props) {
         super(props);
+        this.state = {
+            visible: true
+        }
     }
 
     onClose = () => {
-        this.setState({visible: false});
+        this.props.drawerStore.setVisible(true);
+        this.setState({visible: true});
+        document.getElementById('standby').style.width = 0;
+    }
+    open = () => {
         this.props.drawerStore.setVisible(false);
+        this.setState({visible: false});
+        document.getElementById('standby').style.width = '360px';
     }
 
     render() {
         const { isVisible, setVisible, setCommandPopFlag } = this.props.drawerStore;
-
+        const { visible } = this.state;
         return <CommandPopupWrapper>
             <Button
                 icon='left-circle'
                 style={{
                     position: 'fixed',
                     top: '50%',
-                    right: 0
+                    right: 0,
+                    display: visible ? 'block' : 'none'
                 }}
-                onClick={() => {
-                    setVisible(true);
-                    setCommandPopFlag();
-                }}></Button>
-            <Drawer
-                width={this.props.drawerStore.isSearchResult ? 500 : 380}
-                onClose={this.onClose}
-                visible={ isVisible }
-                destroyOnClose={ true }
-                className="side-drawer-popup"
-                style={{
-                    overflow: 'auto',
-                    height: 'calc(100% - 108px)',
-                    paddingBottom: '108px'
-                }}>
-                {
-                    this.props.drawerStore.isCommandPop && <React.Fragment>
-                        {/* 智能命令 */}
-                        <IntelliCommand/>
-                        {/* 预览 */}
-                        <Preview closeCallback={this.onClose}/>
-                    </React.Fragment>
-                }
+                onClick={() => {this.open();setCommandPopFlag();}}></Button>
+            {
+                this.props.drawerStore.isCommandPop && <React.Fragment>
+                    {/* 智能命令 */}
+                    <IntelliCommand closeCallback={this.onClose}/>
+                    {/* 预览 */}
+                    <Preview closeCallback={this.onClose}/>
+                </React.Fragment>
+            }
 
-                {/* 搜索结果 */}
-                {
-                    this.props.drawerStore.isSearchResult &&  
-                    <SearchResult></SearchResult>
-                }
-               
-            </Drawer>
+            {/* 搜索结果 */}
+            {
+                this.props.drawerStore.isSearchResult &&
+                <SearchResult></SearchResult>
+            }
         </CommandPopupWrapper>
     }
 }

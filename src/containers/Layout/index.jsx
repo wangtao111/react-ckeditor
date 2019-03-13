@@ -4,6 +4,7 @@ import NavSection from '../NavSection';
 import styled from 'styled-components';
 import FileListSection from '../FileListSection';
 import FinEditor from '../FinEditor';
+import CommandPopup from '../../components/CommandPopup';
 import { ResizableBox } from 'react-resizable';
 
 const AppContent = styled.section`
@@ -43,6 +44,9 @@ export default class Layout extends React.Component {
                 </ResizableBox>
                 <FileListSection />
                 <FinEditor />
+                <div id='standby' style={{width: 0, boxShadow: '0px 2px 6px 0px rgba(0, 0, 0, 0.3)'}}>
+                    <CommandPopup></CommandPopup>
+                </div>
             </AppContent>
         </div>
     }

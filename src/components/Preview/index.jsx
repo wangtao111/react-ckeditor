@@ -244,7 +244,7 @@ export default class Preview extends React.Component {
                     columns: this.columns,
                     dataSource: this.state.toBeInsertTableRows
                 });
-                this.props.closeCallback && this.props.closeCallback();
+                // this.props.closeCallback && this.props.closeCallback();
                 break;
             }
             case '图表': {
@@ -254,7 +254,7 @@ export default class Preview extends React.Component {
                     [chartId]: this.chartOption
                 });
                 eventEmitter.emit('EDITOR_INSERT_CHART', chartId);
-                this.props.closeCallback && this.props.closeCallback();
+                // this.props.closeCallback && this.props.closeCallback();
                 break;
             }
 

@@ -1,6 +1,5 @@
 import React from 'react';
 import CKEditor from 'ckeditor4-react';
-import CommandPopup from '../../components/CommandPopup';
 import FullScreen from '../../components/FullScreen';
 import ShareModal from './shareModal';
 import Comment from './comment';
@@ -16,22 +15,22 @@ const MENTIONS = [
     {
         id: 1,
         title: '中国移动',
-        detail: '<div><strong style="color: #417CD5;">中国移动(601314)</strong><span style="display: inline-block;width:5px;"> </span></div>'
+        detail: '<div command="show_type"><strong style="color: #417CD5;" id="ssssss">中国移动(601314)</strong><span style="display: inline-block;width:5px;"> </span></div>'
     },
     {
         id: 2,
         title: '中国平安',
-        detail: `<div><strong style="color: #417CD5;">中国平安(601318)</strong><span style="display: inline-block;width:5px;"> </span></div>`
+        detail: `<div command="show_type"><strong style="color: #417CD5;">中国平安(601318)</strong><span style="display: inline-block;width:5px;"> </span></div>`
     },
     {
         id: 3,
         title: '中国联通',
-        detail: '<div><strong style="color: #417CD5;">中国联通(601384)</strong><span style="display: inline-block;width:5px;"> </span></div>'
+        detail: '<div command="show_type"><strong style="color: #417CD5;">中国联通(601384)</strong><span style="display: inline-block;width:5px;"> </span></div>'
     },
     {
         id: 4,
         title: '中国银行',
-        detail: '<div><strong style="color: #417CD5;">中国银行(681384)</strong><span style="display: inline-block;width:5px;"> </span></div>'
+        detail: '<div command="show_type"><strong style="color: #417CD5;">中国银行(681384)</strong><span style="display: inline-block;width:5px;"> </span></div>'
     },
     {
         id: 5,
@@ -62,6 +61,13 @@ const MENTIONS = [
         id: 10,
         title: '归属于上市公司股东净利润',
         detail: '<div><strong style="color: #417CD5;">归属于上市公司股东净利润[Q1Q2]</strong> <span style="display: inline-block;width:5px;"> </span></div>'
+    },
+    {
+        id: 11,
+        title: '利润表',
+        detail: '<div><table contenteditable="false" style="border: 1px dashed #4A90E2">' +
+                '<tr style="line-height: 30px"><td style="padding: 5px;">asdasd</td><td style="padding: 5px;">asdasdasd</td></tr>' +
+            '</table><p></p></div>'
     }
 ];
 let doing = false;
@@ -329,6 +335,14 @@ export default class Editor extends React.Component {
         this.setState({
             data: evt.editor.getData()
         });
+        const iframe = document.getElementById('cke_1_contents').children[1].contentWindow;
+        let doc = iframe.document;
+        const tag = doc.getElementById('ssssss');
+        if(tag) {
+            tag.onclick = function () {
+                alert(11)
+            }
+        }
     }
 
     setTemplate = () => {
@@ -368,7 +382,6 @@ export default class Editor extends React.Component {
     instanceReady = () => {
         
         const editor = this.editorRef.current.editor;
-        const that = this;
         const itemTemplate = '<li data-id="{id}"><div><strong class="item-title">{title}</strong></div></li>';
         const outputTemplate = '{detail}';
         this.autocomplete = new window.CKEDITOR
@@ -395,13 +408,13 @@ export default class Editor extends React.Component {
     }
 
     textTestCallback = (range) => {
+        range.startOffset = 0;
         if (!range.collapsed) {
             return null;
         }
         const editor = this.editorRef.current.editor;
         return window.CKEDITOR.plugins.textMatch.match(range, (text, offset) => {
             let match = text.match(/~\.([a-zA-Z0-9_\u4e00-\u9fa5])*$/);
-            console.log(text, match);
             if(!doing && match && (match.index || match.index === 0)) {
                 const txt = text.toLowerCase().split('~.');
                 let data = MENTIONS.filter(function (item) {
@@ -410,6 +423,8 @@ export default class Editor extends React.Component {
                     }
                     return item.title.indexOf(txt[txt.length - 1]) !== -1;
                 });
+                // this.autocomplete.view.itemTemplate.source = '<li data-id="{id}"><div><strong class="item-title">{title}sssss</strong></div></li>';
+                // console.log(22, match, data, range.startOffset, range.endOffset, text, offset)
                 if (!data.length) {
                     if(txt[txt.length - 1].indexOf('归母') !== -1 || txt[txt.length - 1].indexOf('中国') !== -1) {
                         range.startOffset = match.index + 2;
@@ -417,13 +432,13 @@ export default class Editor extends React.Component {
                         // editor.insertHtml( `<span style="color: red; text-decoration: underline">${txt[txt.length - 1]}</span>` );
                         return {
                             start: match ? match.index : 0,
-                            end: offset
+                            end: range.endOffset
                         };
                     }
                 } else {
                     return {
                         start: match ? match.index : 0,
-                        end: offset
+                        end: range.endOffset
                     };
                 }
             }
@@ -446,7 +461,6 @@ export default class Editor extends React.Component {
             }
             return item.title.indexOf(test) !== -1;
         });
-
         callback(data);
     }
 
@@ -529,7 +543,6 @@ export default class Editor extends React.Component {
                     onInstanceReady={this.instanceReady}
                 />
             </FullScreen>
-            <CommandPopup></CommandPopup>
             {/*分享弹窗*/}
             <ShareModal onRef={(ref) => this.shareModalRef = ref}></ShareModal>
             <Comment onRef={(ref) => this.commentRef = ref}></Comment>
