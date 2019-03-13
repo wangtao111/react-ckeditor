@@ -326,3 +326,17 @@ select {
 .ant-table .ant-table-tbody > tr:nth-child(even) {
 	background-color: #f7f8fa;
 }
+
+/*全屏隐藏hover可移动和边框*/
+body[contenteditable="false"] .cke_widget_wrapper:hover>.cke_widget_element {
+	outline: none;
+}
+
+body[contenteditable="false"] .cke_widget_drag_handler_container {
+	display: none !important;
+}
+
+body[contenteditable="false"] .cke_widget_wrapper.cke_widget_focused > .cke_widget_element, 
+body[contenteditable="false"] .cke_widget_wrapper .cke_widget_editable.cke_widget_editable_focused {
+	outline: none;
+}

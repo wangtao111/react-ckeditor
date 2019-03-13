@@ -50,6 +50,7 @@ export default function(widgetNum, editor) {
         upcast: function(element) {
             return element.name === 'div' && element.hasClass('container')
         },
+        draggable: false,
         data() {
             const { tableHtml } = this.data;
             const mapData = tableIdData[`table${ widgetNum }`];
@@ -59,6 +60,9 @@ export default function(widgetNum, editor) {
                 // insertTable(tableHtml);
                 setTimeout(() => {
                     editor.document.findOne(`#tableWrapper${ widgetNum }`).appendHtml(tableHtml);
+                    editor.focus();
+                    const range = editor.getSelection().getRanges()[0];
+                    range.collapse(false);
                 }, 0);
             }
         }

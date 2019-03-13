@@ -13,6 +13,9 @@ export default function(widgetNum, editor) {
                 setTimeout(() => {
                     window.CKEDITOR.scriptLoader.load('https://code.highcharts.com/highcharts.js', () => {
                         window.Highcharts.chart(this.editor.document.getById(`chartContainer${ widgetNum }`).$, chartOption);
+                        editor.focus();
+                        const range = editor.getSelection().getRanges()[0];
+                        range.collapse(false);
                     });
                 }, 0)
             }
