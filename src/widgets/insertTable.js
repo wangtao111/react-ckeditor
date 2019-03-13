@@ -40,6 +40,9 @@ export default function(widgetNum, editor) {
         table.setAttribute('class', 'editor-table-widget');
         setTimeout(() => {
             editor.document.findOne(`#tableWrapper${ widgetNum }`).$.append(table.$);
+            editor.focus();
+            const range = editor.getSelection().getRanges()[0];
+            range.collapse(false);
         }, 0);
         editor.fire('removeFormatCleanup', table);
     }
@@ -57,6 +60,8 @@ export default function(widgetNum, editor) {
             if(tableConfig && !mapData || JSON.stringify(mapData) !== JSON.stringify(tableConfig)) {
                 tableIdData[`table${ widgetNum }`] = tableConfig;
                 insertTable(tableConfig);
+
+                this.setFocused(false);
             }
         }
     });
