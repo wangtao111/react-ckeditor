@@ -50,7 +50,6 @@ export default function(widgetNum, editor) {
         upcast: function(element) {
             return element.name === 'div' && element.hasClass('container')
         },
-        draggable: false,
         data() {
             const { tableHtml } = this.data;
             const mapData = tableIdData[`table${ widgetNum }`];

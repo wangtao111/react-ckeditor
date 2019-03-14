@@ -340,3 +340,19 @@ body[contenteditable="false"] .cke_widget_wrapper.cke_widget_focused > .cke_widg
 body[contenteditable="false"] .cke_widget_wrapper .cke_widget_editable.cke_widget_editable_focused {
 	outline: none;
 }
+
+/* 图表的样式 */
+.chartContainer > .resize {
+	position: absolute;
+	right: 0;
+	bottom: 0;
+	display: none;
+	cursor: nwse-resize;
+	border-width: 5px;
+    border-color: transparent #000 #000 transparent;
+    border-style: dashed solid solid dashed;
+}
+
+.cke_widget_wrapper:hover .resize {
+	display: block;
+}
