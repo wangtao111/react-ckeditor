@@ -24,15 +24,17 @@ export default class CommandPopup extends React.Component {
         this.props.drawerStore.setVisible(true);
         this.setState({visible: true});
         document.getElementById('standby').style.width = 0;
+        document.getElementById('standby').style.overflow = 'hidden';
     }
     open = () => {
         this.props.drawerStore.setVisible(false);
         this.setState({visible: false});
         document.getElementById('standby').style.width = '360px';
+        document.getElementById('standby').style.overflow = 'visible';
     }
 
     render() {
-        const { isVisible, setVisible, setCommandPopFlag } = this.props.drawerStore;
+        const { setCommandPopFlag } = this.props.drawerStore;
         const { visible } = this.state;
         return <CommandPopupWrapper>
             <Button

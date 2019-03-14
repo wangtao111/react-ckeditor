@@ -15,22 +15,22 @@ const MENTIONS = [
     {
         id: 1,
         title: '中国移动',
-        detail: '<div command="show_type"><strong style="color: #417CD5;" id="ssssss">中国移动(601314)</strong><span style="display: inline-block;width:5px;"> </span></div>'
+        detail: '<div commandTag="show_type"><strong style="color: #417CD5;">中国移动(601314)</strong><span style="display: inline-block;width:5px;"> </span></div>'
     },
     {
         id: 2,
         title: '中国平安',
-        detail: `<div command="show_type"><strong style="color: #417CD5;">中国平安(601318)</strong><span style="display: inline-block;width:5px;"> </span></div>`
+        detail: `<div commandTag="show_type"><strong style="color: #417CD5;">中国平安(601318)</strong><span style="display: inline-block;width:5px;"> </span></div>`
     },
     {
         id: 3,
         title: '中国联通',
-        detail: '<div command="show_type"><strong style="color: #417CD5;">中国联通(601384)</strong><span style="display: inline-block;width:5px;"> </span></div>'
+        detail: '<div commandTag="show_type"><strong style="color: #417CD5;">中国联通(601384)</strong><span style="display: inline-block;width:5px;"> </span></div>'
     },
     {
         id: 4,
         title: '中国银行',
-        detail: '<div command="show_type"><strong style="color: #417CD5;">中国银行(681384)</strong><span style="display: inline-block;width:5px;"> </span></div>'
+        detail: '<div commandTag="show_type"><strong style="color: #417CD5;">中国银行(681384)</strong><span style="display: inline-block;width:5px;"> </span></div>'
     },
     {
         id: 5,
@@ -335,14 +335,6 @@ export default class Editor extends React.Component {
         this.setState({
             data: evt.editor.getData()
         });
-        const iframe = document.getElementById('cke_1_contents').children[1].contentWindow;
-        let doc = iframe.document;
-        const tag = doc.getElementById('ssssss');
-        if(tag) {
-            tag.onclick = function () {
-                alert(11)
-            }
-        }
     }
 
     setTemplate = () => {
@@ -405,6 +397,9 @@ export default class Editor extends React.Component {
         dom.addEventListener('compositionend',function(e){
             doing = false;
         },false);
+        dom.onclick = function (e) {
+            console.log(888, e.target.getAttribute('commandTag'));
+        }
     }
 
     textTestCallback = (range) => {

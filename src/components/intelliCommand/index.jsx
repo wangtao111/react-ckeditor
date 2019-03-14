@@ -67,9 +67,9 @@ const IntelliCommandWrapper = styled.div`
 `;
 
 export default class IntelliCommand extends React.Component {
-    constructor(props) {
-        super(props);
-    }
+    // constructor(props) {
+    //     super(props);
+    // }
 
     render() {
         return <IntelliCommandWrapper>
