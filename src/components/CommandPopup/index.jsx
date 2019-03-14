@@ -29,21 +29,18 @@ export default class CommandPopup extends React.Component {
     }
 
     onClose = () => {
-        this.props.drawerStore.setVisible(true);
-        this.setState({visible: true});
         document.getElementById('standby').style.width = 0;
         document.getElementById('standby').style.overflow = 'hidden';
         document.getElementById('popup_btn').style.display = 'block';
     }
     open = () => {
-        this.props.drawerStore.setVisible(false);
         document.getElementById('standby').style.width = '360px';
         document.getElementById('standby').style.overflow = 'visible';
         document.getElementById('popup_btn').style.display = 'none';
     }
 
     render() {
-        const { setCommandPopFlag } = this.props.drawerStore;
+        const {setCommandPopFlag } = this.props.drawerStore;
         return <CommandPopupWrapper>
             <Button
                 icon='left-circle'
@@ -54,7 +51,6 @@ export default class CommandPopup extends React.Component {
                 }}
                 id='popup_btn'
                 onClick={() => {this.open();setCommandPopFlag();}}></Button>
-            <Icon type='close' className='close' onClick={() => {this.onClose()}}></Icon>
             {
                 this.props.drawerStore.isCommandPop && <React.Fragment>
                     {/* 智能命令 */}
@@ -67,7 +63,7 @@ export default class CommandPopup extends React.Component {
             {/* 搜索结果 */}
             {
                 this.props.drawerStore.isSearchResult &&
-                <SearchResult></SearchResult>
+                <SearchResult closeCallback={this.onClose}></SearchResult>
             }
         </CommandPopupWrapper>
     }

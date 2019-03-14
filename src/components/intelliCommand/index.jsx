@@ -12,7 +12,17 @@ const IntelliCommandWrapper = styled.div`
         padding-left: 13px;
         border-bottom: 1px solid #eee;
     }
-   
+    .close{
+        color: #bbb;
+        float: right;
+        margin-right: 20px;
+        font-size: 16px;
+        margin-top: 15px;
+        cursor: pointer;
+        &:hover{
+            color: #666;
+        }
+    }
     .editable-cmd-content {
         min-height: 205px;
         padding: 10px 10px 10px 40px;
@@ -63,6 +73,7 @@ export default class IntelliCommand extends React.Component {
 
     render() {
         return <IntelliCommandWrapper>
+            <Icon type='close' className='close' onClick={() => {this.props.closeCallback()}}></Icon>
             <h2>智能命令</h2>
 
             <div className="editable-cmd-content" contentEditable={ true }>

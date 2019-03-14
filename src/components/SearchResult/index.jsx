@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { inject, observer } from 'mobx-react';
-import { Table, Button } from 'antd';
+import {Table, Button, Icon} from 'antd';
 import eventEmitter from '../../event';
 
 const SearchResultWrapper = styled.div`
@@ -23,6 +23,17 @@ const SearchResultWrapper = styled.div`
             &.active {
                 border-bottom-color: #108EE9;
             }
+        }
+    }
+    .close{
+        color: #bbb;
+        float: right;
+        margin-right: 20px;
+        font-size: 16px;
+        margin-top: 15px;
+        cursor: pointer;
+        &:hover{
+            color: #666;
         }
     }
 
@@ -165,6 +176,7 @@ export default class SearchResult extends React.Component {
             }
         ]
         return <SearchResultWrapper>
+            <Icon type='close' className='close' onClick={() => {this.props.closeCallback()}}></Icon>
             <div className="search-tabs">
                 <ul>
                     {
