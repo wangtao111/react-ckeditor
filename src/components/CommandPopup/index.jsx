@@ -1,5 +1,5 @@
 import React from 'react';
-import {Button} from 'antd';
+import {Button, Icon} from 'antd';
 import styled from 'styled-components';
 import IntelliCommand from '../intelliCommand';
 import Preview from '../Preview';
@@ -7,7 +7,18 @@ import { inject, observer } from 'mobx-react';
 import SearchResult from '../SearchResult';
 
 const CommandPopupWrapper = styled.div`
-    width: 360px;
+    width: 100%;
+    .close{
+        color: #bbb;
+        float: right;
+        margin-right: 20px;
+        font-size: 16px;
+        margin-top: 15px;
+        cursor: pointer;
+        &:hover{
+            color: #666;
+        }
+    }
 `;
 
 @inject('drawerStore')
@@ -15,9 +26,6 @@ const CommandPopupWrapper = styled.div`
 export default class CommandPopup extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {
-            visible: true
-        }
     }
 
     onClose = () => {
@@ -25,17 +33,17 @@ export default class CommandPopup extends React.Component {
         this.setState({visible: true});
         document.getElementById('standby').style.width = 0;
         document.getElementById('standby').style.overflow = 'hidden';
+        document.getElementById('popup_btn').style.display = 'block';
     }
     open = () => {
         this.props.drawerStore.setVisible(false);
-        this.setState({visible: false});
         document.getElementById('standby').style.width = '360px';
         document.getElementById('standby').style.overflow = 'visible';
+        document.getElementById('popup_btn').style.display = 'none';
     }
 
     render() {
         const { setCommandPopFlag } = this.props.drawerStore;
-        const { visible } = this.state;
         return <CommandPopupWrapper>
             <Button
                 icon='left-circle'
@@ -43,9 +51,10 @@ export default class CommandPopup extends React.Component {
                     position: 'fixed',
                     top: '50%',
                     right: 0,
-                    display: visible ? 'block' : 'none'
                 }}
+                id='popup_btn'
                 onClick={() => {this.open();setCommandPopFlag();}}></Button>
+            <Icon type='close' className='close' onClick={() => {this.onClose()}}></Icon>
             {
                 this.props.drawerStore.isCommandPop && <React.Fragment>
                     {/* 智能命令 */}

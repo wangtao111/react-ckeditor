@@ -10,6 +10,14 @@ import $ from 'jquery';
 window.jQuery = $;
 window.$ = $;
 window.confirm = () => {};
+console.error = (function() {
+    const error = console.error
+    return function(exception) {
+        if ((exception + '').indexOf('Warning: A component is `contentEditable`') != 0) {
+            error.apply(console, arguments)
+        }
+    }
+})()
 const Wrap = (
     <Provider {...new Store()}>
       <BrowserRouter basename="/">

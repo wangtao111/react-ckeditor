@@ -6,9 +6,7 @@ import eventEmitter from '../../event';
 
 const SearchResultWrapper = styled.div`
     .search-tabs {
-        margin-top: 40px;
         border-bottom: 1px solid #E9E9E9;
-
         li {
             display: inline-block;
             cursor: pointer;

@@ -15,22 +15,22 @@ const MENTIONS = [
     {
         id: 1,
         title: '中国移动',
-        detail: '<div commandTag="show_type"><strong style="color: #417CD5;">中国移动(601314)</strong><span style="display: inline-block;width:5px;"> </span></div>'
+        detail: '<div><strong style="color: #417CD5;">中国移动(601314)</strong><span style="display: inline-block;width:5px;"> </span></div>'
     },
     {
         id: 2,
         title: '中国平安',
-        detail: `<div commandTag="show_type"><strong style="color: #417CD5;">中国平安(601318)</strong><span style="display: inline-block;width:5px;"> </span></div>`
+        detail: `<div><strong style="color: #417CD5;">中国平安(601318)</strong><span style="display: inline-block;width:5px;"> </span></div>`
     },
     {
         id: 3,
         title: '中国联通',
-        detail: '<div commandTag="show_type"><strong style="color: #417CD5;">中国联通(601384)</strong><span style="display: inline-block;width:5px;"> </span></div>'
+        detail: '<div><strong style="color: #417CD5;">中国联通(601384)</strong><span style="display: inline-block;width:5px;"> </span></div>'
     },
     {
         id: 4,
         title: '中国银行',
-        detail: '<div commandTag="show_type"><strong style="color: #417CD5;">中国银行(681384)</strong><span style="display: inline-block;width:5px;"> </span></div>'
+        detail: '<div><strong style="color: #417CD5;">中国银行(681384)</strong><span style="display: inline-block;width:5px;"> </span></div>'
     },
     {
         id: 5,
@@ -45,7 +45,7 @@ const MENTIONS = [
     {
         id: 7,
         title: '归母公司净利润',
-        detail: '<div><strong style="color: #417CD5;border: 1px dashed #999">归母公司净利润[Q1Q2]587,415,463,762.1</strong> <span style="display: inline-block;width:5px;"> </span></div>'
+        detail: '<div><strong commandTag="show_type" style="color: #417CD5;border: 1px dashed #999;position: relative">归母公司净利润[Q1Q2]587,415,463,762.1</strong> <span style="display: inline-block;width:5px;"> </span></div>'
     },
     {
         id: 8,
@@ -90,6 +90,10 @@ const EditorTemplate = styled.div`
             line-height: 60px;
             cursor: pointer
        }
+    }
+    #command_tag_pane{
+        display: none;
+        position: absolute;
     }
     #fullScreenBtn>ul{
         position: absolute;
@@ -224,6 +228,7 @@ export default class Editor extends React.Component {
         this.shareModalRef = null;
         this.commentRef = null;
         this.autocomplete = null;
+        this.document = document;
         this.onEditorChange = this.onEditorChange.bind(this);
     }
 
@@ -372,7 +377,6 @@ export default class Editor extends React.Component {
     }
 
     instanceReady = () => {
-        
         const editor = this.editorRef.current.editor;
         const itemTemplate = '<li data-id="{id}"><div><strong class="item-title">{title}</strong></div></li>';
         const outputTemplate = '{detail}';
@@ -397,8 +401,21 @@ export default class Editor extends React.Component {
         dom.addEventListener('compositionend',function(e){
             doing = false;
         },false);
-        dom.onclick = function (e) {
-            console.log(888, e.target.getAttribute('commandTag'));
+        dom.onclick = (e) => {
+            const tag = e.target.getAttribute('commandTag');
+            console.log(11, e.target)
+            if(tag === 'show_type') {
+                const document = this.document;
+                const scrollX = document.documentElement.scrollLeft || document.body.scrollLeft;
+                const scrollY = document.documentElement.scrollTop || document.body.scrollTop;
+                const x = e.pageX || e.clientX + scrollX + iframe.offsetTop;
+                const y = e.pageY || e.clientY + scrollY + iframe.offsetLeft;
+                console.log(document, x, y);
+                const el = document.getElementById('command_tag_pane');
+                el.style.display = 'block';
+                el.style.left = x + 'px';
+                el.style.top = y + 'px';
+            }
         }
     }
 
@@ -541,7 +558,12 @@ export default class Editor extends React.Component {
             {/*分享弹窗*/}
             <ShareModal onRef={(ref) => this.shareModalRef = ref}></ShareModal>
             <Comment onRef={(ref) => this.commentRef = ref}></Comment>
-
+            <div id="command_tag_pane">
+                <ul>
+                    <li>asdasd</li>
+                    <li>asdasdas</li>
+                </ul>
+            </div>
         </EditorTemplate>
     }
 }
