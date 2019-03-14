@@ -32,20 +32,21 @@ const IntelliCommandWrapper = styled.div`
         overflow: hidden;
         white-space: pre-wrap;
         word-break: break-all;
+        font-family: "Lucida Console", Consolas, Monaco;
 
         &:focus {
             outline: none;
         }
 
         &::before {
-            content: " 1\\A 2\\A 3\\A 4\\A 5\\A 6\\A 7\\A 8\\A 9\\A 10\\A 11\\A 12\\A 13\\A 14\\A 15\\A 16\\A 17\\A 18\\A 19\\A 20\\A 21\\A 22\\A 23\\A 24\\A 25\\A 26\\A 27\\A 28\\A 29\\A 30\\A ";
+            content: "1\\A 2\\A 3\\A 4\\A 5\\A 6\\A 7\\A 8\\A 9\\A 10\\A 11\\A 12\\A 13\\A 14\\A 15\\A 16\\A 17\\A 18\\A 19\\A 20\\A 21\\A 22\\A 23\\A 24\\A 25\\A 26\\A 27\\A 28\\A 29\\A 30\\A ";
+            color: #999;
             position: absolute;
             top: 10px;
             bottom: 10px;
             left: 0;
             text-align: right;
             background-color: #fbfbfb;
-            color: #333;
             outline: 100px solid #fbfbfb;
             clip: rect(-100px 2em 9999px 0);
             /* IE9+ */

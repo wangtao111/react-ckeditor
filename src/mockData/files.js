@@ -59,5 +59,20 @@ const FileData = [
             '</div>'+
 
             '</div>'},
+            {
+                title: '欢迎使用金融云笔记',
+                briefContent: '欢迎使用全新的金融云笔记--工作效率更高',
+                size: '7.1MB',
+                date: '2019-01-03',
+                type: 1,
+                content: `
+                    <ol>
+                        <li>新建笔记</li>
+                        <li>智能提示，输入~.中国会出现智能命令提示</li>
+                        <li>插入表格、图表,表格支持改变行列宽度，图表支持改变宽高</li>
+                        <li>支持预览演示</li>
+                    </ol>
+                `
+            }
 ]
 export default FileData;

@@ -70,6 +70,28 @@ const MENTIONS = [
             '</table><p></p></div>'
     }
 ];
+
+// 纠错信息
+const RECTIFY_MENTION = {
+    status: 0,          // 1 为正确, 0 为错误
+    mentions: [
+        {
+            title: '归母净利润'
+        },
+        {
+            title: '归母公司净利润'
+        },
+        {
+            title: '归母净利为正'
+        },
+        {
+            title: '归母净利为负'
+        },
+        {
+            title: '归属于上市公司股东净利润'
+        }
+    ]
+}
 let doing = false;
 const EditorTemplate = styled.div`
     .title_input{
@@ -458,6 +480,73 @@ export default class Editor extends React.Component {
         });
     }
 
+    // textTestCallback = (range) => {
+    //     if (!range.collapsed) {
+    //         return null;
+    //     }
+
+    //     // 如果是归母晶
+    //     return window.CKEDITOR.plugins.textMatch.match(range, (text, offset) => {
+
+    //         if(!text || text === '') return null;
+
+    //         if(text !== '~.归母晶') {
+    //             return this.matchCallback(text, offset);
+    //         }else {
+    //             // 错误
+    //             if(RECTIFY_MENTION.status === 0) {
+    //                 const editor = this.editorRef.current.editor;
+    //                 const selection = editor.getSelection();
+    //                 // 下划线
+    //                 range.setStart(range.startContainer, 2);
+    //                 selection.selectRanges([range]);
+    //                 editor.document.$.execCommand('delete');
+                    
+    //                 const newRange = selection.getRanges()[0];
+    //                 const textNode = new window.CKEDITOR.dom.element('span');
+    //                 textNode.setStyle('border-bottom', '1px dashed #CE5542');
+    //                 textNode.appendText('归母晶');
+
+    //                 newRange.insertNode(textNode);
+    //                 newRange.moveToPosition(textNode, window.CKEDITOR.POSITION_AFTER_END);
+    //                 newRange.select();
+    //                 // debugger;
+    //                 // newRange.setStart(newRange.startContainer, 0);
+    //                 // newRange.setEnd(newRange.endContainer, 5);
+    //                 // debugger;
+    //                 // newRange.collapse();
+    //                 // range = newRange;   
+                    
+    //                 // this.matchCallback(newRange.endContainer.$.innerText, newRange.endOffset);
+    //                 return { 
+    //                     start: 0,
+    //                     end: 2
+    //                 }
+    //             }
+    //         }
+    //     });
+    // }
+
+    matchCallback(text, offset) {
+        const editor = this.editorRef.current.editor;
+        const match = text.slice(0, offset)
+                .match(/~\.{1}([a-zA-Z0-9_\u4e00-\u9fa5])*$/);
+        const data = MENTIONS.filter(function (item) {
+            const txt = text.toLowerCase().split('~.');
+            if(!txt[txt.length - 1]) {
+                return null;
+            }
+            return item.title.indexOf(txt[txt.length - 1]) !== -1;
+        });
+        if (!data.length) {
+            return null;
+        }
+        return {
+            start: match ? match.index : 0,
+            end: offset
+        };
+    }
+
     dataCallback = (matchInfo, callback) => {
         const data = MENTIONS.filter(function (item) {
             const txt = matchInfo.query.toLowerCase().split('~.');
@@ -474,6 +563,8 @@ export default class Editor extends React.Component {
             return item.title.indexOf(test) !== -1;
         });
         callback(data);
+
+        // callback(RECTIFY_MENTION.mentions);
     }
 
     titleChange = (val) => {
@@ -499,6 +590,8 @@ export default class Editor extends React.Component {
 
     render() {
         const {data, title, tools, visible} = this.state;
+        const contentCss = process.env.NODE_ENV === 'production' ? [`${window.origin}/static/ckeditor/contents.css`, `${window.origin}/static/ckeditor/external.css`] : ['http://localhost:5500/build/static/ckeditor/contents.css', 'http://localhost:5500/build/static/ckeditor/external.css' ];
+
         const config = {
             extraPlugins: 'autocomplete,notification,textmatch,textwatcher,easyimage,tableresizerowandcolumn,save-to-pdf,quicktable',
             allowedContent: true,
@@ -524,7 +617,7 @@ export default class Editor extends React.Component {
             qtCellSpacing: '0',
             qtClass: 'editor-table-widget',
             qtStyle: 'border: 1px solid #a7a7a7;',
-            contentsCss: ['http://localhost:5500/build/static/ckeditor/contents.css', 'http://localhost:5500/build/static/ckeditor/external.css' ]
+            contentsCss: contentCss
         };
 
         const EDITOR_DEV_URL = 'http://localhost:5500/build/static/ckeditor/ckeditor.js';
