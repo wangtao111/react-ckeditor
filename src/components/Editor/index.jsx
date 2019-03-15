@@ -68,6 +68,11 @@ const MENTIONS = [
         detail: '<div><table contenteditable="false" style="border: 1px dashed #4A90E2">' +
                 '<tr style="line-height: 30px"><td style="padding: 5px;">asdasd</td><td style="padding: 5px;">asdasdasd</td></tr>' +
             '</table><p></p></div>'
+    },
+    {
+        id: 12,
+        title: '宏测试',
+        detail: '<div style="border: 1px solid #999;">宏测试<i style="color: #959FB1;">a</i></div>'
     }
 ];
 
@@ -137,6 +142,7 @@ const EditorTemplate = styled.div`
 `;
 
 @inject('editorStore')
+@inject('drawerStore')
 @observer
 export default class Editor extends React.Component {
     constructor(props) {
@@ -353,6 +359,7 @@ export default class Editor extends React.Component {
         const editor = this.editorRef.current.editor;
         editor.setReadOnly(true);
     }
+
     afterExit = () => {
         const editor = this.editorRef.current.editor;
         editor.setReadOnly(false);
@@ -446,6 +453,12 @@ export default class Editor extends React.Component {
         if (!range.collapsed) {
             return null;
         }
+
+        if(range.startContainer.$.data && range.startContainer.$.data.startsWith('~')) {
+            this.props.drawerStore.setSearchResultFlag(false);
+            this.props.drawerStore.setCommandPopFlag(true);
+        }
+
         const editor = this.editorRef.current.editor;
         return window.CKEDITOR.plugins.textMatch.match(range, (text, offset) => {
             let match = text.match(/~\.([a-zA-Z0-9_\u4e00-\u9fa5])*$/);

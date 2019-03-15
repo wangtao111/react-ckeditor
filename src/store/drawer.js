@@ -73,6 +73,11 @@ class DrawerStore {
         this.isSearchResult = false;
     }
 
+    @action.bound
+    setFlagFalse() {
+        this.isCommandPop = false;
+        this.isSearchResult = false;
+    }
 
 }
 
