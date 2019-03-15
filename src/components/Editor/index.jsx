@@ -15,77 +15,67 @@ const temp = [
     {
         id: 1,
         title: '头部',
-        detail: '<div><div style="border: 1px dashed #98BCFF; width: 100%; height: 100px; position: relative;margin-top: 30px;padding: 10px">' +
+        detail: '<div><div style="border: 1px dashed #98BCFF; width: 100%; min-height: 100px; position: relative;margin-top: 30px;padding: 10px">' +
                 '<span contenteditable="false" style="position: absolute; top: -19px; left: -1px;background: #D8E9F6;color: #98BCFF; padding: 0 15px; border: 1px solid #98BCFF; border-bottom: none; border-radius: 4px; font-size: 10px">头部</span>' +
                 '<span>&nbsp;</span>' +
             '</div></div>'
     },
     {
-        id: 1,
+        id: 2,
         title: '标题',
         detail: '<div><div style="border: 1px dashed #98BCFF; width: 100%; height: 100px; position: relative;margin-top: 30px;padding: 10px">' +
             '<span contenteditable="false" style="position: absolute; top: -19px; left: -1px;background: #D8E9F6;color: #98BCFF; padding: 0 15px; border: 1px solid #98BCFF; border-bottom: none; border-radius: 4px; font-size: 10px">标题</span>' +
             '<span>&nbsp;</span>' +
             '</div></div>'
     },
+];
+const tables = [
+    {
+        id: 6,
+        title: '归母净利润',
+        detail: '归母净利润[Q1Q2]587,415,463,762.1'
+    },
+    {
+        id: 8,
+        title: '归母净利为正',
+        detail: '归母净利为正[Q1Q2]'
+    },
+    {
+        id: 9,
+        title: '归母净利为负',
+        detail: '归母净利为负[Q1Q2]'
+    },
+    {
+        id: 10,
+        title: '归属于上市公司股东净利润',
+        detail: '归属于上市公司股东净利润[Q1Q2]'
+    },
+    {
+        id: 11,
+        title: '利润表',
+        detail: '利润表'
+    },
 ]
 const MENTIONS = [
     {
         id: 1,
         title: '中国移动',
-        detail: '<div><strong style="color: #417CD5;">中国移动(601314)</strong><span style="display: inline-block;width:5px;"> </span></div>'
+        detail: '中国移动(601314)'
     },
     {
         id: 2,
         title: '中国平安',
-        detail: `<div><strong style="color: #417CD5;">中国平安(601318)</strong><span style="display: inline-block;width:5px;"> </span></div>`
+        detail: `中国平安(601318)`
     },
     {
         id: 3,
         title: '中国联通',
-        detail: '<div><strong style="color: #417CD5;">中国联通(601384)</strong><span style="display: inline-block;width:5px;"> </span></div>'
+        detail: '中国联通(601384)'
     },
     {
         id: 4,
         title: '中国银行',
-        detail: '<div><strong style="color: #417CD5;">中国银行(681384)</strong><span style="display: inline-block;width:5px;"> </span></div>'
-    },
-    {
-        id: 5,
-        title: '中国人寿',
-        detail: '<div><strong style="color: #417CD5;">中国人寿(681984)</strong><span style="display: inline-block;width:5px;"> </span></div>'
-    },
-    {
-        id: 6,
-        title: '归母净利润',
-        detail: '<div><strong style="color: #417CD5;border: 1px dashed #999">归母净利润[Q1Q2]587,415,463,762.1</strong> <span style="display: inline-block;width:5px;"> </span></div>'
-    },
-    {
-        id: 7,
-        title: '归母公司净利润',
-        detail: '<div><strong commandTag="show_type" style="color: #417CD5;border: 1px dashed #999;position: relative">归母公司净利润[Q1Q2]587,415,463,762.1</strong> <span style="display: inline-block;width:5px;"> </span></div>'
-    },
-    {
-        id: 8,
-        title: '归母净利为正',
-        detail: '<div><strong style="color: #417CD5;">归母净利为正[Q1Q2]</strong> <span style="display: inline-block;width:5px;"> </span></div>'
-    },
-    {
-        id: 9,
-        title: '归母净利为负',
-        detail: '<div><strong style="color: #417CD5;">归母净利为负[Q1Q2]</strong> <span style="display: inline-block;width:5px;"> </span></div>'
-    },
-    {
-        id: 10,
-        title: '归属于上市公司股东净利润',
-        detail: '<div><strong style="color: #417CD5;">归属于上市公司股东净利润[Q1Q2]</strong> <span style="display: inline-block;width:5px;"> </span></div>'
-    },
-    {
-        id: 11,
-        title: '利润表',
-        detail: '<div><table contenteditable="false" style="border: 1px dashed #4A90E2">' +
-                '<tr style="line-height: 30px"><td style="padding: 5px;">asdasd</td><td style="padding: 5px;">asdasdasd</td></tr>' +
-            '</table><p></p></div>'
+        detail: '中国银行(681384)'
     },
     {
         id: 12,
@@ -126,6 +116,12 @@ const EditorTemplate = styled.div`
         outline: none;
         padding: 0 10px;
     }
+    .tool_item {
+          display: inline-block;
+          width: 20px;
+          height: 20px;
+          background-size: 100%;
+    }
     .tools{
         float: left;
         min-width: 270px;
@@ -133,7 +129,54 @@ const EditorTemplate = styled.div`
             float: left;
             margin-right: 30px;
             line-height: 60px;
-            cursor: pointer
+            cursor: pointer;
+            >span{
+            }
+            &:nth-child(1){
+               >span{
+                    background: url(${require('../../img/share.png')}) no-repeat;
+                    &:hover{
+                        background: url(${require('../../img/share1.png')}) no-repeat;
+                    }
+                }
+            }
+            &:nth-child(2){
+               >span{
+                    background: url(${require('../../img/comment.png')}) no-repeat;
+                    &:hover{
+                        background: url(${require('../../img/comment1.png')}) no-repeat;
+                    }
+                }
+            }
+             &:nth-child(3){
+               >span{
+                    background: url(${require('../../img/demo.png')}) no-repeat;
+                    &:hover{
+                        background: url(${require('../../img/demo1.png')}) no-repeat;
+                    }
+                }
+            }
+             &:nth-child(4){
+               >span{
+                    background: url(${require('../../img/tag.png')}) no-repeat;
+                    &:hover{
+                        background: url(${require('../../img/tag1.png')}) no-repeat;
+                    }
+                }
+            }
+             &:nth-child(4){
+               >span{
+                    background: url(${require('../../img/more.png')}) no-repeat;
+                    &:hover{
+                        background: url(${require('../../img/more1.png')}) no-repeat;
+                    }
+                }
+            }
+             &:nth-child(5){
+               >span{
+                    background: url(${require('../../img/info.png')}) no-repeat;
+                }
+            }
        }
     }
     #command_tag_pane{
@@ -190,6 +233,7 @@ export default class Editor extends React.Component {
                 {title: '文件信息', img: require('../../img/info.png')},
             ],
             visible: false,
+            command: false,
             templateHtml: `<div>
                     <div class="select1">
                         <select style="-webkit-appearance: menulist" onmousedown="javascript:return true;">
@@ -501,35 +545,49 @@ export default class Editor extends React.Component {
         if (!range.collapsed) {
             return null;
         }
+        return window.CKEDITOR.plugins.textMatch.match(range, (txt, offset) => {
+            let text = JSON.parse(JSON.stringify(txt));
+            let index = text.lastIndexOf('~');
 
-        if(range.startContainer.$.data && range.startContainer.$.data.startsWith('~')) {
-            this.props.drawerStore.setSearchResultFlag(false);
-            this.props.drawerStore.setCommandPopFlag(true);
-        }
-
-        const editor = this.editorRef.current.editor;
-        return window.CKEDITOR.plugins.textMatch.match(range, (text, offset) => {
-            let match = text.match(/~([a-zA-Z0-9_\u4e00-\u9fa5])*$/);
-            if(!doing && match && (match.index || match.index === 0)) {
+            if(!doing && index !== -1) {
                 const matchArr = text.split('~');
                 const matchText = matchArr[matchArr.length - 1]
                 eventEmitter.emit('COMMAND_POPUP', '~' + matchText);
+                this.command = true;
                 if(!matchArr[matchArr.length - 1]) {
                     this.callbackData = temp;
+                    return {
+                        start: index,
+                        end: range.endOffset
+                    };
                 } else {
-                    // const arr = matchText.split('.');
-                    // const lastText = arr[arr.length - 1];
-                    // lastText
+                    const arr = matchText.split('.');
+                    if(arr.length === 1){
+                        let data = MENTIONS.filter(function (item) {
+                            return item.title.indexOf(matchText) !== -1;
+                        });
+                        this.callbackData = data;
+                        return {
+                            start: index + 1,
+                            end: range.endOffset
+                        };
+                    } else {
+                        const lastText = arr[arr.length - 1];
+                        const lastIndex = text.lastIndexOf('.');
+                        let data = tables.filter(function (item) {
+                            return item.title.indexOf(lastText) !== -1;
+                        });
+                        this.callbackData = data;
+                        return {
+                            start: lastIndex + 1,
+                            end: text.length
+                        };
+                    }
                 }
                 // this.autocomplete.view.itemTemplate.source = '<li data-id="{id}"><div><strong class="item-title">{title}sssss</strong></div></li>';
-                // range.startOffset = match.index;
                 // console.log(22, match, range.startOffset, range.endOffset, text, offset)
                 // editor.getSelection().selectRanges( [ range ] );
                 // editor.insertHtml( `<span id="temporary">${'~' + matchArr[matchArr.length - 1]}</span>` );
-                return {
-                    start: match ? match.index : 0,
-                    end: range.endOffset
-                };
             }
             return null;
         });
@@ -556,7 +614,7 @@ export default class Editor extends React.Component {
     //                 range.setStart(range.startContainer, 2);
     //                 selection.selectRanges([range]);
     //                 editor.document.$.execCommand('delete');
-                    
+
     //                 const newRange = selection.getRanges()[0];
     //                 const textNode = new window.CKEDITOR.dom.element('span');
     //                 textNode.setStyle('border-bottom', '1px dashed #CE5542');
@@ -571,7 +629,7 @@ export default class Editor extends React.Component {
     //                 // debugger;
     //                 // newRange.collapse();
     //                 // range = newRange;   
-                    
+
     //                 // this.matchCallback(newRange.endContainer.$.innerText, newRange.endOffset);
     //                 return { 
     //                     start: 0,
