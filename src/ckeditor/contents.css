@@ -359,3 +359,26 @@ body[contenteditable="false"] .cke_widget_wrapper .cke_widget_editable.cke_widge
 .cke_widget_wrapper:hover .resize {
 	display: block;
 }
+.text-hover {
+	border: 1px dashed transparent;
+}
+
+.text-hover:hover {
+	border-color:#a9a9a9;
+}
+
+.text-hover.active .arrow-down,
+.text-hover:hover .arrow-down {
+	display: inline-block;
+}
+
+.text-hover .arrow-down {
+	display: none;
+	width: 12px;
+	height: 11px;
+	border: 1px solid #979797;
+	border-radius: 2px;
+	background: #f2f7fc url('../ckeditor/images/icon_arrow_down_grey.png') no-repeat scroll center / 6px auto;
+	vertical-align: -5px;
+	cursor: pointer;
+}

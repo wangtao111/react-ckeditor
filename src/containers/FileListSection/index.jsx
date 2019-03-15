@@ -28,6 +28,24 @@ const FileListSectionWrapper = styled.div`
             }
         }
 
+        .icon-shrink {
+            position: absolute;
+            right: 0;
+            top: 20px;
+            width: 13px;
+            height: 24px;
+            border-top-left-radius: 3px;
+            border-bottom-left-radius: 3px;
+            display: inline-block;
+            border: 1px solid #E1E2E6;
+            border-right: 0;
+            cursor: pointer;
+        }
+
+        .icon-shrink {
+            background: url('${require('../../theme/images/icon_arrow_left_grey.png')}') no-repeat scroll center / 5px auto;
+        }
+
         .icon-back {
             left: 24px;
             top: 22px;
@@ -100,7 +118,8 @@ export default class FileListSection extends React.Component {
         super(props);
 
         this.state = {
-            articleIndex: 0
+            articleIndex: 0,
+            isShrink: false,       // 默认不收缩
         };
     }
 
@@ -121,13 +140,14 @@ export default class FileListSection extends React.Component {
     render() {
 
         const noteList = this.props.noteStore.noteList;
-        const {activeIndex} = this.state;
+        const {activeIndex, isShrink } = this.state;
 
-        return <FileListSectionWrapper>
+        return <FileListSectionWrapper shrink={ isShrink }>
             <div className="file-list-header">
                 <i className="icon-back"></i>
                 <Input prefix={<i className="icon-search"></i>} placeholder="搜索..." className="search-ipt"/>
                 <i className="icon-setting"></i>
+                <i className="icon-shrink" onClick={ () => { this.setState({ isShrink: !isShrink })} }></i>
             </div>
 
             <ul className="article-list">

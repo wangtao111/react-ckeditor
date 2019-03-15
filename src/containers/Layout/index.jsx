@@ -12,6 +12,7 @@ const AppContent = styled.section`
 
     .react-resizable {
         position: relative;
+        flex-shrink: 0;
     }
 
     .react-resizable-handle {
@@ -28,7 +29,7 @@ export default class Layout extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            width: 200,
+            width: 220,
             height: 800,
         }
     }
@@ -37,7 +38,7 @@ export default class Layout extends React.Component {
         return <div>
             <Header></Header>
             <AppContent>
-                <ResizableBox width={this.state.width} minConstraints={[260]} onResize={(event, { element, size }) => {
+                <ResizableBox width={this.state.width} minConstraints={[220]} onResize={(event, { element, size }) => {
                     this.setState({ width: size.width, height: size.height });
                 }}>
                     <NavSection />

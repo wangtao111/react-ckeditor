@@ -48,7 +48,6 @@ const NavSectionWrapper = styled.section`
 
     .menu-list{
         margin: 0 auto;
-        width: 200px;
         img{
             width: 16px;
             height: 16px;

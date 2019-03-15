@@ -1,4 +1,21 @@
 const FileData = [
+    {
+        title: '欢迎使用金融云笔记',
+        briefContent: '欢迎使用全新的金融云笔记--工作效率更高',
+        size: '7.1MB',
+        date: '2019-01-03',
+        type: 1,
+        content: `
+            <ol>
+                <li>新建笔记</li>
+                <li>演示1:（插入公司实体）：输入~符+中国， 显示相关公司实体名称，选择需要插入的公司名称</li>
+                <li>演示2:（插入表格）：输入完成 sidebar显示 table 预览， 确定后可插入</li>
+                <li>演示3:（插入图表）：输入完成 sidebar显示相关匹配的图表列表预览， 提供一个拟合度最高的图表插入</li>
+                <li>演示4: 插入表格、图表,表格支持改变行列宽度，图表支持改变宽高</li>
+                <li>演示5: 支持点击编辑器上方的播放，可以预览演示</li>
+            </ol>
+        `
+    },
     {title: '《看研报》产品分析报告', briefContent: '产品亮点1、核心能力：核心提供【搜索+订阅内容服务】，在推荐层面较弱', imgUrl: require('../img/kanyanbao.png'), size: '6.6MB', date: '2019-02-01', type: 1,
         content: '<div style="font-size: 15px;">' +
                 '<p style="text-align: center;font-size: 18px;font-weight: bold; color: #444;margin-bottom: 40px">产品亮点</p>' +
@@ -59,20 +76,6 @@ const FileData = [
             '</div>'+
 
             '</div>'},
-            {
-                title: '欢迎使用金融云笔记',
-                briefContent: '欢迎使用全新的金融云笔记--工作效率更高',
-                size: '7.1MB',
-                date: '2019-01-03',
-                type: 1,
-                content: `
-                    <ol>
-                        <li>新建笔记</li>
-                        <li>智能提示，输入~.中国会出现智能命令提示</li>
-                        <li>插入表格、图表,表格支持改变行列宽度，图表支持改变宽高</li>
-                        <li>支持预览演示</li>
-                    </ol>
-                `
-            }
+            
 ]
 export default FileData;
