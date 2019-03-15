@@ -44,9 +44,11 @@ export default class Layout extends React.Component {
                 </ResizableBox>
                 <FileListSection />
                 <FinEditor />
-                <div id='standby' style={{width: 0, boxShadow: '0px 2px 6px 0px rgba(0, 0, 0, 0.3)'}}>
+                {/* <div id='standby' style={{width: 0, boxShadow: '0px 2px 6px 0px rgba(0, 0, 0, 0.3)'}}>
                     <CommandPopup></CommandPopup>
-                </div>
+                </div> */}
+
+                <CommandPopup></CommandPopup>
             </AppContent>
         </div>
     }

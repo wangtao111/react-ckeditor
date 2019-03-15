@@ -128,9 +128,6 @@ export default class Header extends React.Component {
         // 打开弹窗，设置标志
         this.props.drawerStore.setVisible(true);
         this.props.drawerStore.setSearchResultFlag();
-        document.getElementById('standby').style.width = '500px';
-        document.getElementById('standby').style.overflow = 'visible';
-        document.getElementById('popup_btn').style.display = 'none';
     }
 
     render() {

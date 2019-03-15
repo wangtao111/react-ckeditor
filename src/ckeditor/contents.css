@@ -341,6 +341,9 @@ body[contenteditable="false"] .cke_widget_wrapper .cke_widget_editable.cke_widge
 	outline: none;
 }
 
+.chartContainer {
+	position: relative;
+}
 /* 图表的样式 */
 .chartContainer > .resize {
 	position: absolute;
