@@ -54,18 +54,12 @@ export default class CommandPopup extends React.Component {
     }
 
     onClose = () => {
-        document.getElementById('standby').style.width = 0;
-        document.getElementById('standby').style.height = 0;
-        document.getElementById('standby').style.overflow = 'hidden';
-        document.getElementById('popup_btn').style.display = 'block';
+        this.props.drawerStore.setVisible(false);
+        this.props.drawerStore.setCommandPopFlag();
     }
     open = () => {
-        document.getElementById('standby').style.width = '360px';
-        document.getElementById('standby').style.height = 'auto';
-        document.getElementById('standby').style.overflow = 'visible';
-        document.getElementById('popup_btn').style.display = 'none';
-        this.props.drawerStore.setVisible(false);
-        this.props.drawerStore.setFlagFalse();
+        this.props.drawerStore.setVisible(true);
+        this.props.drawerStore.setCommandPopFlag();
     }
 
     render() {
