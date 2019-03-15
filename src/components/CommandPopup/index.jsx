@@ -46,7 +46,7 @@ export default class CommandPopup extends React.Component {
             if(order === null || order === undefined) {
                 this.onClose()
             } else {
-                this.open();
+                this.props.drawerStore.setVisible(true);
                 this.props.drawerStore.setCommandPopFlag();
                 this.setState({orderText: order});
             }
@@ -55,11 +55,7 @@ export default class CommandPopup extends React.Component {
 
     onClose = () => {
         this.props.drawerStore.setVisible(false);
-        this.props.drawerStore.setCommandPopFlag();
-    }
-    open = () => {
-        this.props.drawerStore.setVisible(true);
-        this.props.drawerStore.setCommandPopFlag();
+        this.props.drawerStore.setFlagFalse();
     }
 
     render() {
