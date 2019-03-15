@@ -11,6 +11,24 @@ import insertTable1 from '../../widgets/insertTable1';
 import insertChart from '../../widgets/insertChart';
 import Highcharts from 'highcharts';
 
+const temp = [
+    {
+        id: 1,
+        title: '头部',
+        detail: '<div><div style="border: 1px dashed #98BCFF; width: 100%; height: 100px; position: relative;margin-top: 30px;padding: 10px">' +
+                '<span contenteditable="false" style="position: absolute; top: -19px; left: -1px;background: #D8E9F6;color: #98BCFF; padding: 0 15px; border: 1px solid #98BCFF; border-bottom: none; border-radius: 4px; font-size: 10px">头部</span>' +
+                '<span>&nbsp;</span>' +
+            '</div></div>'
+    },
+    {
+        id: 1,
+        title: '标题',
+        detail: '<div><div style="border: 1px dashed #98BCFF; width: 100%; height: 100px; position: relative;margin-top: 30px;padding: 10px">' +
+            '<span contenteditable="false" style="position: absolute; top: -19px; left: -1px;background: #D8E9F6;color: #98BCFF; padding: 0 15px; border: 1px solid #98BCFF; border-bottom: none; border-radius: 4px; font-size: 10px">标题</span>' +
+            '<span>&nbsp;</span>' +
+            '</div></div>'
+    },
+]
 const MENTIONS = [
     {
         id: 1,
@@ -116,6 +134,18 @@ const EditorTemplate = styled.div`
     #command_tag_pane{
         display: none;
         position: absolute;
+        border: 1px solid #ddd;
+        border-radius: 2px;
+        background: #fff;
+        font-size: 12px;
+        >ul>li{
+            padding: 3px 20px;
+            cursor: pointer;
+            &:hover{
+                background: #dbe9f9;
+                color: #82abe5;
+            }
+        }
     }
     #fullScreenBtn>ul{
         position: absolute;
@@ -251,6 +281,7 @@ export default class Editor extends React.Component {
         this.commentRef = null;
         this.autocomplete = null;
         this.document = document;
+        this.callbackData = [];
         this.onEditorChange = this.onEditorChange.bind(this);
     }
 
@@ -333,8 +364,7 @@ export default class Editor extends React.Component {
 
         // 新建文档
         eventEmitter.on('NEW_PAGE', (type) => {
-            this.editorRef.current.editor.setData(' ');
-            this.setState({title: ''});
+            this.setState({title: '', data: ''});
             if (!type) {
                 return
             }
@@ -345,8 +375,10 @@ export default class Editor extends React.Component {
         });
         // 浏览文章
         eventEmitter.on('SKIM_ARTICLE', (data) => {
-            this.editorRef.current.editor.setData(data.content);
-            this.setState({title: data.title})
+            this.setState({data: data.content, title: data.title})
+            setTimeout(() => {
+                this.setEditorIframe();
+            }, 100)
         });
     }
     afterEnter = () => {
@@ -415,66 +447,76 @@ export default class Editor extends React.Component {
                 .outputTemplate
                 .output(item);
         }
+        this.setEditorIframe();
+    }
+
+    setEditorIframe = () => {
         const iframe = document.getElementById('cke_1_contents').children[1].contentWindow;
-        let dom = iframe.document.body;
+        let dom = iframe.document;
         dom.addEventListener('compositionstart',function(e){
             doing = true;
         },false);
         dom.addEventListener('compositionend',function(e){
             doing = false;
         },false);
+        document.onclick = function(e) {
+            document.getElementById('command_tag_pane').style.display = 'none';
+        }
         dom.onclick = (e) => {
             const tag = e.target.getAttribute('commandTag');
-            console.log(11, e.target)
+            document.getElementById('command_tag_pane').style.display = 'none';
             if(tag === 'show_type') {
                 const document = this.document;
                 const scrollX = document.documentElement.scrollLeft || document.body.scrollLeft;
                 const scrollY = document.documentElement.scrollTop || document.body.scrollTop;
-                const x = e.pageX || e.clientX + scrollX + iframe.offsetTop;
-                const y = e.pageY || e.clientY + scrollY + iframe.offsetLeft;
-                console.log(document, x, y);
+                const offset = this.getPoint(document.getElementById('cke_1_contents'));
+                const x = e.pageX || e.clientX + scrollX ;
+                const y = e.pageY || e.clientY + scrollY ;
                 const el = document.getElementById('command_tag_pane');
                 el.style.display = 'block';
-                el.style.left = x + 'px';
-                el.style.top = y + 'px';
+                el.style.left = x + offset.x + 'px';
+                el.style.top = y + offset.y + 20 +'px';
+                document.getElementById('command_tag_pane').style.display = 'block';
             }
         }
     }
+    getPoint = (obj) => {
+        let t = obj.offsetTop;
+        let l = obj.offsetLeft;
+        while (obj = obj.offsetParent) {
+            t += obj.offsetTop;
+            l += obj.offsetLeft;
+        }
+        return {x: l, y: t}
+    }
 
     textTestCallback = (range) => {
-        range.startOffset = 0;
         if (!range.collapsed) {
             return null;
         }
         const editor = this.editorRef.current.editor;
         return window.CKEDITOR.plugins.textMatch.match(range, (text, offset) => {
-            let match = text.match(/~\.([a-zA-Z0-9_\u4e00-\u9fa5])*$/);
+            let match = text.match(/~([a-zA-Z0-9_\u4e00-\u9fa5])*$/);
             if(!doing && match && (match.index || match.index === 0)) {
-                const txt = text.toLowerCase().split('~.');
-                let data = MENTIONS.filter(function (item) {
-                    if(!txt[txt.length - 1]) {
-                        return null;
-                    }
-                    return item.title.indexOf(txt[txt.length - 1]) !== -1;
-                });
-                // this.autocomplete.view.itemTemplate.source = '<li data-id="{id}"><div><strong class="item-title">{title}sssss</strong></div></li>';
-                // console.log(22, match, data, range.startOffset, range.endOffset, text, offset)
-                if (!data.length) {
-                    if(txt[txt.length - 1].indexOf('归母') !== -1 || txt[txt.length - 1].indexOf('中国') !== -1) {
-                        range.startOffset = match.index + 2;
-                        editor.getSelection().selectRanges( [ range ] );
-                        // editor.insertHtml( `<span style="color: red; text-decoration: underline">${txt[txt.length - 1]}</span>` );
-                        return {
-                            start: match ? match.index : 0,
-                            end: range.endOffset
-                        };
-                    }
+                const matchArr = text.split('~');
+                const matchText = matchArr[matchArr.length - 1]
+                eventEmitter.emit('COMMAND_POPUP', '~' + matchText);
+                if(!matchArr[matchArr.length - 1]) {
+                    this.callbackData = temp;
                 } else {
-                    return {
-                        start: match ? match.index : 0,
-                        end: range.endOffset
-                    };
+                    // const arr = matchText.split('.');
+                    // const lastText = arr[arr.length - 1];
+                    // lastText
                 }
+                // this.autocomplete.view.itemTemplate.source = '<li data-id="{id}"><div><strong class="item-title">{title}sssss</strong></div></li>';
+                // range.startOffset = match.index;
+                // console.log(22, match, range.startOffset, range.endOffset, text, offset)
+                // editor.getSelection().selectRanges( [ range ] );
+                // editor.insertHtml( `<span id="temporary">${'~' + matchArr[matchArr.length - 1]}</span>` );
+                return {
+                    start: match ? match.index : 0,
+                    end: range.endOffset
+                };
             }
             return null;
         });
@@ -530,7 +572,7 @@ export default class Editor extends React.Component {
     matchCallback(text, offset) {
         const editor = this.editorRef.current.editor;
         const match = text.slice(0, offset)
-                .match(/~\.{1}([a-zA-Z0-9_\u4e00-\u9fa5])*$/);
+                .match(/~([a-zA-Z0-9_\u4e00-\u9fa5])*$/);
         const data = MENTIONS.filter(function (item) {
             const txt = text.toLowerCase().split('~.');
             if(!txt[txt.length - 1]) {
@@ -548,22 +590,7 @@ export default class Editor extends React.Component {
     }
 
     dataCallback = (matchInfo, callback) => {
-        const data = MENTIONS.filter(function (item) {
-            const txt = matchInfo.query.toLowerCase().split('~.');
-            let test = txt[txt.length - 1];
-            if(!txt[txt.length - 1]) {
-                return null;
-            }
-            if(test.indexOf('归母') !== -1) {
-                test = '归母';
-            }
-            if(test.indexOf('中国') !== -1) {
-                test = '中国';
-            }
-            return item.title.indexOf(test) !== -1;
-        });
-        callback(data);
-
+        callback(this.callbackData);
         // callback(RECTIFY_MENTION.mentions);
     }
 
@@ -653,8 +680,9 @@ export default class Editor extends React.Component {
             <Comment onRef={(ref) => this.commentRef = ref}></Comment>
             <div id="command_tag_pane">
                 <ul>
-                    <li>asdasd</li>
-                    <li>asdasdas</li>
+                    <li>中国平安Q1Q2归母公司净利润58,1545,4545元</li>
+                    <li>中国平安Q1Q2半年归母公司净利润580.95亿元</li>
+                    <li>归母净利润580.95亿元</li>
                 </ul>
             </div>
         </EditorTemplate>

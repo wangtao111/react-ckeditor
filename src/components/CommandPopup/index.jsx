@@ -5,6 +5,8 @@ import IntelliCommand from '../intelliCommand';
 import Preview from '../Preview';
 import { inject, observer } from 'mobx-react';
 import SearchResult from '../SearchResult';
+import eventEmitter from "../../event";
+import insertChart from "../../widgets/insertChart";
 
 const CommandPopupWrapper = styled.div`
     width: 100%;
@@ -26,6 +28,20 @@ const CommandPopupWrapper = styled.div`
 export default class CommandPopup extends React.Component {
     constructor(props) {
         super(props);
+        this.state = {
+            orderText: ''
+        }
+    }
+    componentDidMount() {
+        eventEmitter.on('COMMAND_POPUP', (order) => {
+            if(order === null || order === undefined) {
+                this.onClose()
+            } else {
+                this.open();
+                this.props.drawerStore.setCommandPopFlag();
+                this.setState({orderText: order});
+            }
+        });
     }
 
     onClose = () => {
@@ -35,6 +51,7 @@ export default class CommandPopup extends React.Component {
         document.getElementById('popup_btn').style.display = 'block';
     }
     open = () => {
+        console.log(1212)
         document.getElementById('standby').style.width = '360px';
         document.getElementById('standby').style.height = 'auto';
         document.getElementById('standby').style.overflow = 'visible';
@@ -56,7 +73,7 @@ export default class CommandPopup extends React.Component {
             {
                 this.props.drawerStore.isCommandPop && <React.Fragment>
                     {/* 智能命令 */}
-                    <IntelliCommand closeCallback={this.onClose}/>
+                    <IntelliCommand closeCallback={this.onClose} orderText={this.state.orderText}/>
                     {/* 预览 */}
                     <Preview closeCallback={this.onClose}/>
                 </React.Fragment>

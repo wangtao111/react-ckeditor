@@ -73,12 +73,13 @@ export default class IntelliCommand extends React.Component {
     // }
 
     render() {
+        const {orderText} = this.props;
         return <IntelliCommandWrapper>
             <Icon type='close' className='close' onClick={() => {this.props.closeCallback()}}></Icon>
             <h2>智能命令</h2>
 
             <div className="editable-cmd-content" contentEditable={ true }>
-                ～中国平安(601318).利润表[2018]
+                {orderText}
             </div>
 
             <Button className="btn-exec-cmd">运行</Button>
