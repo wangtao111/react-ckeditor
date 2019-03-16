@@ -271,6 +271,7 @@ const Link = styled.a`
 `
 
 @inject('noteStore')
+@inject('drawerStore')
 @observer
 export default class NavSection extends React.Component {
     constructor(props) {
@@ -317,7 +318,7 @@ export default class NavSection extends React.Component {
             templateModalVisible: false,
             activeKey: '0,-1',       // 激活的项
             folderExpanded: false,          // 文件夹是否展开(默认不展开)
-            isCollapsed: false
+            isCollapsed: props.drawerStore.isVisible,        // 默认不收缩
         }
 
         this.addNewNote = this.addNewNote.bind(this);
@@ -484,13 +485,17 @@ export default class NavSection extends React.Component {
         });
     }
 
-    componentDidUpdate(prevProps) {
+    componentDidUpdate(prevProps, prevState) {
         if(prevProps.isCollapsed && !this.props.isCollapsed) {
             this.setState({
                 isCollapsed: this.props.isCollapsed
             }, () => {
                 this.props.setCollapsed && this.props.setCollapsed();
             });
+        }
+
+        if(this.state.isCollapsed === prevState.isCollapsed && prevProps.drawerStore.isVisible !== this.state.isCollapsed) {
+            this.toggleCollapse();
         }
     }
 
@@ -501,6 +506,8 @@ export default class NavSection extends React.Component {
             folderExpanded,
             isCollapsed
         } = this.state;
+
+        const { isVisible } = this.props.drawerStore;
 
         const menu = (<Menu>
             <Menu.Item onClick={ this.addNewNote }>新建笔记</Menu.Item>
