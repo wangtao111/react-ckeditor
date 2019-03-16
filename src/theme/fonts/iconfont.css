@@ -1,0 +1,37 @@
+@font-face {font-family: "iconfont";
+  src: url('iconfont.eot?t=1552718321562'); /* IE9 */
+  src: url('iconfont.eot?t=1552718321562#iefix') format('embedded-opentype'), /* IE6-IE8 */
+  url('data:application/x-font-woff2;charset=utf-8;base64,d09GMgABAAAAAAPcAAsAAAAACUgAAAONAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAHEIGVgCDOAqFIIQVATYCJAMYCw4ABCAFhG0HgQMb5gfIHpIkRT7c4LAeMEKFhx0PT2u092dm51SSJNVkErGkmq6Eq+AhUrqWComEl7D3ztXPMds5csSYbSbdLqUvzZFD/uhO2K/UdwQKAIbW+fKgejEsQUkIEaz7OCjPbW3Oig5pWb6DY6mf1mB53/Yu2UG1KBonz8ZdtibbQCbqG8YuL/JpAt2m5Ak66+gbg0iFflIgzi2TQWTColSQQ6e+FlxZxHuk0ZleYCsA77zfj/9QEgxJk+lnXnvezqHp1583PH4BM8hdB4FIh3OBXUfGMlCI80LPcyFBZlmIbrk01A7QaRyX+PV4Dd/wECIUK9uKphP9yyMkWdEQlV7bCy4hdXNoUotP8AvySfxm+WR+c3wKv3mLBhrqgH0D+Ijj102gVFFkxZR6dVVYygKN4wbjg9iD17bdG/vmlXX9Mra+Z9nct+4e2rcP/IrjTqbNSS+72Z4vNBB6RpSEIbkTiq8nqi1qI4QLsdbIuZIgkfXUGzcbsiHD3Cxn9eniVq5d0RG/kfEU4G7XPdobGeqM32pGrlS+IRyZRjflXl0vzNtZL8bdqKgM/YilJph+FAZA2N4wIdqKqCkuP5wR7/+hUDmjIjiEUzVkwJQlxisLfsSaoU1D6HfEx/aeUABCD+LG/g+a1zz42WRs+mndGdZ72yJSfH9HHGGzyRXnppHP2F/4uKTaiF2BQzafvY2l5J47+5RXpvadtAtQ9fhHK/mlviR/wI4ALcw1HKP95yL+c/yNdh49LCrqbgxfwLf+8OR1tRkCyReINyxtLP0VpA0niiLXrbVI460ugWo9ViKh2xi6hQWGvRhKN9a4ltBpLIKkwyRknaaRBbsMjR7bUHU6hG5LOq/vMUIJEaULi3YBhEF3IOn3FbJBd5EF+xwa4z5BNRg4dLseKXfsMRuR6FZFTBNH1zpahgwI066j/foRMpd9TMXlHmWClGPFsbigKJ3vpACpIc5xVswSrQUKJf3YAZ5HPp9EW0kPGbrArbVdU1goir6pwJB+iHZKIYxGOOSyDlkMUoBwNteiMz8/gpiW+TCqYqwsOIEoDmv/qFiBogbITk2g0dilvMaxwlRC0wQkKJIf6gAu4jMyErKLD/MgBq2Au0PKVqMQzRJNNQXT6/x3eQt00y+qkSJHiSZqdOg9+oPyGef5XBrJscPz3XKFVJjPcnR+Su5N3JWvLNOt85lScjUj6/ORIOX5hrTXAQAAAA==') format('woff2'),
+  url('iconfont.woff?t=1552718321562') format('woff'),
+  url('iconfont.ttf?t=1552718321562') format('truetype'), /* chrome, firefox, opera, Safari, Android, iOS 4.2+ */
+  url('iconfont.svg?t=1552718321562#iconfont') format('svg'); /* iOS 4.1- */
+}
+
+.iconfont {
+  font-family: "iconfont" !important;
+  font-size: 16px;
+  font-style: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-add-doc:before {
+  content: "\e6f7";
+}
+
+.icon-add-doc-hover:before {
+  content: "\e6ff";
+}
+
+.icon-list-:before {
+  content: "\e709";
+}
+
+.icon-db-right-arrow:before {
+  content: "\e70a";
+}
+
+.icon-db-left-arrow:before {
+  content: "\e70b";
+}
+

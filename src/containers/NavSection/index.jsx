@@ -14,6 +14,22 @@ const NavSectionWrapper = styled.section`
     height: 100%;
     flex-shrink: 0;
 
+    .expand-layout {
+        position: relative;
+
+        .icon-collapse {
+            position: fixed;
+            left: 22px;
+            bottom: 10px;
+            color: #959FB1;
+            cursor: pointer;
+
+            &:hover {
+                color: #3f7cd5;
+            }
+        }
+    }
+
     .operation-tools {
         text-align: center;
         padding: 15px 0;
@@ -43,6 +59,70 @@ const NavSectionWrapper = styled.section`
             width: 16px;
             height: 16px;
             margin-right: 5px;
+        }
+    }
+
+    .collapse-layout {
+        .icon-expand {
+            position: fixed;
+            left: 23px;
+            bottom: 10px;
+            color: #959FB1;
+            cursor: pointer;
+
+            &:hover {
+                color: #3f7cd5;
+            }
+        }
+
+        .sidebar-item {
+            text-align: center;
+            height: 60px;
+            line-height: 60px;
+            cursor: pointer;
+
+            &:hover {
+                background-color: #e4edf8;
+            }
+
+            .icon-add-doc {
+                color: #407CD5;
+            }
+        }
+
+        .icon_doc,
+        .icon_share_me,
+        .icon_file_folder,
+        .icon_tag,
+        .icon_recycle_bin {
+            display: inline-block;
+            vertical-align: middle;
+            width: 24px;
+            height: 24px;
+            background-repeat: no-repeat;
+            background-attachment: scroll;
+            background-position: center;
+            background-size: 22px auto;
+        }
+
+        .icon_doc {
+            background-image: url('${require('../../theme/images/icon_doc.png')}');
+        }
+
+        .icon_share_me {
+            background-image: url('${require('../../theme/images/icon_share_me.png')}');
+        }
+
+        .icon_file_folder {
+            background-image: url('${require('../../theme/images/icon_file_folder.png')}');
+        }
+
+        .icon_tag {
+            background-image: url('${require('../../theme/images/icon_tag.png')}');
+        }
+
+        .icon_recycle_bin {
+            background-image: url('${require('../../theme/images/icon_recycle_bin.png')}');
         }
     }
 
@@ -191,6 +271,7 @@ const Link = styled.a`
 `
 
 @inject('noteStore')
+@inject('drawerStore')
 @observer
 export default class NavSection extends React.Component {
     constructor(props) {
@@ -237,6 +318,7 @@ export default class NavSection extends React.Component {
             templateModalVisible: false,
             activeKey: '0,-1',       // 激活的项
             folderExpanded: false,          // 文件夹是否展开(默认不展开)
+            isCollapsed: props.drawerStore.isVisible,        // 默认不收缩
         }
 
         this.addNewNote = this.addNewNote.bind(this);
@@ -393,12 +475,39 @@ export default class NavSection extends React.Component {
 
     }
 
+    toggleCollapse = () => {
+        const { isCollapsed } = this.state;
+
+        this.setState({ 
+            isCollapsed: !isCollapsed 
+        }, () => {
+            this.props.changeWidth && this.props.changeWidth(isCollapsed ? 220 : 64 );
+        });
+    }
+
+    componentDidUpdate(prevProps, prevState) {
+        if(prevProps.isCollapsed && !this.props.isCollapsed) {
+            this.setState({
+                isCollapsed: this.props.isCollapsed
+            }, () => {
+                this.props.setCollapsed && this.props.setCollapsed();
+            });
+        }
+
+        if(this.state.isCollapsed === prevState.isCollapsed && prevProps.drawerStore.isVisible !== this.state.isCollapsed) {
+            this.toggleCollapse();
+        }
+    }
+
     render() {
         const { 
             menuList,
             templateModalVisible,
-            folderExpanded 
+            folderExpanded,
+            isCollapsed
         } = this.state;
+
+        const { isVisible } = this.props.drawerStore;
 
         const menu = (<Menu>
             <Menu.Item onClick={ this.addNewNote }>新建笔记</Menu.Item>
@@ -408,18 +517,35 @@ export default class NavSection extends React.Component {
             <Menu.Item>导入PDF文档</Menu.Item>
         </Menu>);
 
-       
-
         return <NavSectionWrapper>
-            <div className="operation-tools">
-                <Dropdown overlay={ menu }><a className="btn-new-doc"><i className="icon-add"></i>新文档</a></Dropdown>
+            <div className="expand-layout" style={{ display: isCollapsed ? 'none' : 'block' }}>
+                <div className="operation-tools">
+                    <Dropdown overlay={ menu }><a className="btn-new-doc"><i className="icon-add"></i>新文档</a></Dropdown>
+                </div>
+
+                <ul className="menu-list">
+                    {
+                        this.renderMenuTree(menuList)
+                    }
+                </ul>
+
+                <i className="icon-collapse iconfont icon-db-left-arrow" onClick={ this.toggleCollapse }></i>
             </div>
 
-            <ul className="menu-list">
+            <div className="collapse-layout" style={{ display: isCollapsed ? 'block' : 'none' }}>
+                <div className="sidebar-item" title="添加">
+                    <i className="iconfont icon-add-doc"></i>
+                </div>
                 {
-                    this.renderMenuTree(menuList)
+                    (menuList && !!menuList.length) && menuList.map((menu, index) => {
+                        return <div className="sidebar-item" title={ menu.name } key={ index }>
+                            <i className={ menu.icon }></i>
+                        </div>
+                    })
                 }
-            </ul>
+
+                <i className="icon-expand iconfont icon-db-right-arrow" onClick={ this.toggleCollapse }></i>
+            </div>
             
             <Modal visible={ templateModalVisible } footer={ null } 
                 onCancel={ () => this.setModalVisible('templateModalVisible', false)}>

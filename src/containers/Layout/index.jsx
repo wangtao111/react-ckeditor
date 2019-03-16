@@ -31,17 +31,32 @@ export default class Layout extends React.Component {
         this.state = {
             width: 220,
             height: 800,
+            isCollapsed: true
         }
     }
 
+    changeWidth = (width) => {
+        this.setState({
+            width
+        });
+    }
+
+    setCollapsed = () => {
+        this.setState({
+            isCollapsed: true
+        })
+    }
+
     render() {
+        const { isCollapsed } = this.state;
+
         return <div>
             <Header></Header>
             <AppContent>
                 <ResizableBox width={this.state.width} minConstraints={[220]} onResize={(event, { element, size }) => {
-                    this.setState({ width: size.width, height: size.height });
+                    this.setState({ width: size.width, height: size.height, isCollapsed: false });
                 }}>
-                    <NavSection />
+                    <NavSection changeWidth={ this.changeWidth } isCollapsed={ isCollapsed } setCollapsed={ this.setCollapsed }/>
                 </ResizableBox>
                 <FileListSection />
                 <FinEditor />

@@ -1,11 +1,58 @@
 import React from 'react';
 import { Input, Button } from 'antd';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { inject, observer } from 'mobx-react';
 import eventEmitter from "../../event";
+
 const FileListSectionWrapper = styled.div`
-    width: 360px;
+    position: relative;
     flex-shrink: 0;
+    height: 100vh;
+
+    .file-list-container {
+        width: 360px;
+    }
+
+    ${ props => props.shrink && css`
+        .file-list-container {
+            width: 0;
+            overflow: hidden;
+        }
+    `}
+
+    ${ props => !props.shrink && css`
+        .file-list-container {
+            width: 360px;
+            overflow: auto;
+        }
+    `}
+
+    .icon-shrink,
+    .icon-expand {
+        position: absolute;
+        width: 13px;
+        height: 24px;
+        display: inline-block;
+        border: 1px solid #E1E2E6;
+        cursor: pointer;
+    }
+
+    .icon-shrink {
+        right: 0;
+        top: 20px;
+        border-right: 0;
+        border-top-left-radius: 3px;
+        border-bottom-left-radius: 3px;
+        background: url('${require('../../theme/images/icon_arrow_left_grey.png')}') no-repeat scroll center / 5px auto;
+    }
+
+    .icon-expand {
+        left: -1px;
+        top: 20px;
+        border-top-right-radius: 3px;
+        border-bottom-right-radius: 3px;
+        background: url('${require('../../theme/images/icon_arrow_right_grey.png')}') no-repeat scroll center / 5px auto;
+    }
     
     .file-list-header {
         position: relative;
@@ -26,24 +73,6 @@ const FileListSectionWrapper = styled.div`
             &:hover {
                 opacity: 1;
             }
-        }
-
-        .icon-shrink {
-            position: absolute;
-            right: 0;
-            top: 20px;
-            width: 13px;
-            height: 24px;
-            border-top-left-radius: 3px;
-            border-bottom-left-radius: 3px;
-            display: inline-block;
-            border: 1px solid #E1E2E6;
-            border-right: 0;
-            cursor: pointer;
-        }
-
-        .icon-shrink {
-            background: url('${require('../../theme/images/icon_arrow_left_grey.png')}') no-repeat scroll center / 5px auto;
         }
 
         .icon-back {
@@ -72,9 +101,11 @@ const FileListSectionWrapper = styled.div`
             }
         }
     }
+
     .article-item-hover{
         background-color: #EAF0FB;
     }
+
     .article-item {
         display: block;
         border: 1px solid #E1E2E6;
@@ -112,6 +143,7 @@ const FileListSectionWrapper = styled.div`
     }
 `;
 @inject('noteStore')
+@inject('drawerStore')
 @observer
 export default class FileListSection extends React.Component {
     constructor(props) {
@@ -119,7 +151,7 @@ export default class FileListSection extends React.Component {
 
         this.state = {
             articleIndex: 0,
-            isShrink: false,       // 默认不收缩
+            isShrink: props.drawerStore.isVisible,        // 默认不收缩
         };
     }
 
@@ -128,6 +160,14 @@ export default class FileListSection extends React.Component {
         this.setState({activeIndex: 0})
     }
 
+    componentDidUpdate(prevProps, prevState) {
+        if(this.state.isShrink === prevState.isShrink && prevProps.drawerStore.isVisible !== this.state.isShrink) {
+            this.setState({
+                isShrink: this.props.drawerStore.isVisible
+            });
+        }
+    }
+    
     // 移除笔记
     removeNote(index) {
         this.props.noteStore.deleteNote(index);
@@ -143,40 +183,50 @@ export default class FileListSection extends React.Component {
         this.props.noteStore.setActiveIndex(index);
     }
 
-    render() {
+    toggleWidth = () => {
+        const { isShrink } = this.state;
 
+        this.setState({
+            isShrink: !isShrink
+        });
+    }
+
+    render() {
         const noteList = this.props.noteStore.noteList;
-        const {activeIndex, isShrink } = this.state;
+        const { activeIndex, isShrink } = this.state;
+        const { isVisible } = this.props.drawerStore;
 
         return <FileListSectionWrapper shrink={ isShrink }>
-            <div className="file-list-header">
-                <i className="icon-back"></i>
-                <Input prefix={<i className="icon-search"></i>} placeholder="搜索..." className="search-ipt"/>
-                <i className="icon-setting"></i>
-                <i className="icon-shrink" onClick={ () => { this.setState({ isShrink: !isShrink })} }></i>
+            <div className="file-list-container">
+                <div className="file-list-header">
+                    <i className="icon-back"></i>
+                    <Input prefix={<i className="icon-search"></i>} placeholder="搜索..." className="search-ipt"/>
+                    <i className="icon-setting"></i>
+                </div>
+
+                <ul className="article-list">
+                    {
+                        (noteList && !!noteList.length) && noteList.map((noteItem, index) => {
+                            return <li key={ index } onClick={ () => { this.setActiveNote.bind(this, index); this.setState({activeIndex: index}); eventEmitter.emit('SKIM_ARTICLE', noteItem) }}>
+                                <a className={`article-item ${index === activeIndex && 'article-item-hover'}`}>
+                                    <h3>{ noteItem.title }</h3>
+                                    <div className='content'><p>{ noteItem.briefContent }</p><img src={noteItem.imgUrl} alt=""/></div>
+                                    <div className="article-footer">
+                                        <time>{ noteItem.date }</time>
+                                        <span>{ noteItem.size }</span>
+                                        <Button icon='delete'
+                                                size='small'
+                                                style={{marginLeft: '20px'}}
+                                                onClick={(e) => { e.stopPropagation();this.removeNote(index)}}></Button>
+                                    </div>
+                                </a>
+                            </li>
+                        })
+                    }
+                </ul>
             </div>
 
-            <ul className="article-list">
-                {
-                    (noteList && !!noteList.length) && noteList.map((noteItem, index) => {
-                        return <li key={ index } onClick={ () => { this.setActiveNote.bind(this, index); this.setState({activeIndex: index}); eventEmitter.emit('SKIM_ARTICLE', noteItem) }}>
-                            <a className={`article-item ${index === activeIndex && 'article-item-hover'}`}>
-                                <h3>{ noteItem.title }</h3>
-                                <div className='content'><p>{ noteItem.briefContent }</p><img src={noteItem.imgUrl} alt=""/></div>
-                                <div className="article-footer">
-                                    <time>{ noteItem.date }</time>
-                                    <span>{ noteItem.size }</span>
-                                    <Button icon='delete'
-                                            size='small'
-                                            style={{marginLeft: '20px'}}
-                                            onClick={(e) => { e.stopPropagation();this.removeNote(index)}}></Button>
-                                </div>
-                            </a>
-                        </li>
-                    })
-                }
-            </ul>
-
+            <i className={ `icon-${ isShrink ? 'expand' : 'shrink'}`} title={ isShrink ? '展开' : '收缩' } onClick={ this.toggleWidth }></i>
         </FileListSectionWrapper>
     }
 }
