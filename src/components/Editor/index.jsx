@@ -118,8 +118,8 @@ const EditorTemplate = styled.div`
     }
     .tool_item {
           display: inline-block;
-          width: 20px;
-          height: 20px;
+          width: 16px;
+          height: 16px;
           background-size: 100%;
     }
     .tools{
@@ -164,7 +164,7 @@ const EditorTemplate = styled.div`
                     }
                 }
             }
-             &:nth-child(4){
+             &:nth-child(5){
                >span{
                     background: url(${require('../../img/more.png')}) no-repeat;
                     &:hover{
@@ -172,7 +172,7 @@ const EditorTemplate = styled.div`
                     }
                 }
             }
-             &:nth-child(5){
+             &:nth-child(6){
                >span{
                     background: url(${require('../../img/info.png')}) no-repeat;
                 }
@@ -216,6 +216,7 @@ const EditorTemplate = styled.div`
 
 @inject('editorStore')
 @inject('drawerStore')
+@inject('noteStore')
 @observer
 export default class Editor extends React.Component {
     constructor(props) {
@@ -226,8 +227,8 @@ export default class Editor extends React.Component {
             title: '',
             tools: [
                 {title: '分享', img: require('../../img/share.png')},
-                {title: '演示模式', img: require('../../img/demo.png')},
                 {title: '评论', img: require('../../img/comment.png')},
+                {title: '演示模式', img: require('../../img/demo.png')},
                 {title: '标签', img: require('../../img/tag.png')},
                 {title: '更多', img: require('../../img/more.png')},
                 {title: '文件信息', img: require('../../img/info.png')},
@@ -498,6 +499,7 @@ export default class Editor extends React.Component {
                 .outputTemplate
                 .output(item);
         }
+        eventEmitter.emit('SKIM_ARTICLE', this.props.noteStore.noteList[0]);
         this.setEditorIframe();
     }
 
@@ -728,9 +730,7 @@ export default class Editor extends React.Component {
                 <ul className='tools'>
                     {
                         tools.map((li, index) => {
-                            return <li key={index} onClick={() => this.toolBarCharge(li)}><img src={li.img}
-                                                                                               alt={li.title}
-                                                                                               title={li.title}/></li>
+                            return <li key={index} onClick={() => this.toolBarCharge(li)}><span className='tool_item' title={li.title}></span></li>
                         })
                     }
                 </ul>

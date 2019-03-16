@@ -1,4 +1,44 @@
 const FileData = [
+    {
+        title: '欢迎使用金融云笔记',
+        briefContent: '欢迎使用全新的金融云笔记--工作效率更高',
+        size: '7.1MB',
+        date: '2019-01-03',
+        imgUrl: require('../img/welcome.png'),
+        type: 1,
+        content: `
+                    <div>
+                         <div style="background: #3b8dee; color: #fff; padding: 15px 0;text-align: center">
+                             <h1>欢迎使用金融云笔记</h1>
+                             <p>——— 满足金融从业人员撰写调研记录、晨会纪要等工作场景的在线工具</p>
+                         </div>
+                         <p style="text-align: center; color: #3b8dee;font-weight: bold;font-size: 16px">您可以在这里</p>
+                         <ul style="list-style: none;background: #edf5ff;padding: 20px 50px;font-size: 15px">
+                            <li style="font-weight: bold">一、 新建笔记
+                                <p style="text-indent: 25px; font-weight: normal">在笔记中输入文字内容，插入图表、表格、字体样式及位置设置等</p>
+                            </li>
+                            <li style="font-weight: bold">二、 智能命令提示
+                                <ol style="margin: 10px 0; font-weight: normal">
+                                    <li>输入~会自动弹出右侧智能命令面板，默认匹配出模板</li>
+                                    <li>输入~后加文字（例如 '中国'）会匹配对应公司</li>
+                                    <li>输入~后加文字匹配后加  . （例如 '归母'）会匹配金融文字，可插入图表或表格</li>
+                                </ol>
+                            </li>
+                            <li style="font-weight: bold">三、 插入表格
+                                <ol style="margin: 10px 0; font-weight: normal">
+                                    <li>可以从上方按钮选择行数和列数新建表格</li>
+                                    <li>也可以智能命令匹配数据插入表格</li>
+                                    <li>表格支持改变行列宽度，图表支持改变宽高</li>
+                                </ol>
+                            </li>
+                            <li style="font-weight: bold">四、支持预览演示 
+                                    <p style="text-indent: 25px; font-weight: normal">点击右上方的第三个演示模式按钮，可进入演示模式, 可进行放大缩小操作，方便观看</p>
+                            </li>
+                        </ul>
+                    </div>
+                   
+                `
+    },
     {title: '《看研报》产品分析报告', briefContent: '产品亮点1、核心能力：核心提供【搜索+订阅内容服务】，在推荐层面较弱', imgUrl: require('../img/kanyanbao.png'), size: '6.6MB', date: '2019-02-01', type: 1,
         content: '<div style="font-size: 15px;">' +
                 '<p style="text-align: center;font-size: 18px;font-weight: bold; color: #444;margin-bottom: 40px">产品亮点</p>' +
@@ -58,21 +98,6 @@ const FileData = [
                 '<p style="color: #888">您可点击今日推送内容的第三条查看</p>' +
             '</div>'+
 
-            '</div>'},
-            {
-                title: '欢迎使用金融云笔记',
-                briefContent: '欢迎使用全新的金融云笔记--工作效率更高',
-                size: '7.1MB',
-                date: '2019-01-03',
-                type: 1,
-                content: `
-                    <ol>
-                        <li>新建笔记</li>
-                        <li>智能提示，输入~.中国会出现智能命令提示</li>
-                        <li>插入表格、图表,表格支持改变行列宽度，图表支持改变宽高</li>
-                        <li>支持预览演示</li>
-                    </ol>
-                `
-            }
+            '</div>'}
 ]
 export default FileData;

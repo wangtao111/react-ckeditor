@@ -104,13 +104,19 @@ export default class FileListSection extends React.Component {
         };
     }
 
+    componentDidMount() {
+        this.props.noteStore.setActiveIndex(0);
+        this.setState({activeIndex: 0})
+    }
+
     // 移除笔记
     removeNote(index) {
-        const { noteList, setNoteList } = this.props.noteStore;
-        const noteListCopy = [ ...noteList ];
-
-        noteListCopy.splice(index, 1);
-        setNoteList(noteListCopy);
+        this.props.noteStore.deleteNote(index);
+        if(this.props.noteStore.noteList[index]){
+            this.setActiveNote.bind(this, index);
+            this.setState({activeIndex: index});
+            eventEmitter.emit('SKIM_ARTICLE', this.props.noteStore.noteList[index])
+        }
     }
 
     // 设置激活的笔记
@@ -143,7 +149,7 @@ export default class FileListSection extends React.Component {
                                     <Button icon='delete'
                                             size='small'
                                             style={{marginLeft: '20px'}}
-                                            onClick={() => {this.props.noteStore.deleteNote(index)}}></Button>
+                                            onClick={(e) => { e.stopPropagation();this.removeNote(index)}}></Button>
                                 </div>
                             </a>
                         </li>

@@ -83,9 +83,7 @@ export default class ShareModal extends React.Component {
                             </RadioGroup>
                         </div>
                         <div style={{display: 'flex', padding: '15px 0', borderTop: '1px solid #eee',marginTop: '20px'}}>
-                            分享至：<img src={require('../../../img/share.png')} alt=""  style={{margin: '0 15px'}}/>
-                            <img src={require('../../../img/share.png')} alt="" style={{marginRight: '15px'}}/>
-                            <img src={require('../../../img/share.png')} alt=""/>
+                            分享至：<img src={require('../../../img/wechat.png')} alt=""  style={{margin: '0 15px'}}/>
                         </div>
                     </TabPane>
                     <TabPane tab="分享指定好友" key="2"  style={{fontSize: '12px', color: '#333'}}>
