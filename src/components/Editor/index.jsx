@@ -115,7 +115,7 @@ const EditorTemplate = styled.div`
         color: #666;
         border: none;
         outline: none;
-        padding: 0 10px;
+        padding: 0 14px;
     }
     .tool_item {
           display: inline-block;
@@ -793,7 +793,7 @@ export default class Editor extends React.Component {
                     ref={this.editorRef}
                     data={data}
                     config={config}
-                    style={{border: 'none'}}
+                    style={{border: '1px solid #E1E2E6', boxShadow: 'none'}}
                     onChange={this.onEditorChange}
                     onInstanceReady={this.instanceReady}
                 />

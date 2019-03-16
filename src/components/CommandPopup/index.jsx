@@ -6,19 +6,22 @@ import Preview from '../Preview';
 import { inject, observer } from 'mobx-react';
 import SearchResult from '../SearchResult';
 import eventEmitter from "../../event";
-import insertChart from "../../widgets/insertChart";
 
 const CommandPopupWrapper = styled.div`
+    flex-shrink: 0;
     width: 0;
-    box-shadow: 0px 2px 6px 0px rgba(0, 0, 0, 0.3);
+    border-left: 1px solid #E1E2E6;
+    margin-left: -1px;
+    /* box-shadow: 0px 2px 6px 0px rgba(0, 0, 0, 0.3); */
 
     ${props => props.visible && css`
         display: block;
-        width: 480px;
+        width: 380px;
         #popup_btn {
             display: none;
         }
     `}
+
     .close{
         color: #bbb;
         float: right;

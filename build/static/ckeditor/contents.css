@@ -327,6 +327,11 @@ select {
 	background-color: #f7f8fa;
 }
 
+
+.cke_chrome {
+	box-shadow: none !important;
+}
+
 /*全屏隐藏hover可移动和边框*/
 body[contenteditable="false"] .cke_widget_wrapper:hover>.cke_widget_element {
 	outline: none;
