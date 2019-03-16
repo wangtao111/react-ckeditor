@@ -1,4 +1,5 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
 import CKEditor from 'ckeditor4-react';
 import FullScreen from '../../components/FullScreen';
 import ShareModal from './shareModal';
@@ -543,10 +544,61 @@ export default class Editor extends React.Component {
         return {x: l, y: t}
     }
 
+    // 创建动态菜单节点
+    createDropMenu(posX, posY, selectCallback) {
+        var divEle = document.createElement('div');
+        divEle.setAttribute('id', 'dropdownMenu');
+        divEle.setAttribute('style', `position: absolute; left: ${posX}px; top: ${ posY + 15 }px`);
+
+        window.document.body.appendChild(divEle);
+
+        ReactDOM.render(<ul>
+            <li onClick={ () => selectCallback('哈哈金融云笔记') }>哈哈金融云笔记</li>
+            <li onClick={ () => selectCallback('哈哈笔记') }>哈哈笔记</li>
+            <li onClick={ () => selectCallback('哈哈记') }>哈哈记</li>
+        </ul>, document.getElementById('dropdownMenu'));
+    }
+
+    // 替换文字
+    replaceText = (range) => {
+        return (value) => {
+            const dropDownMenu = document.getElementById('dropdownMenu');
+            dropDownMenu.parentNode.removeChild(dropDownMenu);
+
+            const editor = this.editorRef.current.editor;
+
+            if(editor) {
+                // range.deleteContents();
+            }
+        }
+    }
+
     textTestCallback = (range) => {
         if (!range.collapsed) {
             return null;
         }
+
+        // const editor = this.editorRef.current.editor;
+        // const text = range.startContainer.$.data;
+
+        // if(text === '~哈哈') {
+        //     range.setStart(range.startContainer, 0);
+        //     editor.getSelection().selectRanges([ range ]);
+        //     editor.document.$.execCommand('delete');
+            
+        //     editor.insertHtml(`<span class="text-hover">${ text }<i class="arrow-down" id="arrowDownHover">${ window.CKEDITOR.dom.selection.FILLING_CHAR_SEQUENCE}</i></span>`);
+
+        //     editor.document.getById('arrowDownHover').on('click', (e) => {
+        //         const { pageX, pageY } = e.data.$;
+        //         const clientRect = document.getElementsByTagName("iframe")[0].getBoundingClientRect();
+
+        //         if(clientRect) {
+        //             const { left, top } = clientRect;
+        //             this.createDropMenu(left + pageX, top + pageY, this.replaceText() );
+        //         }
+        //     });
+        // }
+
         return window.CKEDITOR.plugins.textMatch.match(range, (txt, offset) => {
             let text = JSON.parse(JSON.stringify(txt));
             let index = text.lastIndexOf('~');
@@ -701,10 +753,10 @@ export default class Editor extends React.Component {
                 // {name: 'clipboard', groups: ['undo']},
                 // {name: 'document', groups: ['doctools']},
                 {name: 'styles', groups: ['undo', 'cleanup', 'styles']},
+                {name: 'basicstyles', groups: ['basicstyles']},
                 {name: 'colors', groups: ['colors']},
                 {name: 'editing', groups: ['selection', 'spellchecker', 'editing']},
                 {name: 'forms', groups: ['forms']},
-                // {name: 'basicstyles', groups: ['basicstyles']},
                 {name: 'paragraph', groups: ['list', 'indent', 'blocks', 'align', 'bidi', 'paragraph']},
                 {name: 'links', groups: ['links']},
                 {name: 'insert', groups: ['insert']},
@@ -712,7 +764,7 @@ export default class Editor extends React.Component {
                 {name: 'others', groups: ['others']},
                 {name: 'about', groups: ['about']}
             ],
-            removeButtons: 'PasteFromWord,Paste,Resize,AutoSave,Clipboard,Smiley,ColorButton, Source,Templates,Chart,Source,Flash,SpecialChar,PageBreak,Iframe,ShowBlocks,About,Language,CreateDiv,Form,Checkbox,Radio,TextField,Textarea,Select,Button,ImageButton,HiddenField,Scayt,SelectAll,BidiRtl,BidiLtr',
+            removeButtons: 'PasteFromWord,Paste,Resize,AutoSave,Clipboard,Smiley,ColorButton, Source,Templates,Chart,Source,Flash,SpecialChar,PageBreak,Iframe,ShowBlocks,About,Language,CreateDiv,Form,Checkbox,Radio,TextField,Textarea,Select,Button,ImageButton,HiddenField,Scayt,SelectAll,BidiRtl,BidiLtr,Superscript,Subscript,Styles',
             qtCellPadding: '0',
             qtCellSpacing: '0',
             qtClass: 'editor-table-widget',

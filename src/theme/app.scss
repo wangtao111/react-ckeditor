@@ -85,3 +85,19 @@ a {
         height: 30px;
     }
 }
+
+#dropdownMenu {
+    background-color: #fff;
+    border: 1px solid #e2e2e2;
+    font-size: 12px;
+
+    li {
+        padding: 4px 6px;
+        color: #666;
+        cursor: pointer;
+
+        &:hover {
+            background-color: #dbe9f8;
+        }
+    }
+}
