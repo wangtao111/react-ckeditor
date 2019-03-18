@@ -2,11 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="c856506e-fd5f-4e8b-a15f-1fa24624da4d" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/api/api.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/api_helper.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/Editor/index.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Editor/index.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/index.js" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -19,11 +16,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/components/Editor/index.jsx">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="417">
-              <caret line="349" column="9" selection-start-line="349" selection-start-column="9" selection-end-line="349" selection-end-column="9" />
+            <state relative-caret-position="210">
+              <caret line="607" column="28" selection-start-line="607" selection-start-column="28" selection-end-line="607" selection-end-column="28" />
               <folding>
                 <element signature="e#0#26#0" expanded="true" />
                 <element signature="e#564#1581#0" />
@@ -115,13 +112,14 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/index.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="483">
-              <caret line="21" column="14" lean-forward="true" selection-start-line="21" selection-start-column="14" selection-end-line="21" selection-end-column="14" />
+            <state relative-caret-position="414">
+              <caret line="18" column="9" lean-forward="true" selection-start-line="18" selection-start-column="9" selection-end-line="18" selection-end-column="9" />
               <folding>
                 <element signature="e#0#23#0" expanded="true" />
+                <element signature="e#285#308#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -130,8 +128,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/api/api.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="184">
-              <caret line="8" column="2" selection-start-line="8" selection-start-column="2" selection-end-line="8" selection-end-column="2" />
+            <state relative-caret-position="207">
+              <caret line="9" column="33" lean-forward="true" selection-start-line="9" selection-start-column="33" selection-end-line="9" selection-end-column="33" />
             </state>
           </provider>
         </entry>
@@ -139,8 +137,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/api/api_helper.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="332">
-              <caret line="137" column="13" lean-forward="true" selection-start-line="137" selection-start-column="13" selection-end-line="137" selection-end-column="13" />
+            <state relative-caret-position="230">
+              <caret line="10" column="22" lean-forward="true" selection-start-line="10" selection-start-column="22" selection-end-line="10" selection-end-column="22" />
               <folding>
                 <element signature="e#0#41#0" expanded="true" />
               </folding>
@@ -181,7 +179,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>command_tag_pane</find>
       <find>click</find>
       <find>search-tabs</find>
       <find>dataSource</find>
@@ -201,7 +198,6 @@
       <find>.tools</find>
       <find>removeNote</find>
       <find>insta</find>
-      <find>~</find>
       <find>command</find>
       <find>text</find>
       <find>position</find>
@@ -211,6 +207,8 @@
       <find>webpack</find>
       <find>Component</find>
       <find>objectAssign</find>
+      <find>Message</find>
+      <find>~</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -259,9 +257,10 @@
         <option value="$PROJECT_DIR$/src/containers/FileListSection/index.jsx" />
         <option value="$PROJECT_DIR$/src/mockData/files.js" />
         <option value="$PROJECT_DIR$/src/components/Editor/shareModal/index.jsx" />
-        <option value="$PROJECT_DIR$/src/index.js" />
-        <option value="$PROJECT_DIR$/src/components/Editor/index.jsx" />
         <option value="$PROJECT_DIR$/src/api/api.js" />
+        <option value="$PROJECT_DIR$/src/index.js" />
+        <option value="$PROJECT_DIR$/src/api/api_helper.js" />
+        <option value="$PROJECT_DIR$/src/components/Editor/index.jsx" />
       </list>
     </option>
   </component>
@@ -293,12 +292,6 @@
               <item name="finnote-portal" type="b2602c69:ProjectViewProjectNode" />
               <item name="finnote-portal" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="finnote-portal" type="b2602c69:ProjectViewProjectNode" />
-              <item name="finnote-portal" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="api" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -371,12 +364,12 @@
       <workItem from="1551766183906" duration="8855000" />
       <workItem from="1551835048637" duration="55058000" />
       <workItem from="1552012819992" duration="17918000" />
-      <workItem from="1552274290462" duration="128629000" />
+      <workItem from="1552274290462" duration="129472000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="271688000" />
+    <option name="totallyTimeSpent" value="272531000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -1423,10 +1416,57 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/node_modules/object-assign/index.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1449">
+          <folding>
+            <element signature="n#!!doc" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/node_modules/axios/package.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="187">
+          <caret line="84" column="12" selection-start-line="84" selection-start-column="5" selection-end-line="84" selection-end-column="12" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/node_modules/axios/index.js">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/api/api_helper.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="230">
+          <caret line="10" column="22" lean-forward="true" selection-start-line="10" selection-start-column="22" selection-end-line="10" selection-end-column="22" />
+          <folding>
+            <element signature="e#0#41#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/api/api.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="207">
+          <caret line="9" column="33" lean-forward="true" selection-start-line="9" selection-start-column="33" selection-end-line="9" selection-end-column="33" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/index.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="414">
+          <caret line="18" column="9" lean-forward="true" selection-start-line="18" selection-start-column="9" selection-end-line="18" selection-end-column="9" />
+          <folding>
+            <element signature="e#0#23#0" expanded="true" />
+            <element signature="e#285#308#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/components/Editor/index.jsx">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="417">
-          <caret line="349" column="9" selection-start-line="349" selection-start-column="9" selection-end-line="349" selection-end-column="9" />
+        <state relative-caret-position="210">
+          <caret line="607" column="28" selection-start-line="607" selection-start-column="28" selection-end-line="607" selection-end-column="28" />
           <folding>
             <element signature="e#0#26#0" expanded="true" />
             <element signature="e#564#1581#0" />
@@ -1466,52 +1506,6 @@
             <element signature="e#17455#17463#0" />
             <element signature="e#22133#22203#0" />
             <element signature="e#22177#22233#0" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/api/api.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="184">
-          <caret line="8" column="2" selection-start-line="8" selection-start-column="2" selection-end-line="8" selection-end-column="2" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/node_modules/object-assign/index.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1449">
-          <folding>
-            <element signature="n#!!doc" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/node_modules/axios/package.json">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="187">
-          <caret line="84" column="12" selection-start-line="84" selection-start-column="5" selection-end-line="84" selection-end-column="12" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/node_modules/axios/index.js">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/api/api_helper.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="332">
-          <caret line="137" column="13" lean-forward="true" selection-start-line="137" selection-start-column="13" selection-end-line="137" selection-end-column="13" />
-          <folding>
-            <element signature="e#0#41#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/index.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="483">
-          <caret line="21" column="14" lean-forward="true" selection-start-line="21" selection-start-column="14" selection-end-line="21" selection-end-column="14" />
-          <folding>
-            <element signature="e#0#23#0" expanded="true" />
           </folding>
         </state>
       </provider>

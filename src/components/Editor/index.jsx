@@ -602,11 +602,16 @@ export default class Editor extends React.Component {
         return window.CKEDITOR.plugins.textMatch.match(range, (txt, offset) => {
             let text = JSON.parse(JSON.stringify(txt));
             let index = text.lastIndexOf('~');
+            let matchSymbol = '~';
+            if(index === -1) {
+                index = text.lastIndexOf('～')
+                matchSymbol = '～'
+            }
 
             if(!doing && index !== -1) {
-                const matchArr = text.split('~');
+                const matchArr = text.split(matchSymbol);
                 const matchText = matchArr[matchArr.length - 1]
-                eventEmitter.emit('COMMAND_POPUP', '~' + matchText);
+                eventEmitter.emit('COMMAND_POPUP', matchSymbol + matchText);
                 this.command = true;
                 if(!matchArr[matchArr.length - 1]) {
                     this.callbackData = temp;
