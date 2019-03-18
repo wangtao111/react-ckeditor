@@ -7,6 +7,7 @@ import { BrowserRouter } from 'react-router-dom'
 import Store from './store'
 // import registerServiceWorker from './registerServiceWorker'
 import $ from 'jquery';
+import api from './api/api';
 window.jQuery = $;
 window.$ = $;
 window.confirm = () => {};
@@ -18,6 +19,7 @@ console.error = (function() {
         }
     }
 })()
+React.Component.prototype.$api = api;
 const Wrap = (
     <Provider {...new Store()}>
       <BrowserRouter basename="/">
