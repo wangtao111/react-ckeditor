@@ -16,6 +16,7 @@ const temp = [
     {
         id: 1,
         title: '头部',
+        outSync: true,
         detail: '<div><div style="border: 1px dashed #98BCFF; width: 100%; min-height: 100px; position: relative;margin-top: 30px;padding: 10px">' +
                 '<span contenteditable="false" style="position: absolute; top: -19px; left: -1px;background: #D8E9F6;color: #98BCFF; padding: 0 15px; border: 1px solid #98BCFF; border-bottom: none; border-radius: 4px; font-size: 10px">头部</span>' +
                 '<span>&nbsp;</span>' +
@@ -24,6 +25,7 @@ const temp = [
     {
         id: 2,
         title: '标题',
+        outSync: true,
         detail: '<div><div style="border: 1px dashed #98BCFF; width: 100%; height: 100px; position: relative;margin-top: 30px;padding: 10px">' +
             '<span contenteditable="false" style="position: absolute; top: -19px; left: -1px;background: #D8E9F6;color: #98BCFF; padding: 0 15px; border: 1px solid #98BCFF; border-bottom: none; border-radius: 4px; font-size: 10px">标题</span>' +
             '<span>&nbsp;</span>' +
@@ -497,6 +499,7 @@ export default class Editor extends React.Component {
             });
         this.autocomplete.getHtmlToInsert = function (item) {
             setTimeout(() => {
+               if(item.outSync) return;
                const inputText = document.getElementById('editable-cmd-content').innerText ;
                let signal = '.';
                let symbol = inputText.split(signal);
@@ -591,27 +594,6 @@ export default class Editor extends React.Component {
         if (!range.collapsed) {
             return null;
         }
-        // const editor = this.editorRef.current.editor;
-        // const text = range.startContainer.$.data;
-
-        // if(text === '~哈哈') {
-        //     range.setStart(range.startContainer, 0);
-        //     editor.getSelection().selectRanges([ range ]);
-        //     editor.document.$.execCommand('delete');
-            
-        //     editor.insertHtml(`<span class="text-hover">${ text }<i class="arrow-down" id="arrowDownHover">${ window.CKEDITOR.dom.selection.FILLING_CHAR_SEQUENCE}</i></span>`);
-
-        //     editor.document.getById('arrowDownHover').on('click', (e) => {
-        //         const { pageX, pageY } = e.data.$;
-        //         const clientRect = document.getElementsByTagName("iframe")[0].getBoundingClientRect();
-
-        //         if(clientRect) {
-        //             const { left, top } = clientRect;
-        //             this.createDropMenu(left + pageX, top + pageY, this.replaceText() );
-        //         }
-        //     });
-        // }
-
         return window.CKEDITOR.plugins.textMatch.match(range, (txt, offset) => {
             let text = JSON.parse(JSON.stringify(txt));
             let index = text.lastIndexOf('~');
@@ -665,76 +647,8 @@ export default class Editor extends React.Component {
         });
     }
 
-    // textTestCallback = (range) => {
-    //     if (!range.collapsed) {
-    //         return null;
-    //     }
-
-    //     // 如果是归母晶
-    //     return window.CKEDITOR.plugins.textMatch.match(range, (text, offset) => {
-
-    //         if(!text || text === '') return null;
-
-    //         if(text !== '~.归母晶') {
-    //             return this.matchCallback(text, offset);
-    //         }else {
-    //             // 错误
-    //             if(RECTIFY_MENTION.status === 0) {
-    //                 const editor = this.editorRef.current.editor;
-    //                 const selection = editor.getSelection();
-    //                 // 下划线
-    //                 range.setStart(range.startContainer, 2);
-    //                 selection.selectRanges([range]);
-    //                 editor.document.$.execCommand('delete');
-
-    //                 const newRange = selection.getRanges()[0];
-    //                 const textNode = new window.CKEDITOR.dom.element('span');
-    //                 textNode.setStyle('border-bottom', '1px dashed #CE5542');
-    //                 textNode.appendText('归母晶');
-
-    //                 newRange.insertNode(textNode);
-    //                 newRange.moveToPosition(textNode, window.CKEDITOR.POSITION_AFTER_END);
-    //                 newRange.select();
-    //                 // debugger;
-    //                 // newRange.setStart(newRange.startContainer, 0);
-    //                 // newRange.setEnd(newRange.endContainer, 5);
-    //                 // debugger;
-    //                 // newRange.collapse();
-    //                 // range = newRange;   
-
-    //                 // this.matchCallback(newRange.endContainer.$.innerText, newRange.endOffset);
-    //                 return { 
-    //                     start: 0,
-    //                     end: 2
-    //                 }
-    //             }
-    //         }
-    //     });
-    // }
-
-    matchCallback(text, offset) {
-        const editor = this.editorRef.current.editor;
-        const match = text.slice(0, offset)
-                .match(/~([a-zA-Z0-9_\u4e00-\u9fa5])*$/);
-        const data = MENTIONS.filter(function (item) {
-            const txt = text.toLowerCase().split('~.');
-            if(!txt[txt.length - 1]) {
-                return null;
-            }
-            return item.title.indexOf(txt[txt.length - 1]) !== -1;
-        });
-        if (!data.length) {
-            return null;
-        }
-        return {
-            start: match ? match.index : 0,
-            end: offset
-        };
-    }
-
     dataCallback = (matchInfo, callback) => {
         callback(this.callbackData);
-        // callback(RECTIFY_MENTION.mentions);
     }
 
     titleChange = (val) => {
