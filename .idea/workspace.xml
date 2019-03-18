@@ -2,8 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="c856506e-fd5f-4e8b-a15f-1fa24624da4d" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/Editor/index.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Editor/index.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/intelliCommand/index.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/intelliCommand/index.jsx" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -19,8 +19,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/components/Editor/index.jsx">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="210">
-              <caret line="607" column="28" selection-start-line="607" selection-start-column="28" selection-end-line="607" selection-end-column="28" />
+            <state relative-caret-position="184">
+              <caret line="502" column="52" lean-forward="true" selection-start-line="502" selection-start-column="52" selection-end-line="502" selection-end-column="52" />
               <folding>
                 <element signature="e#0#26#0" expanded="true" />
                 <element signature="e#564#1581#0" />
@@ -57,6 +57,7 @@
                 <element signature="n#style#0;n#select#0;n#div#6;n#div#0;n#!!top" expanded="true" />
                 <element signature="n#style#0;n#div#0;n#div#6;n#div#0;n#!!top" expanded="true" />
                 <element signature="n#style#0;n#div#1;n#div#0;n#div#6;n#div#0;n#!!top" expanded="true" />
+                <element signature="e#11755#14882#0" />
                 <element signature="e#17455#17463#0" />
                 <element signature="e#22133#22203#0" />
                 <element signature="e#22177#22233#0" />
@@ -68,8 +69,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/ckeditor/plugins/autocomplete/plugin.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="136">
-              <caret line="973" column="22" selection-start-line="973" selection-start-column="8" selection-end-line="973" selection-end-column="22" />
+            <state relative-caret-position="-1607">
+              <caret line="475" column="8" selection-start-line="475" selection-start-column="8" selection-end-line="475" selection-end-column="8" />
               <folding>
                 <element signature="e#18314#19458#0" />
                 <element signature="e#19484#21046#0" />
@@ -88,6 +89,7 @@
                 <element signature="e#31541#31662#0" />
                 <element signature="e#31765#31888#0" />
                 <element signature="e#31922#32159#0" />
+                <element signature="e#32164#32450#0" />
                 <element signature="e#33395#35497#0" />
                 <element signature="e#33399#33574#0" />
                 <element signature="e#33614#33841#0" />
@@ -128,8 +130,32 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/api/api.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="207">
-              <caret line="9" column="33" lean-forward="true" selection-start-line="9" selection-start-column="33" selection-end-line="9" selection-end-column="33" />
+            <state relative-caret-position="230">
+              <caret line="10" lean-forward="true" selection-start-line="10" selection-end-line="10" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/components/CommandPopup/index.jsx">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="378">
+              <caret line="79" column="33" lean-forward="true" selection-start-line="79" selection-start-column="33" selection-end-line="79" selection-end-column="33" />
+              <folding>
+                <element signature="e#0#26#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/components/intelliCommand/index.jsx">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="288">
+              <caret line="80" column="74" selection-start-line="80" selection-start-column="74" selection-end-line="80" selection-end-column="74" />
+              <folding>
+                <element signature="e#0#26#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -137,8 +163,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/api/api_helper.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="230">
-              <caret line="10" column="22" lean-forward="true" selection-start-line="10" selection-start-column="22" selection-end-line="10" selection-end-column="22" />
+            <state relative-caret-position="3105">
+              <caret line="135" column="2" lean-forward="true" selection-start-line="135" selection-start-column="2" selection-end-line="135" selection-end-column="2" />
               <folding>
                 <element signature="e#0#41#0" expanded="true" />
               </folding>
@@ -179,18 +205,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>click</find>
-      <find>search-tabs</find>
-      <find>dataSource</find>
-      <find>matchCallback</find>
-      <find>eventEmitter</find>
-      <find>startOffset</find>
-      <find>match.</find>
-      <find>return</find>
-      <find>match</find>
-      <find>index</find>
-      <find>.</find>
-      <find>.tool</find>
       <find>tool_item</find>
       <find>tools</find>
       <find>setActiveNote</find>
@@ -209,6 +223,18 @@
       <find>objectAssign</find>
       <find>Message</find>
       <find>~</find>
+      <find>matchCallback</find>
+      <find>onchang</find>
+      <find>click</find>
+      <find>foc</find>
+      <find>focus</find>
+      <find>getHtmlToInsert</find>
+      <find>insertHtml</find>
+      <find>console</find>
+      <find>.document</find>
+      <find>this.document</find>
+      <find>document</find>
+      <find>emit</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -251,7 +277,6 @@
         <option value="$PROJECT_DIR$/src/containers/Header/index.jsx" />
         <option value="$PROJECT_DIR$/src/components/SearchResult/index.jsx" />
         <option value="$PROJECT_DIR$/src/ckeditor/ckeditor.js" />
-        <option value="$PROJECT_DIR$/src/components/intelliCommand/index.jsx" />
         <option value="$PROJECT_DIR$/tt.html" />
         <option value="$PROJECT_DIR$/src/components/CommandPopup/index.jsx" />
         <option value="$PROJECT_DIR$/src/containers/FileListSection/index.jsx" />
@@ -260,6 +285,7 @@
         <option value="$PROJECT_DIR$/src/api/api.js" />
         <option value="$PROJECT_DIR$/src/index.js" />
         <option value="$PROJECT_DIR$/src/api/api_helper.js" />
+        <option value="$PROJECT_DIR$/src/components/intelliCommand/index.jsx" />
         <option value="$PROJECT_DIR$/src/components/Editor/index.jsx" />
       </list>
     </option>
@@ -292,6 +318,25 @@
               <item name="finnote-portal" type="b2602c69:ProjectViewProjectNode" />
               <item name="finnote-portal" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="finnote-portal" type="b2602c69:ProjectViewProjectNode" />
+              <item name="finnote-portal" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="ckeditor" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="finnote-portal" type="b2602c69:ProjectViewProjectNode" />
+              <item name="finnote-portal" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="components" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="finnote-portal" type="b2602c69:ProjectViewProjectNode" />
+              <item name="finnote-portal" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="components" type="462c0819:PsiDirectoryNode" />
+              <item name="CommandPopup" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -364,12 +409,12 @@
       <workItem from="1551766183906" duration="8855000" />
       <workItem from="1551835048637" duration="55058000" />
       <workItem from="1552012819992" duration="17918000" />
-      <workItem from="1552274290462" duration="129472000" />
+      <workItem from="1552274290462" duration="139358000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="272531000" />
+    <option name="totallyTimeSpent" value="282417000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -384,7 +429,7 @@
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.17917548" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.17917548" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="npm" order="2" side_tool="true" />
       <window_info id="Favorites" order="3" side_tool="true" />
@@ -397,7 +442,7 @@
       <window_info anchor="bottom" id="TODO" order="6" weight="0.32963374" />
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="TypeScript" order="8" />
-      <window_info active="true" anchor="bottom" id="Terminal" order="9" visible="true" weight="0.26415095" />
+      <window_info anchor="bottom" id="Terminal" order="9" visible="true" weight="0.26415095" />
       <window_info anchor="bottom" id="Event Log" order="10" side_tool="true" />
       <window_info anchor="bottom" id="Version Control" order="11" weight="0.32963374" />
       <window_info anchor="bottom" id="Messages" order="12" />
@@ -1216,16 +1261,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/intelliCommand/index.jsx">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="130">
-          <caret line="69" column="21" selection-start-line="69" selection-start-column="21" selection-end-line="69" selection-end-column="21" />
-          <folding>
-            <element signature="e#0#26#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/containers/NavSection/index.jsx">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-4896">
@@ -1238,16 +1273,6 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/img/demo1.png">
       <provider selected="true" editor-type-id="images" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/CommandPopup/index.jsx">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1403">
-          <caret line="61" column="56" selection-start-line="61" selection-start-column="46" selection-end-line="61" selection-end-column="56" />
-          <folding>
-            <element signature="e#0#26#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/components/Editor/shareModal/index.jsx">
       <provider selected="true" editor-type-id="text-editor">
@@ -1371,10 +1396,57 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/node_modules/object-assign/index.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1449">
+          <folding>
+            <element signature="n#!!doc" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/node_modules/axios/package.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="187">
+          <caret line="84" column="12" selection-start-line="84" selection-start-column="5" selection-end-line="84" selection-end-column="12" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/node_modules/axios/index.js">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/index.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="414">
+          <caret line="18" column="9" lean-forward="true" selection-start-line="18" selection-start-column="9" selection-end-line="18" selection-end-column="9" />
+          <folding>
+            <element signature="e#0#23#0" expanded="true" />
+            <element signature="e#285#308#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/api/api.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="230">
+          <caret line="10" lean-forward="true" selection-start-line="10" selection-end-line="10" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/api/api_helper.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="3105">
+          <caret line="135" column="2" lean-forward="true" selection-start-line="135" selection-start-column="2" selection-end-line="135" selection-end-column="2" />
+          <folding>
+            <element signature="e#0#41#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/ckeditor/plugins/autocomplete/plugin.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="136">
-          <caret line="973" column="22" selection-start-line="973" selection-start-column="8" selection-end-line="973" selection-end-column="22" />
+        <state relative-caret-position="-1607">
+          <caret line="475" column="8" selection-start-line="475" selection-start-column="8" selection-end-line="475" selection-end-column="8" />
           <folding>
             <element signature="e#18314#19458#0" />
             <element signature="e#19484#21046#0" />
@@ -1393,6 +1465,7 @@
             <element signature="e#31541#31662#0" />
             <element signature="e#31765#31888#0" />
             <element signature="e#31922#32159#0" />
+            <element signature="e#32164#32450#0" />
             <element signature="e#33395#35497#0" />
             <element signature="e#33399#33574#0" />
             <element signature="e#33614#33841#0" />
@@ -1416,57 +1489,30 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/node_modules/object-assign/index.js">
+    <entry file="file://$PROJECT_DIR$/src/components/CommandPopup/index.jsx">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1449">
+        <state relative-caret-position="378">
+          <caret line="79" column="33" lean-forward="true" selection-start-line="79" selection-start-column="33" selection-end-line="79" selection-end-column="33" />
           <folding>
-            <element signature="n#!!doc" expanded="true" />
+            <element signature="e#0#26#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/node_modules/axios/package.json">
+    <entry file="file://$PROJECT_DIR$/src/components/intelliCommand/index.jsx">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="187">
-          <caret line="84" column="12" selection-start-line="84" selection-start-column="5" selection-end-line="84" selection-end-column="12" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/node_modules/axios/index.js">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/api/api_helper.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="230">
-          <caret line="10" column="22" lean-forward="true" selection-start-line="10" selection-start-column="22" selection-end-line="10" selection-end-column="22" />
+        <state relative-caret-position="288">
+          <caret line="80" column="74" selection-start-line="80" selection-start-column="74" selection-end-line="80" selection-end-column="74" />
           <folding>
-            <element signature="e#0#41#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/api/api.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="207">
-          <caret line="9" column="33" lean-forward="true" selection-start-line="9" selection-start-column="33" selection-end-line="9" selection-end-column="33" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/index.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="414">
-          <caret line="18" column="9" lean-forward="true" selection-start-line="18" selection-start-column="9" selection-end-line="18" selection-end-column="9" />
-          <folding>
-            <element signature="e#0#23#0" expanded="true" />
-            <element signature="e#285#308#0" expanded="true" />
+            <element signature="e#0#26#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/components/Editor/index.jsx">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="210">
-          <caret line="607" column="28" selection-start-line="607" selection-start-column="28" selection-end-line="607" selection-end-column="28" />
+        <state relative-caret-position="184">
+          <caret line="502" column="52" lean-forward="true" selection-start-line="502" selection-start-column="52" selection-end-line="502" selection-end-column="52" />
           <folding>
             <element signature="e#0#26#0" expanded="true" />
             <element signature="e#564#1581#0" />
@@ -1503,6 +1549,7 @@
             <element signature="n#style#0;n#select#0;n#div#6;n#div#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#div#0;n#div#6;n#div#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#div#1;n#div#0;n#div#6;n#div#0;n#!!top" expanded="true" />
+            <element signature="e#11755#14882#0" />
             <element signature="e#17455#17463#0" />
             <element signature="e#22133#22203#0" />
             <element signature="e#22177#22233#0" />

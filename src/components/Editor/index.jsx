@@ -496,6 +496,20 @@ export default class Editor extends React.Component {
                 outputTemplate: outputTemplate
             });
         this.autocomplete.getHtmlToInsert = function (item) {
+            setTimeout(() => {
+               const inputText = document.getElementById('editable-cmd-content').innerText ;
+               let signal = '.';
+               let symbol = inputText.split(signal);
+               if(symbol.length <= 1) {
+                   signal = '~';
+                   if(inputText.split('~').length <= 1) {
+                       signal = '～';
+                   }
+               }
+                symbol = inputText.split(signal);
+                symbol[symbol.length - 1] = item.detail;
+                eventEmitter.emit('COMMAND_POPUP', symbol.join(signal));
+            });
             return this
                 .outputTemplate
                 .output(item);
@@ -577,7 +591,6 @@ export default class Editor extends React.Component {
         if (!range.collapsed) {
             return null;
         }
-
         // const editor = this.editorRef.current.editor;
         // const text = range.startContainer.$.data;
 

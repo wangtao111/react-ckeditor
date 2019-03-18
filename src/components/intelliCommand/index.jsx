@@ -78,7 +78,7 @@ export default class IntelliCommand extends React.Component {
             <Icon type='close' className='close' onClick={() => {this.props.closeCallback()}}></Icon>
             <h2>智能命令</h2>
 
-            <div className="editable-cmd-content" contentEditable={ true }>
+            <div className="editable-cmd-content" id='editable-cmd-content' contentEditable={ true }>
                 {orderText}
             </div>
 
