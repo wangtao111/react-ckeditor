@@ -361,7 +361,6 @@ export default class Editor extends React.Component {
         eventEmitter.on('EDITOR_INSERT_CHART', (chartId) => {
             const editor = this.editorRef.current.editor;
             const chartTime = new Date().getTime();
-
             insertChart(`${ chartTime }`, editor);
 
             const chartOption = this.props.editorStore.chartDataObj[chartId];
@@ -384,6 +383,7 @@ export default class Editor extends React.Component {
             // 调用插入表格的widget
             const editor = this.editorRef.current.editor;
             const tableTime = new Date().getTime();
+            this.setPNodeHtml();
             insertTable(`${ tableTime }`, editor);
 
             const widgetInstances = editor.widgets.instances;
@@ -405,6 +405,7 @@ export default class Editor extends React.Component {
             // 调用插入表格的widget
             const editor = this.editorRef.current.editor;
             const tableTime = new Date().getTime();
+            this.setPNodeHtml();
             insertTable1(`${ tableTime }`, editor);
 
             const widgetInstances = editor.widgets.instances;
@@ -537,7 +538,11 @@ export default class Editor extends React.Component {
         eventEmitter.emit('SKIM_ARTICLE', this.props.noteStore.noteList[0]);
         this.setEditorIframe();
     }
-
+    setPNodeHtml = () => {
+        this.pNode.innerHTML = '';
+        const s = this.pNode.previousSibling.textContent;
+        this.pNode.previousSibling.textContent = s.substring(0, s.length - 1);
+    }
     setEditorIframe = () => {
         const iframe = document.getElementById('cke_1_contents').children[1].contentWindow;
         let dom = iframe.document;
