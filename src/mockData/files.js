@@ -22,6 +22,7 @@ const FileData = [
                                     <li>输入~会自动弹出右侧智能命令面板，默认匹配出模板</li>
                                     <li>输入~后加文字（例如 '中国'）会匹配对应公司</li>
                                     <li>输入~后加文字匹配后加  . （例如 '归母'）会匹配金融文字，可插入图表或表格</li>
+                                    <li>已生成命令可进行简化选择，例如<span style="border: 1px dashed #999;color: blue; cursor: pointer" contenteditable="false" name="select_box">归母净利润580.95亿元</span></li>
                                 </ol>
                             </li>
                             <li style="font-weight: bold">三、 插入表格
@@ -43,7 +44,7 @@ const FileData = [
         content: '<div style="font-size: 15px;">' +
                 '<p style="text-align: center;font-size: 18px;font-weight: bold; color: #444;margin-bottom: 40px">产品亮点</p>' +
                 '<div style="margin-bottom: 60px">' +
-                    '<p style="font-weight: bold; color: #555">【金融工程】震荡调整继续， 9月低配规则、EEP因子</p>' +
+                    '<p style="font-weight: bold; color: #555;" ><span style="border: 1px dashed #999;color: blue; cursor: pointer" contenteditable="false" name="select_box">【金融工程】震荡调整继续， 9月低配规则、EEP因子</span></p>' +
                     '<ul style="margin: 15px 0; color: #666; list-style: none;padding: 0">' +
                         '<li>1. 择时与风格： 坚持“以金融人为本”的经营主张，致力于职业经理人的人文关怀，积极为现代金融企业职业经理人提供前沿的金融理论、独到的管理理念，成为从事金融理论与实践研究的专家学者及各界同行的交流平台</li>' +
                         '<li>2. 行业轮动： 小微企业融资一直是我国经济社会发展的重要难题，由于小微企业自身的经营风险和信用风险较高，在传统的金融资源获取方面一直处于劣势。随着互联网金融的蓬勃发展，互联网金融与小微企业融资理论和实践的研究越来越多</li>' +

@@ -232,6 +232,11 @@ export default class Editor extends React.Component {
         this.state = {
             data: '',
             title: '',
+            dropList: [
+                {name: '中国平安Q1Q2归母公司净利润58,1545,4545元'},
+                {name: '中国平安Q1Q2半年归母公司净利润580.95亿元'},
+                {name: '归母净利润580.95亿元'}
+            ],
             tools: [
                 {title: '分享', img: require('../../img/share.png')},
                 {title: '评论', img: require('../../img/comment.png')},
@@ -341,6 +346,7 @@ export default class Editor extends React.Component {
         this.document = document;
         this.callbackData = [];
         this.pNode = null;
+        this.tag = null;
         this.onEditorChange = this.onEditorChange.bind(this);
     }
 
@@ -556,23 +562,28 @@ export default class Editor extends React.Component {
             document.getElementById('command_tag_pane').style.display = 'none';
         }
         dom.onclick = (e) => {
-            const tag = e.target.getAttribute('commandTag');
+            const tag = e.target.getAttribute('name');
             document.getElementById('command_tag_pane').style.display = 'none';
-            if(tag === 'show_type') {
+            if(tag === 'select_box') {
                 const document = this.document;
                 const scrollX = document.documentElement.scrollLeft || document.body.scrollLeft;
                 const scrollY = document.documentElement.scrollTop || document.body.scrollTop;
                 const offset = this.getPoint(document.getElementById('cke_1_contents'));
-                const x = e.pageX || e.clientX + scrollX ;
-                const y = e.pageY || e.clientY + scrollY ;
+                const x = e.target.offsetLeft + scrollX ;
+                const y = e.target.offsetTop + scrollY ;
                 const el = document.getElementById('command_tag_pane');
                 el.style.display = 'block';
                 el.style.left = x + offset.x + 'px';
                 el.style.top = y + offset.y + 20 +'px';
                 document.getElementById('command_tag_pane').style.display = 'block';
+                this.tag = e.target;
             }
         }
     }
+    changeSelectItem = (li) => {
+        this.tag.innerHTML = li.name;
+    }
+
     getPoint = (obj) => {
         let t = obj.offsetTop;
         let l = obj.offsetLeft;
@@ -708,7 +719,7 @@ export default class Editor extends React.Component {
 
 
     render() {
-        const {data, title, tools, visible} = this.state;
+        const {data, title, tools, visible, dropList} = this.state;
         const contentCss = process.env.NODE_ENV === 'production' ? [`${window.origin}/static/ckeditor/contents.css`, `${window.origin}/static/ckeditor/external.css`] : ['http://localhost:5500/build/static/ckeditor/contents.css', 'http://localhost:5500/build/static/ckeditor/external.css' ];
 
         const config = {
@@ -770,9 +781,11 @@ export default class Editor extends React.Component {
             <Comment onRef={(ref) => this.commentRef = ref}></Comment>
             <div id="command_tag_pane">
                 <ul>
-                    <li>中国平安Q1Q2归母公司净利润58,1545,4545元</li>
-                    <li>中国平安Q1Q2半年归母公司净利润580.95亿元</li>
-                    <li>归母净利润580.95亿元</li>
+                    {
+                        dropList.map((li, index) => {
+                            return <li key={index} onClick={() => this.changeSelectItem(li)}>{li.name}</li>
+                        })
+                    }
                 </ul>
             </div>
         </EditorTemplate>
