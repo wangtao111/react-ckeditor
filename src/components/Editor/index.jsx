@@ -566,11 +566,11 @@ export default class Editor extends React.Component {
             document.getElementById('command_tag_pane').style.display = 'none';
             if(tag === 'select_box') {
                 const document = this.document;
-                const scrollX = document.documentElement.scrollLeft || document.body.scrollLeft;
-                const scrollY = document.documentElement.scrollTop || document.body.scrollTop;
+                // const scrollX = document.documentElement.scrollLeft || document.body.scrollLeft;
+                // const scrollY = document.documentElement.scrollTop || document.body.scrollTop;
                 const offset = this.getPoint(document.getElementById('cke_1_contents'));
-                const x = e.target.offsetLeft + scrollX ;
-                const y = e.target.offsetTop + scrollY ;
+                const x = e.target.offsetLeft ;
+                const y = e.target.offsetTop ;
                 const el = document.getElementById('command_tag_pane');
                 el.style.display = 'block';
                 el.style.left = x + offset.x + 'px';
