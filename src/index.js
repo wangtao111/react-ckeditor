@@ -14,7 +14,7 @@ window.confirm = () => {};
 console.error = (function() {
     const error = console.error
     return function(exception) {
-        if ((exception + '').indexOf('Warning: A component is `contentEditable`') != 0) {
+        if ((exception + '').indexOf('Warning:') != 0) {
             error.apply(console, arguments)
         }
     }

@@ -17,7 +17,7 @@ const temp = [
         id: 1,
         title: '头部',
         outSync: true,
-        detail: '<div><div style="border: 1px dashed #98BCFF; width: 100%; min-height: 100px; position: relative;margin-top: 30px;padding: 10px">' +
+        tag: '<div><div style="border: 1px dashed #98BCFF; width: 100%; min-height: 100px; position: relative;margin-top: 30px;padding: 10px">' +
                 '<span contenteditable="false" style="position: absolute; top: -19px; left: -1px;background: #D8E9F6;color: #98BCFF; padding: 0 15px; border: 1px solid #98BCFF; border-bottom: none; border-radius: 4px; font-size: 10px">头部</span>' +
                 '<span>&nbsp;</span>' +
             '</div></div>'
@@ -26,7 +26,7 @@ const temp = [
         id: 2,
         title: '标题',
         outSync: true,
-        detail: '<div><div style="border: 1px dashed #98BCFF; width: 100%; height: 100px; position: relative;margin-top: 30px;padding: 10px">' +
+        tag: '<div><div style="border: 1px dashed #98BCFF; width: 100%; height: 100px; position: relative;margin-top: 30px;padding: 10px">' +
             '<span contenteditable="false" style="position: absolute; top: -19px; left: -1px;background: #D8E9F6;color: #98BCFF; padding: 0 15px; border: 1px solid #98BCFF; border-bottom: none; border-radius: 4px; font-size: 10px">标题</span>' +
             '<span>&nbsp;</span>' +
             '</div></div>'
@@ -36,54 +36,58 @@ const tables = [
     {
         id: 6,
         title: '归母净利润',
-        detail: '归母净利润[Q1Q2]587,415,463,762.1'
+        detail: '归母净利润[Q1Q2]587,415,463,762.1',
+        tag: '<span class="temporary" style="color: blue">归母净利润[Q1Q2]587,415,463,762.1</span>'
     },
     {
         id: 8,
         title: '归母净利为正',
-        detail: '归母净利为正[Q1Q2]'
+        detail: '归母净利为正[Q1Q2]',
+        tag: '<span class="temporary" style="color: blue">归母净利为正[Q1Q2]</span>'
     },
     {
         id: 9,
         title: '归母净利为负',
-        detail: '归母净利为负[Q1Q2]'
+        detail: '归母净利为负[Q1Q2]',
+        tag: '<span class="temporary" style="color: blue">归母净利为负[Q1Q2]</span>'
     },
     {
         id: 10,
         title: '归属于上市公司股东净利润',
-        detail: '归属于上市公司股东净利润[Q1Q2]'
+        detail: '归属于上市公司股东净利润[Q1Q2]',
+        tag: '<span class="temporary" style="color: blue">归属于上市公司股东净利润[Q1Q2]</span>'
     },
     {
         id: 11,
         title: '利润表',
-        detail: '利润表'
+        detail: '利润表',
+        tag: '<span class="temporary" style="color: blue">利润表</span>'
     },
 ]
 const MENTIONS = [
     {
         id: 1,
         title: '中国移动',
-        detail: '中国移动(601314)'
+        detail: '中国移动(601314)',
+        tag: '<span class="temporary" style="color: blue; display: inline-block">中国移动(601314) </span>'
     },
     {
         id: 2,
         title: '中国平安',
-        detail: `中国平安(601318)`
+        detail: `中国平安(601318)`,
+        tag: '<span class="temporary">中国平安(601318)</span>'
     },
     {
         id: 3,
         title: '中国联通',
-        detail: '中国联通(601384)'
+        detail: '中国联通(601384)',
+        tag: '<span class="temporary">中国联通(601384)</span>'
     },
     {
         id: 4,
         title: '中国银行',
-        detail: '中国银行(681384)'
-    },
-    {
-        id: 12,
-        title: '宏测试',
-        detail: '<div style="border: 1px solid #999;">宏测试<i style="color: #959FB1;">a</i></div>'
+        detail: '中国银行(681384)',
+        tag: '<span class="temporary">中国银行(681384)</span>'
     }
 ];
 
@@ -336,6 +340,7 @@ export default class Editor extends React.Component {
         this.autocomplete = null;
         this.document = document;
         this.callbackData = [];
+        this.pNode = null;
         this.onEditorChange = this.onEditorChange.bind(this);
     }
 
@@ -488,7 +493,8 @@ export default class Editor extends React.Component {
     instanceReady = () => {
         const editor = this.editorRef.current.editor;
         const itemTemplate = '<li data-id="{id}"><div><strong class="item-title">{title}</strong></div></li>';
-        const outputTemplate = '{detail}';
+        const outputTemplate = '{tag}';
+        const that = this;
         this.autocomplete = new window.CKEDITOR
             .plugins
             .autocomplete(editor, {
@@ -500,7 +506,7 @@ export default class Editor extends React.Component {
         this.autocomplete.getHtmlToInsert = function (item) {
             setTimeout(() => {
                if(item.outSync) return;
-               const inputText = document.getElementById('editable-cmd-content').innerText ;
+               const inputText = document.getElementById('editable-cmd-content').innerText;
                let signal = '.';
                let symbol = inputText.split(signal);
                if(symbol.length <= 1) {
@@ -511,7 +517,18 @@ export default class Editor extends React.Component {
                }
                 symbol = inputText.split(signal);
                 symbol[symbol.length - 1] = item.detail;
-                eventEmitter.emit('COMMAND_POPUP', symbol.join(signal));
+                if(that.pNode) {
+                    let str = that.pNode.previousSibling.textContent;
+                    if(str.charAt(str.length - 1) === '~'){
+                        str = '~';
+                    }
+                    if(str.charAt(str.length - 1) === '～') {
+                        str = '～';
+                    }
+                    eventEmitter.emit('COMMAND_POPUP', str +　that.pNode.innerHTML);
+                } else {
+                    eventEmitter.emit('COMMAND_POPUP', symbol.join(signal));
+                }
             });
             return this
                 .outputTemplate
@@ -594,6 +611,7 @@ export default class Editor extends React.Component {
         if (!range.collapsed) {
             return null;
         }
+        const editor = this.editorRef.current.editor;
         return window.CKEDITOR.plugins.textMatch.match(range, (txt, offset) => {
             let text = JSON.parse(JSON.stringify(txt));
             let index = text.lastIndexOf('~');
@@ -602,14 +620,34 @@ export default class Editor extends React.Component {
                 index = text.lastIndexOf('～')
                 matchSymbol = '～'
             }
-
-            if(!doing && index !== -1) {
+            this.pNode = null;
+            if(range.startContainer.$.parentNode.className === 'temporary'){　//选择公司后进入此逻辑
+                const pNode = this.getParentNode(range.startContainer.$), str = pNode.previousSibling.textContent;
+                if(str.charAt(str.length - 1) === '~' || str.charAt(str.length - 1) === '～'){
+                    const arr = text.split('.');
+                    const lastText = arr[arr.length - 1];
+                    const lastIndex = text.lastIndexOf('.');
+                    eventEmitter.emit('COMMAND_POPUP', matchSymbol +　pNode.innerHTML);
+                    let data = tables.filter(function (item) {
+                        return item.title.indexOf(lastText) !== -1;
+                    });
+                    this.callbackData = data;
+                    this.pNode = pNode;
+                    return {
+                        start: lastIndex + 1,
+                        end: text.length
+                    };
+                }
+            }
+            if(!doing && index !== -1) { // '~'匹配进入此逻辑
                 const matchArr = text.split(matchSymbol);
                 const matchText = matchArr[matchArr.length - 1]
                 eventEmitter.emit('COMMAND_POPUP', matchSymbol + matchText);
-                this.command = true;
                 if(!matchArr[matchArr.length - 1]) {
                     this.callbackData = temp;
+                    // range.setStart(range.endContainer, index - 1);
+                    // editor.getSelection().selectRanges( [ range ] );
+                    // editor.insertHtml( `<span class="temporary">${'~' + matchArr[matchArr.length - 1]}</span>` );
                     return {
                         start: index,
                         end: range.endOffset
@@ -625,26 +663,18 @@ export default class Editor extends React.Component {
                             start: index + 1,
                             end: range.endOffset
                         };
-                    } else {
-                        const lastText = arr[arr.length - 1];
-                        const lastIndex = text.lastIndexOf('.');
-                        let data = tables.filter(function (item) {
-                            return item.title.indexOf(lastText) !== -1;
-                        });
-                        this.callbackData = data;
-                        return {
-                            start: lastIndex + 1,
-                            end: text.length
-                        };
                     }
                 }
                 // this.autocomplete.view.itemTemplate.source = '<li data-id="{id}"><div><strong class="item-title">{title}sssss</strong></div></li>';
-                // console.log(22, match, range.startOffset, range.endOffset, text, offset)
-                // editor.getSelection().selectRanges( [ range ] );
-                // editor.insertHtml( `<span id="temporary">${'~' + matchArr[matchArr.length - 1]}</span>` );
             }
             return null;
         });
+    }
+    getParentNode = (node) => {
+        if(node.parentNode.className === 'temporary') {
+            return this.getParentNode(node.parentNode)
+        }
+        return node;
     }
 
     dataCallback = (matchInfo, callback) => {

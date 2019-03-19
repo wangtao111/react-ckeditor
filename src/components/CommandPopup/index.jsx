@@ -51,7 +51,7 @@ export default class CommandPopup extends React.Component {
             } else {
                 this.props.drawerStore.setVisible(true);
                 this.props.drawerStore.setCommandPopFlag();
-                this.setState({orderText: order});
+                document.getElementById('editable-cmd-content').innerHTML = order;
             }
         });
     }
@@ -77,7 +77,7 @@ export default class CommandPopup extends React.Component {
             {
                 this.props.drawerStore.isCommandPop && <React.Fragment>
                     {/* 智能命令 */}
-                    <IntelliCommand closeCallback={this.onClose} orderText={this.state.orderText}/>
+                    <IntelliCommand closeCallback={this.onClose}/>
                     {/* 预览 */}
                     <Preview closeCallback={this.onClose}/>
                 </React.Fragment>
