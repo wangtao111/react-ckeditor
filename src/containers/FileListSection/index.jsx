@@ -1,10 +1,8 @@
 import React from 'react';
-import { Input, Button } from 'antd';
-import styled, { css } from 'styled-components';
-import { inject, observer } from 'mobx-react';
+import {Input, Button} from 'antd';
+import styled, {css} from 'styled-components';
+import {inject, observer} from 'mobx-react';
 import eventEmitter from "../../event";
-import htmlDocx from 'html-docx-js/dist/html-docx';
-import { saveAs } from 'file-saver';
 
 const FileListSectionWrapper = styled.div`
     position: relative;
@@ -15,14 +13,14 @@ const FileListSectionWrapper = styled.div`
         width: 360px;
     }
 
-    ${ props => props.shrink && css`
+    ${props => props.shrink && css`
         .file-list-container {
             width: 0;
             overflow: hidden;
         }
     `}
 
-    ${ props => !props.shrink && css`
+    ${props => !props.shrink && css`
         .file-list-container {
             width: 360px;
             overflow: auto;
@@ -163,17 +161,17 @@ export default class FileListSection extends React.Component {
     }
 
     componentDidUpdate(prevProps, prevState) {
-        if(this.state.isShrink === prevState.isShrink && prevProps.drawerStore.isVisible !== this.state.isShrink) {
+        if (this.state.isShrink === prevState.isShrink && prevProps.drawerStore.isVisible !== this.state.isShrink) {
             this.setState({
                 isShrink: this.props.drawerStore.isVisible
             });
         }
     }
-    
+
     // 移除笔记
     removeNote(index) {
         this.props.noteStore.deleteNote(index);
-        if(this.props.noteStore.noteList[index]){
+        if (this.props.noteStore.noteList[index]) {
             this.setActiveNote.bind(this, index);
             this.setState({activeIndex: index});
             eventEmitter.emit('SKIM_ARTICLE', this.props.noteStore.noteList[index])
@@ -186,31 +184,11 @@ export default class FileListSection extends React.Component {
     }
 
     toggleWidth = () => {
-        const { isShrink } = this.state;
+        const {isShrink} = this.state;
 
         this.setState({
             isShrink: !isShrink
         });
-    }
-
-    // 导出成word    
-    exportToWord = (index) => {
-        let { title, content } = this.props.noteStore.noteList[index];
-
-        content = `
-            <!DOCTYPE html>
-            <html>
-                <head>
-
-                </head>
-                <body>
-                    ${ content }
-                </body>
-            </html>
-        `;
-        const converted = htmlDocx.asBlob(content);
-
-        saveAs(converted, `${title}.docx`);
     }
 
     convertImagesToBase64() {
@@ -240,10 +218,10 @@ export default class FileListSection extends React.Component {
 
     render() {
         const noteList = this.props.noteStore.noteList;
-        const { activeIndex, isShrink } = this.state;
-        const { isVisible } = this.props.drawerStore;
+        const {activeIndex, isShrink} = this.state;
+        const {isVisible} = this.props.drawerStore;
 
-        return <FileListSectionWrapper shrink={ isShrink }>
+        return <FileListSectionWrapper shrink={isShrink}>
             <div className="file-list-container">
                 <div className="file-list-header">
                     <i className="icon-back"></i>
@@ -254,23 +232,42 @@ export default class FileListSection extends React.Component {
                 <ul className="article-list">
                     {
                         (noteList && !!noteList.length) && noteList.map((noteItem, index) => {
-                            return <li key={ index } onClick={ () => { this.setActiveNote.bind(this, index); this.setState({activeIndex: index}); eventEmitter.emit('SKIM_ARTICLE', noteItem) }}>
+                            return <li key={index} onClick={() => {
+                                this.setActiveNote.bind(this, index);
+                                this.setState({activeIndex: index});
+                                eventEmitter.emit('SKIM_ARTICLE', noteItem)
+                            }}>
                                 <a className={`article-item ${index === activeIndex && 'article-item-hover'}`}>
-                                    <h3>{ noteItem.title }</h3>
-                                    <div className='content'><p>{ noteItem.briefContent }</p><img src={noteItem.imgUrl} alt=""/></div>
+                                    <h3>{noteItem.title}</h3>
+                                    <div className='content'><p>{noteItem.briefContent}</p><img src={noteItem.imgUrl}
+                                                                                                alt=""/></div>
                                     <div className="article-footer">
-                                        <time>{ noteItem.date }</time>
-                                        <span>{ noteItem.size }</span>
+                                        <time>{noteItem.date}</time>
+                                        <span>{noteItem.size}</span>
                                         <Button icon='delete'
                                                 size='small'
                                                 style={{marginLeft: '20px'}}
-                                                onClick={(e) => { e.stopPropagation();this.removeNote(index)}}></Button>
+                                                onClick={(e) => {
+                                                    e.stopPropagation();
+                                                    this.removeNote(index)
+                                                }}></Button>
 
                                         <Button icon="export"
                                                 size="small"
                                                 title="导出为word"
-                                                style={{ marginLeft: '20px' }}
-                                                onClick={(e) => { e.stopPropagation(); this.exportToWord(index)}}></Button>
+                                                style={{marginLeft: '10px'}}
+                                                onClick={(e) => {
+                                                    e.stopPropagation();
+                                                    this.exportToWord(index)
+                                                }}></Button>
+                                        <Button icon="export"
+                                                size="small"
+                                                title="导出为pdf"
+                                                style={{marginLeft: '10px'}}
+                                                onClick={(e) => {
+                                                    e.stopPropagation();
+                                                    this.exportToPDF(index)
+                                                }}></Button>
                                     </div>
                                 </a>
                             </li>
@@ -279,7 +276,8 @@ export default class FileListSection extends React.Component {
                 </ul>
             </div>
 
-            <i className={ `icon-${ isShrink ? 'expand' : 'shrink'}`} title={ isShrink ? '展开' : '收缩' } onClick={ this.toggleWidth }></i>
+            <i className={`icon-${isShrink ? 'expand' : 'shrink'}`} title={isShrink ? '展开' : '收缩'}
+               onClick={this.toggleWidth}></i>
         </FileListSectionWrapper>
     }
 }

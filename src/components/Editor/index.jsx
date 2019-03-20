@@ -6,12 +6,17 @@ import ShareModal from './shareModal';
 import Comment from './comment';
 import {inject, observer} from 'mobx-react';
 import eventEmitter from '../../event';
-import styled from 'styled-components';
 import insertTable from '../../widgets/insertTable';
 import insertTable1 from '../../widgets/insertTable1';
 import insertChart from '../../widgets/insertChart';
 import Highcharts from 'highcharts';
 import { Template } from '../../widgets/templates';
+import htmlDocx from 'html-docx-js/dist/html-docx';
+import {saveAs} from 'file-saver';
+import * as jsPDF from 'jspdf';
+import html2canvas from 'html2canvas';
+import EditorTemplate from './styled';
+
 const temp = [
     {
         id: 1,
@@ -36,30 +41,35 @@ const tables = [
     {
         id: 6,
         title: '归母净利润',
+        source: '数据中心',
         detail: '归母净利润[Q1Q2]587,415,463,762.1',
         tag: '<span class="temporary" style="color: blue">归母净利润[Q1Q2]587,415,463,762.1</span>'
     },
     {
         id: 8,
         title: '归母净利为正',
+        source: '平台',
         detail: '归母净利为正[Q1Q2]',
         tag: '<span class="temporary" style="color: blue">归母净利为正[Q1Q2]</span>'
     },
     {
         id: 9,
         title: '归母净利为负',
+        source: 'windows',
         detail: '归母净利为负[Q1Q2]',
         tag: '<span class="temporary" style="color: blue">归母净利为负[Q1Q2]</span>'
     },
     {
         id: 10,
         title: '归属于上市公司股东净利润',
+        source: '数据中心',
         detail: '归属于上市公司股东净利润[Q1Q2]',
         tag: '<span class="temporary" style="color: blue">归属于上市公司股东净利润[Q1Q2]</span>'
     },
     {
         id: 11,
         title: '利润表',
+        source: '数据中心',
         detail: '利润表',
         tag: '<span class="temporary" style="color: blue">利润表</span>'
     },
@@ -90,136 +100,7 @@ const MENTIONS = [
         tag: '<span class="temporary">中国银行(681384)</span>'
     }
 ];
-
-// 纠错信息
-const RECTIFY_MENTION = {
-    status: 0,          // 1 为正确, 0 为错误
-    mentions: [
-        {
-            title: '归母净利润'
-        },
-        {
-            title: '归母公司净利润'
-        },
-        {
-            title: '归母净利为正'
-        },
-        {
-            title: '归母净利为负'
-        },
-        {
-            title: '归属于上市公司股东净利润'
-        }
-    ]
-}
 let doing = false;
-const EditorTemplate = styled.div`
-    .title_input{
-        flex: 1;
-        font-size: 22px;
-        line-height: 60px;
-        color: #666;
-        border: none;
-        outline: none;
-        padding: 0 14px;
-    }
-    .tool_item {
-          display: inline-block;
-          width: 16px;
-          height: 16px;
-          background-size: 100%;
-    }
-    .tools{
-        float: left;
-        min-width: 270px;
-       >li{
-            float: left;
-            margin-right: 30px;
-            line-height: 60px;
-            cursor: pointer;
-            >span{
-            }
-            &:nth-child(1){
-               >span{
-                    background: url(${require('../../img/share.png')}) no-repeat;
-                    &:hover{
-                        background: url(${require('../../img/share1.png')}) no-repeat;
-                    }
-                }
-            }
-            &:nth-child(2){
-               >span{
-                    background: url(${require('../../img/comment.png')}) no-repeat;
-                    &:hover{
-                        background: url(${require('../../img/comment1.png')}) no-repeat;
-                    }
-                }
-            }
-             &:nth-child(3){
-               >span{
-                    background: url(${require('../../img/demo.png')}) no-repeat;
-                    &:hover{
-                        background: url(${require('../../img/demo1.png')}) no-repeat;
-                    }
-                }
-            }
-             &:nth-child(4){
-               >span{
-                    background: url(${require('../../img/tag.png')}) no-repeat;
-                    &:hover{
-                        background: url(${require('../../img/tag1.png')}) no-repeat;
-                    }
-                }
-            }
-             &:nth-child(5){
-               >span{
-                    background: url(${require('../../img/more.png')}) no-repeat;
-                    &:hover{
-                        background: url(${require('../../img/more1.png')}) no-repeat;
-                    }
-                }
-            }
-             &:nth-child(6){
-               >span{
-                    background: url(${require('../../img/info.png')}) no-repeat;
-                }
-            }
-       }
-    }
-    #command_tag_pane{
-        display: none;
-        position: absolute;
-        border: 1px solid #ddd;
-        border-radius: 2px;
-        background: #fff;
-        font-size: 12px;
-        >ul>li{
-            padding: 3px 20px;
-            cursor: pointer;
-            &:hover{
-                background: #dbe9f9;
-                color: #82abe5;
-            }
-        }
-    }
-    #fullScreenBtn>ul{
-        position: absolute;
-        top: 30px;
-        right: 30px;
-        cursor: url(${require('../../img/cursor.png')}), auto;
-        background: #a7a7a7;
-        >li{
-            width: 48px;
-            height: 48px;
-            line-height: 48px;
-            text-align: center;
-            color: #fff;
-            &:hover{
-                background: #777777
-            }
-        }
-    }
-`;
 
 @inject('editorStore')
 @inject('drawerStore')
@@ -245,6 +126,20 @@ export default class Editor extends React.Component {
                 {title: '更多', img: require('../../img/more.png')},
                 {title: '文件信息', img: require('../../img/info.png')},
             ],
+            moreList: [
+                {name: '阅读密码'},
+                {name: '查看历史版本'},
+                {name: '发布到'},
+                {name: '移动到'},
+                {name: '导出为word'},
+                {name: '导出为PDF'},
+                {name: '分享统计'},
+                {name: '保存为模板'},
+                {name: '引用设置'},
+                {name: '打印'},
+                {name: '删除'}
+            ],
+            showMore: false,
             visible: false,
             command: false,
             templateHtml: `<div>
@@ -502,7 +397,7 @@ export default class Editor extends React.Component {
 
     instanceReady = () => {
         const editor = this.editorRef.current.editor;
-        const itemTemplate = '<li data-id="{id}"><div><strong class="item-title">{title}</strong></div></li>';
+        const itemTemplate = '<li data-id="{id}"><div style="display: flex"><strong class="item-title" style="min-width: 100px">{title}</strong></div></li>';
         const outputTemplate = '{tag}';
         const that = this;
         this.autocomplete = new window.CKEDITOR
@@ -546,6 +441,7 @@ export default class Editor extends React.Component {
         }
         eventEmitter.emit('SKIM_ARTICLE', this.props.noteStore.noteList[0]);
         this.setEditorIframe();
+        document.getElementsByClassName('cke_autocomplete_panel')[0].style.width = 'auto';
     }
     setPNodeHtml = () => {
         if(!this.pNode) return;
@@ -652,6 +548,7 @@ export default class Editor extends React.Component {
                         return item.title.indexOf(lastText) !== -1;
                     });
                     this.callbackData = data;
+                    this.autocomplete.view.itemTemplate.source = '<li data-id="{id}"><div style="display: flex"><strong class="item-title" style="width: 150px">{title}</strong><strong style="margin-left: 10px">{source}</strong></div></li>';
                     this.pNode = pNode;
                     return {
                         start: lastIndex + 1,
@@ -685,7 +582,6 @@ export default class Editor extends React.Component {
                         };
                     }
                 }
-                // this.autocomplete.view.itemTemplate.source = '<li data-id="{id}"><div><strong class="item-title">{title}sssss</strong></div></li>';
             }
             return null;
         });
@@ -716,14 +612,89 @@ export default class Editor extends React.Component {
             case '评论':
                 this.commentRef.setVisible(true);
                 break;
+            case '更多':
+                this.setState({showMore: !this.state.showMore});
+                break;
             default:
                 break;
         }
     }
+    moreAction = (li) => {
+        switch (li.name) {
+            case '导出为PDF':
+                this.exportToPDF();
+                this.setState({showMore: false});
+                break;
+            case '导出为word':
+                this.exportToWord();
+                this.setState({showMore: false});
+                break;
+            default:
+                this.setState({showMore: false});
+                break;
+        }
+    }
+    // 导出成word
+    exportToWord = () => {
+        let {title, content} = this.props.noteStore.noteList[this.props.noteStore.activeIndex];
+        content = `
+            <!DOCTYPE html>
+            <html>
+                <head>
+
+                </head>
+                <body>
+                    ${content}
+                </body>
+            </html>
+        `;
+        const converted = htmlDocx.asBlob(content);
+        saveAs(converted, `${title}.docx`);
+    }
+    // 导出成PDF
+    exportToPDF = (index) => {
+        const iframe = document.getElementById('cke_1_contents').children[1].contentWindow;
+        let dom = iframe.document.body;
+        html2canvas(dom).then((canvas) =>  {
+            var contentWidth = canvas.width;
+            var contentHeight = canvas.height;
+            //一页pdf显示html页面生成的canvas高度;
+            var pageHeight = contentWidth / 592.28 * 841.89;
+            //未生成pdf的html页面高度
+            var leftHeight = contentHeight;
+            //页面偏移
+            var position = 0;
+            //a4纸的尺寸[595.28,841.89]，html页面生成的canvas在pdf中图片的宽高
+            var imgWidth = 595.28;
+            var imgHeight = 592.28/contentWidth * contentHeight;
+
+            var pageData = canvas.toDataURL('image/jpeg', 1.0);
+
+            var pdf = new jsPDF('', 'pt', 'a4');
+
+            //有两个高度需要区分，一个是html页面的实际高度，和生成pdf的页面高度(841.89)
+            //当内容未超过pdf一页显示的范围，无需分页
+            if (leftHeight < pageHeight) {
+                pdf.addImage(pageData, 'JPEG', 0, 0, imgWidth, imgHeight );
+            } else {
+                while(leftHeight > 0) {
+                    pdf.addImage(pageData, 'JPEG', 0, position, imgWidth, imgHeight)
+                    leftHeight -= pageHeight;
+                    position -= 841.89;
+                    //避免添加空白页
+                    if(leftHeight > 0) {
+                        pdf.addPage();
+                    }
+                }
+            }
+
+            pdf.save(`${this.state.title}.pdf`);
+        })
+    }
 
 
     render() {
-        const {data, title, tools, visible, dropList} = this.state;
+        const {data, title, tools, visible, dropList, moreList, showMore} = this.state;
         const contentCss = process.env.NODE_ENV === 'production' ? [`${window.origin}/static/ckeditor/contents.css`, `${window.origin}/static/ckeditor/external.css`] : ['http://localhost:5500/build/static/ckeditor/contents.css', 'http://localhost:5500/build/static/ckeditor/external.css' ];
 
         const config = {
@@ -769,6 +740,16 @@ export default class Editor extends React.Component {
                         })
                     }
                 </ul>
+                {
+                    showMore && <ul className='more-list'>
+                        {
+                            moreList.map((li, index) => {
+                                return <li key={index} onClick={() => this.moreAction(li)}><span>{li.name}</span></li>
+                            })
+                        }
+                    </ul>
+                }
+
             </div>
             <FullScreen editorRef={ this.editorRef.current } visible={visible} fullScreenId={'cke_1_contents'} exit={() => this.setState({visible: false})}
                         afterEnter={this.afterEnter} afterExit={this.afterExit}>
