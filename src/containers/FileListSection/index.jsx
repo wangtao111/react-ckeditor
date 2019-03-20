@@ -3,6 +3,8 @@ import { Input, Button } from 'antd';
 import styled, { css } from 'styled-components';
 import { inject, observer } from 'mobx-react';
 import eventEmitter from "../../event";
+import htmlDocx from 'html-docx-js/dist/html-docx';
+import { saveAs } from 'file-saver';
 
 const FileListSectionWrapper = styled.div`
     position: relative;
@@ -191,6 +193,51 @@ export default class FileListSection extends React.Component {
         });
     }
 
+    // 导出成word    
+    exportToWord = (index) => {
+        let { title, content } = this.props.noteStore.noteList[index];
+
+        content = `
+            <!DOCTYPE html>
+            <html>
+                <head>
+
+                </head>
+                <body>
+                    ${ content }
+                </body>
+            </html>
+        `;
+        const converted = htmlDocx.asBlob(content);
+
+        saveAs(converted, `${title}.docx`);
+    }
+
+    convertImagesToBase64() {
+        // let tinymce = '';
+        // contentDocument = tinymce
+        //     .get('content')
+        //     .getDoc();
+        // var regularImages = contentDocument.querySelectorAll("img");
+        // var canvas = document.createElement('canvas');
+        // var ctx = canvas.getContext('2d');
+        // []
+        //     .forEach
+        //     .call(regularImages, function (imgElement) {
+        //         // preparing canvas for drawing
+        //         ctx.clearRect(0, 0, canvas.width, canvas.height);
+        //         canvas.width = imgElement.width;
+        //         canvas.height = imgElement.height;
+
+        //         ctx.drawImage(imgElement, 0, 0);
+        //         // by default toDataURL() produces png image, but you can also export to jpeg
+        //         // checkout function's documentation for more details
+        //         var dataURL = canvas.toDataURL();
+        //         imgElement.setAttribute('src', dataURL);
+        //     })
+        // canvas.remove();
+    }
+
     render() {
         const noteList = this.props.noteStore.noteList;
         const { activeIndex, isShrink } = this.state;
@@ -218,6 +265,12 @@ export default class FileListSection extends React.Component {
                                                 size='small'
                                                 style={{marginLeft: '20px'}}
                                                 onClick={(e) => { e.stopPropagation();this.removeNote(index)}}></Button>
+
+                                        <Button icon="export"
+                                                size="small"
+                                                title="导出为word"
+                                                style={{ marginLeft: '20px' }}
+                                                onClick={(e) => { e.stopPropagation(); this.exportToWord(index)}}></Button>
                                     </div>
                                 </a>
                             </li>

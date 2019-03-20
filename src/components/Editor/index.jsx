@@ -11,7 +11,7 @@ import insertTable from '../../widgets/insertTable';
 import insertTable1 from '../../widgets/insertTable1';
 import insertChart from '../../widgets/insertChart';
 import Highcharts from 'highcharts';
-
+import { Template } from '../../widgets/templates';
 const temp = [
     {
         id: 1,
@@ -466,35 +466,38 @@ export default class Editor extends React.Component {
     setTemplate = () => {
         const editor = this.editorRef.current.editor;
         this.props.editorStore.setEditor(editor);
-        editor.widgets.add('notetemplates', {
-            template: this.state.templateHtml,
-            editables: {
-                summaryTitle: {
-                    selector: '.summary-title'
-                },
-                content1: {
-                    selector: '.content1'
-                },
-                content2: {
-                    selector: '.content2'
-                },
-                content3: {
-                    selector: '.content3'
-                },
-                content4: {
-                    selector: '.content4'
-                },
-                content5: {
-                    selector: '.content5'
-                }
-            },
-            // allowedContent: 'div(!template-box); div(!template-box-content); h2(!template-box-title); div(!template-section); select;option;',
-            // requiredContent: 'div(template-box)',
-            // upcast: function( element ) {
-            //     return element.name == 'div' && element.hasClass( 'template-box' );
-            // }
-        })
-        editor.execCommand('notetemplates');
+
+        editor.insertHtml(Template.generateTemplateHtml());
+        
+        // editor.widgets.add('notetemplates', {
+        //     template: this.state.templateHtml,
+        //     editables: {
+        //         summaryTitle: {
+        //             selector: '.summary-title'
+        //         },
+        //         content1: {
+        //             selector: '.content1'
+        //         },
+        //         content2: {
+        //             selector: '.content2'
+        //         },
+        //         content3: {
+        //             selector: '.content3'
+        //         },
+        //         content4: {
+        //             selector: '.content4'
+        //         },
+        //         content5: {
+        //             selector: '.content5'
+        //         }
+        //     },
+        //     // allowedContent: 'div(!template-box); div(!template-box-content); h2(!template-box-title); div(!template-section); select;option;',
+        //     // requiredContent: 'div(template-box)',
+        //     // upcast: function( element ) {
+        //     //     return element.name == 'div' && element.hasClass( 'template-box' );
+        //     // }
+        // })
+        // editor.execCommand('notetemplates');
     }
 
     instanceReady = () => {
@@ -724,7 +727,7 @@ export default class Editor extends React.Component {
         const contentCss = process.env.NODE_ENV === 'production' ? [`${window.origin}/static/ckeditor/contents.css`, `${window.origin}/static/ckeditor/external.css`] : ['http://localhost:5500/build/static/ckeditor/contents.css', 'http://localhost:5500/build/static/ckeditor/external.css' ];
 
         const config = {
-            extraPlugins: 'autocomplete,notification,textmatch,textwatcher,easyimage,tableresizerowandcolumn,save-to-pdf,quicktable',
+            extraPlugins: 'autocomplete,notification,textmatch,textwatcher,easyimage,tableresizerowandcolumn,save-to-pdf,quicktable,templates, template',
             allowedContent: true,
             pdfHandler: 'http://www.baidu.com', // 下载pdf的地址
             height: 800,
@@ -748,7 +751,8 @@ export default class Editor extends React.Component {
             qtCellSpacing: '0',
             qtClass: 'editor-table-widget',
             qtStyle: 'border: 1px solid #a7a7a7;',
-            contentsCss: contentCss
+            contentsCss: contentCss,
+            removePlugins: 'forms,bidi'
         };
 
         const EDITOR_DEV_URL = 'http://localhost:5500/build/static/ckeditor/ckeditor.js';
