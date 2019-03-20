@@ -297,10 +297,12 @@ export default class NavSection extends React.Component {
                         {
                             name: '新建文件1',
                             expandable: true,
+                            contextMenu: true,
                             children: [
                                 {
                                     name: '新建文件夹2',
                                     expandable: true,
+                                    contextMenu: true
                                 }
                             ]
                         }
@@ -366,25 +368,46 @@ export default class NavSection extends React.Component {
     }
 
     // 创建文件夹
-    createFolder = () => {
-        const { menuList } = this.state;
-        const myFolder = menuList[2];
+    createFolder = (key) => {
+        console.log('key: ', key);
 
-        if(myFolder) {
-            if(typeof myFolder.children === 'undefined') {
-                myFolder.children = [];
+        if(key) {
+            let indexList = key.split(',');
+            
+            if(indexList && indexList.length) {
+                indexList = indexList.slice(0, -1).reverse();
+
+                const { menuList } = this.state;
+                let item = menuList;
+                let index = 0;
+
+                while(item && index !== indexList.length) {
+                    if(item && typeof item.children === 'undefined') {
+                        item = item[indexList[index]];
+                    }else {
+                        item = item.children[indexList[index]];
+                    }
+                    
+                    index++;
+                }
+        
+                if(item) {
+                    if(typeof item.children === 'undefined') {
+                        item.children = [];
+                    }
+        
+                    item.children.push({
+                        name: '新建文件夹',
+                        expandable: true,
+                        editable: true
+                    });
+                }
+        
+                this.setState({
+                    menuList
+                });
             }
-
-            myFolder.children.push({
-                name: '新建文件夹',
-                expandable: true,
-                editable: true
-            });
         }
-
-        this.setState({
-            menuList
-        });
     }
 
     // 设置编辑名称状态
@@ -424,8 +447,10 @@ export default class NavSection extends React.Component {
                     </Link>
                 </li>
             }else {
+                const key = `${ index },${ parentIndex }`;
+
                 const childMenuLink = (
-                    <div className={`tree-title expandable${ activeKey === `${ index },${ parentIndex }` ? ' selected': ''}`} style={{ paddingLeft: 20 * (parentIndex.toString().split(',').length - 1) }}>
+                    <div className={`tree-title expandable${ activeKey === key ? ' selected': ''}`} style={{ paddingLeft: 20 * (parentIndex.toString().split(',').length - 1) }}>
                         <div className="toggle-arrow"></div>
 
                         <div className="name">
@@ -446,7 +471,7 @@ export default class NavSection extends React.Component {
                 const folderMenu = (
                     <Menu mode="vertical" style={{ width: 120 }} className="folder-menu">
                         <Menu.SubMenu key="sub1" title="新建" className="folder-submenu">
-                            <Menu.Item key="1" onClick={ this.createFolder }>文件夹</Menu.Item>
+                            <Menu.Item key="1" onClick={ () => this.createFolder(key) }>文件夹</Menu.Item>
                         </Menu.SubMenu>
                     </Menu>
                 );
