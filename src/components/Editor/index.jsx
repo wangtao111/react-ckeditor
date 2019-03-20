@@ -545,6 +545,7 @@ export default class Editor extends React.Component {
         this.setEditorIframe();
     }
     setPNodeHtml = () => {
+        if(!this.pNode) return;
         this.pNode.innerHTML = '';
         const s = this.pNode.previousSibling.textContent;
         this.pNode.previousSibling.textContent = s.substring(0, s.length - 1);
