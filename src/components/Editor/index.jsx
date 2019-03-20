@@ -361,38 +361,7 @@ export default class Editor extends React.Component {
     setTemplate = () => {
         const editor = this.editorRef.current.editor;
         this.props.editorStore.setEditor(editor);
-
         editor.insertHtml(Template.generateTemplateHtml());
-        
-        // editor.widgets.add('notetemplates', {
-        //     template: this.state.templateHtml,
-        //     editables: {
-        //         summaryTitle: {
-        //             selector: '.summary-title'
-        //         },
-        //         content1: {
-        //             selector: '.content1'
-        //         },
-        //         content2: {
-        //             selector: '.content2'
-        //         },
-        //         content3: {
-        //             selector: '.content3'
-        //         },
-        //         content4: {
-        //             selector: '.content4'
-        //         },
-        //         content5: {
-        //             selector: '.content5'
-        //         }
-        //     },
-        //     // allowedContent: 'div(!template-box); div(!template-box-content); h2(!template-box-title); div(!template-section); select;option;',
-        //     // requiredContent: 'div(template-box)',
-        //     // upcast: function( element ) {
-        //     //     return element.name == 'div' && element.hasClass( 'template-box' );
-        //     // }
-        // })
-        // editor.execCommand('notetemplates');
     }
 
     instanceReady = () => {
@@ -602,6 +571,7 @@ export default class Editor extends React.Component {
     }
 
     toolBarCharge = (li) => {
+        this.setState({showMore: false});
         switch (li.title) {
             case '分享':
                 this.shareModalRef.showModal();
@@ -667,11 +637,8 @@ export default class Editor extends React.Component {
             //a4纸的尺寸[595.28,841.89]，html页面生成的canvas在pdf中图片的宽高
             var imgWidth = 595.28;
             var imgHeight = 592.28/contentWidth * contentHeight;
-
             var pageData = canvas.toDataURL('image/jpeg', 1.0);
-
             var pdf = new jsPDF('', 'pt', 'a4');
-
             //有两个高度需要区分，一个是html页面的实际高度，和生成pdf的页面高度(841.89)
             //当内容未超过pdf一页显示的范围，无需分页
             if (leftHeight < pageHeight) {
@@ -687,7 +654,6 @@ export default class Editor extends React.Component {
                     }
                 }
             }
-
             pdf.save(`${this.state.title}.pdf`);
         })
     }
@@ -696,7 +662,6 @@ export default class Editor extends React.Component {
     render() {
         const {data, title, tools, visible, dropList, moreList, showMore} = this.state;
         const contentCss = process.env.NODE_ENV === 'production' ? [`${window.origin}/static/ckeditor/contents.css`, `${window.origin}/static/ckeditor/external.css`] : ['http://localhost:5500/build/static/ckeditor/contents.css', 'http://localhost:5500/build/static/ckeditor/external.css' ];
-
         const config = {
             extraPlugins: 'autocomplete,notification,textmatch,textwatcher,easyimage,tableresizerowandcolumn,save-to-pdf,quicktable,templates, template',
             allowedContent: true,
@@ -725,10 +690,8 @@ export default class Editor extends React.Component {
             contentsCss: contentCss,
             removePlugins: 'forms,bidi'
         };
-
         const EDITOR_DEV_URL = 'http://localhost:5500/build/static/ckeditor/ckeditor.js';
         const EDITOR_PRO_URL = `${window.origin}/static/ckeditor/ckeditor.js`;
-
         CKEditor.editorUrl = process.env.NODE_ENV === 'development' ? EDITOR_DEV_URL : EDITOR_PRO_URL;
         return <EditorTemplate>
             <div style={{display: 'flex', marginBottom: '2px'}}>
