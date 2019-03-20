@@ -251,23 +251,6 @@ export default class FileListSection extends React.Component {
                                                     e.stopPropagation();
                                                     this.removeNote(index)
                                                 }}></Button>
-
-                                        <Button icon="export"
-                                                size="small"
-                                                title="导出为word"
-                                                style={{marginLeft: '10px'}}
-                                                onClick={(e) => {
-                                                    e.stopPropagation();
-                                                    this.exportToWord(index)
-                                                }}></Button>
-                                        <Button icon="export"
-                                                size="small"
-                                                title="导出为pdf"
-                                                style={{marginLeft: '10px'}}
-                                                onClick={(e) => {
-                                                    e.stopPropagation();
-                                                    this.exportToPDF(index)
-                                                }}></Button>
                                     </div>
                                 </a>
                             </li>
