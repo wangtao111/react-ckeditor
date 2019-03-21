@@ -1,14 +1,14 @@
 import { observable, action } from "mobx";
 
 export default class MenuStore {
-    @observable selectedKey = '';       // 此用于文件列表中返回上一级
-    @observable goBackDisabled = false;     // 返回上一级默认按钮是可用的
+    @observable selectedKey = '0,-1';       // 选中的菜单项key
+    @observable goBackDisabled = true;     // 返回上一级默认按钮是可用的
 
     @action.bound
     setSelectedKey(selectedKey) {
         this.selectedKey = selectedKey;
 
-        if(selectedKey && selectedKey.endsWith('2,-1')) {
+        if(selectedKey && selectedKey.endsWith('2,-1') && selectedKey !== '2,-1') {
             // 是可以返回的
             this.goBackDisabled = false;
         }else {
@@ -19,8 +19,15 @@ export default class MenuStore {
     // 返回到上一级
     @action.bound
     goBackLevel() {
-        const { selectedKey } = this;
+        if(this.goBackDisabled) return;
 
-        selectedKey.replace(/^(\d,)+\-1$/, '$\'')
+        const { selectedKey } = this;
+        const keys = selectedKey.split(',');
+
+        if(keys && keys.length) {
+            keys.shift();
+
+            this.setSelectedKey(keys.toString());
+        }
     }
 }
