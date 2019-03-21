@@ -144,6 +144,7 @@ const FileListSectionWrapper = styled.div`
 `;
 @inject('noteStore')
 @inject('drawerStore')
+@inject('menuStore')
 @observer
 export default class FileListSection extends React.Component {
     constructor(props) {
