@@ -144,6 +144,7 @@ const FileListSectionWrapper = styled.div`
 `;
 @inject('noteStore')
 @inject('drawerStore')
+@inject('menuStore')
 @observer
 export default class FileListSection extends React.Component {
     constructor(props) {
@@ -224,7 +225,7 @@ export default class FileListSection extends React.Component {
         return <FileListSectionWrapper shrink={isShrink}>
             <div className="file-list-container">
                 <div className="file-list-header">
-                    <i className="icon-back"></i>
+                    <i className="icon-back" onClick={ }></i>
                     <Input prefix={<i className="icon-search"></i>} placeholder="搜索..." className="search-ipt"/>
                     <i className="icon-setting"></i>
                 </div>

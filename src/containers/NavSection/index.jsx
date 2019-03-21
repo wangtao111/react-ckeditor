@@ -37,6 +37,9 @@ const NavSectionWrapper = styled.section`
 
         .btn-new-doc {
             background: url('${require('../../theme/images/icon_arrow_down_grey.png')}') no-repeat scroll 80px center / 6px auto;
+            &:hover {
+                color: #3f7cd5;
+            }
         }
 
         .ant-dropdown-trigger {
@@ -140,6 +143,13 @@ const NavSectionWrapper = styled.section`
                 height: 40px;
                 line-height: 40px;
 
+                &.selected {
+                    .name {
+                        .icon-folder {
+                            background-image: url('${require('../../theme/images/icon_file_folder_selected.png')}');
+                        }
+                    }
+                }
                 .name {
                     .icon-folder {
                         background: url('${require('../../theme/images/icon_file_folder.png')}')  no-repeat scroll center / 18px 18px;
@@ -150,25 +160,74 @@ const NavSectionWrapper = styled.section`
 
         .menu-tree {
             .tree-title {
+                display: flex;
+                align-items: center;
                 line-height: 30px;
-                .toggle-arrow,
-                .name {
-                    display: inline-block;
+
+                &:hover {
+                    color: inherit;
+                    background-color: #e4edf8;
+                }
+               
+                .tree-root > .tree-container {
+                    margin-left: 30px;
                 }
 
+                /* 菜单默认的箭头样式(灰色右箭头) */
                 .toggle-arrow {
                     display: inline-block;
-                    margin-left: 10px;
                     width: 14px;
                     height: 14px;
+                    margin-left: 10px;
+                    margin-top: -2px;
                     background: url('${require('../../theme/images/icon_arrow_right_grey.png')}') no-repeat scroll center / 5px auto;
                     cursor: pointer;
                     vertical-align: -2px;
                 }
 
+                /* 菜单选中的箭头样式(白色右箭头) */
+                &.selected {
+                    .toggle-arrow {
+                        background-image: url('${require('../../theme/images/icon_arrow_right_white.png')}')
+                    }
+                }
+
+                /* 菜单展开箭头样式(灰色下箭头) */
+                &.opened {
+                    .toggle-arrow {
+                        background-image: url('${require('../../theme/images/icon_arrow_down_grey.png')}');
+                        background-size: 8px auto;
+                    }
+                    /* 菜单选中且展开箭头样式(白色下箭头) */
+                    &.selected {
+                        .toggle-arrow {
+                            background-image: url('${require('../../theme/images/icon_arrow_down_white.png')}');
+                        }
+                    }
+                }
+
+                & ~ .tree-container {
+                    display: none;
+                }
+
+                &.opened ~ .tree-container {
+                    display: block;
+                }
+
+                &.selected {
+                    background-color: #3f7cd5;
+                    .name {
+                        color: #fff;
+                    }
+                }
+
                 .name {
+                    flex: auto;
                     font-size: 12px;
                     color: #333;
+                    white-space: nowrap;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
                     cursor: pointer;
 
                     .icon-folder {
@@ -189,45 +248,8 @@ const NavSectionWrapper = styled.section`
                     }
                 }
             }
+
         }
-
-
-        .tree-title {
-            &:hover {
-                color: inherit;
-                background-color: #e4edf8;
-            }
-            .arrow {
-                position: absolute;
-                display: inline-block;
-                width: 14px;
-                height: 14px;
-                margin-left: -51px;
-                margin-top: 11px;
-                vertical-align: -2px;
-                background: url('${require('../../theme/images/icon_arrow_right_grey.png')}') no-repeat scroll center / 5px auto;
-                cursor: pointer;
-            }
-
-            &.expanded {
-                .arrow {
-                    background-image: url('${require('../../theme/images/icon_arrow_down_white.png')}') !important;
-                    background-size: 8px auto;
-                }
-            }
-
-            &.selected {
-                background-color: #3f7cd5;
-                .name {
-                    color: #fff;
-                }
-            }
-
-            .tree-root >.tree-container {
-                margin-left: 30px;
-            }
-        }
-        
     }
 `;
 
@@ -272,6 +294,7 @@ const Link = styled.a`
 
 @inject('noteStore')
 @inject('drawerStore')
+@inject('menuStore')
 @observer
 export default class NavSection extends React.Component {
     constructor(props) {
@@ -290,9 +313,8 @@ export default class NavSection extends React.Component {
                 {
                     name: '我的文件夹',
                     icon: 'icon_file_folder',
-                    expandable: true,
-                    expanded: false,
-                    contextMenu: true,
+                    expandable: true,          // 是否有展开的能力
+                    contextMenu: true,         // 是否带有右击菜单上下文
                     children: [
                         {
                             name: '新建文件1',
@@ -318,9 +340,9 @@ export default class NavSection extends React.Component {
                 }
             ],
             templateModalVisible: false,
-            activeKey: '0,-1',       // 激活的项
-            folderExpanded: false,          // 文件夹是否展开(默认不展开)
             isCollapsed: props.drawerStore.isVisible,        // 默认不收缩
+            openedKeys: [],         // 展开的菜单项key
+            selectedKeys: ['0,-1'],       // 选中的菜单项key
         }
 
         this.addNewNote = this.addNewNote.bind(this);
@@ -350,87 +372,136 @@ export default class NavSection extends React.Component {
         eventEmitter.emit('SKIM_ARTICLE', noteData)
     }
 
-    // 设置激活菜单项
-    setActiveKey = (key) => {
-        // debugger;
-        this.setState({
-            activeKey: key
-        });
-    }
-
-    // 展开或收缩下层
-    toggleExpand = () => {
-        const { folderExpanded } = this.state;
-
-        this.setState({
-            folderExpanded: !folderExpanded
-        });
-    }
-
     // 创建文件夹
     createFolder = (key) => {
         console.log('key: ', key);
 
-        if(key) {
-            let indexList = key.split(',');
-            
-            if(indexList && indexList.length) {
-                indexList = indexList.slice(0, -1).reverse();
+        if(typeof key === 'undefined') {
+            // 此是从新文档中创建文件夹触发的
+            // 1. 如果此时未选中我的文件夹，则加入我的文件夹的下层
+            // 2. 否则选择此时选择的父级
+            const { selectedKeys } = this.state;
 
-                const { menuList } = this.state;
-                let item = menuList;
-                let index = 0;
-
-                while(item && index !== indexList.length) {
-                    if(item && typeof item.children === 'undefined') {
-                        item = item[indexList[index]];
-                    }else {
-                        item = item.children[indexList[index]];
-                    }
-                    
-                    index++;
-                }
-        
-                if(item) {
-                    if(typeof item.children === 'undefined') {
-                        item.children = [];
-                    }
-        
-                    item.children.push({
-                        name: '新建文件夹',
-                        expandable: true,
-                        editable: true
-                    });
-                }
-        
-                this.setState({
-                    menuList
-                });
+            if(selectedKeys[0].split(',').length > 2 || selectedKeys[0] === '2,-1') {
+                key = selectedKeys[0];
+            }else {
+                key = '2,-1';
             }
         }
+        // 展开下级
+        this.setOpenedKeys(key, true);
+
+        if(key) {
+            const item = this.getDeepItemByKey(key);
+
+            if(item) {
+                if(typeof item.children === 'undefined') {
+                    item.children = [];
+                }
+    
+                item.children.push({
+                    name: '新建文件夹',
+                    expandable: true,
+                    editable: true,
+                    contextMenu: true
+                });
+            }
+    
+            this.setState({
+                menuList: this.state.menuList
+            });
+        }
+    }
+
+    // 根据key如1,2,3 下标,取出最终项
+    getDeepItemByKey(key) {
+        let indexList = key.split(',');
+            
+        if(!indexList || !indexList.length) return;
+
+        indexList = indexList.slice(0, -1).reverse();
+
+        const { menuList } = this.state;
+        let item = menuList;
+        let index = 0;
+
+        while(item && index !== indexList.length) {
+            if(item && typeof item.children === 'undefined') {
+                item = item[indexList[index]];
+            }else {
+                item = item.children[indexList[index]];
+            }
+            
+            index++;
+        }
+
+        return item;
     }
 
     // 设置编辑名称状态
-    setEditable(index, editFlag) {
-        this.setFolderData(index, 'editable', editFlag);
+    setEditable(key, editFlag) {
+        this.setFolderData(key, 'editable', editFlag);
+    }
+
+    // 重命名文件名称
+    renameFolderName(key) {
+        this.setEditable(key, true);
     }
 
     // 设置文件夹名称
-    setFolderName(e, index) {
-        this.setFolderData(index, 'name', e.target.value);
+    setFolderName(e, key) {
+        this.setFolderData(key, 'name', e.target.value);
     }
 
     // 设置文件夹数据
-    setFolderData(index, attr, value) {
-        const { menuList } = this.state;
-        const myFolder = menuList[2];
+    setFolderData(key, attr, value) {
+        const item = this.getDeepItemByKey(key);
 
-        if(myFolder) {
-            myFolder.children[index][attr] = value;
+        if(item) {
+            item[attr] = value;
         }
 
         this.setState({
-            menuList: menuList
+            menuList: this.state.menuList
+        });
+    }
+
+    // 设置已经展开的选项
+    setOpenedKeys(key, openFlag) {
+        // console.log('key: ', key);
+        let { openedKeys } = this.state;
+
+        if(openedKeys && openedKeys.length) {
+            // 如果存在,则删除key
+            const foundIndex = openedKeys.findIndex(item => item === key);
+
+            if(~foundIndex && openFlag !== true) {
+                openedKeys.splice(foundIndex, 1);
+            }else {
+                openedKeys.push(key);
+            }
+        }else {
+            openedKeys = [];
+            openedKeys.push(key);
+        }
+
+        this.setState({
+            openedKeys
+        });
+    }
+
+    // 设置已选中的项
+    setSelectedKeys(key) {
+        let { selectedKeys } = this.state;
+
+        // 清空所有选中的项
+        selectedKeys = [];
+        selectedKeys.push(key);
+
+        this.setState({
+            selectedKeys
+        }, () => {
+            this.props.menuStore.setSelectedKey(key);
         });
     }
 
@@ -438,20 +509,24 @@ export default class NavSection extends React.Component {
     renderMenuTree(menuList, parentIndex = -1) {
         if(!menuList || !menuList.length) return;
 
-        const { activeKey } = this.state;
+        const { openedKeys, selectedKeys } = this.state;
         return menuList.map((menuItem, index) => {
+            const key = `${ index },${ parentIndex }`;
+
             if(!menuItem.expandable) {
-                return <li className="menu-tree-item" onClick={ () => this.setActiveKey(`${index},${parentIndex}`) }>
-                    <Link icon={ menuItem.icon } selected={ activeKey === `${index},${parentIndex}` ? 'selected': '' }>
-                            { menuItem.name }
+                return <li className="menu-tree-item" onClick={ () => this.setSelectedKeys(key) }>
+                    <Link icon={ menuItem.icon } selected={ selectedKeys.includes(key) ? 'selected': '' }>
+                        { menuItem.name }
                     </Link>
                 </li>
             }else {
-                const key = `${ index },${ parentIndex }`;
 
                 const childMenuLink = (
-                    <div className={`tree-title expandable${ activeKey === key ? ' selected': ''}`} style={{ paddingLeft: 20 * (parentIndex.toString().split(',').length - 1) }}>
-                        <div className="toggle-arrow"></div>
+                    <div 
+                        className={`tree-title${ selectedKeys.includes(key) ? ' selected': ''}${ openedKeys.includes(key) ? ' opened' : '' }`} 
+                        style={{ paddingLeft: 20 * (parentIndex.toString().split(',').length - 1) }}
+                        onClick={ () => this.setSelectedKeys(key) }>
+                        <div className="toggle-arrow"  onClick={ () => { this.setOpenedKeys(key)}}></div>
 
                         <div className="name">
                             <i className="icon-folder"></i>
@@ -459,10 +534,10 @@ export default class NavSection extends React.Component {
                                 menuItem.editable ? <CustomInput
                                                         style={{ width: 120 }}
                                                         className="input-folder"
-                                                        onPressEnter={ () => this.setEditable(index, false)}
-                                                        onBlur={ () => this.setEditable(index, false) }
+                                                        onPressEnter={ () => this.setEditable(key, false)}
+                                                        onBlur={ () => this.setEditable(key, false) }
                                                         value={ menuItem.name }
-                                                        onChange={ (e) => this.setFolderName(e, index) }/> : menuItem.name
+                                                        onChange={ (e) => this.setFolderName(e, key) }/> : menuItem.name
                             }
                         </div>
                     </div>
@@ -471,12 +546,16 @@ export default class NavSection extends React.Component {
                 const folderMenu = (
                     <Menu mode="vertical" style={{ width: 120 }} className="folder-menu">
                         <Menu.SubMenu key="sub1" title="新建" className="folder-submenu">
-                            <Menu.Item key="1" onClick={ () => this.createFolder(key) }>文件夹</Menu.Item>
+                            <Menu.Item key="1" onClick={ this.addNewNote }>新建笔记</Menu.Item>
+                            <Menu.Item key="2" onClick={ () => this.createFolder(key) }>文件夹</Menu.Item>
                         </Menu.SubMenu>
+                        {
+                            parentIndex !== -1 && <Menu.Item key="2" onClick={ () => this.renameFolderName(key)}>重命名</Menu.Item>
+                        }
                     </Menu>
                 );
 
-                return <li className="menu-tree-item" onClick={ (e) => { e.stopPropagation(); this.setActiveKey(`${ index },${ parentIndex }`)} }>
+                return <li className="menu-tree-item" onClick={ (e) => { e.stopPropagation(); this.setSelectedKeys(key);}}>
                     <div className="menu-tree">
                         {
                             menuItem.contextMenu ? <MenuWithContext contextMenus={ folderMenu }>
@@ -501,10 +580,12 @@ export default class NavSection extends React.Component {
     }
 
     toggleCollapse = () => {
-        const { isCollapsed } = this.state;
+        let { isCollapsed } = this.state;
+
+        // isCollapsed = !isCollapsed;
 
         this.setState({ 
-            isCollapsed: !isCollapsed 
+            isCollapsed: !isCollapsed
         }, () => {
             this.props.changeWidth && this.props.changeWidth(isCollapsed ? 220 : 64 );
         });
@@ -528,7 +609,6 @@ export default class NavSection extends React.Component {
         const { 
             menuList,
             templateModalVisible,
-            folderExpanded,
             isCollapsed
         } = this.state;
 
@@ -537,7 +617,7 @@ export default class NavSection extends React.Component {
         const menu = (<Menu>
             <Menu.Item onClick={ this.addNewNote }>新建笔记</Menu.Item>
             <Menu.Item onClick={ () => this.setModalVisible('templateModalVisible', true) }>新建模板笔记</Menu.Item>
-            <Menu.Item onClick={ this.createFolder }>新建文件夹</Menu.Item>
+            <Menu.Item onClick={ () => this.createFolder() }>新建文件夹</Menu.Item>
             <Menu.Item>导入word文档</Menu.Item>
             <Menu.Item>导入PDF文档</Menu.Item>
         </Menu>);
