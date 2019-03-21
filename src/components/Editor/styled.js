@@ -19,7 +19,7 @@ const EditorTemplate = styled.div`
     .more-list{
         position: absolute;
         right: 40px;
-        top: 100px;
+        top: 50px;
         background: #fff;
         box-shadow: 0px 2px 10px 0px #bbb;
         >li{

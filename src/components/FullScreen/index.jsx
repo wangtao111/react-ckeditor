@@ -62,10 +62,22 @@ class FullScreen extends React.Component {
             de.webkitRequestFullScreen();
         }
         this.props.afterEnter();
+        const iframe = document.getElementById(this.props.fullScreenId).children[1].contentWindow;
+        let dom = iframe.document.body;
+        dom.oncontextmenu = function (e) {
+            // const x = e.pageX || e.clientX + scrollX ;
+            // const y = e.pageY || e.clientY + scrollY ;
+            // ReactDOM.render(
+            //     <ul style={{position: 'absolute', top: y + 'px', left: x + 'px'}}>
+            //         <li onClick={ () => this.changeFullScreenSize('+')}>A+</li>
+            //         <li onClick={() => this.changeFullScreenSize('-')}>A-</li>
+            //         <li onClick={this.exitFullscreen}>退出</li>
+            //     </ul>,
+            //     dom
+            // )
+        }
         const timer = setInterval(() => {
             if(!document.fullscreenElement) {
-                const iframe = document.getElementById(this.props.fullScreenId).children[1].contentWindow;
-                let dom = iframe.document.body;
                 if(this.props.resizeId){
                     dom = document.getElementById(this.props.resizeId)
                 }
@@ -76,7 +88,7 @@ class FullScreen extends React.Component {
                 this.props.afterExit();
                 clearInterval(timer);
             }
-        }, 500)
+        }, 200)
     };
     changeFullScreenSize = (type) => {
         let dom = null;

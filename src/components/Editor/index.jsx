@@ -694,7 +694,7 @@ export default class Editor extends React.Component {
         const EDITOR_PRO_URL = `${window.origin}/static/ckeditor/ckeditor.js`;
         CKEditor.editorUrl = process.env.NODE_ENV === 'development' ? EDITOR_DEV_URL : EDITOR_PRO_URL;
         return <EditorTemplate>
-            <div style={{display: 'flex', marginBottom: '2px'}}>
+            <div style={{display: 'flex', marginBottom: '2px', position: 'relative'}}>
                 <input className='title_input' type='textarea' value={title} onChange={this.titleChange}/>
                 <ul className='tools'>
                     {
