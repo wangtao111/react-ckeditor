@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 const FullScreenTemplate = styled.div`
- 
 `;
 
 class FullScreen extends React.Component {
@@ -19,12 +18,14 @@ class FullScreen extends React.Component {
 
     componentDidMount() {
         this.watchFullScreen()
+        console.log(55, this.refs.fullScreen.offsetHeight);
     }
     componentWillReceiveProps(nextProps) {
         if(nextProps.visible){
             this.requestFullScreen();
         }
     }
+
     //添加监听事件
     fullScreen = () => {
         if (!this.state.isFullScreen) {
@@ -62,6 +63,9 @@ class FullScreen extends React.Component {
         } else if (de.webkitRequestFullScreen) {
             de.webkitRequestFullScreen();
         }
+        // setTimeout(() => {
+        //     this.draw();
+        // }, 100)
         this.props.afterEnter();
         de.oncontextmenu = function (e) {
             // const x = e.pageX || e.clientX + scrollX ;
@@ -129,6 +133,78 @@ class FullScreen extends React.Component {
             false
         );
     };
+    //荧光笔
+    draw = () => {
+        let dom = this.refs.scale, document = window.document;
+        if(this.props.editorHandle){ // 金融云特殊处理
+            const iframe = document.getElementById('cke_1_contents').children[1].contentWindow;
+            dom = iframe.document.body;
+            document = iframe.document;
+        }
+        let canvas = document.createElement("canvas");
+        canvas.id = 'canvas';
+        canvas.width = dom.offsetWidth;
+        canvas.height = dom.offsetHeight;
+        console.log(dom.offsetWidth, dom.offsetHeight);
+        canvas.style.position = 'absolute';
+        canvas.style.top = '10px';
+        canvas.style.left = '10px';
+        let ctx = canvas.getContext("2d");
+        let drawing = false;
+        ctx.lineWidth = 3.0;//笔触粗细
+        ctx.globalAlpha = 0.5;//透明度
+        ctx.strokeStyle = 'green';
+        canvas.onmousedown = function(ev) {
+            var ev = ev || window.event;
+            ctx.beginPath();
+            ctx.moveTo(ev.clientX - canvas.offsetLeft, ev.clientY - canvas.offsetTop);
+            document.onmousemove = function(ev) {
+                var ev = ev || window.event;
+                ctx.lineTo(ev.clientX - canvas.offsetLeft, ev.clientY - canvas.offsetTop);
+                ctx.stroke();
+            }
+            document.onmouseup = function(ev) {
+                document.onmousemove = document.onmouseup = null;
+                ctx.closePath();
+            }
+
+        }
+        dom.appendChild(canvas);
+        function eraser() {
+            canvas.onmousedown = function(e) {
+                var first = getBoundingClientRect(e.clientX, e.clientY);
+                drawCanvas(first.x, first.y)
+                drawing = true;
+
+
+                document.onmousemove = function(e) {
+                    if (drawing) {
+                        var move = getBoundingClientRect(e.clientX, e.clientY);
+                        drawCanvas(move.x, move.y);
+                    }
+                }
+
+                document.onmouseup = function() {
+                    drawing = false;
+                }
+            }
+        }
+        function getBoundingClientRect(x, y) {
+            var box = canvas.getBoundingClientRect(); //获取canvas的距离浏览器视窗的上下左右距离
+            return {
+                x: x - box.left,
+                y: y - box.top
+            }
+        }
+        function drawCanvas(x, y) {
+            ctx.save();
+            ctx.beginPath();
+            ctx.arc(x, y, 25, 0, Math.PI * 2, false);
+            ctx.clip();
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.restore();
+        }
+    }
 
     render() {
         const { children } = this.props;

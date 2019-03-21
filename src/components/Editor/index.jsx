@@ -715,7 +715,7 @@ export default class Editor extends React.Component {
                     }
                 </div>
             </div>
-            <FullScreen visible={visible} exit={() => this.setState({visible: false})}
+            <FullScreen visible={visible} editorHandle={true} exit={() => this.setState({visible: false})}
                         afterEnter={this.afterEnter} afterExit={this.afterExit}>
                 <CKEditor
                     ref={this.editorRef}
