@@ -79,7 +79,7 @@ const MENTIONS = [
         id: 1,
         title: '中国移动',
         detail: '中国移动(601314)',
-        tag: '<span class="temporary" style="color: blue; display: inline-block">中国移动(601314) </span>'
+        tag: '<span class="temporary" style="color: blue;">中国移动(601314) </span>'
     },
     {
         id: 2,

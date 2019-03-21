@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="c856506e-fd5f-4e8b-a15f-1fa24624da4d" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/Editor/index.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Editor/index.jsx" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
@@ -18,24 +19,16 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/components/Editor/index.jsx">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="175">
-              <caret line="701" column="141" selection-start-line="701" selection-start-column="132" selection-end-line="701" selection-end-column="141" />
+            <state relative-caret-position="345">
+              <caret line="95" column="4" lean-forward="true" selection-start-line="95" selection-start-column="4" selection-end-line="95" selection-end-column="4" />
               <folding>
                 <element signature="e#0#26#0" expanded="true" />
-                <element signature="e#615#1672#0" />
-                <element signature="e#621#1148#0" />
                 <element signature="e#1154#1669#0" />
-                <element signature="e#1689#2542#0" />
-                <element signature="e#1695#1884#0" />
-                <element signature="e#1890#2048#0" />
+                <element signature="n#style#0;n#span#0;n#!!top" expanded="true" />
                 <element signature="e#2054#2212#0" />
                 <element signature="e#2218#2395#0" />
                 <element signature="e#2401#2539#0" />
-                <element signature="e#2560#3174#0" />
-                <element signature="e#2566#2746#0" />
-                <element signature="e#2752#2888#0" />
-                <element signature="e#2894#3030#0" />
-                <element signature="e#3036#3172#0" />
+                <element signature="n#style#0;n#span#0;n#!!top" expanded="true" />
                 <element signature="e#3471#9445#0" />
                 <element signature="e#6884#7048#0" />
                 <element signature="e#7069#7493#0" />
@@ -85,8 +78,6 @@
                 <element signature="e#15970#16066#0" />
                 <element signature="e#16092#16174#0" />
                 <element signature="e#16116#16166#0" />
-                <element signature="e#16384#16424#0" />
-                <element signature="e#17575#19520#0" />
                 <element signature="e#17912#18124#0" />
                 <element signature="e#18187#19405#0" />
                 <element signature="e#18218#19306#0" />
@@ -96,8 +87,6 @@
                 <element signature="e#18912#18970#0" />
                 <element signature="e#19030#19088#0" />
                 <element signature="e#19196#19292#0" />
-                <element signature="e#19546#19757#0" />
-                <element signature="e#19786#21266#0" />
                 <element signature="e#19974#20011#0" />
                 <element signature="e#20077#20115#0" />
                 <element signature="e#20163#20254#0" />
@@ -135,9 +124,9 @@
                 <element signature="e#25986#26067#0" />
                 <element signature="e#26080#26163#0" />
                 <element signature="e#24205#24603#0" />
+                <element signature="e#26720#28437#0" />
                 <element signature="e#27022#27855#0" />
                 <element signature="e#27040#27081#0" />
-                <element signature="e#29520#29842#0" />
                 <element signature="e#29882#29890#0" />
                 <element signature="e#30055#30377#0" />
                 <element signature="e#30178#30313#0" />
@@ -147,10 +136,40 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/components/FullScreen/index.jsx">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="1518">
+              <caret line="66" column="28" selection-start-line="66" selection-start-column="22" selection-end-line="66" selection-end-column="28" />
+              <folding>
+                <element signature="e#0#26#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/node_modules/ckeditor4-react/dist/ckeditor.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="46">
+              <caret line="5" column="26" selection-start-line="5" selection-start-column="26" selection-end-line="5" selection-end-column="26" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/ckeditor/plugins/template/plugin.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="391">
+              <caret line="17" column="24" selection-start-line="17" selection-start-column="24" selection-end-line="17" selection-end-column="24" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/widgets/templates/index.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="178">
-              <caret line="48" column="17" lean-forward="true" selection-start-line="48" selection-start-column="17" selection-end-line="48" selection-end-column="17" />
+            <state relative-caret-position="753">
+              <caret line="55" column="25" selection-start-line="55" selection-start-column="15" selection-end-line="55" selection-end-column="25" />
               <folding>
                 <element signature="e#0#36#0" expanded="true" />
               </folding>
@@ -161,8 +180,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/widgets/templates/templates.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state>
-              <caret column="6" selection-start-column="6" selection-end-column="6" />
+            <state relative-caret-position="1127">
+              <caret line="49" column="66" selection-start-line="49" selection-start-column="43" selection-end-line="49" selection-end-column="66" />
             </state>
           </provider>
         </entry>
@@ -177,94 +196,19 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/ckeditor/plugins/autocomplete/plugin.js">
+        <entry file="file://$PROJECT_DIR$/src/App.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="175">
-              <caret line="230" column="34" selection-start-line="230" selection-start-column="17" selection-end-line="230" selection-end-column="34" />
-              <folding>
-                <element signature="e#251#383#0" />
-                <element signature="e#389#6325#0" />
-                <element signature="e#18314#19458#0" />
-                <element signature="e#19484#21046#0" />
-                <element signature="e#21066#32549#0" />
-                <element signature="e#21160#21295#0" />
-                <element signature="e#21533#21610#0" />
-                <element signature="e#21702#22461#0" />
-                <element signature="e#22519#22582#0" />
-                <element signature="e#22731#23002#0" />
-                <element signature="e#23263#23414#0" />
-                <element signature="e#24008#25103#0" />
-                <element signature="e#25290#25361#0" />
-                <element signature="e#25530#25617#0" />
-                <element signature="e#25673#25733#0" />
-                <element signature="e#26021#26339#0" />
-                <element signature="e#26344#27345#0" />
-                <element signature="e#31541#31662#0" />
-                <element signature="e#31765#31888#0" />
-                <element signature="e#31922#32159#0" />
-                <element signature="e#32164#32450#0" />
-                <element signature="e#32601#33362#0" />
-                <element signature="e#33395#35497#0" />
-                <element signature="e#33399#33574#0" />
-                <element signature="e#33614#33841#0" />
-                <element signature="e#33870#34057#0" />
-                <element signature="e#34084#34245#0" />
-                <element signature="e#34249#34437#0" />
-                <element signature="e#34441#34684#0" />
-                <element signature="e#34688#34866#0" />
-                <element signature="e#34870#35002#0" />
-                <element signature="e#35006#35176#0" />
-                <element signature="e#35180#35344#0" />
-                <element signature="e#35348#35494#0" />
-                <element signature="e#35518#39945#0" />
-                <element signature="e#39103#39942#0" />
-                <element signature="e#39326#39367#0" />
-                <element signature="e#39387#39461#0" />
-                <element signature="e#39604#39938#0" />
-                <element signature="e#39716#39933#0" />
-                <element signature="e#39785#39845#0" />
-                <element signature="e#39851#39883#0" />
-                <element signature="e#39998#40676#0" />
-                <element signature="e#40679#41310#0" />
-                <element signature="e#41417#42195#0" />
-                <element signature="e#42564#42615#0" />
-                <element signature="e#42646#42830#0" />
-                <element signature="e#42833#43339#0" />
-                <element signature="e#43342#44603#0" />
-                <element signature="e#44606#45947#0" />
-                <element signature="e#45950#46047#0" />
-                <element signature="e#46050#46157#0" />
-                <element signature="e#46160#46270#0" />
-                <element signature="e#46273#46382#0" />
-                <element signature="e#46385#46616#0" />
-                <element signature="e#46619#46807#0" />
-                <element signature="e#46810#46935#0" />
-                <element signature="e#46938#47101#0" />
-              </folding>
+            <state relative-caret-position="115">
+              <caret line="5" column="22" selection-start-line="5" selection-start-column="22" selection-end-line="5" selection-end-column="22" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/containers/Home/index.jsx">
+        <entry file="file://$PROJECT_DIR$/src/theme/app.scss">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1081">
-              <caret line="49" column="18" selection-start-line="49" selection-start-column="18" selection-end-line="49" selection-end-column="18" />
-              <folding>
-                <element signature="e#440#480#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/containers/Layout/index.jsx">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1219">
-              <caret line="60" column="25" selection-start-line="60" selection-start-column="25" selection-end-line="60" selection-end-column="25" />
-              <folding>
-                <element signature="e#0#26#0" expanded="true" />
-              </folding>
+            <state relative-caret-position="316">
+              <caret line="50" column="16" selection-start-line="50" selection-start-column="16" selection-end-line="50" selection-end-column="16" />
             </state>
           </provider>
         </entry>
@@ -282,24 +226,6 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/node_modules/html2canvas/dist/npm/index.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-737">
-              <caret line="12" column="30" selection-start-line="12" selection-start-column="30" selection-end-line="12" selection-end-column="30" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://D:/Documents/Downloads/HtmlToPdf-master/index.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="621">
-              <caret line="84" selection-start-line="84" selection-end-line="84" />
-            </state>
-          </provider>
-        </entry>
-      </file>
     </leaf>
   </component>
   <component name="FileTemplateManagerImpl">
@@ -313,11 +239,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>setp</find>
-      <find>reactd</find>
-      <find>createDropMenu</find>
-      <find>command_tag_pane</find>
-      <find>this.tag</find>
       <find>dropList</find>
       <find>drop</find>
       <find>replaceText</find>
@@ -331,7 +252,6 @@
       <find>source</find>
       <find>save</find>
       <find>html2canvas</find>
-      <find>iframe</find>
       <find>EditorTemplate</find>
       <find>onrendered</find>
       <find>导出</find>
@@ -343,6 +263,12 @@
       <find>saveAs</find>
       <find>showMore</find>
       <find>Template</find>
+      <find>idget-component-wrapper</find>
+      <find>inserth</find>
+      <find>id</find>
+      <find>element</find>
+      <find>insta</find>
+      <find>iframe</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -395,6 +321,7 @@
         <option value="$PROJECT_DIR$/src/mockData/files.js" />
         <option value="$PROJECT_DIR$/src/components/Editor/styled.js" />
         <option value="$PROJECT_DIR$/src/containers/FileListSection/index.jsx" />
+        <option value="$PROJECT_DIR$/node_modules/ckeditor4-react/dist/ckeditor.js" />
         <option value="$PROJECT_DIR$/src/components/Editor/index.jsx" />
       </list>
     </option>
@@ -432,20 +359,7 @@
               <item name="finnote-portal" type="b2602c69:ProjectViewProjectNode" />
               <item name="finnote-portal" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="ckeditor" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="finnote-portal" type="b2602c69:ProjectViewProjectNode" />
-              <item name="finnote-portal" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="ckeditor" type="462c0819:PsiDirectoryNode" />
-              <item name="plugins" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="finnote-portal" type="b2602c69:ProjectViewProjectNode" />
-              <item name="finnote-portal" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="img" type="462c0819:PsiDirectoryNode" />
+              <item name="containers" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -458,7 +372,7 @@
     <property name="DefaultHtmlFileTemplate" value="HTML File" />
     <property name="JavaScriptWeakerCompletionTypeGuess" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../dx-web" />
+    <property name="last_opened_file_path" value="E:/vue-wyclass-master" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.detected.package.standard" value="true" />
     <property name="node.js.path.for.package.eslint" value="project" />
@@ -519,12 +433,12 @@
       <workItem from="1551835048637" duration="55058000" />
       <workItem from="1552012819992" duration="17918000" />
       <workItem from="1552274290462" duration="171674000" />
-      <workItem from="1553051903390" duration="11171000" />
+      <workItem from="1553051903390" duration="16425000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="325904000" />
+    <option name="totallyTimeSpent" value="331158000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -539,7 +453,7 @@
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.17917548" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.17917548" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="npm" order="2" side_tool="true" />
       <window_info id="Favorites" order="3" side_tool="true" />
@@ -552,7 +466,7 @@
       <window_info anchor="bottom" id="TODO" order="6" weight="0.32963374" />
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="TypeScript" order="8" />
-      <window_info anchor="bottom" id="Terminal" order="9" visible="true" weight="0.30410653" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="9" visible="true" weight="0.30410653" />
       <window_info anchor="bottom" id="Event Log" order="10" side_tool="true" />
       <window_info anchor="bottom" id="Version Control" order="11" weight="0.32963374" />
       <window_info anchor="bottom" id="Messages" order="12" />
@@ -565,23 +479,6 @@
     <option name="version" value="1" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/ckeditor/samples/old/sample.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-683" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/ckeditor/samples/index.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1380" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/store/editor.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="184">
-          <caret line="8" column="4" selection-start-line="8" selection-start-column="4" selection-end-line="8" selection-end-column="4" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/ckeditor/plugins/notetemplates1/plugin.js" />
     <entry file="file://$PROJECT_DIR$/src/ckeditor/plugins/simplebox/plugin.js">
       <provider selected="true" editor-type-id="text-editor">
@@ -1238,23 +1135,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/ckeditor/plugins/notetemplates/plugin.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="69">
-          <caret line="3" selection-start-line="3" selection-end-line="3" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/FullScreen/index.jsx">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="181">
-          <caret line="125" column="29" lean-forward="true" selection-start-line="125" selection-start-column="29" selection-end-line="125" selection-end-column="29" />
-          <folding>
-            <element signature="e#0#26#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/package.json">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="187">
@@ -1436,16 +1316,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/App.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="276">
-          <caret line="15" column="46" selection-start-line="15" selection-start-column="46" selection-end-line="15" selection-end-column="46" />
-          <folding>
-            <element signature="e#87#135#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/containers/Home/index.jsx">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1081">
@@ -1565,43 +1435,80 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/ckeditor/plugins/notetemplates/plugin.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="23">
+          <caret line="3" selection-start-line="3" selection-end-line="3" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/widgets/templates/templates.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1127">
+          <caret line="49" column="66" selection-start-line="49" selection-start-column="43" selection-end-line="49" selection-end-column="66" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/App.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="115">
+          <caret line="5" column="22" selection-start-line="5" selection-start-column="22" selection-end-line="5" selection-end-column="22" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/widgets/templates/index.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="178">
-          <caret line="48" column="17" lean-forward="true" selection-start-line="48" selection-start-column="17" selection-end-line="48" selection-end-column="17" />
+        <state relative-caret-position="753">
+          <caret line="55" column="25" selection-start-line="55" selection-start-column="15" selection-end-line="55" selection-end-column="25" />
           <folding>
             <element signature="e#0#36#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/widgets/templates/templates.js">
+    <entry file="file://$PROJECT_DIR$/src/theme/app.scss">
       <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret column="6" selection-start-column="6" selection-end-column="6" />
+        <state relative-caret-position="316">
+          <caret line="50" column="16" selection-start-line="50" selection-start-column="16" selection-end-line="50" selection-end-column="16" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ckeditor/plugins/template/plugin.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="391">
+          <caret line="17" column="24" selection-start-line="17" selection-start-column="24" selection-end-line="17" selection-end-column="24" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/node_modules/ckeditor4-react/dist/ckeditor.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="46">
+          <caret line="5" column="26" selection-start-line="5" selection-start-column="26" selection-end-line="5" selection-end-column="26" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/FullScreen/index.jsx">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1518">
+          <caret line="66" column="28" selection-start-line="66" selection-start-column="22" selection-end-line="66" selection-end-column="28" />
+          <folding>
+            <element signature="e#0#26#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/components/Editor/index.jsx">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="175">
-          <caret line="701" column="141" selection-start-line="701" selection-start-column="132" selection-end-line="701" selection-end-column="141" />
+        <state relative-caret-position="345">
+          <caret line="95" column="4" lean-forward="true" selection-start-line="95" selection-start-column="4" selection-end-line="95" selection-end-column="4" />
           <folding>
             <element signature="e#0#26#0" expanded="true" />
-            <element signature="e#615#1672#0" />
-            <element signature="e#621#1148#0" />
             <element signature="e#1154#1669#0" />
-            <element signature="e#1689#2542#0" />
-            <element signature="e#1695#1884#0" />
-            <element signature="e#1890#2048#0" />
+            <element signature="n#style#0;n#span#0;n#!!top" expanded="true" />
             <element signature="e#2054#2212#0" />
             <element signature="e#2218#2395#0" />
             <element signature="e#2401#2539#0" />
-            <element signature="e#2560#3174#0" />
-            <element signature="e#2566#2746#0" />
-            <element signature="e#2752#2888#0" />
-            <element signature="e#2894#3030#0" />
-            <element signature="e#3036#3172#0" />
+            <element signature="n#style#0;n#span#0;n#!!top" expanded="true" />
             <element signature="e#3471#9445#0" />
             <element signature="e#6884#7048#0" />
             <element signature="e#7069#7493#0" />
@@ -1651,8 +1558,6 @@
             <element signature="e#15970#16066#0" />
             <element signature="e#16092#16174#0" />
             <element signature="e#16116#16166#0" />
-            <element signature="e#16384#16424#0" />
-            <element signature="e#17575#19520#0" />
             <element signature="e#17912#18124#0" />
             <element signature="e#18187#19405#0" />
             <element signature="e#18218#19306#0" />
@@ -1662,8 +1567,6 @@
             <element signature="e#18912#18970#0" />
             <element signature="e#19030#19088#0" />
             <element signature="e#19196#19292#0" />
-            <element signature="e#19546#19757#0" />
-            <element signature="e#19786#21266#0" />
             <element signature="e#19974#20011#0" />
             <element signature="e#20077#20115#0" />
             <element signature="e#20163#20254#0" />
@@ -1701,9 +1604,9 @@
             <element signature="e#25986#26067#0" />
             <element signature="e#26080#26163#0" />
             <element signature="e#24205#24603#0" />
+            <element signature="e#26720#28437#0" />
             <element signature="e#27022#27855#0" />
             <element signature="e#27040#27081#0" />
-            <element signature="e#29520#29842#0" />
             <element signature="e#29882#29890#0" />
             <element signature="e#30055#30377#0" />
             <element signature="e#30178#30313#0" />
