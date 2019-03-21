@@ -35,9 +35,10 @@ class FullScreen extends React.Component {
     };
     //进入全屏
     requestFullScreen = () => {
-        let de = document.getElementById('fullScreen');
-        if(this.props.fullScreenId){
-            de = document.getElementById(this.props.fullScreenId);
+        let de = this.refs.fullScreen;
+        de.style.background = '#fff';
+        if(this.props.editorHandle){
+            de = document.getElementById('cke_1_contents');
         }
         if(!document.getElementById('fullScreenBtn')){
             let fullScreenBtn = document.createElement("div");
@@ -62,9 +63,7 @@ class FullScreen extends React.Component {
             de.webkitRequestFullScreen();
         }
         this.props.afterEnter();
-        const iframe = document.getElementById(this.props.fullScreenId).children[1].contentWindow;
-        let dom = iframe.document.body;
-        dom.oncontextmenu = function (e) {
+        de.oncontextmenu = function (e) {
             // const x = e.pageX || e.clientX + scrollX ;
             // const y = e.pageY || e.clientY + scrollY ;
             // ReactDOM.render(
@@ -78,11 +77,13 @@ class FullScreen extends React.Component {
         }
         const timer = setInterval(() => {
             if(!document.fullscreenElement) {
-                if(this.props.resizeId){
-                    dom = document.getElementById(this.props.resizeId)
-                }
                 this.fullScreenSize = 1;
-                dom.style.zoom = this.fullScreenSize;
+                let scaleDom = this.refs.scale;
+                if(this.props.editorHandle){ // 金融云特殊处理
+                    const iframe = document.getElementById('cke_1_contents').children[1].contentWindow;
+                    scaleDom = iframe.document.body;
+                }
+                scaleDom.style.zoom = this.fullScreenSize;
                 document.getElementById('fullScreenBtn').style.display = 'none';
                 this.props.exit();
                 this.props.afterExit();
@@ -91,12 +92,10 @@ class FullScreen extends React.Component {
         }, 200)
     };
     changeFullScreenSize = (type) => {
-        let dom = null;
-        if(!this.props.resizeId){
-            const iframe = document.getElementById(this.props.fullScreenId).children[1].contentWindow;
+        let dom = this.refs.scale;
+        if(this.props.editorHandle){ // 金融云特殊处理
+            const iframe = document.getElementById('cke_1_contents').children[1].contentWindow;
             dom = iframe.document.body;
-        } else {
-            dom = document.getElementById(this.props.resizeId)
         }
         if(type === '+' && this.fullScreenSize < 2) {
             this.fullScreenSize += 0.25
@@ -133,16 +132,19 @@ class FullScreen extends React.Component {
 
     render() {
         const { children } = this.props;
-        return <FullScreenTemplate id='fullScreen'>
-            {children}
+        return <FullScreenTemplate>
+            <div ref='fullScreen'>
+                <div ref='scale'>
+                    {children}
+                </div>
+            </div>
         </FullScreenTemplate>
     }
 }
 FullScreen.propTypes = {
     visible: PropTypes.bool, //控制全屏状态
-    fullScreenId: PropTypes.string, // 需要全屏的dom的id
+    editorHandle: PropTypes.string, // 金融云笔记特殊处理标志
     exit: PropTypes.func, //退出 () => this.setState({visible: false})
-    resizeId: PropTypes.string, // 需要放大缩小的dom的Id
     afterEnter: PropTypes.func, //进入全屏后回调函数
     afterExit: PropTypes.func, //退出全屏后回调函数
 };
