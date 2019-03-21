@@ -694,25 +694,26 @@ export default class Editor extends React.Component {
         const EDITOR_PRO_URL = `${window.origin}/static/ckeditor/ckeditor.js`;
         CKEditor.editorUrl = process.env.NODE_ENV === 'development' ? EDITOR_DEV_URL : EDITOR_PRO_URL;
         return <EditorTemplate>
-            <div style={{display: 'flex', marginBottom: '2px', position: 'relative'}}>
+            <div style={{display: 'flex', marginBottom: '2px'}}>
                 <input className='title_input' type='textarea' value={title} onChange={this.titleChange}/>
-                <ul className='tools'>
-                    {
-                        tools.map((li, index) => {
-                            return <li key={index} onClick={() => this.toolBarCharge(li)}><span className='tool_item' title={li.title}></span></li>
-                        })
-                    }
-                </ul>
-                {
-                    showMore && <ul className='more-list'>
+                <div style={{position: 'relative'}}>
+                    <ul className='tools'>
                         {
-                            moreList.map((li, index) => {
-                                return <li key={index} onClick={() => this.moreAction(li)}><span>{li.name}</span></li>
+                            tools.map((li, index) => {
+                                return <li key={index} onClick={() => this.toolBarCharge(li)}><span className='tool_item' title={li.title}></span></li>
                             })
                         }
                     </ul>
-                }
-
+                    {
+                        showMore && <ul className='more-list'>
+                            {
+                                moreList.map((li, index) => {
+                                    return <li key={index} onClick={() => this.moreAction(li)}><span>{li.name}</span></li>
+                                })
+                            }
+                        </ul>
+                    }
+                </div>
             </div>
             <FullScreen editorRef={ this.editorRef.current } visible={visible} fullScreenId={'cke_1_contents'} exit={() => this.setState({visible: false})}
                         afterEnter={this.afterEnter} afterExit={this.afterExit}>
