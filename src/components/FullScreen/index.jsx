@@ -2,6 +2,8 @@ import React from 'react';
 import ReactDOM from 'react-dom'
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import * as jsPDF from 'jspdf';
+import html2canvas from 'html2canvas';
 
 const FullScreenTemplate = styled.div`
 `;
@@ -14,13 +16,23 @@ class FullScreen extends React.Component {
             isFullScreen: false,
         }
         this.fullScreenSize = 1;
+        this.canvasMask = null;
+        this.drawing = false;
+        this.document = window.document;
+        this.scale = null;
     }
 
     componentDidMount() {
-        this.watchFullScreen()
-        console.log(55, this.refs.fullScreen.offsetHeight);
+        this.watchFullScreen();
     }
     componentWillReceiveProps(nextProps) {
+        if(this.props.editorHandle){ // 金融云特殊处理
+            const iframe = document.getElementById('cke_1_contents').children[1].contentWindow;
+            this.document = iframe.document;
+            this.scale = iframe.document.body;
+        } else {
+            this.scale = this.refs.scale;
+        }
         if(nextProps.visible){
             this.requestFullScreen();
         }
@@ -34,27 +46,25 @@ class FullScreen extends React.Component {
             this.exitFullscreen();
         }
     };
+    createElement = (appendDom, id, innerDom) => {
+        let content = document.createElement("div");
+        content.id = id;
+        appendDom.appendChild(content);
+        ReactDOM.render(
+            innerDom,
+            content
+        );
+    }
+    changeDrawColor = (color) => {
+        this.canvasMask.style.display = 'block';
+        this.canvasMask.getContext("2d").strokeStyle = color;
+    }
     //进入全屏
     requestFullScreen = () => {
         let de = this.refs.fullScreen;
         de.style.background = '#fff';
         if(this.props.editorHandle){
             de = document.getElementById('cke_1_contents');
-        }
-        if(!document.getElementById('fullScreenBtn')){
-            let fullScreenBtn = document.createElement("div");
-            fullScreenBtn.id = 'fullScreenBtn';
-            de.appendChild(fullScreenBtn);
-            ReactDOM.render(
-                <ul>
-                    <li onClick={ () => this.changeFullScreenSize('+')}>A+</li>
-                    <li onClick={() => this.changeFullScreenSize('-')}>A-</li>
-                    <li onClick={this.exitFullscreen}>退出</li>
-                </ul>,
-                fullScreenBtn
-            )
-        } else {
-            document.getElementById('fullScreenBtn').style.display = 'block';
         }
         if (de.requestFullscreen) {
             de.requestFullscreen();
@@ -63,44 +73,73 @@ class FullScreen extends React.Component {
         } else if (de.webkitRequestFullScreen) {
             de.webkitRequestFullScreen();
         }
-        // setTimeout(() => {
-        //     this.draw();
-        // }, 100)
+        this.addTools(de);
+        this.addEvents();
         this.props.afterEnter();
-        de.oncontextmenu = function (e) {
-            // const x = e.pageX || e.clientX + scrollX ;
-            // const y = e.pageY || e.clientY + scrollY ;
-            // ReactDOM.render(
-            //     <ul style={{position: 'absolute', top: y + 'px', left: x + 'px'}}>
-            //         <li onClick={ () => this.changeFullScreenSize('+')}>A+</li>
-            //         <li onClick={() => this.changeFullScreenSize('-')}>A-</li>
-            //         <li onClick={this.exitFullscreen}>退出</li>
-            //     </ul>,
-            //     dom
-            // )
+        this.monitorFullScreenExit();
+    };
+    // 添加右键菜单功能和右上角按钮
+    addTools = (de) => {
+        if(!document.getElementById('fullScreenBtn')){
+            this.createElement(de, 'fullScreenBtn', <ul>
+                <li onClick={ () => this.changeFullScreenSize('+')}>A+</li>
+                <li onClick={() => this.changeFullScreenSize('-')}>A-</li>
+                <li onClick={this.exitFullscreen}>退出</li>
+            </ul>)
+        } else {
+            document.getElementById('fullScreenBtn').style.display = 'block';
         }
+        if(!document.getElementById('contextmenu')){
+            this.createElement(de, 'contextmenu', <ul onClick={() => {document.getElementById('contextmenu').style.display = 'none'}}>
+                <li>复制</li>
+                <li>翻页设置</li>
+                <li>夜间模式</li>
+                <li onClick={() => this.changeDrawColor('#0088F2')}><span></span>蓝色荧光笔</li>
+                <li onClick={() => this.changeDrawColor('#FF319F')}><span></span>粉色荧光笔</li>
+                <li onClick={() => this.changeDrawColor('#00F46E')}><span></span>绿色荧光笔</li>
+                <li onClick={() => this.changeFullScreenSize('+')}>放大</li>
+                <li onClick={() => this.changeFullScreenSize('-')}>缩小</li>
+                <li onClick={this.exportToPDF}>导出演示笔记为PDF</li>
+                <li onClick={this.exitFullscreen}>退出演示</li>
+            </ul>)
+        } else {
+            document.getElementById('contextmenu').style.display = 'block';
+        }
+        setTimeout(() => {this.draw()}, 100)
+    }
+    addEvents = () => {
+        this.document.onmousedown = () => {
+            const contextmenu = document.getElementById('contextmenu');
+            if(!contextmenu) return;
+            contextmenu.style.display = 'none';
+        }
+        this.document.oncontextmenu = (e) => {
+            const x = e.pageX || e.clientX;
+            const y = e.pageY || e.clientY;
+            const contextmenu = document.getElementById('contextmenu')
+            if(!contextmenu) return;
+            contextmenu.style.display = 'block';
+            contextmenu.style.left = x + 'px';
+            contextmenu.style.top = y + 'px';
+        }
+    }
+    monitorFullScreenExit = () => {
+        const contextmenu = document.getElementById('contextmenu');
         const timer = setInterval(() => {
             if(!document.fullscreenElement) {
                 this.fullScreenSize = 1;
-                let scaleDom = this.refs.scale;
-                if(this.props.editorHandle){ // 金融云特殊处理
-                    const iframe = document.getElementById('cke_1_contents').children[1].contentWindow;
-                    scaleDom = iframe.document.body;
-                }
-                scaleDom.style.zoom = this.fullScreenSize;
+                this.scale.style.zoom = this.fullScreenSize;
                 document.getElementById('fullScreenBtn').style.display = 'none';
+                this.canvasMask.remove();
+                contextmenu.remove();
                 this.props.exit();
                 this.props.afterExit();
                 clearInterval(timer);
             }
         }, 200)
-    };
+    }
     changeFullScreenSize = (type) => {
-        let dom = this.refs.scale;
-        if(this.props.editorHandle){ // 金融云特殊处理
-            const iframe = document.getElementById('cke_1_contents').children[1].contentWindow;
-            dom = iframe.document.body;
-        }
+        let dom = this.scale;
         if(type === '+' && this.fullScreenSize < 2) {
             this.fullScreenSize += 0.25
         }
@@ -135,81 +174,112 @@ class FullScreen extends React.Component {
     };
     //荧光笔
     draw = () => {
-        let dom = this.refs.scale, document = window.document;
-        if(this.props.editorHandle){ // 金融云特殊处理
-            const iframe = document.getElementById('cke_1_contents').children[1].contentWindow;
-            dom = iframe.document.body;
-            document = iframe.document;
-        }
-        let canvas = document.createElement("canvas");
-        canvas.id = 'canvas';
-        canvas.width = dom.offsetWidth;
-        canvas.height = dom.offsetHeight;
-        console.log(dom.offsetWidth, dom.offsetHeight);
-        canvas.style.position = 'absolute';
-        canvas.style.top = '10px';
-        canvas.style.left = '10px';
-        let ctx = canvas.getContext("2d");
-        let drawing = false;
-        ctx.lineWidth = 3.0;//笔触粗细
-        ctx.globalAlpha = 0.5;//透明度
-        ctx.strokeStyle = 'green';
-        canvas.onmousedown = function(ev) {
-            var ev = ev || window.event;
+        let dom = this.scale, document = this.document;
+        dom.style.position = 'relative';
+        this.canvasMask = document.createElement("canvas");
+        this.canvasMask.id = 'canvas';
+        this.canvasMask.width = dom.offsetWidth;
+        this.canvasMask.height = dom.offsetHeight;
+        this.canvasMask.style.position = 'absolute';
+        this.canvasMask.style.top = '0';
+        this.canvasMask.style.left = '0';
+        this.canvasMask.style.display = 'none';
+        this.canvasMask.style.cursor = `url(${require('../../img/draw.png')}), auto`;
+        let ctx = this.canvasMask.getContext("2d");
+        ctx.lineWidth = 1.5;//笔触粗细
+        ctx.globalAlpha = 0.8;//透明度
+        ctx.strokeStyle = 'black';
+        this.canvasMask.onmousedown = (e) => {
+            const ev = e || window.event;
             ctx.beginPath();
-            ctx.moveTo(ev.clientX - canvas.offsetLeft, ev.clientY - canvas.offsetTop);
-            document.onmousemove = function(ev) {
-                var ev = ev || window.event;
-                ctx.lineTo(ev.clientX - canvas.offsetLeft, ev.clientY - canvas.offsetTop);
+            ctx.moveTo(ev.clientX - this.canvasMask.offsetLeft - 16, ev.clientY - this.canvasMask.offsetTop);
+            document.onmousemove = (e) => {
+                const ev = e || window.event;
+                ctx.lineTo(ev.clientX - this.canvasMask.offsetLeft - 16, ev.clientY - this.canvasMask.offsetTop);
                 ctx.stroke();
             }
-            document.onmouseup = function(ev) {
+            document.onmouseup = (ev) => {
                 document.onmousemove = document.onmouseup = null;
                 ctx.closePath();
             }
 
         }
-        dom.appendChild(canvas);
-        function eraser() {
-            canvas.onmousedown = function(e) {
-                var first = getBoundingClientRect(e.clientX, e.clientY);
-                drawCanvas(first.x, first.y)
-                drawing = true;
-
-
-                document.onmousemove = function(e) {
-                    if (drawing) {
-                        var move = getBoundingClientRect(e.clientX, e.clientY);
-                        drawCanvas(move.x, move.y);
+        dom.appendChild(this.canvasMask);
+    }
+    eraser = () => {
+        let document = this.document;
+        this.canvasMask.onmousedown = (e) => {
+            const first = this.getBoundingClientRect(e.clientX, e.clientY);
+            this.drawCanvas(first.x, first.y)
+            this.drawing = true;
+            document.onmousemove = (e) => {
+                if (this.drawing) {
+                    const move = this.getBoundingClientRect(e.clientX, e.clientY);
+                    this.drawCanvas(move.x, move.y);
+                }
+            }
+            document.onmouseup = function() {
+                this.drawing = false;
+            }
+        }
+    }
+    getBoundingClientRect = (x, y) => {
+        const box = this.canvasMask.getBoundingClientRect(); //获取canvas的距离浏览器视窗的上下左右距离
+        return {
+            x: x - box.left,
+            y: y - box.top
+        }
+    }
+    drawCanvas = (x, y) => {
+        let ctx = this.canvasMask.getContext("2d");
+        ctx.save();
+        ctx.beginPath();
+        ctx.arc(x, y, 25, 0, Math.PI * 2, false);
+        ctx.clip();
+        ctx.clearRect(0, 0, this.canvasMask.width, this.canvasMask.height);
+        ctx.restore();
+    }
+    // 导出成PDF
+    exportToPDF = () => {
+        const dom = this.scale;
+        html2canvas(dom).then((canvas) =>  {
+            var contentWidth = canvas.width;
+            var contentHeight = canvas.height;
+            //一页pdf显示html页面生成的canvas高度;
+            var pageHeight = contentWidth / 592.28 * 841.89;
+            //未生成pdf的html页面高度
+            var leftHeight = contentHeight;
+            //页面偏移
+            var position = 0;
+            //a4纸的尺寸[595.28,841.89]，html页面生成的canvas在pdf中图片的宽高
+            var imgWidth = 595.28;
+            var imgHeight = 592.28/contentWidth * contentHeight;
+            var pageData = canvas.toDataURL('image/jpeg', 1.0);
+            var pdf = new jsPDF('', 'pt', 'a4');
+            //有两个高度需要区分，一个是html页面的实际高度，和生成pdf的页面高度(841.89)
+            //当内容未超过pdf一页显示的范围，无需分页
+            if (leftHeight < pageHeight) {
+                pdf.addImage(pageData, 'JPEG', 0, 0, imgWidth, imgHeight );
+            } else {
+                while(leftHeight > 0) {
+                    pdf.addImage(pageData, 'JPEG', 0, position, imgWidth, imgHeight)
+                    leftHeight -= pageHeight;
+                    position -= 841.89;
+                    //避免添加空白页
+                    if(leftHeight > 0) {
+                        pdf.addPage();
                     }
                 }
-
-                document.onmouseup = function() {
-                    drawing = false;
-                }
             }
-        }
-        function getBoundingClientRect(x, y) {
-            var box = canvas.getBoundingClientRect(); //获取canvas的距离浏览器视窗的上下左右距离
-            return {
-                x: x - box.left,
-                y: y - box.top
-            }
-        }
-        function drawCanvas(x, y) {
-            ctx.save();
-            ctx.beginPath();
-            ctx.arc(x, y, 25, 0, Math.PI * 2, false);
-            ctx.clip();
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            ctx.restore();
-        }
+            pdf.save(`${this.props.PDFTile ? this.props.PDFTile : '未命名'}.pdf`);
+        })
     }
 
     render() {
         const { children } = this.props;
         return <FullScreenTemplate>
             <div ref='fullScreen'>
+
                 <div ref='scale'>
                     {children}
                 </div>
@@ -223,5 +293,6 @@ FullScreen.propTypes = {
     exit: PropTypes.func, //退出 () => this.setState({visible: false})
     afterEnter: PropTypes.func, //进入全屏后回调函数
     afterExit: PropTypes.func, //退出全屏后回调函数
+    PDFTile: PropTypes.string, //导出PDF的名字
 };
 export default FullScreen;

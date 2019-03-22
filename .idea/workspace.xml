@@ -2,9 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="c856506e-fd5f-4e8b-a15f-1fa24624da4d" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/src/img/draw.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/Editor/index.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Editor/index.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/Editor/styled.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Editor/styled.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/FullScreen/index.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/FullScreen/index.jsx" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
@@ -21,8 +22,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/components/Editor/index.jsx">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="278">
-              <caret line="719" column="25" lean-forward="true" selection-start-line="719" selection-start-column="25" selection-end-line="719" selection-end-column="25" />
+            <state relative-caret-position="186">
+              <caret line="718" column="95" selection-start-line="718" selection-start-column="95" selection-end-line="718" selection-end-column="95" />
               <folding>
                 <element signature="e#0#26#0" expanded="true" />
                 <element signature="e#1154#1669#0" />
@@ -124,6 +125,7 @@
                 <element signature="e#25986#26067#0" />
                 <element signature="e#26080#26163#0" />
                 <element signature="e#24205#24603#0" />
+                <element signature="e#24648#26156#0" />
                 <element signature="e#26720#28437#0" />
                 <element signature="e#27022#27855#0" />
                 <element signature="e#27040#27081#0" />
@@ -138,8 +140,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/components/Editor/styled.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="388">
-              <caret line="125" selection-start-line="125" selection-end-line="125" />
+            <state relative-caret-position="503">
+              <caret line="159" column="38" selection-start-line="159" selection-start-column="32" selection-end-line="159" selection-end-column="38" />
             </state>
           </provider>
         </entry>
@@ -147,32 +149,21 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/components/FullScreen/index.jsx">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="198">
-              <caret line="67" column="18" lean-forward="true" selection-start-line="65" selection-start-column="7" selection-end-line="67" selection-end-column="18" />
+            <state relative-caret-position="181">
+              <caret line="273" column="70" selection-start-line="273" selection-start-column="70" selection-end-line="273" selection-end-column="70" />
               <folding>
-                <element signature="n#!!block;n#constructor#0;n#FullScreen#0" />
+                <element signature="e#0#26#0" expanded="true" />
                 <element signature="e#294#338#0" />
-                <element signature="n#!!block;n#componentWillReceiveProps#0;n#FullScreen#0" />
                 <element signature="e#646#695#0" />
                 <element signature="e#701#747#0" />
-                <element signature="e#1222#1469#0" />
-                <element signature="e#2091#2632#0" />
-                <element signature="e#2105#2150#0" />
-                <element signature="e#2547#3189#0" />
-                <element signature="e#2593#3179#0" />
-                <element signature="e#2679#2837#0" />
+                <element signature="e#3401#3697#0" />
+                <element signature="e#4227#4243#0" />
                 <element signature="e#3559#3610#0" />
                 <element signature="e#3663#3714#0" />
-                <element signature="e#3805#4089#0" />
                 <element signature="e#3867#3911#0" />
                 <element signature="e#3945#3994#0" />
                 <element signature="e#4031#4083#0" />
-                <element signature="e#4146#4438#0" />
-                <element signature="e#4272#4402#0" />
-                <element signature="e#4305#4386#0" />
-                <element signature="n#!!block;n#eraser#0;n#!!block;n#function#0;n#FullScreen#0" />
-                <element signature="n#!!block;n#getBoundingClientRect#0;n#!!block;n#function#0;n#FullScreen#0" />
-                <element signature="n#!!block;n#drawCanvas#0;n#!!block;n#function#0;n#FullScreen#0" />
+                <element signature="e#6917#7083#0" />
               </folding>
             </state>
           </provider>
@@ -260,37 +251,40 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>afterEnter</find>
-      <find>getp</find>
-      <find>ReactDOM.ren</find>
-      <find>toolBarCharge</find>
-      <find>shrink</find>
-      <find>fullScreenId</find>
-      <find>.fullScreen</find>
-      <find>visible</find>
-      <find>getElementById</find>
-      <find>resizeId</find>
-      <find>fullScreen</find>
-      <find>fullscreenid</find>
-      <find>reactd</find>
-      <find>exp</find>
-      <find>TouchableOpacity</find>
-      <find>expor</find>
-      <find>WebView</find>
-      <find>react-n</find>
-      <find>react-native</find>
-      <find>WebCanvas</find>
-      <find>more-list</find>
-      <find>layer</find>
       <find>act-nativ</find>
       <find>setPenWidth</find>
       <find>event</find>
-      <find>editorRef</find>
       <find>500</find>
-      <find>canvas</find>
       <find>drawCanvas</find>
+      <find>drawing</find>
+      <find>金融云特殊处理</find>
+      <find>document</find>
+      <find>scale =</find>
+      <find>scale</find>
+      <find>editorHandle</find>
+      <find>editorRef</find>
+      <find>curs</find>
+      <find>reactd</find>
+      <find>cursor.</find>
       <find>draw</find>
+      <find>fullScreen</find>
+      <find>:after</find>
+      <find>exit</find>
+      <find>111</find>
+      <find>pdf</find>
+      <find>this.scale</find>
+      <find>edit</find>
+      <find>changeFullScreenSize</find>
+      <find>canvas</find>
+      <find>context</find>
+      <find>this.document</find>
+      <find>contextmenu</find>
+      <find>more-list</find>
+      <find>jsPDF</find>
     </findStrings>
+    <dirStrings>
+      <dir>E:\yunbiji\finnote-portal\src\img</dir>
+    </dirStrings>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -341,8 +335,8 @@
         <option value="$PROJECT_DIR$/src/mockData/files.js" />
         <option value="$PROJECT_DIR$/src/containers/FileListSection/index.jsx" />
         <option value="$PROJECT_DIR$/node_modules/ckeditor4-react/dist/ckeditor.js" />
-        <option value="$PROJECT_DIR$/src/components/Editor/styled.js" />
         <option value="$PROJECT_DIR$/src/components/FullScreen/draw.jsx" />
+        <option value="$PROJECT_DIR$/src/components/Editor/styled.js" />
         <option value="$PROJECT_DIR$/src/components/Editor/index.jsx" />
         <option value="$PROJECT_DIR$/src/components/FullScreen/index.jsx" />
       </list>
@@ -403,6 +397,12 @@
               <item name="components" type="462c0819:PsiDirectoryNode" />
               <item name="FullScreen" type="462c0819:PsiDirectoryNode" />
             </path>
+            <path>
+              <item name="finnote-portal" type="b2602c69:ProjectViewProjectNode" />
+              <item name="finnote-portal" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="img" type="462c0819:PsiDirectoryNode" />
+            </path>
           </expand>
           <select />
         </subPane>
@@ -429,8 +429,8 @@
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
-      <recent name="E:\yunbiji\finnote-portal\src" />
       <recent name="E:\yunbiji\finnote-portal\src\img" />
+      <recent name="E:\yunbiji\finnote-portal\src" />
       <recent name="E:\yunbiji\finnote-portal\src\ckeditor\plugins" />
       <recent name="E:\yunbiji\finnote-portal\src\components\Editor\comment" />
       <recent name="E:\yunbiji\finnote-portal\src\components\FullScreen" />
@@ -475,12 +475,12 @@
       <workItem from="1551835048637" duration="55058000" />
       <workItem from="1552012819992" duration="17918000" />
       <workItem from="1552274290462" duration="171674000" />
-      <workItem from="1553051903390" duration="33359000" />
+      <workItem from="1553051903390" duration="46902000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="348092000" />
+    <option name="totallyTimeSpent" value="361635000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -493,6 +493,7 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
+    <editor active="true" />
     <layout>
       <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.17917548" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
@@ -1182,13 +1183,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/containers/Header/index.jsx">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="342">
-          <caret line="132" column="68" selection-start-line="132" selection-start-column="68" selection-end-line="132" selection-end-column="68" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/ckeditor/ckeditor.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="291">
@@ -1501,13 +1495,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/Editor/styled.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="388">
-          <caret line="125" selection-start-line="125" selection-end-line="125" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/package.json">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="175">
@@ -1522,10 +1509,41 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/api/api.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="230">
+          <caret line="10" selection-start-line="10" selection-end-line="10" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/api/api_helper.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="3105">
+          <caret line="135" column="2" selection-start-line="135" selection-start-column="2" selection-end-line="135" selection-end-column="2" />
+          <folding>
+            <element signature="e#0#41#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/containers/Header/index.jsx">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="221">
+          <caret line="83" column="27" lean-forward="true" selection-start-line="83" selection-start-column="27" selection-end-line="83" selection-end-column="27" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/Editor/styled.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="503">
+          <caret line="159" column="38" selection-start-line="159" selection-start-column="32" selection-end-line="159" selection-end-column="38" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/components/Editor/index.jsx">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="278">
-          <caret line="719" column="25" lean-forward="true" selection-start-line="719" selection-start-column="25" selection-end-line="719" selection-end-column="25" />
+        <state relative-caret-position="186">
+          <caret line="718" column="95" selection-start-line="718" selection-start-column="95" selection-end-line="718" selection-end-column="95" />
           <folding>
             <element signature="e#0#26#0" expanded="true" />
             <element signature="e#1154#1669#0" />
@@ -1627,6 +1645,7 @@
             <element signature="e#25986#26067#0" />
             <element signature="e#26080#26163#0" />
             <element signature="e#24205#24603#0" />
+            <element signature="e#24648#26156#0" />
             <element signature="e#26720#28437#0" />
             <element signature="e#27022#27855#0" />
             <element signature="e#27040#27081#0" />
@@ -1637,51 +1656,23 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/api/api.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="230">
-          <caret line="10" selection-start-line="10" selection-end-line="10" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/api/api_helper.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3105">
-          <caret line="135" column="2" selection-start-line="135" selection-start-column="2" selection-end-line="135" selection-end-column="2" />
-          <folding>
-            <element signature="e#0#41#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/components/FullScreen/index.jsx">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="198">
-          <caret line="67" column="18" lean-forward="true" selection-start-line="65" selection-start-column="7" selection-end-line="67" selection-end-column="18" />
+        <state relative-caret-position="181">
+          <caret line="273" column="70" selection-start-line="273" selection-start-column="70" selection-end-line="273" selection-end-column="70" />
           <folding>
-            <element signature="n#!!block;n#constructor#0;n#FullScreen#0" />
+            <element signature="e#0#26#0" expanded="true" />
             <element signature="e#294#338#0" />
-            <element signature="n#!!block;n#componentWillReceiveProps#0;n#FullScreen#0" />
             <element signature="e#646#695#0" />
             <element signature="e#701#747#0" />
-            <element signature="e#1222#1469#0" />
-            <element signature="e#2091#2632#0" />
-            <element signature="e#2105#2150#0" />
-            <element signature="e#2547#3189#0" />
-            <element signature="e#2593#3179#0" />
-            <element signature="e#2679#2837#0" />
+            <element signature="e#3401#3697#0" />
+            <element signature="e#4227#4243#0" />
             <element signature="e#3559#3610#0" />
             <element signature="e#3663#3714#0" />
-            <element signature="e#3805#4089#0" />
             <element signature="e#3867#3911#0" />
             <element signature="e#3945#3994#0" />
             <element signature="e#4031#4083#0" />
-            <element signature="e#4146#4438#0" />
-            <element signature="e#4272#4402#0" />
-            <element signature="e#4305#4386#0" />
-            <element signature="n#!!block;n#eraser#0;n#!!block;n#function#0;n#FullScreen#0" />
-            <element signature="n#!!block;n#getBoundingClientRect#0;n#!!block;n#function#0;n#FullScreen#0" />
-            <element signature="n#!!block;n#drawCanvas#0;n#!!block;n#function#0;n#FullScreen#0" />
+            <element signature="e#6917#7083#0" />
           </folding>
         </state>
       </provider>

@@ -716,7 +716,7 @@ export default class Editor extends React.Component {
                 </div>
             </div>
             <FullScreen visible={visible} editorHandle={true} exit={() => this.setState({visible: false})}
-                        afterEnter={this.afterEnter} afterExit={this.afterExit}>
+                        afterEnter={this.afterEnter} afterExit={this.afterExit} PDFTile={title}>
                 <CKEditor
                     ref={this.editorRef}
                     data={data}

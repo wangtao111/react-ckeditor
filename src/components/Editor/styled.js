@@ -121,5 +121,46 @@ const EditorTemplate = styled.div`
             }
         }
     }
+     #contextmenu{
+        display: none;
+        position: absolute;
+        right: 0;
+        top: 0;
+        background: #fff;
+        width: 150px;
+        padding: 5px;
+        box-shadow: 0px 2px 10px 0px #bbb;
+        display: none;
+        > ul{
+            >li{
+                padding: 5px 15px;
+                font-size: 12px;
+                &:hover{
+                    color: #407CD5;
+                    cursor: pointer;
+                }
+                &:nth-child(1), &:nth-child(3), &:nth-child(6), &:nth-child(8), &:nth-child(9){
+                    border-bottom: 1px solid #ddd;
+                }   
+                >span{
+                    display: inline-block;
+                    width: 10px;
+                    height: 10px;
+                    background: #999;
+                    border-radius: 5px;
+                    margin-right: 5px;
+                }
+                &:nth-child(4)>span, &:nth-child(5)>span, &:nth-child(6)>span{
+                   background: #0088F2;
+                }    
+                &:nth-child(5)>span{
+                   background: #FF319F;
+                }    
+                &:nth-child(6)>span{
+                   background: #00F46E;
+                }            
+            }
+         } 
+     }
 `;
 export default EditorTemplate;
