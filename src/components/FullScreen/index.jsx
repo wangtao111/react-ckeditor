@@ -116,11 +116,13 @@ class FullScreen extends React.Component {
         this.document.oncontextmenu = (e) => {
             const x = e.pageX || e.clientX;
             const y = e.pageY || e.clientY;
-            const contextmenu = document.getElementById('contextmenu')
+            const contextmenu = document.getElementById('contextmenu');
+            const scrollX = this.document.documentElement.scrollLeft || this.document.body.scrollLeft;
+            const scrollY = this.document.documentElement.scrollTop || this.document.body.scrollTop;
             if(!contextmenu) return;
             contextmenu.style.display = 'block';
-            contextmenu.style.left = x + 'px';
-            contextmenu.style.top = y + 'px';
+            contextmenu.style.left = x - scrollX + 'px';
+            contextmenu.style.top = y - scrollY +'px';
         }
     }
     monitorFullScreenExit = () => {
@@ -190,12 +192,14 @@ class FullScreen extends React.Component {
         ctx.globalAlpha = 0.8;//透明度
         ctx.strokeStyle = 'black';
         this.canvasMask.onmousedown = (e) => {
+            const scrollX = document.documentElement.scrollLeft || document.body.scrollLeft;
+            const scrollY = document.documentElement.scrollTop || document.body.scrollTop;
             const ev = e || window.event;
             ctx.beginPath();
-            ctx.moveTo(ev.clientX - this.canvasMask.offsetLeft - 16, ev.clientY - this.canvasMask.offsetTop);
+            ctx.moveTo(ev.clientX + scrollX - this.canvasMask.offsetLeft - 16, ev.clientY + scrollY - this.canvasMask.offsetTop);
             document.onmousemove = (e) => {
                 const ev = e || window.event;
-                ctx.lineTo(ev.clientX - this.canvasMask.offsetLeft - 16, ev.clientY - this.canvasMask.offsetTop);
+                ctx.lineTo(ev.clientX + scrollX - this.canvasMask.offsetLeft - 16, ev.clientY + scrollY - this.canvasMask.offsetTop);
                 ctx.stroke();
             }
             document.onmouseup = (ev) => {

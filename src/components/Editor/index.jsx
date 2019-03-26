@@ -173,11 +173,23 @@ export default class Editor extends React.Component {
     afterEnter = () => {
         const editor = this.editorRef.current.editor;
         editor.setReadOnly(true);
+        const iframe = document.getElementById('cke_1_contents').children[1].contentWindow;
+        let dom = iframe.document;
+        const widgets = dom.getElementsByClassName('editable-content');
+        Object.keys(widgets).forEach((key) => {
+            widgets[key].setAttribute('contenteditable', false);
+        })
     }
 
     afterExit = () => {
         const editor = this.editorRef.current.editor;
         editor.setReadOnly(false);
+        const iframe = document.getElementById('cke_1_contents').children[1].contentWindow;
+        let dom = iframe.document;
+        const widgets = dom.getElementsByClassName('editable-content')
+        Object.keys(widgets).forEach((key) => {
+            widgets[key].setAttribute('contenteditable', true);
+        })
     }
 
     onEditorChange(evt) {
