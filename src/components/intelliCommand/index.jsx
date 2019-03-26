@@ -20,6 +20,7 @@ const IntelliCommandWrapper = styled.div`
         border-radius: 2px;
         background: #fff;
         font-size: 12px;
+        white-space: nowrap;
         >ul>li{
             padding: 3px 20px;
             cursor: pointer;
@@ -102,9 +103,6 @@ export default class IntelliCommand extends React.Component {
         const scrollX = document.documentElement.scrollLeft || document.body.scrollLeft;
         const scrollY = document.documentElement.scrollTop || document.body.scrollTop;
         let position = range.getBoundingClientRect(), menu = document.getElementById('command_tag_list');
-        if(position.x + menu.clientWidth > document.body.clientWidth){
-            position.x = document.body.clientWidth - menu.clientWidth - 10
-        }
         this.range = range;
         if(text.charAt(text.length - 1) === '~' || text.charAt(text.length - 1) ==='～') {
             this.position = position;
@@ -112,15 +110,27 @@ export default class IntelliCommand extends React.Component {
         if (text.indexOf('~') !== -1 || text.indexOf('～') !== -1) {
             this.setState({dropList: MENTIONS});
             menu.style.display = 'block';
-            menu.style.left = position.left+ scrollX + 'px';
-            menu.style.top = position.top + scrollY + 14 + 'px';
+            setTimeout(() => {
+                const menu = document.getElementById('command_tag_list');
+                if(position.x + menu.offsetWidth >= document.body.offsetWidth){
+                    position.x = document.body.offsetWidth - menu.offsetWidth - 10
+                }
+                menu.style.left = position.left + scrollX + 'px';
+                menu.style.top = position.top + scrollY + 14 + 'px';
+            })
         } else if(range.endContainer.parentElement.className === 'temporary') {
             const index = text.lastIndexOf('.');
             if(index !== -1) {
                 this.setState({dropList: tables});
                 menu.style.display = 'block';
-                menu.style.left = position.left + 'px';
-                menu.style.top = position.top + 14 + 'px';
+                setTimeout(() => {
+                    const menu = document.getElementById('command_tag_list');
+                    if(position.x + menu.offsetWidth >= document.body.offsetWidth){
+                        position.x = document.body.offsetWidth - menu.offsetWidth - 10
+                    }
+                    menu.style.left = position.left + scrollX + 'px';
+                    menu.style.top = position.top + scrollY + 14 + 'px';
+                })
             } else {
                 menu.style.display = 'none';
             }
