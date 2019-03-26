@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="c856506e-fd5f-4e8b-a15f-1fa24624da4d" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/src/components/Editor/index.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Editor/index.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -25,13 +25,11 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/components/Editor/index.jsx">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="250">
-              <caret line="356" column="36" lean-forward="true" selection-start-line="356" selection-start-column="36" selection-end-line="356" selection-end-column="36" />
+            <state relative-caret-position="152">
+              <caret line="318" column="5" lean-forward="true" selection-start-line="318" selection-start-column="5" selection-end-line="318" selection-end-column="5" />
               <folding>
                 <element signature="e#0#26#0" expanded="true" />
-                <element signature="e#3801#4578#0" />
-                <element signature="e#4191#4568#0" />
-                <element signature="e#4672#5446#0" />
+                <element signature="e#1045#2211#0" />
                 <element signature="e#5511#5771#0" />
                 <element signature="n#style#0;n#div#0;n#li#0;n#!!top" expanded="true" />
                 <element signature="n#style#0;n#strong#0;n#div#0;n#li#0;n#!!top" expanded="true" />
@@ -148,8 +146,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>tempo</find>
-      <find>~</find>
       <find>template</find>
       <find>text</find>
       <find>command_tag_pane</find>
@@ -178,6 +174,8 @@
       <find>command_tag_list</find>
       <find>menu</find>
       <find>scrollY</find>
+      <find>this.document</find>
+      <find>afterenter</find>
     </findStrings>
     <dirStrings>
       <dir>E:\yunbiji\finnote-portal\src\img</dir>
@@ -308,7 +306,7 @@
     <property name="DefaultHtmlFileTemplate" value="HTML File" />
     <property name="JavaScriptWeakerCompletionTypeGuess" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="E:/vue-wyclass-master" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.detected.package.standard" value="true" />
     <property name="node.js.path.for.package.eslint" value="project" />
@@ -370,12 +368,12 @@
       <workItem from="1552012819992" duration="17918000" />
       <workItem from="1552274290462" duration="171674000" />
       <workItem from="1553051903390" duration="48527000" />
-      <workItem from="1553476561607" duration="45674000" />
+      <workItem from="1553476561607" duration="48807000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="408934000" />
+    <option name="totallyTimeSpent" value="412067000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -888,13 +886,11 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/components/Editor/index.jsx">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="250">
-          <caret line="356" column="36" lean-forward="true" selection-start-line="356" selection-start-column="36" selection-end-line="356" selection-end-column="36" />
+        <state relative-caret-position="152">
+          <caret line="318" column="5" lean-forward="true" selection-start-line="318" selection-start-column="5" selection-end-line="318" selection-end-column="5" />
           <folding>
             <element signature="e#0#26#0" expanded="true" />
-            <element signature="e#3801#4578#0" />
-            <element signature="e#4191#4568#0" />
-            <element signature="e#4672#5446#0" />
+            <element signature="e#1045#2211#0" />
             <element signature="e#5511#5771#0" />
             <element signature="n#style#0;n#div#0;n#li#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#strong#0;n#div#0;n#li#0;n#!!top" expanded="true" />

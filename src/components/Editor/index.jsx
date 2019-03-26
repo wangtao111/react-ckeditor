@@ -89,8 +89,8 @@ export default class Editor extends React.Component {
         eventEmitter.on('EDITOR_INSERT_CHART', (chartId) => {
             const editor = this.editorRef.current.editor;
             const chartTime = new Date().getTime();
+            this.setPNodeHtml();
             insertChart(`${ chartTime }`, editor);
-
             const chartOption = this.props.editorStore.chartDataObj[chartId];
             const widgetInstances = editor.widgets.instances;
 
