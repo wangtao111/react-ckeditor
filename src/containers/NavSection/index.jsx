@@ -342,7 +342,6 @@ export default class NavSection extends React.Component {
             templateModalVisible: false,
             isCollapsed: props.drawerStore.isVisible,        // 默认不收缩
             openedKeys: [],         // 展开的菜单项key
-            selectedKeys: ['0,-1'],       // 选中的菜单项key
         }
 
         this.addNewNote = this.addNewNote.bind(this);
@@ -380,10 +379,10 @@ export default class NavSection extends React.Component {
             // 此是从新文档中创建文件夹触发的
             // 1. 如果此时未选中我的文件夹，则加入我的文件夹的下层
             // 2. 否则选择此时选择的父级
-            const { selectedKeys } = this.state;
+            const { selectedKey } = this.props.menuStore;
 
-            if(selectedKeys[0].split(',').length > 2 || selectedKeys[0] === '2,-1') {
-                key = selectedKeys[0];
+            if(selectedKey.split(',').length > 2 || selectedKey === '2,-1') {
+                key = selectedKey;
             }else {
                 key = '2,-1';
             }
@@ -491,18 +490,8 @@ export default class NavSection extends React.Component {
     }
 
     // 设置已选中的项
-    setSelectedKeys(key) {
-        let { selectedKeys } = this.state;
-
-        // 清空所有选中的项
-        selectedKeys = [];
-        selectedKeys.push(key);
-
-        this.setState({
-            selectedKeys
-        }, () => {
-            this.props.menuStore.setSelectedKey(key);
-        });
+    setSelectedKey(key) {
+        this.props.menuStore.setSelectedKey(key);
     }
 
     // 渲染菜单树结构
@@ -510,12 +499,14 @@ export default class NavSection extends React.Component {
         if(!menuList || !menuList.length) return;
 
         const { openedKeys, selectedKeys } = this.state;
+        const { selectedKey } = this.props.menuStore;
+
         return menuList.map((menuItem, index) => {
             const key = `${ index },${ parentIndex }`;
 
             if(!menuItem.expandable) {
-                return <li className="menu-tree-item" onClick={ () => this.setSelectedKeys(key) }>
-                    <Link icon={ menuItem.icon } selected={ selectedKeys.includes(key) ? 'selected': '' }>
+                return <li className="menu-tree-item" onClick={ () => this.setSelectedKey(key) }>
+                    <Link icon={ menuItem.icon } selected={ selectedKey === key ? 'selected': '' }>
                         { menuItem.name }
                     </Link>
                 </li>
@@ -523,9 +514,9 @@ export default class NavSection extends React.Component {
 
                 const childMenuLink = (
                     <div 
-                        className={`tree-title${ selectedKeys.includes(key) ? ' selected': ''}${ openedKeys.includes(key) ? ' opened' : '' }`} 
+                        className={`tree-title${ selectedKey === key ? ' selected': ''}${ openedKeys.includes(key) ? ' opened' : '' }`} 
                         style={{ paddingLeft: 20 * (parentIndex.toString().split(',').length - 1) }}
-                        onClick={ () => this.setSelectedKeys(key) }>
+                        onClick={ () => this.setSelectedKey(key) }>
                         <div className="toggle-arrow"  onClick={ () => { this.setOpenedKeys(key)}}></div>
 
                         <div className="name">
@@ -555,7 +546,7 @@ export default class NavSection extends React.Component {
                     </Menu>
                 );
 
-                return <li className="menu-tree-item" onClick={ (e) => { e.stopPropagation(); this.setSelectedKeys(key);}}>
+                return <li className="menu-tree-item" onClick={ (e) => { e.stopPropagation(); this.setSelectedKey(key);}}>
                     <div className="menu-tree">
                         {
                             menuItem.contextMenu ? <MenuWithContext contextMenus={ folderMenu }>

@@ -3,6 +3,8 @@ import {Input, Button} from 'antd';
 import styled, {css} from 'styled-components';
 import {inject, observer} from 'mobx-react';
 import eventEmitter from "../../event";
+import moment from 'moment';
+import { toJS } from 'mobx';
 
 const FileListSectionWrapper = styled.div`
     position: relative;
@@ -23,7 +25,7 @@ const FileListSectionWrapper = styled.div`
     ${props => !props.shrink && css`
         .file-list-container {
             width: 360px;
-            overflow: auto;
+            overflow: visible;
         }
     `}
 
@@ -64,9 +66,6 @@ const FileListSectionWrapper = styled.div`
 
         .icon-back,
         .icon-setting {
-            position: absolute;
-            width: 20px;
-            height: 20px;
             opacity: 0.6;
             cursor: pointer;
 
@@ -76,15 +75,28 @@ const FileListSectionWrapper = styled.div`
         }
 
         .icon-back {
+            position: absolute;
+            width: 20px;
+            height: 20px;
             left: 24px;
             top: 22px;
             background: url('${require('../../theme/images/icon_back.png')}') no-repeat scroll 0 0 / 16px auto;
+           
+            &.disabled {
+                opacity: 0.6;
+                cursor: default;
+                &:hover {
+                    opacity: 0.6;
+                }
+            }
         }
 
         .icon-setting {
-            right: 22px;
-            top: 24px;
-            background: url('${require('../../theme/images/icon_list_setting.png')}') no-repeat scroll 0 0 / 26px auto;
+            display: inline-block;
+            width: 34px;
+            height: 24px;
+            vertical-align: middle;
+            background: url('${require('../../theme/images/icon_list_setting.png')}') no-repeat scroll center / 26px auto;
         }
 
         .icon-search {
@@ -98,6 +110,35 @@ const FileListSectionWrapper = styled.div`
             .ant-input {
                 border-radius: 22px;
                 font-size: 12px;
+            }
+        }
+
+        .setting-wrapper {
+            position: absolute;
+            right: 22px;
+            top: 0;
+
+            .pop-down-setting {
+                position: absolute;
+                left: 0;
+                top: 59px;
+                z-index: 2;
+                min-width: 120px;
+                border-radius: 2px;
+                background-color: #fff;
+                box-shadow: 0px 1px 16px 0 rgba(90, 109, 122, 0.41);
+
+                li {
+                    line-height: 30px;
+                    padding: 0 20px;
+                    font-size: 12px;
+
+                    &:hover {
+                        color: #76b0f3;
+                        background: #f4f9ff;
+                        cursor: pointer;
+                    }
+                }
             }
         }
     }
@@ -153,12 +194,26 @@ export default class FileListSection extends React.Component {
         this.state = {
             articleIndex: 0,
             isShrink: props.drawerStore.isVisible,        // 默认不收缩
+            popDownSettingVisible: false,               // 设置默认不可见
         };
     }
 
     componentDidMount() {
         this.props.noteStore.setActiveIndex(0);
-        this.setState({activeIndex: 0})
+        this.setState({activeIndex: 0});
+
+        window.addEventListener('click', this.clickCallback, false);
+    }
+
+    clickCallback = (e) => {
+        let targetNode = e.target;
+        const isContain = document.querySelector('.setting-wrapper').contains(targetNode);
+
+        if(!isContain && this.state.popDownSettingVisible) {
+            this.setState({
+                popDownSettingVisible: false
+            })
+        }
     }
 
     componentDidUpdate(prevProps, prevState) {
@@ -167,6 +222,10 @@ export default class FileListSection extends React.Component {
                 isShrink: this.props.drawerStore.isVisible
             });
         }
+    }
+
+    componentWillUnmount() {
+        window.removeEventListener('click', this.clickCallback, false);
     }
 
     // 移除笔记
@@ -191,6 +250,43 @@ export default class FileListSection extends React.Component {
             isShrink: !isShrink
         });
     }
+
+    toggleSettingVisible = () => {
+        this.setState(({ popDownSettingVisible }) => {
+            return {
+                popDownSettingVisible: !popDownSettingVisible
+            };
+        });
+    }
+
+    // 选项操作
+    actionOperation(value) {
+        let { noteList, setNoteList } = this.props.noteStore;
+
+        if(noteList && noteList.length) {
+            switch(value) {
+                case '创建时间':
+                        noteList = noteList.sort((a, b) => {
+                            return +moment(b.date) - +moment(a.date);
+                        });
+    
+                        setNoteList(noteList);
+                    break;
+                case '文件名称':
+                        noteList = noteList.sort((a, b) => a.title.charCodeAt(0) - b.title.charCodeAt(0));
+
+                        setNoteList(noteList);
+                    break;
+
+                case '文件大小': 
+                        noteList = noteList.sort((a, b) => b.size.replace(/[A-Z|a-z]/g, '') - a.size.replace(/[A-Z|a-z]/g, ''));
+                        setNoteList(noteList);
+            }
+        }
+
+        this.toggleSettingVisible();
+    }
+
 
     convertImagesToBase64() {
         // let tinymce = '';
@@ -217,17 +313,70 @@ export default class FileListSection extends React.Component {
         // canvas.remove();
     }
 
+    handleChange = (e) => {
+        this.keyword = e.target.value;
+    }
+
+    handleSearch = async () => {
+        let { noteList, setNoteList, setActiveIndex } = this.props.noteStore;
+
+        if(Array.isArray(toJS(noteList))) {
+            if(this.keyword && this.keyword.trim() !== '') {
+                noteList = noteList.filter(note => note.title.includes(this.keyword));
+            }else {
+                noteList = await import('../../mockData/files');
+                noteList = noteList.default;
+            }
+
+            setActiveIndex(0);
+
+            setNoteList(noteList);
+        }
+    }
+
     render() {
         const noteList = this.props.noteStore.noteList;
-        const {activeIndex, isShrink} = this.state;
+        const {activeIndex, isShrink, popDownSettingVisible} = this.state;
         const {isVisible} = this.props.drawerStore;
+        const { goBackDisabled } = this.props.menuStore;
+
+        const popDownMenus = [
+            {
+                name: '摘要'
+            },
+            {
+                name: '列表'
+            },
+            {
+                name: '创建时间'
+            },
+            {
+                name: '修改时间'
+            },
+            {
+                name: '文件名称'
+            },
+            {
+                name: '文件大小'
+            }
+        ];
 
         return <FileListSectionWrapper shrink={isShrink}>
             <div className="file-list-container">
                 <div className="file-list-header">
-                    <i className="icon-back"></i>
-                    <Input prefix={<i className="icon-search"></i>} placeholder="搜索..." className="search-ipt"/>
-                    <i className="icon-setting"></i>
+                    <i className={`icon-back${ goBackDisabled ? ' disabled': '' }`} title="返回上一级" onClick={ () => this.props.menuStore.goBackLevel()}></i>
+                    <Input prefix={<i className="icon-search"></i>} placeholder="搜索..." className="search-ipt" onChange={ this.handleChange } onPressEnter={ this.handleSearch }/>
+                    <div className="setting-wrapper">
+                        <i className="icon-setting" onClick={ this.toggleSettingVisible }></i>
+
+                        <ul className="pop-down-setting" style={{ display: popDownSettingVisible ? 'block' : 'none'}}>
+                            {
+                                popDownMenus.map((item, index) => {
+                                    return <li key={ index } onClick={ () => this.actionOperation(item.name) }>{ item.name }</li>
+                                })
+                            }
+                        </ul>
+                    </div>
                 </div>
 
                 <ul className="article-list">

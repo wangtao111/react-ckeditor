@@ -79,7 +79,8 @@ export default class Editor extends React.Component {
     componentDidUpdate(prevProps) {
         if (prevProps.value !== this.props.value) {
             this.setState({
-                data: this.props.value
+                data: this.props.value,
+                title: this.props.noteStore.noteList.length ? this.props.noteStore.noteList[0].title : ''
             })
         }
     }

@@ -70,7 +70,7 @@ const FileData = [
                 '</div>'+
 
             '</div>'},
-    {title: '光大证券-【光大研究每日速递】20180904', briefContent: '【金融工程】震荡调整继续、九月低配规模、EEP因子1、择时与风格: 市场大概', imgUrl:  require('../img/guangda.png'), size: '7.1MB', date: '2018-09-03', type: 1,
+    {title: '光大证券-【光大研究每日速递】20180904', briefContent: '【金融工程】震荡调整继续、九月低配规模、EEP因子1、择时与风格: 市场大概', imgUrl:  require('../img/guangda.png'), size: '7.13MB', date: '2018-09-03', type: 1,
         content: '<div style="font-size: 15px;">' +
             '<p style="text-align: center;font-size: 18px;font-weight: bold; color: #444;margin-bottom: 40px">今日聚焦</p>' +
                 '<div style="margin-bottom: 60px">' +
