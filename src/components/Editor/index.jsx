@@ -16,90 +16,7 @@ import {saveAs} from 'file-saver';
 import * as jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
 import EditorTemplate from './styled';
-
-const temp = [
-    {
-        id: 1,
-        title: '头部',
-        outSync: true,
-        tag: '<div><div style="border: 1px dashed #98BCFF; width: 100%; min-height: 100px; position: relative;margin-top: 30px;padding: 10px">' +
-                '<span contenteditable="false" style="position: absolute; top: -19px; left: -1px;background: #D8E9F6;color: #98BCFF; padding: 0 15px; border: 1px solid #98BCFF; border-bottom: none; border-radius: 4px; font-size: 10px">头部</span>' +
-                '<span>&nbsp;</span>' +
-            '</div></div>'
-    },
-    {
-        id: 2,
-        title: '标题',
-        outSync: true,
-        tag: '<div><div style="border: 1px dashed #98BCFF; width: 100%; height: 100px; position: relative;margin-top: 30px;padding: 10px">' +
-            '<span contenteditable="false" style="position: absolute; top: -19px; left: -1px;background: #D8E9F6;color: #98BCFF; padding: 0 15px; border: 1px solid #98BCFF; border-bottom: none; border-radius: 4px; font-size: 10px">标题</span>' +
-            '<span>&nbsp;</span>' +
-            '</div></div>'
-    },
-];
-const tables = [
-    {
-        id: 6,
-        title: '归母净利润',
-        source: '数据中心',
-        detail: '归母净利润[Q1Q2]587,415,463,762.1',
-        tag: '<span class="temporary" style="color: blue">归母净利润[Q1Q2]587,415,463,762.1</span>'
-    },
-    {
-        id: 8,
-        title: '归母净利为正',
-        source: '平台',
-        detail: '归母净利为正[Q1Q2]',
-        tag: '<span class="temporary" style="color: blue">归母净利为正[Q1Q2]</span>'
-    },
-    {
-        id: 9,
-        title: '归母净利为负',
-        source: 'windows',
-        detail: '归母净利为负[Q1Q2]',
-        tag: '<span class="temporary" style="color: blue">归母净利为负[Q1Q2]</span>'
-    },
-    {
-        id: 10,
-        title: '归属于上市公司股东净利润',
-        source: '数据中心',
-        detail: '归属于上市公司股东净利润[Q1Q2]',
-        tag: '<span class="temporary" style="color: blue">归属于上市公司股东净利润[Q1Q2]</span>'
-    },
-    {
-        id: 11,
-        title: '利润表',
-        source: '数据中心',
-        detail: '利润表',
-        tag: '<span class="temporary" style="color: blue">利润表</span>'
-    },
-]
-const MENTIONS = [
-    {
-        id: 1,
-        title: '中国移动',
-        detail: '中国移动(601314)',
-        tag: '<span class="temporary" style="color: blue;">中国移动(601314) </span>'
-    },
-    {
-        id: 2,
-        title: '中国平安',
-        detail: `中国平安(601318)`,
-        tag: '<span class="temporary">中国平安(601318)</span>'
-    },
-    {
-        id: 3,
-        title: '中国联通',
-        detail: '中国联通(601384)',
-        tag: '<span class="temporary">中国联通(601384)</span>'
-    },
-    {
-        id: 4,
-        title: '中国银行',
-        detail: '中国银行(681384)',
-        tag: '<span class="temporary">中国银行(681384)</span>'
-    }
-];
+import {temp, tables, MENTIONS} from '../../mockData/commandData'
 let doing = false;
 
 @inject('editorStore')
@@ -142,96 +59,6 @@ export default class Editor extends React.Component {
             showMore: false,
             visible: false,
             command: false,
-            templateHtml: `<div>
-                    <div class="select1">
-                        <select style="-webkit-appearance: menulist" onmousedown="javascript:return true;">
-                            <option value="头部" selected="selected">头部</option>
-                        </select>
-                    </div>
-                    <div style="border: 1px dashed #98BCFF;overflow: hidden" class="content1">
-                        <img src=${require('../../img/temp_title.png')} alt="" style="float: left; width: 130px;height: 60px;margin-left: 20px">
-                        <div style="float: right;margin-right: 20px;margin-top: 10px">
-                            <div style="font-size: 20px">晨会纪要</div>
-                            <p style="margin: 0"><span>2018年9月6日</span></p>
-                        </div>
-                        <div style="float: left;width: 100%; border-bottom: 3px solid #666;margin-bottom: 5px;"></div>
-                    </div>
-                    <div class="select1">
-                        <select style="-webkit-appearance: menulist">
-                            <option value="头部">头部</option>
-                        </select>
-                        <div style="border: 1px dashed #98BCFF;overflow: hidden" class="summary-title">
-                            <h1>晨会纪要标题</h1>
-                        </div>
-                </div>
-
-                <div class="select1">
-                    <select style="-webkit-appearance: menulist">
-                        <option value="头部">头部</option>
-                        <option value="标题">标题</option>
-                        <option value="摘要">摘要</option>
-                        <option value="声明">声明</option>
-                        <option value="栏目" selected="selected">栏目</option>
-                        <option value="公司股票">公司股票</option>
-                        <option value="结束语">结束语</option>
-                        <option value="尾部">尾部</option>
-                    </select>
-
-                    <div style="border: 1px dashed #98BCFF;overflow: hidden">
-                        <h2 class="section-title">特别声明</h2>
-                        <div class="divider-line"></div>
-                        <div style="margin: 15px;" class="editable-content content2">
-                            <p></p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="select1">
-                    <select style="-webkit-appearance: menulist">
-                        <option value="头部">头部</option>
-                        <option value="标题">标题</option>
-                        <option value="摘要">摘要</option>
-                        <option value="声明">声明</option>
-                        <option value="栏目" selected="selected">栏目</option>
-                        <option value="公司股票">公司股票</option>
-                        <option value="结束语">结束语</option>
-                        <option value="尾部">尾部</option>
-                    </select>
-
-                    <div style="border: 1px dashed #98BCFF;overflow: hidden">
-                        <h2 class="section-title">个股点评及推荐</h2>
-                        <div class="divider-line"></div>
-                        <div style="margin: 15px;" class="editable-content content3">
-                            <p></p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="select1">
-                    <select style="-webkit-appearance: menulist">
-                        <option value="尾部">尾部</option>
-                    </select>
-                    <div style="border: 1px dashed #98BCFF;overflow: hidden">
-                        <div style="margin: 15px;" class="editable-content content4">
-                            <p></p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="select1">
-                    <select style="-webkit-appearance: menulist">
-                        <option value="尾部">尾部</option>
-                    </select>
-
-                    <div style="border: 1px dashed #98BCFF;overflow: hidden">
-                        <h2 class="section-title">早报快讯</h2>
-                        <div class="divider-line"></div>
-                        <div style="margin: 15px;" class="editable-content content5">
-                            <p></p>
-                        </div>
-                    </div>
-                </div>
-            </div>`
         }
 
         this.editorRef = React.createRef();
@@ -338,7 +165,7 @@ export default class Editor extends React.Component {
         eventEmitter.on('SKIM_ARTICLE', (data) => {
             this.setState({data: data.content, title: data.title})
             setTimeout(() => {
-                this.setEditorIframe();
+                // this.setEditorIframe();
             }, 100)
         });
     }
@@ -401,7 +228,7 @@ export default class Editor extends React.Component {
                     }
                     eventEmitter.emit('COMMAND_POPUP', str +　that.pNode.innerHTML);
                 } else {
-                    eventEmitter.emit('COMMAND_POPUP', symbol.join(signal));
+                    eventEmitter.emit('COMMAND_POPUP', signal + item.tag);
                 }
             });
             return this
@@ -411,6 +238,72 @@ export default class Editor extends React.Component {
         eventEmitter.emit('SKIM_ARTICLE', this.props.noteStore.noteList[0]);
         this.setEditorIframe();
         document.getElementsByClassName('cke_autocomplete_panel')[0].style.width = 'auto';
+    }
+    textTestCallback = (range) => {
+        if (!range.collapsed) {
+            return null;
+        }
+        // const editor = this.editorRef.current.editor;
+        return window.CKEDITOR.plugins.textMatch.match(range, (txt, offset) => {
+            let text = JSON.parse(JSON.stringify(txt));
+            let index = text.lastIndexOf('~');
+            let matchSymbol = '~';
+            if(index === -1) {
+                index = text.lastIndexOf('～')
+                matchSymbol = '～'
+            }
+            this.pNode = null;
+            if(range.startContainer.$.parentNode.className === 'temporary'){　//选择公司后进入此逻辑
+                const pNode = this.getParentNode(range.startContainer.$);
+                const str = pNode.previousSibling.textContent;
+                if(str.charAt(str.length - 1) === '~' || str.charAt(str.length - 1) === '～'){
+                    const arr = text.split('.');
+                    const lastText = arr[arr.length - 1];
+                    const lastIndex = text.lastIndexOf('.');
+                    eventEmitter.emit('COMMAND_POPUP', matchSymbol +　pNode.innerHTML);
+                    let data = tables.filter(function (item) {
+                        return item.title.indexOf(lastText) !== -1;
+                    });
+                    this.callbackData = data;
+                    this.autocomplete.view.itemTemplate.source = '<li data-id="{id}"><div style="display: flex"><strong class="item-title" style="width: 150px">{title}</strong><strong style="margin-left: 10px">{source}</strong></div></li>';
+                    this.pNode = pNode;
+                    return {
+                        start: lastIndex + 1,
+                        end: text.length
+                    };
+                }
+            } else {
+                this.autocomplete.view.itemTemplate.source = '<li data-id="{id}"><div style="display: flex"><strong class="item-title" style="min-width: 100px">{title}</strong></div></li>';
+            }
+            if(!doing && index !== -1) { // 匹配'~'进入此逻辑
+                const matchArr = text.split(matchSymbol);
+                const matchText = matchArr[matchArr.length - 1]
+                eventEmitter.emit('COMMAND_POPUP', matchSymbol + matchText);
+                if(!matchArr[matchArr.length - 1]) {
+                    this.callbackData = temp;
+                    // range.setStart(range.endContainer, index - 1);
+                    // editor.getSelection().selectRanges( [ range ] );
+                    // editor.insertHtml( `<span class="temporary">${'~' + matchArr[matchArr.length - 1]}</span>` );
+                    return {
+                        start: index,
+                        end: range.endOffset
+                    };
+                } else {
+                    const arr = matchText.split('.');
+                    if(arr.length === 1){
+                        let data = MENTIONS.filter(function (item) {
+                            return item.title.indexOf(matchText) !== -1;
+                        });
+                        this.callbackData = data;
+                        return {
+                            start: index + 1,
+                            end: range.endOffset
+                        };
+                    }
+                }
+            }
+            return null;
+        });
     }
     setPNodeHtml = () => {
         if(!this.pNode) return;
@@ -429,6 +322,7 @@ export default class Editor extends React.Component {
         },false);
         document.onclick = function(e) {
             document.getElementById('command_tag_pane').style.display = 'none';
+            // document.getElementById('command_tag_list').style.display = 'none';
         }
         dom.onclick = (e) => {
             const tag = e.target.getAttribute('name');
@@ -492,69 +386,6 @@ export default class Editor extends React.Component {
         }
     }
 
-    textTestCallback = (range) => {
-        if (!range.collapsed) {
-            return null;
-        }
-        const editor = this.editorRef.current.editor;
-        return window.CKEDITOR.plugins.textMatch.match(range, (txt, offset) => {
-            let text = JSON.parse(JSON.stringify(txt));
-            let index = text.lastIndexOf('~');
-            let matchSymbol = '~';
-            if(index === -1) {
-                index = text.lastIndexOf('～')
-                matchSymbol = '～'
-            }
-            this.pNode = null;
-            if(range.startContainer.$.parentNode.className === 'temporary'){　//选择公司后进入此逻辑
-                const pNode = this.getParentNode(range.startContainer.$), str = pNode.previousSibling.textContent;
-                if(str.charAt(str.length - 1) === '~' || str.charAt(str.length - 1) === '～'){
-                    const arr = text.split('.');
-                    const lastText = arr[arr.length - 1];
-                    const lastIndex = text.lastIndexOf('.');
-                    eventEmitter.emit('COMMAND_POPUP', matchSymbol +　pNode.innerHTML);
-                    let data = tables.filter(function (item) {
-                        return item.title.indexOf(lastText) !== -1;
-                    });
-                    this.callbackData = data;
-                    this.autocomplete.view.itemTemplate.source = '<li data-id="{id}"><div style="display: flex"><strong class="item-title" style="width: 150px">{title}</strong><strong style="margin-left: 10px">{source}</strong></div></li>';
-                    this.pNode = pNode;
-                    return {
-                        start: lastIndex + 1,
-                        end: text.length
-                    };
-                }
-            }
-            if(!doing && index !== -1) { // '~'匹配进入此逻辑
-                const matchArr = text.split(matchSymbol);
-                const matchText = matchArr[matchArr.length - 1]
-                eventEmitter.emit('COMMAND_POPUP', matchSymbol + matchText);
-                if(!matchArr[matchArr.length - 1]) {
-                    this.callbackData = temp;
-                    // range.setStart(range.endContainer, index - 1);
-                    // editor.getSelection().selectRanges( [ range ] );
-                    // editor.insertHtml( `<span class="temporary">${'~' + matchArr[matchArr.length - 1]}</span>` );
-                    return {
-                        start: index,
-                        end: range.endOffset
-                    };
-                } else {
-                    const arr = matchText.split('.');
-                    if(arr.length === 1){
-                        let data = MENTIONS.filter(function (item) {
-                            return item.title.indexOf(matchText) !== -1;
-                        });
-                        this.callbackData = data;
-                        return {
-                            start: index + 1,
-                            end: range.endOffset
-                        };
-                    }
-                }
-            }
-            return null;
-        });
-    }
     getParentNode = (node) => {
         if(node.parentNode.className === 'temporary') {
             return this.getParentNode(node.parentNode)

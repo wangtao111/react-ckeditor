@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Button, Icon } from 'antd';
+import {tables, MENTIONS} from '../../mockData/commandData'
 const IntelliCommandWrapper = styled.div`
     overflow: hidden;
     padding-bottom: 2px;
@@ -11,6 +12,22 @@ const IntelliCommandWrapper = styled.div`
         padding: 12px 0;
         padding-left: 13px;
         border-bottom: 1px solid #eee;
+    }
+    #command_tag_list{
+        display: none;
+        position: absolute;
+        border: 1px solid #ddd;
+        border-radius: 2px;
+        background: #fff;
+        font-size: 12px;
+        >ul>li{
+            padding: 3px 20px;
+            cursor: pointer;
+            &:hover{
+                background: #dbe9f9;
+                color: #82abe5;
+            }
+        }
     }
     .close{
         color: #bbb;
@@ -68,19 +85,84 @@ const IntelliCommandWrapper = styled.div`
 `;
 
 export default class IntelliCommand extends React.Component {
-    // constructor(props) {
-    //     super(props);
-    // }
+    constructor(props) {
+        super(props);
+        this.position = null;
+        this.range = null;
+        this.state = {
+            dropList: []
+        }
+    }
+
+    componentDidMount() {
+    }
+
+    keyUp = () => {
+        const range = window.getSelection().getRangeAt(0), text = range.endContainer.textContent;
+        let position = range.getBoundingClientRect(), menu = document.getElementById('command_tag_list');
+        if(position.x + menu.clientWidth > document.body.clientWidth){
+            position.x = document.body.clientWidth - menu.clientWidth - 10
+        }
+        this.range = range;
+        if(text.charAt(text.length - 1) === '~' || text.charAt(text.length - 1) ==='～') {
+            this.position = position;
+        }
+        if (text.indexOf('~') !== -1 || text.indexOf('～') !== -1) {
+            this.setState({dropList: MENTIONS});
+            menu.style.display = 'block';
+            menu.style.left = position.left + 'px';
+            menu.style.top = position.top + 14 + 'px';
+        } else if(range.endContainer.parentElement.className === 'temporary') {
+            const index = text.lastIndexOf('.');
+            if(index !== -1) {
+                this.setState({dropList: tables});
+                menu.style.display = 'block';
+                menu.style.left = position.left + 'px';
+                menu.style.top = position.top + 14 + 'px';
+            } else {
+                menu.style.display = 'none';
+            }
+        } else {
+            menu.style.display = 'none';
+        }
+    }
+    templateClick = (li) => {
+        const range = this.range,
+            menu = document.getElementById('command_tag_list'),
+            text = range.endContainer.textContent,
+            index = text.lastIndexOf('.');
+        let offset = 1;
+        if(range.endContainer.parentElement.className === 'temporary' && index !== -1) {
+            offset = index + 1;
+        }
+        range.setStart(range.endContainer, offset);
+        range.deleteContents();
+        const node = document.createElement('span');
+        node.innerHTML = li.tag
+        range.insertNode(node);
+        range.collapse();
+        menu.style.display = 'none';
+    }
 
     render() {
+        const {dropList} = this.state;
         return <IntelliCommandWrapper>
             <Icon type='close' className='close' onClick={() => {this.props.closeCallback()}}></Icon>
             <h2>智能命令</h2>
 
-            <div className="editable-cmd-content" id='editable-cmd-content' contentEditable={ true }>
+            <div className="editable-cmd-content" id='editable-cmd-content' contentEditable={ true } onKeyUp={(e) => {this.keyUp(e)}}>
             </div>
 
             <Button className="btn-exec-cmd">运行</Button>
+            <div id="command_tag_list">
+                <ul>
+                    {
+                        dropList.map((li, index) => {
+                            return <li key={index} onClick={() => {this.templateClick(li)}}>{li.title}</li>
+                        })
+                    }
+                </ul>
+            </div>
         </IntelliCommandWrapper>
     }
 }
