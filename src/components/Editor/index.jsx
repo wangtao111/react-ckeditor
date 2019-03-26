@@ -65,7 +65,6 @@ export default class Editor extends React.Component {
         this.shareModalRef = null;
         this.commentRef = null;
         this.autocomplete = null;
-        this.document = document;
         this.callbackData = [];
         this.pNode = null;
         this.tag = null;
@@ -352,16 +351,15 @@ export default class Editor extends React.Component {
                 commandMenu.style.display = 'none';
             }
             if(tag === 'select_box') {
-                const document = this.document;
-                // const scrollX = document.documentElement.scrollLeft || document.body.scrollLeft;
-                // const scrollY = document.documentElement.scrollTop || document.body.scrollTop;
+                const scrollX = dom.documentElement.scrollLeft || dom.body.scrollLeft;
+                const scrollY = dom.documentElement.scrollTop || dom.body.scrollTop;
                 const offset = this.getPoint(document.getElementById('cke_1_contents'));
                 const x = e.target.offsetLeft ;
                 const y = e.target.offsetTop ;
                 const el = document.getElementById('command_tag_pane');
                 el.style.display = 'block';
-                el.style.left = x + offset.x + 'px';
-                el.style.top = y + offset.y + 20 +'px';
+                el.style.left = x + offset.x - scrollX + 'px';
+                el.style.top = y + offset.y - scrollY + 20 +'px';
                 document.getElementById('command_tag_pane').style.display = 'block';
                 this.tag = e.target;
             }
