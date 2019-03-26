@@ -166,7 +166,7 @@ export default class Editor extends React.Component {
         eventEmitter.on('SKIM_ARTICLE', (data) => {
             this.setState({data: data.content, title: data.title})
             setTimeout(() => {
-                // this.setEditorIframe();
+                this.setEditorIframe();
             }, 100)
         });
     }
