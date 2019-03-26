@@ -334,12 +334,23 @@ export default class Editor extends React.Component {
             doing = false;
         },false);
         document.onclick = function(e) {
-            document.getElementById('command_tag_pane').style.display = 'none';
-            // document.getElementById('command_tag_list').style.display = 'none';
+            const tagMenu = document.getElementById('command_tag_pane'), commandMenu = document.getElementById('command_tag_list');
+            if(tagMenu){
+                tagMenu.style.display = 'none';
+            }
+            if(commandMenu){
+                commandMenu.style.display = 'none';
+            }
         }
         dom.onclick = (e) => {
             const tag = e.target.getAttribute('name');
-            document.getElementById('command_tag_pane').style.display = 'none';
+            const tagMenu = document.getElementById('command_tag_pane'), commandMenu = document.getElementById('command_tag_list');
+            if(tagMenu){
+                tagMenu.style.display = 'none';
+            }
+            if(commandMenu){
+                commandMenu.style.display = 'none';
+            }
             if(tag === 'select_box') {
                 const document = this.document;
                 // const scrollX = document.documentElement.scrollLeft || document.body.scrollLeft;

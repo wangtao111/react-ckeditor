@@ -20,6 +20,7 @@ class FullScreen extends React.Component {
         this.drawing = false;
         this.document = window.document;
         this.scale = null;
+        this.drawAble = null;
     }
 
     componentDidMount() {
@@ -56,6 +57,7 @@ class FullScreen extends React.Component {
         );
     }
     changeDrawColor = (color) => {
+        this.setDraw(true);
         this.canvasMask.style.display = 'block';
         this.canvasMask.getContext("2d").strokeStyle = color;
     }
@@ -149,6 +151,15 @@ class FullScreen extends React.Component {
             this.fullScreenSize -= 0.25
         }
         dom.style.zoom = this.fullScreenSize;
+        this.setDraw(false);
+    }
+    //设置画笔
+    setDraw = (open) => {
+        this.drawAble = open;
+        this.canvasMask.style.cursor = open ? `url(${require('../../img/draw.png')}), auto` : `auto`;
+        if(open) {
+            this.scale.style.zoom = 1;
+        }
     }
     //退出全屏
     exitFullscreen = () => {
@@ -186,12 +197,16 @@ class FullScreen extends React.Component {
         this.canvasMask.style.top = '0';
         this.canvasMask.style.left = '0';
         this.canvasMask.style.display = 'none';
-        this.canvasMask.style.cursor = `url(${require('../../img/draw.png')}), auto`;
+        this.canvasMask.style.zIndex = '1000';
+        this.setDraw(true);
         let ctx = this.canvasMask.getContext("2d");
         ctx.lineWidth = 1.5;//笔触粗细
         ctx.globalAlpha = 0.8;//透明度
         ctx.strokeStyle = 'black';
         this.canvasMask.onmousedown = (e) => {
+            if(!this.drawAble){
+                return
+            }
             const scrollX = document.documentElement.scrollLeft || document.body.scrollLeft;
             const scrollY = document.documentElement.scrollTop || document.body.scrollTop;
             const ev = e || window.event;

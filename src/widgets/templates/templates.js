@@ -39,7 +39,7 @@ const TEMPLATES = [
                 </select>
 
                 <div class="tpl-dashed-border">
-                    <h1 class="summary-title editable-content">{titleName}</h1>
+                    <h1 class="summary-title">{titleName}</h1>
                 </div>
             </section>
         `

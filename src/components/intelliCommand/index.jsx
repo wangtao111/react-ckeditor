@@ -99,6 +99,8 @@ export default class IntelliCommand extends React.Component {
 
     keyUp = () => {
         const range = window.getSelection().getRangeAt(0), text = range.endContainer.textContent;
+        const scrollX = document.documentElement.scrollLeft || document.body.scrollLeft;
+        const scrollY = document.documentElement.scrollTop || document.body.scrollTop;
         let position = range.getBoundingClientRect(), menu = document.getElementById('command_tag_list');
         if(position.x + menu.clientWidth > document.body.clientWidth){
             position.x = document.body.clientWidth - menu.clientWidth - 10
@@ -110,8 +112,8 @@ export default class IntelliCommand extends React.Component {
         if (text.indexOf('~') !== -1 || text.indexOf('～') !== -1) {
             this.setState({dropList: MENTIONS});
             menu.style.display = 'block';
-            menu.style.left = position.left + 'px';
-            menu.style.top = position.top + 14 + 'px';
+            menu.style.left = position.left+ scrollX + 'px';
+            menu.style.top = position.top + scrollY + 14 + 'px';
         } else if(range.endContainer.parentElement.className === 'temporary') {
             const index = text.lastIndexOf('.');
             if(index !== -1) {
