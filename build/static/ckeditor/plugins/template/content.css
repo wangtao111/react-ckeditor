@@ -31,6 +31,11 @@
 	color: #d4d4d4;
 }
 
+.editable-content p {
+	margin: 0;
+	padding: 0 10px;
+}
+
 .tpl-dashed-border h2 {
 	margin: 0;
 	border-bottom: 3px solid #e70010; 
@@ -61,3 +66,26 @@ select {
 	border-bottom-left-radius: 0;
 	border-bottom-right-radius: 0;
 }
+
+/* .widget-component-wrapper {
+	display: inline-block;
+	width: calc(100vw - 80px);
+}
+
+.cke_widget_template:hover:after {
+	display: block;
+}
+
+.cke_widget_template:after {
+	display: none;
+	content: '';
+	position: absolute;
+    width: 10px;
+    height: 10px;
+    bottom: 10px;
+    right: 10px;
+    background: #000;
+    outline: 1px solid #fff;
+    line-height: 0;
+    cursor: se-resize;
+} */

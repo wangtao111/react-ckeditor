@@ -1,5 +1,6 @@
 import TEMPLATES from './templates';
 import logo from '../../img/temp_title.png';
+import researchReportLogo from '../../theme/images/research_report_logo.png';
 import moment from 'moment';
 
 // 晨会纪要
@@ -42,10 +43,37 @@ const morningNote = [
     }
 ];
 
+// 研究报告
+const researchReport = [
+    {
+        widget: '头部',
+        template: {
+            headerLogo: researchReportLogo,
+            headerTitle: '华泰证券',
+            templateType: '研究类别',
+            date: moment().format('YYYY年MM月DD日')
+        }
+    },
+    {
+        widget: '标题',
+        template: {
+            titleName: '研报标题'
+        }
+    },
+    {
+        widget: '摘要',
+        template: {
+            titleName: '核心观点'
+        }
+    }
+];
+
+
+export { morningNote, researchReport };
 export const Template = {
-    generateTemplateHtml: () => {
+    generateTemplateHtml: (templateNote) => {
         let resultHtml = '';
-        morningNote.forEach(item => {
+        templateNote.forEach(item => {
             TEMPLATES.forEach(template => {
                 if(template.id === item.widget) {
                     resultHtml += new window.CKEDITOR.template(template.html).output(item.template);

@@ -151,14 +151,16 @@ export default class Editor extends React.Component {
         })
 
         // 新建文档
-        eventEmitter.on('NEW_PAGE', (type) => {
+        eventEmitter.on('NEW_PAGE', (data) => {
             this.setState({title: '', data: ''});
-            if (!type) {
-                return
-            }
+            // if (!type) {
+            //     return
+            // }
+            const { name, template } = data;
             setTimeout(() => {
-                this.setTemplate();
-                this.setState({title: '晨会纪要模板'});
+                this.setTemplate(template);
+                
+                this.setState({ title: name });
             }, 100)
         });
         // 浏览文章
@@ -197,10 +199,10 @@ export default class Editor extends React.Component {
         });
     }
 
-    setTemplate = () => {
+    setTemplate = (template) => {
         const editor = this.editorRef.current.editor;
         this.props.editorStore.setEditor(editor);
-        editor.insertHtml(Template.generateTemplateHtml());
+        editor.insertHtml(Template.generateTemplateHtml(template));
     }
 
     instanceReady = () => {
@@ -516,7 +518,7 @@ export default class Editor extends React.Component {
         const {data, title, tools, visible, dropList, moreList, showMore} = this.state;
         const contentCss = process.env.NODE_ENV === 'production' ? [`${window.origin}/static/ckeditor/contents.css`, `${window.origin}/static/ckeditor/external.css`] : ['http://localhost:5500/build/static/ckeditor/contents.css', 'http://localhost:5500/build/static/ckeditor/external.css' ];
         const config = {
-            extraPlugins: 'autocomplete,notification,textmatch,textwatcher,easyimage,tableresizerowandcolumn,save-to-pdf,quicktable,templates, template',
+            extraPlugins: 'autocomplete,notification,textmatch,textwatcher,tableresizerowandcolumn,save-to-pdf,quicktable,templates,template,image2,uploadimage,uploadwidget,filebrowser',
             allowedContent: true,
             pdfHandler: 'http://www.baidu.com', // 下载pdf的地址
             height: 800,
@@ -541,7 +543,21 @@ export default class Editor extends React.Component {
             qtClass: 'editor-table-widget',
             qtStyle: 'border: 1px solid #a7a7a7;',
             contentsCss: contentCss,
-            removePlugins: 'forms,bidi'
+            removePlugins: 'forms,bidi',
+            autoParagraph: false,
+             // Configure your file manager integration. This example uses CKFinder 3 for PHP.
+            filebrowserBrowseUrl: '/apps/ckfinder/3.4.5/ckfinder.html',
+            filebrowserImageBrowseUrl: '/apps/ckfinder/3.4.5/ckfinder.html?type=Images',
+            filebrowserUploadUrl: '/apps/ckfinder/3.4.5/core/connector/php/connector.php?command=QuickUpload&type=Files',
+            filebrowserImageUploadUrl: '/apps/ckfinder/3.4.5/core/connector/php/connector.php?command=QuickUpload&type=Images',
+
+            // Upload dropped or pasted images to the CKFinder connector (note that the response type is set to JSON).
+            uploadUrl: '/apps/ckfinder/3.4.5/core/connector/php/connector.php?command=QuickUpload&type=Files&responseType=json',
+
+            // Reduce the list of block elements listed in the Format drop-down to the most commonly used.
+            format_tags: 'p;h1;h2;h3;pre',
+            // Simplify the Image and Link dialog windows. The "Advanced" tab is not needed in most cases.
+            removeDialogTabs: 'image:advanced;link:advanced',
         };
         const EDITOR_DEV_URL = 'http://localhost:5500/build/static/ckeditor/ckeditor.js';
         const EDITOR_PRO_URL = `${window.origin}/static/ckeditor/ckeditor.js`;

@@ -5,6 +5,7 @@ class DrawerStore {
     @observable commandContent = '';        // 命令内容
     @observable isSearchResult = false;        // 是搜索结果
     @observable isCommandPop = false;         // 是命令弹窗
+    @observable isComponentWidgets = false;     // 是组件widget
     @observable searchResult = [
         {
             title: '2017年前五大智能手机厂商—出货量、市场份额',

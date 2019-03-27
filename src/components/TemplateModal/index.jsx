@@ -4,6 +4,7 @@ import { inject, observer } from 'mobx-react';
 // import { TemplateHtmlStr } from '../../config/templateConfig';
 import styled from "styled-components";
 import eventEmitter from "../../event";
+import { researchReport, morningNote } from '../../widgets/templates';
 
 const TabPane = Tabs.TabPane;
 const Templates = styled.section`
@@ -25,10 +26,10 @@ export default class TemplateModal extends React.Component {
         super(props);
         this.state = {
             templates: [
-                {name: '会议纪录模板', img: require('../../img/huiyi.png')},
-                {name: '调研报告模板', img: require('../../img/diaoyan.png')},
-                {name: '研究报告模板', img: require('../../img/yanjiu.png')},
-                {name: '晨会纪要模板', img: require('../../img/chenhui.png')},
+                {name: '会议纪录模板', img: require('../../img/huiyi.png'), template: ''},
+                {name: '调研报告模板', img: require('../../img/diaoyan.png'), template: ''},
+                {name: '研究报告模板', img: require('../../img/yanjiu.png'), template: researchReport},
+                {name: '晨会纪要模板', img: require('../../img/chenhui.png'), template: morningNote},
             ]
         }
     }
@@ -40,7 +41,8 @@ export default class TemplateModal extends React.Component {
         // });
         //
         this.props.closeCallback && this.props.closeCallback();
-        eventEmitter.emit('NEW_PAGE', 1)
+        // eventEmitter.emit('NEW_PAGE', 1)
+        eventEmitter.emit('NEW_PAGE', this.state.templates[index]);
     }
 
     render() {
@@ -57,7 +59,7 @@ export default class TemplateModal extends React.Component {
                                     <Button type="primary"
                                             style={{float: 'right', width: '60px', height: '20px', marginRight: '5px', fontSize: '10px'}}
                                             size='small'
-                                            onClick={ () => this.useTemplate(3) }>立即使用</Button>
+                                            onClick={ () => this.useTemplate(index) }>立即使用</Button>
                                 </p>
                             </div>
                         })

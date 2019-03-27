@@ -6,6 +6,7 @@ import Preview from '../Preview';
 import { inject, observer } from 'mobx-react';
 import SearchResult from '../SearchResult';
 import eventEmitter from "../../event";
+import ComponentWidgets from '../ComponentWidgets';
 
 const CommandPopupWrapper = styled.div`
     flex-shrink: 0;
@@ -88,6 +89,12 @@ export default class CommandPopup extends React.Component {
                 this.props.drawerStore.isSearchResult &&
                 <SearchResult closeCallback={this.onClose}></SearchResult>
             }
+
+            {/* 组件widget */}
+            {
+                this.props.drawerStore.isComponentWidgets && <ComponentWidgets></ComponentWidgets>
+            }
+            
         </CommandPopupWrapper>
     }
 }
