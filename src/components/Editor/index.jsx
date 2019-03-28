@@ -558,6 +558,7 @@ export default class Editor extends React.Component {
             format_tags: 'p;h1;h2;h3;pre',
             // Simplify the Image and Link dialog windows. The "Advanced" tab is not needed in most cases.
             removeDialogTabs: 'image:advanced;link:advanced',
+            // font_names: '宋体/SimSun;新宋体/NSimSun;仿宋/FangSong'
         };
         const EDITOR_DEV_URL = 'http://localhost:5500/build/static/ckeditor/ckeditor.js';
         const EDITOR_PRO_URL = `${window.origin}/static/ckeditor/ckeditor.js`;
