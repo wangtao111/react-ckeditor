@@ -66,17 +66,6 @@ class FullScreen extends React.Component {
         let de = this.refs.fullScreen;
         de.style.background = '#fff';
         if(this.props.editorHandle){
-            // const bodyStr = this.props.editorRef.current.editor.getData();
-
-            // const element = window.CKEDITOR.dom.element.createFromHtml(bodyStr);
-            // element.setAttribute('id', 'fullscreenRoot');
-            // element.setStyles({
-            //     backgroundColor: '#fff',
-            //     position: 'relative'
-            // });
-            // window.document.body.appendChild(element.$);
-            
-            // de = window.document.getElementById('fullscreenRoot');
             de = document.getElementById('cke_1_contents');
         }
         if (de.requestFullscreen) {
