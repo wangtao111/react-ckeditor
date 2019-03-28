@@ -1,5 +1,5 @@
 import React from 'react';
-import { Tabs, Button } from 'antd';
+import { Tabs, Button, Row } from 'antd';
 import { inject, observer } from 'mobx-react';
 // import { TemplateHtmlStr } from '../../config/templateConfig';
 import styled from "styled-components";
@@ -17,6 +17,37 @@ const Templates = styled.section`
             height: 110px;
             border-radius: 3px
         }
+   }
+
+   .my-template-box {
+       display: flex;
+       justify-content: space-between;
+
+       .template-item {
+           width: 50%;
+       }
+
+       .add-new-template {
+            display: flex;
+            align-items: center;
+            flex-direction: column;
+            justify-content: center;
+            height: 122px;
+            border: 1px dashed #ccc;
+            border-radius: 4px;
+            cursor: pointer;
+
+            img {
+                max-width: 28px;
+            }
+
+            .new-txt {
+                margin-top: 5px;
+                color: #333;
+                font-size: 12px;
+            }
+
+       }
    }
 `;
 @inject('editorStore')
@@ -66,7 +97,12 @@ export default class TemplateModal extends React.Component {
                     }
                 </TabPane>
                 <TabPane tab="我的模板" key="1">
-                
+                    <div className="my-template-box">
+                        <div className="add-new-template template-item">
+                            <img src={require('../../theme/images/icon_add_template.png')} alt="模板icon"/>
+                            <div className="new-txt">新建模板</div>
+                        </div>
+                    </div>
                 </TabPane>
             </Tabs>
         </Templates>

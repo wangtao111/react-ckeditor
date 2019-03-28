@@ -129,7 +129,7 @@ var setupResizer = function( widget ) {
     } );
 }  
 CKEDITOR.plugins.add('template', {
-    requires: 'widget',
+    requires: 'widget,dialog',
     onLoad: function() {
         CKEDITOR.addCss(`
             .cke_widget_template {
@@ -200,6 +200,7 @@ CKEDITOR.plugins.add('template', {
         `);
     },
     init: function(editor) {
+        CKEDITOR.dialog.add('template', this.path + 'dialogs/template.js' );
         editor.addContentsCss(this.path + 'content.css' );
         editor.widgets.add('template', {
             allowedContent: 'section(!widget-component-wrapper);select',
@@ -224,14 +225,30 @@ CKEDITOR.plugins.add('template', {
             upcast: function(element) {
                 return element.name == 'section' && element.hasClass( 'widget-component-wrapper' );
             },
+            dialog: 'template',
             init: function() {
                 setupResizer(this);
+
+                let width = this.element.getAttribute('width');
+
+                if(width) {
+                    this.setData('width', width);
+                }
+
+				if ( this.element.hasClass( 'align-left' ) )
+                    this.setData( 'align', 'left' );
+                if ( this.element.hasClass( 'align-right' ) )
+                    this.setData( 'align', 'right' );
+                if ( this.element.hasClass( 'align-center' ) )
+                    this.setData( 'align', 'center' );
             },
             data: function() {
                 const wrapperWidth = editor.document.getBody().$.clientWidth;
 
-                if ( !this.data.width ) {
+                if (!this.data.width) {
                     this.wrapper.removeStyle( 'width' );
+                }else if(this.data.width.toString().endsWith('%')){
+                    this.wrapper.setStyle('width', this.data.width);
                 }else {
                     this.wrapper.setStyle( 'width', (Math.min(this.data.width / wrapperWidth, 1) * 100).toFixed(3) + '%' );
                 }
@@ -241,6 +258,15 @@ CKEDITOR.plugins.add('template', {
                 // }else {
                 //     this.element.setStyle( 'height', this.data.height + 'px' );
                 // }
+
+                this.element.removeClass('align-left');
+                this.element.removeClass('align-right');
+				this.element.removeClass('align-center');
+                this.wrapper.removeClass('align-left');
+				this.wrapper.removeClass('align-right');
+				this.wrapper.removeClass('align-center');
+				if ( this.data.align )
+					this.wrapper.addClass( 'align-' + this.data.align );
             }
         })
     }

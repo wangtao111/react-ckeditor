@@ -14,7 +14,7 @@ const TEMPLATES = [
             </select>
 
             <div class="header-wrapper" style="overflow:hidden;">
-                <div style="float: left;" class="editable-img">
+                <div style="float: left;margin-top: 12px;" class="editable-img">
                     <img src="{headerLogo}" title="{headerTitle}" width="130"/>
                 </div>
 
@@ -28,7 +28,7 @@ const TEMPLATES = [
     {
         id: '标题',
         html: `
-            <section class="tpl-title widget-component-wrapper">
+            <section class="tpl-title widget-component-wrapper {className}" width={width}>
                 <select>
                     <option value="头部">头部</option>
                     <option value="标题" selected="selected">标题</option>
@@ -113,6 +113,59 @@ const TEMPLATES = [
 
                 <div class="editable-content-wrapper">
                     <div class="editable-content"></div>
+                </div>
+            </section>
+        `
+    },
+    {
+        id: '摘要',
+        html: `
+            <section class="widget-component-wrapper {className}" width="{width}">
+                <select>
+                    <option>摘要</option>
+                </select>
+
+                <div class="editable-content-wrapper">
+                    <div class="editable-content">
+                        <h3>{titleName}</h3>
+                    </div>
+                </div>
+            </section>
+        `
+    }, 
+    {
+        id: '股价',
+        html: `
+            <section class="widget-component-wrapper {className}" width="{width}">
+                <select>
+                    <option value="股价">股价</option>
+                </select>
+
+                <h3>{titleName}</h3>
+            </section>
+        `
+    },
+    {
+        id: '作者',
+        html: `
+            <section class="widget-component-wrapper {className}" width="{width}">
+                <select>
+                    <option value="作者">作者</option>
+                </select>
+
+                <div class="editable-content-wrapper">
+                    <div class="editable-content">
+                        <div class="content-wrapper">
+                            <h3>{titleName}</h3>
+
+                            <dl>
+                                <dt>@何靖雯</dt>
+                                <dd>电话: 021-63325888-8090</dd>
+                                <dd>邮箱: hejingwen@oritens.com.cn</dd>
+                                <dd>执业证书编号: S08843243243243</dd>
+                            </dl>
+                        </div>
+                    </div>
                 </div>
             </section>
         `

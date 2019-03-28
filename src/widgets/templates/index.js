@@ -57,13 +57,33 @@ const researchReport = [
     {
         widget: '标题',
         template: {
-            titleName: '研报标题'
+            titleName: '研报标题',
+            width: '65%',
+            className: 'align-left',
+        }
+    },
+    {
+        widget: '股价',
+        template: {
+            titleName: '股价表现',
+            width: '33%',
+            className: 'align-right',
         }
     },
     {
         widget: '摘要',
         template: {
-            titleName: '核心观点'
+            titleName: '核心观点',
+            width: '65%',
+            className: 'align-left',
+        }
+    },
+    {
+        widget: '作者',
+        template: {
+            titleName: '分析师',
+            width: '33%',
+            className: 'align-right',
         }
     }
 ];
