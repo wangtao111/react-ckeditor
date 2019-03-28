@@ -141,7 +141,8 @@ class FullScreen extends React.Component {
     monitorFullScreenExit = () => {
         const contextmenu = document.getElementById('contextmenu');
         const timer = setInterval(() => {
-            if(!document.fullscreenElement) {
+            const fullscreenElement = document.fullscreenElement || document.mozFullScreenElement || document.webkitCurrentFullScreenElement; 
+            if(!fullscreenElement) {
                 this.fullScreenSize = 1;
                 this.scale.style.zoom = this.fullScreenSize;
                 document.getElementById('fullScreenBtn').style.display = 'none';
