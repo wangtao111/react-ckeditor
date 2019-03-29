@@ -165,7 +165,10 @@ export default class Editor extends React.Component {
         });
         // 浏览文章
         eventEmitter.on('SKIM_ARTICLE', (data) => {
-            this.setState({data: data.content, title: data.title})
+            const valueKey = '金融';
+            let arr = data.content.split(valueKey);
+            let content = arr.join(`<span style="color:red;">${valueKey}</span>`);
+            this.setState({data: content, title: data.title})
             setTimeout(() => {
                 this.setEditorIframe();
             }, 100)

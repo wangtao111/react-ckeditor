@@ -121,6 +121,7 @@ class FullScreen extends React.Component {
             const contextmenu = document.getElementById('contextmenu');
             const scrollX = this.document.documentElement.scrollLeft || this.document.body.scrollLeft;
             const scrollY = this.document.documentElement.scrollTop || this.document.body.scrollTop;
+            e.preventDefault();
             if(!contextmenu) return;
             contextmenu.style.display = 'block';
             contextmenu.style.left = x - scrollX + 'px';
