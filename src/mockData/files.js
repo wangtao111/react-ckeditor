@@ -35,6 +35,12 @@ const FileData = [
                             <li style="font-weight: bold">四、支持预览演示 
                                     <p style="text-indent: 25px; font-weight: normal">点击右上方的第三个演示模式按钮，可进入演示模式, 可进行放大缩小操作，方便观看</p>
                             </li>
+                            <li style="font-weight: bold">五、支持模板
+                                <ol style="margin: 10px 0; font-weight: normal">
+                                    <li>可以插入研究报告模板</li>
+                                    <li>可以插入晨会纪要模板</li>
+                                </ol>
+                            </li>
                         </ul>
                     </div>
                    

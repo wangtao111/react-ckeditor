@@ -23,7 +23,11 @@ const CommandPopupWrapper = styled.div`
         }
     `}
 
-    .close{
+    ${props => props.autoWidth && css`
+        width: auto;
+    `}
+
+    .close {
         color: #bbb;
         float: right;
         margin-right: 20px;
@@ -60,12 +64,15 @@ export default class CommandPopup extends React.Component {
     onClose = () => {
         this.props.drawerStore.setVisible(false);
         this.props.drawerStore.setFlagFalse();
+        if(this.props.drawerStore.isComponentWidgets) {
+            this.props.drawerStore.setComponentWidget(false);
+        }
     }
 
     render() {
-        const { setCommandPopFlag, isVisible, setVisible } = this.props.drawerStore;
+        const { setCommandPopFlag, isVisible, setVisible, isComponentWidgets } = this.props.drawerStore;
         
-        return <CommandPopupWrapper visible={ isVisible }>
+        return <CommandPopupWrapper visible={ isVisible } autoWidth={ isComponentWidgets }>
             <Button
                 icon='left-circle'
                 style={{
@@ -92,7 +99,7 @@ export default class CommandPopup extends React.Component {
 
             {/* 组件widget */}
             {
-                this.props.drawerStore.isComponentWidgets && <ComponentWidgets></ComponentWidgets>
+                this.props.drawerStore.isComponentWidgets && <ComponentWidgets closeCallback={this.onClose}></ComponentWidgets>
             }
             
         </CommandPopupWrapper>

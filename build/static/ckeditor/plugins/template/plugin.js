@@ -150,7 +150,7 @@ CKEDITOR.plugins.add('template', {
                 height: 20px;
                 bottom: -4px;
                 right: -4px;
-                outline: 1px solid #fff;
+                outline: 1px solid transparent;
                 line-height: 0;
                 cursor: se-resize;
             }
@@ -268,6 +268,15 @@ CKEDITOR.plugins.add('template', {
 				if ( this.data.align )
 					this.wrapper.addClass( 'align-' + this.data.align );
             }
-        })
+        });
+
+        editor.on('paste', function(evt) {
+            let widgetData = evt.data.dataTransfer.getData('widgetData');
+            if (!widgetData) {
+                return;
+            }
+
+            evt.data.dataValue = widgetData;
+        });
     }
 });
