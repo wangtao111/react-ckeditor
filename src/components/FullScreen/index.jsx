@@ -116,14 +116,20 @@ class FullScreen extends React.Component {
             contextmenu.style.display = 'none';
         }
         this.document.oncontextmenu = (e) => {
-            const x = e.pageX || e.clientX;
-            const y = e.pageY || e.clientY;
+            let x = e.pageX || e.clientX;
+            let y = e.pageY || e.clientY;
             const contextmenu = document.getElementById('contextmenu');
             const scrollX = this.document.documentElement.scrollLeft || this.document.body.scrollLeft;
             const scrollY = this.document.documentElement.scrollTop || this.document.body.scrollTop;
             e.preventDefault();
             if(!contextmenu) return;
             contextmenu.style.display = 'block';
+            if(x + contextmenu.offsetWidth - scrollX >= document.body.offsetWidth){
+                x -= contextmenu.offsetWidth
+            }
+            if(y + contextmenu.offsetHeight - scrollY >= document.body.offsetHeight){
+                y -= contextmenu.offsetHeight
+            }
             contextmenu.style.left = x - scrollX + 'px';
             contextmenu.style.top = y - scrollY +'px';
         }
