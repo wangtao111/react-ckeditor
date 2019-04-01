@@ -208,6 +208,8 @@ export default class Editor extends React.Component {
         editor.insertHtml(Template.generateTemplateHtml(template));
     }
 
+   
+
     instanceReady = () => {
         const editor = this.editorRef.current.editor;
         const itemTemplate = '<li data-id="{id}"><div style="display: flex"><strong class="item-title" style="min-width: 100px">{title}</strong></div></li>';

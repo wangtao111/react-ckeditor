@@ -51,6 +51,7 @@ const Templates = styled.section`
    }
 `;
 @inject('editorStore')
+@inject('drawerStore')
 @observer
 export default class TemplateModal extends React.Component {
     constructor(props) {
@@ -76,6 +77,13 @@ export default class TemplateModal extends React.Component {
         eventEmitter.emit('NEW_PAGE', this.state.templates[index]);
     }
 
+    addNewTemplate = () => {
+        this.props.drawerStore.setVisible(true);
+        this.props.drawerStore.setComponentWidget(true);
+
+        this.props.closeCallback && this.props.closeCallback();
+    }
+
     render() {
         const { templates } = this.state;
         return <Templates>
@@ -98,7 +106,7 @@ export default class TemplateModal extends React.Component {
                 </TabPane>
                 <TabPane tab="我的模板" key="1">
                     <div className="my-template-box">
-                        <div className="add-new-template template-item">
+                        <div className="add-new-template template-item" onClick={ this.addNewTemplate }>
                             <img src={require('../../theme/images/icon_add_template.png')} alt="模板icon"/>
                             <div className="new-txt">新建模板</div>
                         </div>
