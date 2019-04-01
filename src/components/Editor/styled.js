@@ -121,6 +121,20 @@ const EditorTemplate = styled.div`
             }
         }
     }
+    #scalePicture{
+        position: absolute;
+        right: 10px;
+        top: 10px;
+        padding: 15px;
+        background: #333
+        >div{
+            width: 240px;
+            overflow-x: hidden;
+            >img{
+                width: 280px;
+            }
+        }
+    }
      #contextmenu{
         display: none;
         position: absolute;

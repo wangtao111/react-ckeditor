@@ -8,6 +8,17 @@ const FileData = [
         type: 1,
         content: `
                     <div>
+                        <style>
+                            span[name = 'select_box']{
+                                display: inline-block;
+                            }
+                            span[name = 'select_box']:after{
+                                content: url(${require('../img/arr.png')});
+                                width: 12px;
+                                margin-top: 5px;
+                                position: relative;
+                            }
+                        </style>
                          <div style="background: #3b8dee; color: #fff; padding: 15px 0;text-align: center">
                              <h1>欢迎使用金融云笔记</h1>
                              <p>——— 满足金融从业人员撰写调研记录、晨会纪要等工作场景的在线工具</p>
@@ -25,21 +36,30 @@ const FileData = [
                                     <li>已生成命令可进行简化选择，例如<span style="border: 1px dashed #999;color: blue; cursor: pointer" contenteditable="false" name="select_box">归母净利润580.95亿元</span></li>
                                 </ol>
                             </li>
-                            <li style="font-weight: bold">三、 插入表格
+                            <li style="font-weight: bold">三、支持模板
+                            <ol style="margin: 10px 0; font-weight: normal">
+                                <li>新建模板可从左上方 新文档 --> 选择 ’新建模板笔记‘ --> 选择’标准模板‘或者’我的模板‘</li>  
+                                <li>选择‘标准模板’目前支持 ’晨会纪要模板‘和’研究报告模板‘</li>
+                                <li>选择’我的模板‘可以通过拖放小组件自定义模板</li>
+                            </ol>
+                            </li>
+                            <li style="font-weight: bold">四、支持预览演示 
+                                <p style="text-indent: 25px; font-weight: normal">点击右上方的第三个演示模式按钮，可进入演示模式</p>
+                                <ol style="margin: 10px 0; font-weight: normal">
+                                <li>进入演示模式，右侧有放大缩小按钮可进行缩放，方便观看</li>  
+                                <li>可右键菜单使用画笔功能，导出PDF，放大、缩小功能</li>
+                            </ol>
+                            </li>
+                            <li style="font-weight: bold"> 五、插入表格
                                 <ol style="margin: 10px 0; font-weight: normal">
                                     <li>可以从上方按钮选择行数和列数新建表格</li>
                                     <li>也可以智能命令匹配数据插入表格</li>
                                     <li>表格支持改变行列宽度，图表支持改变宽高</li>
                                 </ol>
                             </li>
-                            <li style="font-weight: bold">四、支持预览演示 
-                                    <p style="text-indent: 25px; font-weight: normal">点击右上方的第三个演示模式按钮，可进入演示模式, 可进行放大缩小操作，方便观看</p>
-                            </li>
-                            <li style="font-weight: bold">五、支持模板
-                                <ol style="margin: 10px 0; font-weight: normal">
-                                    <li>可以插入研究报告模板</li>
-                                    <li>可以插入晨会纪要模板</li>
-                                </ol>
+                            <li style="font-weight: bold"> 六、导出
+                                <p style="text-indent: 25px; font-weight: normal">点击右上方倒数第二个更多按钮，可选择导出Word或PDF</p>                                
+                            </ol>
                             </li>
                         </ul>
                     </div>
@@ -48,6 +68,14 @@ const FileData = [
     },
     {title: '《看研报》产品分析报告', briefContent: '产品亮点1、核心能力：核心提供【搜索+订阅内容服务】，在推荐层面较弱', imgUrl: require('../img/kanyanbao.png'), size: '6.6MB', date: '2019-02-01', type: 1,
         content: '<div style="font-size: 15px;">' +
+                    `<style>
+                        span[name = 'select_box']:after{
+                            content: url(${require('../img/arr.png')});
+                            width: 12px;
+                            margin-top: 5px;
+                            position: relative;
+                        }
+                    </style>` +
                 '<p style="text-align: center;font-size: 18px;font-weight: bold; color: #444;margin-bottom: 40px">产品亮点</p>' +
                 '<div style="margin-bottom: 60px">' +
                     '<p style="font-weight: bold; color: #555;" ><span style="border: 1px dashed #999;color: blue; cursor: pointer" contenteditable="false" name="select_box">【金融工程】震荡调整继续， 9月低配规则、EEP因子</span></p>' +

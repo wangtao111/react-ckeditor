@@ -76,10 +76,18 @@ class FullScreen extends React.Component {
             de.webkitRequestFullScreen();
         }
         this.addTools(de);
+        // this.addScalePicture(de);
         this.addEvents();
         this.props.afterEnter();
         this.monitorFullScreenExit();
     };
+    addScalePicture = (de) => {
+        const dom = this.scale;
+        html2canvas(dom).then((canvas) =>  {
+            const pageData = canvas.toDataURL('image/jpeg', 1.0);
+            this.createElement(de, 'scalePicture', <div><img src={pageData}/></div>)
+        })
+    }
     // 添加右键菜单功能和右上角按钮
     addTools = (de) => {
         if(!document.getElementById('fullScreenBtn')){
@@ -110,6 +118,7 @@ class FullScreen extends React.Component {
         setTimeout(() => {this.draw()}, 100)
     }
     addEvents = () => {
+        this.document.body.style.overflowX = 'hidden';
         this.document.onmousedown = () => {
             const contextmenu = document.getElementById('contextmenu');
             if(!contextmenu) return;

@@ -645,7 +645,7 @@ export default class NavSection extends React.Component {
             
             <Modal visible={ templateModalVisible } footer={ null } 
                 onCancel={ () => this.setModalVisible('templateModalVisible', false)}>
-                <TemplateModal closeCallback={ () => this.setModalVisible('templateModalVisible', false) }></TemplateModal>
+                <TemplateModal closeCallback={ () => {this.addNewNote();this.setModalVisible('templateModalVisible', false)} }></TemplateModal>
             </Modal>
         </NavSectionWrapper>
     }

@@ -80,9 +80,10 @@ export default class TemplateModal extends React.Component {
     addNewTemplate = () => {
         this.props.drawerStore.setVisible(true);
         this.props.drawerStore.setComponentWidget(true);
-
+        
         this.props.closeCallback && this.props.closeCallback();
     }
+    
 
     render() {
         const { templates } = this.state;

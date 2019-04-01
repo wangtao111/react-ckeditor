@@ -68,6 +68,7 @@ export default class Editor extends React.Component {
         this.callbackData = [];
         this.pNode = null;
         this.tag = null;
+        this.range = null;
         this.onEditorChange = this.onEditorChange.bind(this);
     }
 
@@ -249,6 +250,9 @@ export default class Editor extends React.Component {
                 } else {
                     eventEmitter.emit('COMMAND_POPUP', signal + item.tag);
                 }
+                if(that.range) {
+                    that.range.endContainer.$.parentNode.style.borderBottom = 'none';
+                }
             });
             return this
                 .outputTemplate
@@ -272,6 +276,7 @@ export default class Editor extends React.Component {
                 matchSymbol = '～'
             }
             this.pNode = null;
+            this.range = null;
             if(range.startContainer.$.parentNode.className === 'temporary'){　//选择公司后进入此逻辑
                 const pNode = this.getParentNode(range.startContainer.$);
                 const str = pNode.previousSibling.textContent;
@@ -288,6 +293,7 @@ export default class Editor extends React.Component {
                     this.pNode = pNode;
                     if(lastText.indexOf('归母晶') !== -1) {
                         this.callbackData = tables;
+                        this.range = range;
                         range.endContainer.$.parentNode.style.borderBottom = '1px solid red';
                     } else {
                         range.endContainer.$.parentNode.style.borderBottom = 'none';
