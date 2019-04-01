@@ -91,19 +91,44 @@ export default class IntelliCommand extends React.Component {
         this.position = null;
         this.range = null;
         this.state = {
-            dropList: []
+            dropList: [],
+            dropIndex: 0
         }
     }
 
     componentDidMount() {
     }
 
-    keyUp = () => {
+    keyUp = (e) => {
         const range = window.getSelection().getRangeAt(0), text = range.endContainer.textContent;
         const scrollX = document.documentElement.scrollLeft || document.body.scrollLeft;
         const scrollY = document.documentElement.scrollTop || document.body.scrollTop;
         let position = range.getBoundingClientRect(), menu = document.getElementById('command_tag_list');
         this.range = range;
+        if(menu.style.display === 'block') {
+            const keyCode = parseInt(e.keyCode)
+            if(keyCode === 38){
+                if(this.state.dropIndex === 0) {
+                    this.setState({dropIndex: this.state.dropList.length - 1});    
+                } else {
+                    this.setState({dropIndex: this.state.dropIndex - 1});
+                }
+                return;
+            }
+            if(keyCode === 40){
+                if(this.state.dropIndex === this.state.dropList.length - 1) {
+                    this.setState({dropIndex: 0});    
+                } else {
+                    this.setState({dropIndex: this.state.dropIndex + 1});
+                }
+                return;
+            }
+            if(keyCode === 13) {
+                this.templateClick(this.state.dropList[this.state.dropIndex]);
+                menu.style.display === 'none';
+                return;
+            }
+        }
         if(text.charAt(text.length - 1) === '~' || text.charAt(text.length - 1) ==='～') {
             this.position = position;
         }
@@ -138,6 +163,15 @@ export default class IntelliCommand extends React.Component {
             menu.style.display = 'none';
         }
     }
+    keyDown = (e) => {
+        const menu = document.getElementById('command_tag_list');
+        const keyCode = parseInt(e.keyCode)
+        if(menu.style.display === 'block') {
+            if(keyCode === 38 || keyCode === 40 || keyCode === 13){
+                e.preventDefault()
+            }
+        }
+    }
     templateClick = (li) => {
         const range = this.range,
             menu = document.getElementById('command_tag_list'),
@@ -157,12 +191,12 @@ export default class IntelliCommand extends React.Component {
     }
 
     render() {
-        const {dropList} = this.state;
+        const {dropList, dropIndex} = this.state;
         return <IntelliCommandWrapper>
             <Icon type='close' className='close' onClick={() => {this.props.closeCallback()}}></Icon>
             <h2>智能命令</h2>
 
-            <div className="editable-cmd-content" id='editable-cmd-content' contentEditable={ true } onKeyUp={(e) => {this.keyUp(e)}}>
+            <div className="editable-cmd-content" id='editable-cmd-content' contentEditable={ true } onKeyUp={(e) => {this.keyUp(e)}} onKeyDown={(e) => {this.keyDown(e)}}>
             </div>
 
             <Button className="btn-exec-cmd">运行</Button>
@@ -170,7 +204,7 @@ export default class IntelliCommand extends React.Component {
                 <ul>
                     {
                         dropList.map((li, index) => {
-                            return <li key={index} onClick={() => {this.templateClick(li)}}>{li.title}</li>
+                            return <li key={index} style={{background: dropIndex === index ? '#eff0ef': 'inherit'}} onClick={() => {this.templateClick(li)}}>{li.title}</li>
                         })
                     }
                 </ul>

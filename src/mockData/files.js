@@ -20,8 +20,8 @@ const FileData = [
                             <li style="font-weight: bold">二、 智能命令提示
                                 <ol style="margin: 10px 0; font-weight: normal">
                                     <li>输入~会自动弹出右侧智能命令面板，默认匹配出模板</li>
-                                    <li>输入~后加文字（例如 '中国'）会匹配对应公司</li>
                                     <li>输入~后加文字匹配后加  . （例如 '归母'）会匹配金融文字，可插入图表或表格</li>
+                                    <li>输入~后加文字匹配后加  . （例如 '归母晶'）会提示纠错选项</li>
                                     <li>已生成命令可进行简化选择，例如<span style="border: 1px dashed #999;color: blue; cursor: pointer" contenteditable="false" name="select_box">归母净利润580.95亿元</span></li>
                                 </ol>
                             </li>
