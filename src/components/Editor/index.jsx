@@ -284,6 +284,12 @@ export default class Editor extends React.Component {
                     this.callbackData = data;
                     this.autocomplete.view.itemTemplate.source = '<li data-id="{id}"><div style="display: flex"><strong class="item-title" style="width: 150px">{title}</strong><strong style="margin-left: 10px">{source}</strong></div></li>';
                     this.pNode = pNode;
+                    if(lastText.indexOf('归母晶') !== -1) {
+                        this.callbackData = tables;
+                        range.endContainer.$.parentNode.style.borderBottom = '1px solid red';
+                    } else {
+                        range.endContainer.$.parentNode.style.borderBottom = 'none';
+                    }
                     return {
                         start: lastIndex + 1,
                         end: text.length

@@ -159,6 +159,7 @@ class FullScreen extends React.Component {
             this.fullScreenSize -= 0.25
         }
         dom.style.zoom = this.fullScreenSize;
+        // this.canvasMask.getContext("2d").scale(0.5, 2)
         this.setDraw(false);
     }
     //设置画笔
