@@ -398,35 +398,6 @@ export default class Editor extends React.Component {
         return {x: l, y: t}
     }
 
-    // 创建动态菜单节点
-    createDropMenu(posX, posY, selectCallback) {
-        var divEle = document.createElement('div');
-        divEle.setAttribute('id', 'dropdownMenu');
-        divEle.setAttribute('style', `position: absolute; left: ${posX}px; top: ${ posY + 15 }px`);
-
-        window.document.body.appendChild(divEle);
-
-        ReactDOM.render(<ul>
-            <li onClick={ () => selectCallback('哈哈金融云笔记') }>哈哈金融云笔记</li>
-            <li onClick={ () => selectCallback('哈哈笔记') }>哈哈笔记</li>
-            <li onClick={ () => selectCallback('哈哈记') }>哈哈记</li>
-        </ul>, document.getElementById('dropdownMenu'));
-    }
-
-    // 替换文字
-    replaceText = (range) => {
-        return (value) => {
-            const dropDownMenu = document.getElementById('dropdownMenu');
-            dropDownMenu.parentNode.removeChild(dropDownMenu);
-
-            const editor = this.editorRef.current.editor;
-
-            if(editor) {
-                // range.deleteContents();
-            }
-        }
-    }
-
     getParentNode = (node) => {
         if(node.parentNode.className === 'temporary') {
             return this.getParentNode(node.parentNode)
