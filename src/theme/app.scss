@@ -105,9 +105,11 @@ a {
 
 .cke_toolbox .more-box {
     float: left;
+    position: relative;
     height: 16px;
     margin: 1px 0;
     padding: 2px;
+    line-height: 22px;
     font-size: 0;
     cursor: pointer;
 
@@ -124,11 +126,18 @@ a {
     .more-options {
         position: absolute;
         display: none;
+        height: 40px;
+        right: 0;
+        top: 100%;
+        margin-top: 2px;
+        z-index: 20;
+        font-size: 0;
+        box-shadow: 0px 1px 4px 0px rgba(0, 0, 0, 0.2);
+        background-color: #fff;
     }
 
     input[type="checkbox"] {
-        position: absolute;
-        clip: rect(0, 0, 0, 0);
+        display: none;
     }
 
     input:checked + .more-options {
@@ -139,16 +148,49 @@ a {
         display: inline-block;
         width: 40px;
         height: 100%;
+        &:hover {
+            background-color: #e4edf8;
+        }
 
         > i {
             display: block;
             height: 100%;
             background-image: url('../theme/images/icon_more_tools.png');
             background-size: cover;
+            cursor: pointer;
         }
 
         .button-attachment {
-            background-position: 0 142px;
+            background-position: 3px 0;
+        }
+
+        .button-directory {
+            background-position: -30px 0;
+        }
+
+        .button-note-bg {
+            background-position: -63px 0;
+        }
+
+        .button-layout {
+            background-position: -95px 0;
+        }
+
+        .button-puzzle {
+            background-position: 38px 0;
         }
     }
+}
+
+
+#cke_1_top.cke_top {
+	overflow: visible;
+}
+
+#cke_1_top.cke_top:after {
+	content: '';
+	display: block;
+	clear: both;
+	height: 0;
+	visibility: hidden;
 }
