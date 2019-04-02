@@ -537,7 +537,6 @@ export default class Editor extends React.Component {
         const config = {
             extraPlugins: 'autocomplete,notification,textmatch,textwatcher,tableresizerowandcolumn,save-to-pdf,quicktable,templates,template,image2,uploadimage,uploadwidget,filebrowser',
             allowedContent: true,
-            pdfHandler: 'http://www.baidu.com', // 下载pdf的地址
             height: 800,
             toolbarGroups: [
                 // {name: 'clipboard', groups: ['undo']},

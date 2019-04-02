@@ -97,6 +97,7 @@ export default class TemplateModal extends React.Component {
                                 <p style={{marginTop: '10px'}}>
                                     { item.name }
                                     <Button type="primary"
+                                            disabled={!item.template}
                                             style={{float: 'right', width: '60px', height: '20px', marginRight: '5px', fontSize: '10px'}}
                                             size='small'
                                             onClick={ () => this.useTemplate(index) }>立即使用</Button>
