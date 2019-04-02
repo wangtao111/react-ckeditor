@@ -382,3 +382,12 @@ body[contenteditable="false"] .cke_widget_wrapper .cke_widget_editable.cke_widge
 	vertical-align: -5px;
 	cursor: pointer;
 }
+
+[contenteditable="false"] select {
+	display: none;
+}
+
+
+[contenteditable="true"] select {
+	display: block;
+}
