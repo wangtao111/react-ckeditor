@@ -102,3 +102,53 @@ a {
         }
     }
 }
+
+.cke_toolbox .more-box {
+    float: left;
+    height: 16px;
+    margin: 1px 0;
+    padding: 2px;
+    font-size: 0;
+    cursor: pointer;
+
+    label {
+        color: #949FB1;
+        cursor: pointer;
+    }
+
+    &:hover {
+        background: #d5e1f2;
+        color: #333;
+    }
+    
+    .more-options {
+        position: absolute;
+        display: none;
+    }
+
+    input[type="checkbox"] {
+        position: absolute;
+        clip: rect(0, 0, 0, 0);
+    }
+
+    input:checked + .more-options {
+        display: block;
+    }
+
+    .button {
+        display: inline-block;
+        width: 40px;
+        height: 100%;
+
+        > i {
+            display: block;
+            height: 100%;
+            background-image: url('../theme/images/icon_more_tools.png');
+            background-size: cover;
+        }
+
+        .button-attachment {
+            background-position: 0 142px;
+        }
+    }
+}

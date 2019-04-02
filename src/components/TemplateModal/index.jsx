@@ -5,6 +5,7 @@ import { inject, observer } from 'mobx-react';
 import styled from "styled-components";
 import eventEmitter from "../../event";
 import { researchReport, morningNote } from '../../widgets/templates';
+import { Template } from '../../widgets/templates';
 
 const TabPane = Tabs.TabPane;
 const Templates = styled.section`
@@ -71,10 +72,12 @@ export default class TemplateModal extends React.Component {
         // this.props.editorStore.editor.execCommand('template', {
         //     html: TemplateHtmlStr[index]
         // });
-        //
+        
+        const template = this.state.templates[index];
         this.props.closeCallback && this.props.closeCallback();
         // eventEmitter.emit('NEW_PAGE', 1)
-        eventEmitter.emit('NEW_PAGE', this.state.templates[index]);
+        this.props.addNewNote && this.props.addNewNote({ title: template.name, content: Template.generateTemplateHtml(template.template)});
+        eventEmitter.emit('NEW_PAGE', template);
     }
 
     addNewTemplate = () => {

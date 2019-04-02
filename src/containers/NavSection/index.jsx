@@ -354,13 +354,13 @@ export default class NavSection extends React.Component {
     }
 
     // 增加笔记 
-    addNewNote() {
+    addNewNote({title, content}) {
         const { noTitleNum } = this.props.noteStore;
 
         const noteData = {
-            title: `无标题笔记${ noTitleNum ? `(${noTitleNum})` : ''}`,
+            title: title || `无标题笔记${ noTitleNum ? `(${noTitleNum})` : ''}`,
             briefContent: '',
-            content: '',
+            content: content || '',
             date: moment().format('YYYY-MM-DD'),
             size: '',
             imgUrl: ''
@@ -645,7 +645,7 @@ export default class NavSection extends React.Component {
             
             <Modal visible={ templateModalVisible } footer={ null } 
                 onCancel={ () => this.setModalVisible('templateModalVisible', false)}>
-                <TemplateModal closeCallback={ () => {this.addNewNote();this.setModalVisible('templateModalVisible', false)} }></TemplateModal>
+                <TemplateModal closeCallback={ () => {this.setModalVisible('templateModalVisible', false)} } addNewNote={ this.addNewNote }></TemplateModal>
             </Modal>
         </NavSectionWrapper>
     }
