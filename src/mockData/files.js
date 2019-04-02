@@ -31,16 +31,16 @@ const FileData = [
                             <li style="font-weight: bold">二、 智能命令提示
                                 <ol style="margin: 10px 0; font-weight: normal">
                                     <li>输入~会自动弹出右侧智能命令面板，默认匹配出模板</li>
-                                    <li>输入~后加文字匹配后加  . （例如 '归母'）会匹配金融文字，可插入图表或表格</li>
-                                    <li>输入~后加文字匹配后加  . （例如 '归母晶'）会提示纠错选项</li>
+                                    <li>输入~后搜索公司主体名称（例如 ‘中国’）匹配后加  . （例如 '归母'）会匹配金融文字，可插入图表或表格</li>
+                                    <li>输入~后搜索公司主体名称（例如 ‘中国’）匹配后加  . （例如 '归母晶'）会提示纠错选项</li>
                                     <li>已生成命令可进行简化选择，例如<span style="border: 1px dashed #999;color: blue; cursor: pointer" contenteditable="false" name="select_box">归母净利润580.95亿元</span></li>
                                 </ol>
                             </li>
                             <li style="font-weight: bold">三、支持模板
                             <ol style="margin: 10px 0; font-weight: normal">
-                                <li>新建模板可从左上方 新文档 --> 选择 ’新建模板笔记‘ --> 选择’标准模板‘或者’我的模板‘</li>  
-                                <li>选择‘标准模板’目前支持 ’晨会纪要模板‘和’研究报告模板‘</li>
-                                <li>选择’我的模板‘可以通过拖放小组件自定义模板</li>
+                                <li>新建模板可从左上方 '新文档' --> 选择 '新建模板笔记'  --> 选择 '标准模板' 或者 '我的模板'</li>  
+                                <li>选择 '标准模板' 目前支持 '晨会纪要模板' 和 '研究报告模板'</li>
+                                <li>选择 '我的模板' 可以通过拖放小组件自定义模板</li>
                             </ol>
                             </li>
                             <li style="font-weight: bold">四、支持预览演示 
