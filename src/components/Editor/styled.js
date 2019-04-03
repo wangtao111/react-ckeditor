@@ -1,6 +1,15 @@
 import styled from "styled-components";
 
 const EditorTemplate = styled.div`
+    #charts{
+        max-width: 400px;
+        max-height: 200px;
+        background: #fff;
+        padding: 10px;
+        position: absolute;
+        overflow: auto;
+        display: none;
+    }
     .title_input{
         flex: 1;
         font-size: 22px;
@@ -124,14 +133,16 @@ const EditorTemplate = styled.div`
     #scalePicture{
         position: absolute;
         right: 10px;
-        top: 10px;
+        top: 0;
+        margin: 0 15px;
+        background: rgba(0,0,0,.5);
+        box-sizing: border-box;
         padding: 15px;
-        background: #333
         >div{
-            width: 240px;
+            width: 200px;
             overflow-x: hidden;
             >img{
-                width: 280px;
+                width: 350px;
             }
         }
     }

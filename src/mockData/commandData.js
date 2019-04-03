@@ -52,33 +52,34 @@ const tables = [
         title: '利润表',
         source: '数据中心',
         detail: '利润表',
+        charts: true,
         tag: '<span class="temporary" style="color: blue">利润表</span>'
     },
 ]
 const MENTIONS = [
     {
         id: 1,
-        title: '中国移动',
+        title: '中国移动(601314)',
         detail: '中国移动(601314)',
         tag: '<span class="temporary" style="color: blue;">中国移动(601314)</span>'
     },
     {
         id: 2,
-        title: '中国平安',
+        title: '中国平安(601318)',
         detail: `中国平安(601318)`,
-        tag: '<span class="temporary">中国平安(601318)</span>'
+        tag: '<span class="temporary" style="color: blue;">中国平安(601318)</span>'
     },
     {
         id: 3,
-        title: '中国联通',
+        title: '中国联通(601384)',
         detail: '中国联通(601384)',
-        tag: '<span class="temporary">中国联通(601384)</span>'
+        tag: '<span class="temporary" style="color: blue;">中国联通(601384)</span>'
     },
     {
         id: 4,
-        title: '中国银行',
+        title: '中国银行(681384)',
         detail: '中国银行(681384)',
-        tag: '<span class="temporary">中国银行(681384)</span>'
+        tag: '<span class="temporary" style="color: blue;">中国银行(681384)</span>'
     }
 ];
 module.exports.temp = temp;

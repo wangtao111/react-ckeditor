@@ -8,7 +8,7 @@ import { inject, observer } from 'mobx-react';
 const PreviewWrapper = styled.div`
     overflow: hidden;
     font-size: 12px;
-
+    background: #fff;
     h2 {
         font-size: 14px;
         color: #333;
@@ -201,7 +201,8 @@ export default class Preview extends React.Component {
                 rules: [
                     {
                         condition: {
-                            maxWidth: 500
+                            maxWidth: 500,
+                            maxHeight: 300
                         },
                         chartOptions: {
                             legend: {

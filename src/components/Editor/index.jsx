@@ -2,9 +2,10 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import CKEditor from 'ckeditor4-react';
 import FullScreen from '../../components/FullScreen';
+import Preview from '../../components/Preview';
 import ShareModal from './shareModal';
 import Comment from './comment';
-import {inject, observer} from 'mobx-react';
+import { inject, observer } from 'mobx-react';
 import eventEmitter from '../../event';
 import insertTable from '../../widgets/insertTable';
 import insertTable1 from '../../widgets/insertTable1';
@@ -12,11 +13,11 @@ import insertChart from '../../widgets/insertChart';
 import Highcharts from 'highcharts';
 import { Template } from '../../widgets/templates';
 import htmlDocx from 'html-docx-js/dist/html-docx';
-import {saveAs} from 'file-saver';
+import { saveAs } from 'file-saver';
 import * as jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
 import EditorTemplate from './styled';
-import {temp, tables, MENTIONS} from '../../mockData/commandData'
+import { tables, MENTIONS } from '../../mockData/commandData'
 let doing = false;
 
 @inject('editorStore')
@@ -31,30 +32,30 @@ export default class Editor extends React.Component {
             data: '',
             title: '',
             dropList: [
-                {name: '中国平安Q1Q2归母公司净利润58,1545,4545元'},
-                {name: '中国平安Q1Q2半年归母公司净利润580.95亿元'},
-                {name: '归母净利润580.95亿元'}
+                { name: '中国平安Q1Q2归母公司净利润58,1545,4545元' },
+                { name: '中国平安Q1Q2半年归母公司净利润580.95亿元' },
+                { name: '归母净利润580.95亿元' }
             ],
             tools: [
-                {title: '分享', img: require('../../img/share.png')},
-                {title: '评论', img: require('../../img/comment.png')},
-                {title: '演示模式', img: require('../../img/demo.png')},
-                {title: '标签', img: require('../../img/tag.png')},
-                {title: '更多', img: require('../../img/more.png')},
-                {title: '文件信息', img: require('../../img/info.png')},
+                { title: '分享', img: require('../../img/share.png') },
+                { title: '评论', img: require('../../img/comment.png') },
+                { title: '演示模式', img: require('../../img/demo.png') },
+                { title: '标签', img: require('../../img/tag.png') },
+                { title: '更多', img: require('../../img/more.png') },
+                { title: '文件信息', img: require('../../img/info.png') },
             ],
             moreList: [
-                {name: '阅读密码'},
-                {name: '查看历史版本'},
-                {name: '发布到'},
-                {name: '移动到'},
-                {name: '导出为word'},
-                {name: '导出为PDF'},
-                {name: '分享统计'},
-                {name: '保存为模板'},
-                {name: '引用设置'},
-                {name: '打印'},
-                {name: '删除'}
+                { name: '阅读密码' },
+                { name: '查看历史版本' },
+                { name: '发布到' },
+                { name: '移动到' },
+                { name: '导出为word' },
+                { name: '导出为PDF' },
+                { name: '分享统计' },
+                { name: '保存为模板' },
+                { name: '引用设置' },
+                { name: '打印' },
+                { name: '删除' }
             ],
             showMore: false,
             visible: false,
@@ -69,6 +70,7 @@ export default class Editor extends React.Component {
         this.pNode = null;
         this.tag = null;
         this.range = null;
+        this.position = null;
         this.onEditorChange = this.onEditorChange.bind(this);
     }
 
@@ -91,15 +93,15 @@ export default class Editor extends React.Component {
             const editor = this.editorRef.current.editor;
             const chartTime = new Date().getTime();
             this.setPNodeHtml();
-            insertChart(`${ chartTime }`, editor);
+            insertChart(`${chartTime}`, editor);
             const chartOption = this.props.editorStore.chartDataObj[chartId];
             const widgetInstances = editor.widgets.instances;
 
-            editor.execCommand(`insertchart-widget${ chartTime }`);
+            editor.execCommand(`insertchart-widget${chartTime}`);
             if (widgetInstances) {
                 for (let key in widgetInstances) {
                     if (widgetInstances.hasOwnProperty(key)) {
-                        if (widgetInstances[key].name === `insertchart-widget${ chartTime }`) {
+                        if (widgetInstances[key].name === `insertchart-widget${chartTime}`) {
                             editor.widgets.instances[key].setData('chartOption', chartOption, Highcharts);
                         }
                     }
@@ -113,15 +115,15 @@ export default class Editor extends React.Component {
             const editor = this.editorRef.current.editor;
             const tableTime = new Date().getTime();
             this.setPNodeHtml();
-            insertTable(`${ tableTime }`, editor);
+            insertTable(`${tableTime}`, editor);
 
             const widgetInstances = editor.widgets.instances;
-            editor.execCommand(`inserttable-widget${ tableTime }`);
+            editor.execCommand(`inserttable-widget${tableTime}`);
 
             if (widgetInstances) {
                 for (let key in widgetInstances) {
                     if (widgetInstances.hasOwnProperty(key)) {
-                        if (widgetInstances[key].name === `inserttable-widget${ tableTime }`) {
+                        if (widgetInstances[key].name === `inserttable-widget${tableTime}`) {
                             widgetInstances[key].setData('tableConfig', tableConfig);
                         }
                     }
@@ -135,15 +137,15 @@ export default class Editor extends React.Component {
             const editor = this.editorRef.current.editor;
             const tableTime = new Date().getTime();
             this.setPNodeHtml();
-            insertTable1(`${ tableTime }`, editor);
+            insertTable1(`${tableTime}`, editor);
 
             const widgetInstances = editor.widgets.instances;
-            editor.execCommand(`inserttable-widget${ tableTime }`);
+            editor.execCommand(`inserttable-widget${tableTime}`);
 
             if (widgetInstances) {
                 for (let key in widgetInstances) {
                     if (widgetInstances.hasOwnProperty(key)) {
-                        if (widgetInstances[key].name === `inserttable-widget${ tableTime }`) {
+                        if (widgetInstances[key].name === `inserttable-widget${tableTime}`) {
                             widgetInstances[key].setData('tableHtml', tableHtml);
                         }
                     }
@@ -153,14 +155,14 @@ export default class Editor extends React.Component {
 
         // 新建文档
         eventEmitter.on('NEW_PAGE', (data) => {
-            this.setState({title: '', data: ''});
+            this.setState({ title: '', data: '' });
             // if (!type) {
             //     return
             // }
             const { name, template } = data;
             setTimeout(() => {
                 this.setTemplate(template);
-                
+
                 this.setState({ title: name });
             }, 100)
         });
@@ -169,7 +171,7 @@ export default class Editor extends React.Component {
             const valueKey = '金融';
             let arr = data.content.split(valueKey);
             let content = arr.join(`<span style="color:red;">${valueKey}</span>`);
-            this.setState({data: content, title: data.title})
+            this.setState({ data: content, title: data.title })
             setTimeout(() => {
                 this.setEditorIframe();
             }, 100)
@@ -209,7 +211,7 @@ export default class Editor extends React.Component {
         editor.insertHtml(Template.generateTemplateHtml(template));
     }
 
-   
+
 
     instanceReady = () => {
         const editor = this.editorRef.current.editor;
@@ -226,32 +228,50 @@ export default class Editor extends React.Component {
             });
         this.autocomplete.getHtmlToInsert = function (item) {
             setTimeout(() => {
-               if(item.outSync) return;
-               const inputText = document.getElementById('editable-cmd-content').innerText;
-               let signal = '.';
-               let symbol = inputText.split(signal);
-               if(symbol.length <= 1) {
-                   signal = '~';
-                   if(inputText.split('~').length <= 1) {
-                       signal = '～';
-                   }
-               }
-                symbol = inputText.split(signal);
-                symbol[symbol.length - 1] = item.detail;
-                if(that.pNode) {
-                    let str = that.pNode.previousSibling.textContent;
-                    if(str.charAt(str.length - 1) === '~'){
-                        str = '~';
-                    }
-                    if(str.charAt(str.length - 1) === '～') {
-                        str = '～';
-                    }
-                    eventEmitter.emit('COMMAND_POPUP', str +　that.pNode.innerHTML);
-                } else {
-                    eventEmitter.emit('COMMAND_POPUP', signal + item.tag);
-                }
-                if(that.range) {
+                // if (!document.getElementById('editable-cmd-content')) return;
+                // const inputText = document.getElementById('editable-cmd-content').innerText;
+                // let signal = '.';
+                // let symbol = inputText.split(signal);
+                // if (symbol.length <= 1) {
+                //     signal = '~';
+                //     if (inputText.split('~').length <= 1) {
+                //         signal = '～';
+                //     }
+                // }
+                // symbol = inputText.split(signal);
+                // symbol[symbol.length - 1] = item.detail;
+                // if (that.pNode) {
+                //     let str = that.pNode.previousSibling.textContent;
+                //     if (str.charAt(str.length - 1) === '~') {
+                //         str = '~';
+                //     }
+                //     if (str.charAt(str.length - 1) === '～') {
+                //         str = '～';
+                //     }
+                //     eventEmitter.emit('COMMAND_POPUP', str + that.pNode.innerHTML);
+                // } else {
+                //     eventEmitter.emit('COMMAND_POPUP', signal + item.tag);
+                // }
+                if (that.range) {
                     that.range.endContainer.$.parentNode.style.borderBottom = 'none';
+                }
+                if (item.charts) {
+                    const menu = document.getElementById('charts');
+                    const scrollX = document.documentElement.scrollLeft || document.body.scrollLeft;
+                    const scrollY = document.documentElement.scrollTop || document.body.scrollTop;
+                    const offset = that.getPoint(document.getElementById('cke_1_contents'));
+                    const position = that.position;
+                    menu.style.display = 'block';
+                    let x = position.x + offset.x;
+                    let y = position.y + offset.y;
+                    if(x + menu.offsetWidth - scrollX >= document.body.offsetWidth){
+                        x -= menu.offsetWidth
+                    }
+                    if(y + menu.offsetHeight - scrollY >= document.body.offsetHeight){
+                        y -= menu.offsetHeight
+                    }
+                    menu.style.left = x + 'px';
+                    menu.style.top = y + 20 + 'px';
                 }
             });
             return this
@@ -266,32 +286,58 @@ export default class Editor extends React.Component {
         if (!range.collapsed) {
             return null;
         }
+        const iframe = document.getElementById('cke_1_contents').children[1].contentWindow;
+        const ranges = iframe.getSelection().getRangeAt(0);
+        this.position = ranges.getBoundingClientRect();
+        document.getElementById('charts').style.display = 'none';
         // const editor = this.editorRef.current.editor;
         return window.CKEDITOR.plugins.textMatch.match(range, (txt, offset) => {
             let text = JSON.parse(JSON.stringify(txt));
-            let index = text.lastIndexOf('~');
-            let matchSymbol = '~';
-            if(index === -1) {
-                index = text.lastIndexOf('～')
-                matchSymbol = '～'
-            }
+            let currentStr = text.split('')[range.endOffset - 1];
             this.pNode = null;
             this.range = null;
-            if(range.startContainer.$.parentNode.className === 'temporary'){　//选择公司后进入此逻辑
+            if (currentStr === '~' || currentStr === '～') {
+                currentStr = '~'
+            }
+            if (range.startContainer.$.parentNode.className === 'temporary') {　//选择公司后进入此逻辑
                 const pNode = this.getParentNode(range.startContainer.$);
-                const str = pNode.previousSibling.textContent;
-                if(str.charAt(str.length - 1) === '~' || str.charAt(str.length - 1) === '～'){
-                    const arr = text.split('.');
-                    const lastText = arr[arr.length - 1];
-                    const lastIndex = text.lastIndexOf('.');
-                    eventEmitter.emit('COMMAND_POPUP', matchSymbol +　pNode.innerHTML);
+                const matchArr = text.split('~'), matchText = matchArr[matchArr.length - 1];
+                const innertext = pNode.innerText;
+                this.pNode = pNode;
+                if (innertext.substr(0, 1) !== '~') {
+                    return;
+                }
+                if (matchArr.length > 1) {
+                    let data = MENTIONS.filter(function (item) {
+                        return item.title.indexOf(matchText) !== -1;
+                    });
+                    this.callbackData = data;
+                    this.autocomplete.view.itemTemplate.source = '<li data-id="{id}"><div style="display: flex"><strong class="item-title" style="min-width: 100px">{title}</strong></div></li>';
+                    return {
+                        start: text.lastIndexOf('~') + 1,
+                        end: range.endOffset
+                    };
+                } else {
+                    const arr = text.split('.'), lastText = arr[arr.length - 1];
+                    if (text.substr(text.length - 1, 1) === '。') {
+                        this.callbackData = [{
+                            id: 1,
+                            title: '.',
+                            detail: '.',
+                            tag: '.'
+                        }];
+                        this.autocomplete.view.itemTemplate.source = '<li data-id="{id}" style="width: 100px">{title}</li>';
+                        return {
+                            start: text.lastIndexOf('。'),
+                            end: text.length
+                        };
+                    }
                     let data = tables.filter(function (item) {
                         return item.title.indexOf(lastText) !== -1;
                     });
                     this.callbackData = data;
                     this.autocomplete.view.itemTemplate.source = '<li data-id="{id}"><div style="display: flex"><strong class="item-title" style="width: 150px">{title}</strong><strong style="margin-left: 10px">{source}</strong></div></li>';
-                    this.pNode = pNode;
-                    if(lastText.indexOf('归母晶') !== -1) {
+                    if (lastText.indexOf('归母晶') !== -1) {
                         this.callbackData = tables;
                         this.range = range;
                         range.endContainer.$.parentNode.style.borderBottom = '1px solid red';
@@ -299,45 +345,33 @@ export default class Editor extends React.Component {
                         range.endContainer.$.parentNode.style.borderBottom = 'none';
                     }
                     return {
-                        start: lastIndex + 1,
+                        start: text.lastIndexOf('.') + 1,
                         end: text.length
                     };
                 }
             } else {
-                this.autocomplete.view.itemTemplate.source = '<li data-id="{id}"><div style="display: flex"><strong class="item-title" style="min-width: 100px">{title}</strong></div></li>';
-            }
-            if(!doing && index !== -1) { // 匹配'~'进入此逻辑
-                const matchArr = text.split(matchSymbol);
-                const matchText = matchArr[matchArr.length - 1]
-                eventEmitter.emit('COMMAND_POPUP', matchSymbol + matchText);
-                if(!matchArr[matchArr.length - 1]) {
-                    this.callbackData = temp;
-                    // range.setStart(range.endContainer, index - 1);
-                    // editor.getSelection().selectRanges( [ range ] );
-                    // editor.insertHtml( `<span class="temporary">${'~' + matchArr[matchArr.length - 1]}</span>` );
-                    return {
-                        start: index,
-                        end: range.endOffset
-                    };
-                } else {
-                    const arr = matchText.split('.');
-                    if(arr.length === 1){
-                        let data = MENTIONS.filter(function (item) {
-                            return item.title.indexOf(matchText) !== -1;
-                        });
-                        this.callbackData = data;
+                if (currentStr === '~') {
+                    if (!doing) { // 匹配'~'进入此逻辑
+                        this.callbackData = [{
+                            id: 1,
+                            title: '使用智能命令~',
+                            detail: '~',
+                            tag: '<span class="temporary" style="color: blue">~</span>'
+                        }];
+                        this.autocomplete.view.itemTemplate.source = '<li data-id="{id}" style="width: 100px">{title}</li>';
                         return {
-                            start: index + 1,
-                            end: range.endOffset
+                            start: text.lastIndexOf('~'),
+                            end: text.lastIndexOf('~') + 1
                         };
                     }
+                    return null;
                 }
             }
-            return null;
         });
     }
     setPNodeHtml = () => {
-        if(!this.pNode) return;
+        document.getElementById('charts').style.display = 'none';
+        if (!this.pNode) return;
         this.pNode.innerHTML = '';
         const s = this.pNode.previousSibling.textContent;
         this.pNode.previousSibling.textContent = s.substring(0, s.length - 1);
@@ -345,40 +379,40 @@ export default class Editor extends React.Component {
     setEditorIframe = () => {
         const iframe = document.getElementById('cke_1_contents').children[1].contentWindow;
         let dom = iframe.document;
-        dom.addEventListener('compositionstart',function(e){
+        dom.addEventListener('compositionstart', function (e) {
             doing = true;
-        },false);
-        dom.addEventListener('compositionend',function(e){
+        }, false);
+        dom.addEventListener('compositionend', function (e) {
             doing = false;
-        },false);
-        document.onclick = function(e) {
+        }, false);
+        document.onclick = function (e) {
             const tagMenu = document.getElementById('command_tag_pane'), commandMenu = document.getElementById('command_tag_list');
-            if(tagMenu){
+            if (tagMenu) {
                 tagMenu.style.display = 'none';
             }
-            if(commandMenu){
+            if (commandMenu) {
                 commandMenu.style.display = 'none';
             }
         }
         dom.onclick = (e) => {
             const tag = e.target.getAttribute('name');
             const tagMenu = document.getElementById('command_tag_pane'), commandMenu = document.getElementById('command_tag_list');
-            if(tagMenu){
+            if (tagMenu) {
                 tagMenu.style.display = 'none';
             }
-            if(commandMenu){
+            if (commandMenu) {
                 commandMenu.style.display = 'none';
             }
-            if(tag === 'select_box') {
+            if (tag === 'select_box') {
                 const scrollX = dom.documentElement.scrollLeft || dom.body.scrollLeft;
                 const scrollY = dom.documentElement.scrollTop || dom.body.scrollTop;
                 const offset = this.getPoint(document.getElementById('cke_1_contents'));
-                const x = e.target.offsetLeft ;
-                const y = e.target.offsetTop ;
+                const x = e.target.offsetLeft;
+                const y = e.target.offsetTop;
                 const el = document.getElementById('command_tag_pane');
                 el.style.display = 'block';
                 el.style.left = x + offset.x - scrollX + 'px';
-                el.style.top = y + offset.y - scrollY + 20 +'px';
+                el.style.top = y + offset.y - scrollY + 20 + 'px';
                 document.getElementById('command_tag_pane').style.display = 'block';
                 this.tag = e.target;
             }
@@ -395,11 +429,11 @@ export default class Editor extends React.Component {
             t += obj.offsetTop;
             l += obj.offsetLeft;
         }
-        return {x: l, y: t}
+        return { x: l, y: t }
     }
 
     getParentNode = (node) => {
-        if(node.parentNode.className === 'temporary') {
+        if (node.parentNode.className === 'temporary') {
             return this.getParentNode(node.parentNode)
         }
         return node;
@@ -410,23 +444,23 @@ export default class Editor extends React.Component {
     }
 
     titleChange = (val) => {
-        this.setState({title: val.target.value});
+        this.setState({ title: val.target.value });
     }
 
     toolBarCharge = (li) => {
-        this.setState({showMore: false});
+        this.setState({ showMore: false });
         switch (li.title) {
             case '分享':
                 this.shareModalRef.showModal();
                 break;
             case '演示模式':
-                this.setState({visible: true});
+                this.setState({ visible: true });
                 break;
             case '评论':
                 this.commentRef.setVisible(true);
                 break;
             case '更多':
-                this.setState({showMore: !this.state.showMore});
+                this.setState({ showMore: !this.state.showMore });
                 break;
             default:
                 break;
@@ -436,20 +470,20 @@ export default class Editor extends React.Component {
         switch (li.name) {
             case '导出为PDF':
                 this.exportToPDF();
-                this.setState({showMore: false});
+                this.setState({ showMore: false });
                 break;
             case '导出为word':
                 this.exportToWord();
-                this.setState({showMore: false});
+                this.setState({ showMore: false });
                 break;
             default:
-                this.setState({showMore: false});
+                this.setState({ showMore: false });
                 break;
         }
     }
     // 导出成word
     exportToWord = () => {
-        let {title, content} = this.props.noteStore.noteList[this.props.noteStore.activeIndex];
+        let { title, content } = this.props.noteStore.noteList[this.props.noteStore.activeIndex];
         content = `
             <!DOCTYPE html>
             <html>
@@ -468,7 +502,7 @@ export default class Editor extends React.Component {
     exportToPDF = (index) => {
         const iframe = document.getElementById('cke_1_contents').children[1].contentWindow;
         let dom = iframe.document.body;
-        html2canvas(dom).then((canvas) =>  {
+        html2canvas(dom).then((canvas) => {
             var contentWidth = canvas.width;
             var contentHeight = canvas.height;
             //一页pdf显示html页面生成的canvas高度;
@@ -479,20 +513,20 @@ export default class Editor extends React.Component {
             var position = 0;
             //a4纸的尺寸[595.28,841.89]，html页面生成的canvas在pdf中图片的宽高
             var imgWidth = 595.28;
-            var imgHeight = 592.28/contentWidth * contentHeight;
+            var imgHeight = 592.28 / contentWidth * contentHeight;
             var pageData = canvas.toDataURL('image/jpeg', 1.0);
             var pdf = new jsPDF('', 'pt', 'a4');
             //有两个高度需要区分，一个是html页面的实际高度，和生成pdf的页面高度(841.89)
             //当内容未超过pdf一页显示的范围，无需分页
             if (leftHeight < pageHeight) {
-                pdf.addImage(pageData, 'JPEG', 0, 0, imgWidth, imgHeight );
+                pdf.addImage(pageData, 'JPEG', 0, 0, imgWidth, imgHeight);
             } else {
-                while(leftHeight > 0) {
+                while (leftHeight > 0) {
                     pdf.addImage(pageData, 'JPEG', 0, position, imgWidth, imgHeight)
                     leftHeight -= pageHeight;
                     position -= 841.89;
                     //避免添加空白页
-                    if(leftHeight > 0) {
+                    if (leftHeight > 0) {
                         pdf.addPage();
                     }
                 }
@@ -503,8 +537,8 @@ export default class Editor extends React.Component {
 
 
     render() {
-        const {data, title, tools, visible, dropList, moreList, showMore} = this.state;
-        const contentCss = process.env.NODE_ENV === 'production' ? [`${window.origin}/static/ckeditor/contents.css`, `${window.origin}/static/ckeditor/external.css`] : ['http://localhost:5500/build/static/ckeditor/contents.css', 'http://localhost:5500/build/static/ckeditor/external.css' ];
+        const { data, title, tools, visible, dropList, moreList, showMore } = this.state;
+        const contentCss = process.env.NODE_ENV === 'production' ? [`${window.origin}/static/ckeditor/contents.css`, `${window.origin}/static/ckeditor/external.css`] : ['http://localhost:5500/build/static/ckeditor/contents.css', 'http://localhost:5500/build/static/ckeditor/external.css'];
         const config = {
             extraPlugins: 'autocomplete,notification,textmatch,textwatcher,tableresizerowandcolumn,save-to-pdf,quicktable,templates,template,image2,uploadimage,uploadwidget,filebrowser',
             allowedContent: true,
@@ -512,17 +546,17 @@ export default class Editor extends React.Component {
             toolbarGroups: [
                 // {name: 'clipboard', groups: ['undo']},
                 // {name: 'document', groups: ['doctools']},
-                {name: 'styles', groups: ['undo', 'cleanup', 'styles']},
-                {name: 'basicstyles', groups: ['basicstyles']},
-                {name: 'colors', groups: ['colors']},
-                {name: 'editing', groups: ['selection', 'spellchecker', 'editing']},
-                {name: 'forms', groups: ['forms']},
-                {name: 'paragraph', groups: ['list', 'indent', 'blocks', 'align', 'bidi', 'paragraph']},
-                {name: 'links', groups: ['links']},
-                {name: 'insert', groups: ['insert']},
+                { name: 'styles', groups: ['undo', 'cleanup', 'styles'] },
+                { name: 'basicstyles', groups: ['basicstyles'] },
+                { name: 'colors', groups: ['colors'] },
+                { name: 'editing', groups: ['selection', 'spellchecker', 'editing'] },
+                { name: 'forms', groups: ['forms'] },
+                { name: 'paragraph', groups: ['list', 'indent', 'blocks', 'align', 'bidi', 'paragraph'] },
+                { name: 'links', groups: ['links'] },
+                { name: 'insert', groups: ['insert'] },
                 // {name: 'tools', groups: ['tools']},
-                {name: 'others', groups: ['others']},
-                {name: 'about', groups: ['about']}
+                { name: 'others', groups: ['others'] },
+                { name: 'about', groups: ['about'] }
             ],
             removeButtons: 'PasteFromWord,Paste,Resize,AutoSave,Clipboard,Smiley,ColorButton, Source,Templates,Chart,Source,Flash,SpecialChar,PageBreak,Iframe,ShowBlocks,About,Language,CreateDiv,Form,Checkbox,Radio,TextField,Textarea,Select,Button,ImageButton,HiddenField,Scayt,SelectAll,BidiRtl,BidiLtr,Superscript,Subscript,Styles',
             qtCellPadding: '0',
@@ -532,7 +566,7 @@ export default class Editor extends React.Component {
             contentsCss: contentCss,
             removePlugins: 'forms,bidi',
             autoParagraph: false,
-             // Configure your file manager integration. This example uses CKFinder 3 for PHP.
+            // Configure your file manager integration. This example uses CKFinder 3 for PHP.
             filebrowserBrowseUrl: '/apps/ckfinder/3.4.5/ckfinder.html',
             filebrowserImageBrowseUrl: '/apps/ckfinder/3.4.5/ckfinder.html?type=Images',
             filebrowserUploadUrl: '/apps/ckfinder/3.4.5/core/connector/php/connector.php?command=QuickUpload&type=Files',
@@ -551,9 +585,9 @@ export default class Editor extends React.Component {
         const EDITOR_PRO_URL = `${window.origin}/static/ckeditor/ckeditor.js`;
         CKEditor.editorUrl = process.env.NODE_ENV === 'development' ? EDITOR_DEV_URL : EDITOR_PRO_URL;
         return <EditorTemplate>
-            <div style={{display: 'flex', marginBottom: '2px'}}>
-                <input className='title_input' type='textarea' value={title} onChange={this.titleChange}/>
-                <div style={{position: 'relative'}}>
+            <div style={{ display: 'flex', marginBottom: '2px' }}>
+                <input className='title_input' type='textarea' value={title} onChange={this.titleChange} />
+                <div style={{ position: 'relative' }}>
                     <ul className='tools'>
                         {
                             tools.map((li, index) => {
@@ -572,20 +606,22 @@ export default class Editor extends React.Component {
                     }
                 </div>
             </div>
-            <FullScreen visible={visible} editorHandle={true} exit={() => this.setState({visible: false})}
-                        afterEnter={this.afterEnter} afterExit={this.afterExit} PDFTile={title}>
+            <FullScreen visible={visible} editorHandle={true} exit={() => this.setState({ visible: false })}
+                afterEnter={this.afterEnter} afterExit={this.afterExit} PDFTile={title}>
                 <CKEditor
                     ref={this.editorRef}
                     data={data}
                     config={config}
-                    style={{border: '1px solid #E1E2E6', boxShadow: 'none'}}
+                    style={{ border: '1px solid #E1E2E6', boxShadow: 'none' }}
                     onChange={this.onEditorChange}
                     onInstanceReady={this.instanceReady}
                 />
             </FullScreen>
             {/*分享弹窗*/}
             <ShareModal onRef={(ref) => this.shareModalRef = ref}></ShareModal>
+            {/*评论弹窗*/}
             <Comment onRef={(ref) => this.commentRef = ref}></Comment>
+            {/*智能命令简化选择右键菜单*/}
             <div id="command_tag_pane">
                 <ul>
                     {
@@ -594,6 +630,9 @@ export default class Editor extends React.Component {
                         })
                     }
                 </ul>
+            </div>
+            <div id="charts">
+                <Preview></Preview>
             </div>
         </EditorTemplate>
     }

@@ -50,15 +50,15 @@ export default class CommandPopup extends React.Component {
         }
     }
     componentDidMount() {
-        eventEmitter.on('COMMAND_POPUP', (order) => {
-            if(order === null || order === undefined) {
-                this.onClose()
-            } else {
-                this.props.drawerStore.setVisible(true);
-                this.props.drawerStore.setCommandPopFlag();
-                document.getElementById('editable-cmd-content').innerHTML = order;
-            }
-        });
+        // eventEmitter.on('COMMAND_POPUP', (order) => {
+        //     if(order === null || order === undefined) {
+        //         this.onClose()
+        //     } else {
+        //         this.props.drawerStore.setVisible(true);
+        //         this.props.drawerStore.setCommandPopFlag();
+        //         document.getElementById('editable-cmd-content').innerHTML = order;
+        //     }
+        // });
     }
 
     onClose = () => {

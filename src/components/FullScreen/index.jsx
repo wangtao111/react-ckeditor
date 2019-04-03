@@ -66,17 +66,6 @@ class FullScreen extends React.Component {
         let de = this.refs.fullScreen;
         de.style.background = '#fff';
         if(this.props.editorHandle){
-            // const bodyStr = this.props.editorRef.current.editor.getData();
-
-            // const element = window.CKEDITOR.dom.element.createFromHtml(bodyStr);
-            // element.setAttribute('id', 'fullscreenRoot');
-            // element.setStyles({
-            //     backgroundColor: '#fff',
-            //     position: 'relative'
-            // });
-            // window.document.body.appendChild(element.$);
-            
-            // de = window.document.getElementById('fullscreenRoot');
             de = document.getElementById('cke_1_contents');
         }
         if (de.requestFullscreen) {
@@ -96,36 +85,28 @@ class FullScreen extends React.Component {
         const dom = this.scale;
         html2canvas(dom).then((canvas) =>  {
             const pageData = canvas.toDataURL('image/jpeg', 1.0);
-            this.createElement(de, 'scalePicture', <div><img src={pageData}/></div>)
+            this.createElement(de, 'scalePicture', <div><img src={pageData}/></div>);
         })
     }
     // 添加右键菜单功能和右上角按钮
     addTools = (de) => {
-        if(!document.getElementById('fullScreenBtn')){
-            this.createElement(de, 'fullScreenBtn', <ul>
-                <li onClick={ () => this.changeFullScreenSize('+')}>A+</li>
-                <li onClick={() => this.changeFullScreenSize('-')}>A-</li>
-                <li onClick={this.exitFullscreen}>退出</li>
-            </ul>)
-        } else {
-            document.getElementById('fullScreenBtn').style.display = 'block';
-        }
-        if(!document.getElementById('contextmenu')){
-            this.createElement(de, 'contextmenu', <ul onClick={() => {document.getElementById('contextmenu').style.display = 'none'}}>
-                <li>复制</li>
-                <li>翻页设置</li>
-                <li>夜间模式</li>
-                <li onClick={() => this.changeDrawColor('#0088F2')}><span></span>蓝色荧光笔</li>
-                <li onClick={() => this.changeDrawColor('#FF319F')}><span></span>粉色荧光笔</li>
-                <li onClick={() => this.changeDrawColor('#00F46E')}><span></span>绿色荧光笔</li>
-                <li onClick={() => this.changeFullScreenSize('+')}>放大</li>
-                <li onClick={() => this.changeFullScreenSize('-')}>缩小</li>
-                <li onClick={this.exportToPDF}>导出演示笔记为PDF</li>
-                <li onClick={this.exitFullscreen}>退出演示</li>
-            </ul>)
-        } else {
-            document.getElementById('contextmenu').style.display = 'block';
-        }
+        this.createElement(de, 'fullScreenBtn', <ul>
+            <li onClick={ () => this.changeFullScreenSize('+')}>A+</li>
+            <li onClick={() => this.changeFullScreenSize('-')}>A-</li>
+            <li onClick={this.exitFullscreen}>退出</li>
+        </ul>)
+        this.createElement(de, 'contextmenu', <ul onClick={() => {document.getElementById('contextmenu').style.display = 'none'}}>
+            <li>复制</li>
+            <li>翻页设置</li>
+            <li>夜间模式</li>
+            <li onClick={() => this.changeDrawColor('#0088F2')}><span></span>蓝色荧光笔</li>
+            <li onClick={() => this.changeDrawColor('#FF319F')}><span></span>粉色荧光笔</li>
+            <li onClick={() => this.changeDrawColor('#00F46E')}><span></span>绿色荧光笔</li>
+            <li onClick={() => this.changeFullScreenSize('+')}>放大</li>
+            <li onClick={() => this.changeFullScreenSize('-')}>缩小</li>
+            <li onClick={this.exportToPDF}>导出演示笔记为PDF</li>
+            <li onClick={this.exitFullscreen}>退出演示</li>
+        </ul>)
         setTimeout(() => {this.draw()}, 100)
     }
     addEvents = () => {
@@ -161,7 +142,8 @@ class FullScreen extends React.Component {
             if(!fullscreenElement) {
                 this.fullScreenSize = 1;
                 this.scale.style.zoom = this.fullScreenSize;
-                document.getElementById('fullScreenBtn').style.display = 'none';
+                document.getElementById('fullScreenBtn').remove();
+                // document.getElementById('scalePicture').remove();
                 this.canvasMask.remove();
                 contextmenu.remove();
                 this.props.exit();
