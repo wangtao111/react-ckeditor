@@ -211,10 +211,31 @@ export default class Editor extends React.Component {
         editor.insertHtml(Template.generateTemplateHtml(template));
     }
 
+    // 增加更多工具组
+    addMoreToolGroup = () => {
+        console.log('in');
+        const ckeTop = window.CKEDITOR.document.getById('cke_1_toolbox');
 
+        const toolGroup = window.CKEDITOR.dom.element.createFromHtml(`<span class="more-box" id="moreBox" title="更多...">
+            <label for="checkedInput">
+                更多<span class="cke_button_arrow"></span>
+            </label>
+            <input type="checkbox" id="checkedInput"/> 
+            <div class="more-options">
+                <a class="button" title="附件" onclick="document.getElementById('checkedInput').checked=false;"><i class="button-attachment"></i></a>
+                <a class="button" title="目录" onclick="document.getElementById('checkedInput').checked=false;"><i class="button-directory"></i></a>
+                <a class="button" title="笔记背景" onclick="document.getElementById('checkedInput').checked=false;"><i class="button-note-bg"></i></a>
+                <a class="button" title="布局" onclick="document.getElementById('checkedInput').checked=false;"><i class="button-layout"></i></a>
+                <a class="button" title="组件" onclick="document.getElementById('checkedInput').checked=false;"><i class="button-puzzle"></i></a>
+            </div>
+        </span>`);
 
+        ckeTop.append(toolGroup);
+    }
     instanceReady = () => {
         const editor = this.editorRef.current.editor;
+        // 工具栏中增加更多工具组
+        this.addMoreToolGroup();
         const itemTemplate = '<li data-id="{id}"><div style="display: flex"><strong class="item-title" style="min-width: 100px">{title}</strong></div></li>';
         const outputTemplate = '{tag}';
         const that = this;
