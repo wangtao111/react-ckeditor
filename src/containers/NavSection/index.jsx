@@ -1,6 +1,6 @@
 // 左侧导航区
 import React from 'react';
-import { Dropdown, Menu, Modal, Input } from 'antd';
+import { Dropdown, Menu, Modal, Input, Spin } from 'antd';
 import styled, { css } from 'styled-components';
 import TemplateModal from '../../components/TemplateModal';
 import { observer, inject } from 'mobx-react';
@@ -315,20 +315,20 @@ export default class NavSection extends React.Component {
                     icon: 'icon_file_folder',
                     expandable: true,          // 是否有展开的能力
                     contextMenu: true,         // 是否带有右击菜单上下文
-                    children: [
-                        {
-                            name: '新建文件1',
-                            expandable: true,
-                            contextMenu: true,
-                            children: [
-                                {
-                                    name: '新建文件夹2',
-                                    expandable: true,
-                                    contextMenu: true
-                                }
-                            ]
-                        }
-                    ]
+                    // children: [
+                    //     {
+                    //         name: '新建文件1',
+                    //         expandable: true,
+                    //         contextMenu: true,
+                    //         children: [
+                    //             {
+                    //                 name: '新建文件夹2',
+                    //                 expandable: true,
+                    //                 contextMenu: true
+                    //             }
+                    //         ]
+                    //     }
+                    // ]
                 },
                 {
                     name: '标签',
@@ -344,7 +344,32 @@ export default class NavSection extends React.Component {
             openedKeys: [],         // 展开的菜单项key
         }
 
+        this.newFileFolder = '';            // 新的文件夹名称
         this.addNewNote = this.addNewNote.bind(this);
+    }
+
+    componentDidMount() {
+        this.fetchFileFolderList();
+    }
+
+    // 获取文件夹列表 
+    async fetchFileFolderList() {
+        await this.props.menuStore.getFileFolderList({
+            userId: '12131',
+            directoryLevel: 1,
+            status: 1,
+            parentId: -1
+        });
+
+        const { fileFolderList } = this.props.menuStore;
+
+        this.setState(({ menuList }) => {
+            menuList[2].children = JSON.parse(JSON.stringify(fileFolderList));
+
+            return {
+                menuList
+            };
+        })
     }
 
     setModalVisible(name, value) {
@@ -402,7 +427,8 @@ export default class NavSection extends React.Component {
                     name: '新建文件夹',
                     expandable: true,
                     editable: true,
-                    contextMenu: true
+                    contextMenu: true,
+                    add: true
                 });
             }
     
@@ -412,8 +438,69 @@ export default class NavSection extends React.Component {
         }
     }
 
-    // 根据key如1,2,3 下标,取出最终项
-    getDeepItemByKey(key) {
+    // 确定创建文件夹
+    confirmCreateFileFolder(menuItem, key) {
+        let parentId;
+        debugger;
+
+        if(key.split(',').length === 3) {
+            parentId = -1;
+        }else {
+            console.log('item', this.getDeepItemByKey(key));
+            debugger;
+        }
+        this.props.menuStore.createFileFolder({
+            userId: '12131',
+            parentId,
+            directoryName: this.newFileFolder,
+            directoryLevel: 1,
+            orderLevel: 1
+        });
+        
+        this.setEditable(key, false);
+
+        this.fetchFileFolderList();
+    }
+
+    // 创建或更新文件夹
+    createOrUpdateFileFolder(menuItem, key) {
+        if(menuItem.add) {
+            this.confirmCreateFileFolder(menuItem, key);
+        }else {
+            this.updateFileFolder(menuItem, key);
+        }
+    }
+
+    // 更新文件夹名称
+    updateFileFolder(menuItem, key) {
+        const { newFileFolder } = this;
+
+        this.props.menuStore.updateFileFolder({
+            id: menuItem.id,
+            userId: menuItem.userId,
+            parentId: menuItem.parentId,
+            directoryName: newFileFolder,
+            directoryLevel: menuItem.directoryLevel,
+            orderLevel: menuItem.orderLevel,
+            status: menuItem.status
+        }, {
+            indexes: key.split(',').slice(0, -2).reverse(),
+            updateKey: 'name',
+            updateValue: newFileFolder
+        });
+
+        // 请求数据
+        this.setEditable(key, false);
+    }
+
+    // 删除文件夹(到回收站)
+    async putDirToBin(menuItem) {
+        await this.props.menuStore.removeFileFolder(menuItem.id);
+        this.fetchFileFolderList();
+    }
+
+    // 根据key如1,2,3 下标,取出最终项, stopLen停止长度
+    getDeepItemByKey(key, stopLen) {
         let indexList = key.split(',');
             
         if(!indexList || !indexList.length) return;
@@ -424,7 +511,7 @@ export default class NavSection extends React.Component {
         let item = menuList;
         let index = 0;
 
-        while(item && index !== indexList.length) {
+        while(item && index !== (stopLen || indexList.length)) {
             if(item && typeof item.children === 'undefined') {
                 item = item[indexList[index]];
             }else {
@@ -448,8 +535,21 @@ export default class NavSection extends React.Component {
     }
 
     // 设置文件夹名称
-    setFolderName(e, key) {
-        this.setFolderData(key, 'name', e.target.value);
+    setFolderName(e, menuItem, key) {
+        this.props.menuStore.updateFileFolder({
+            id: menuItem.id,
+            userId: menuItem.userId,
+            parentId: menuItem.parentId,
+            directoryName: e.target.value,
+            directoryLevel: menuItem.directoryLevel,
+            orderLevel: menuItem.orderLevel,
+            status: menuItem.status
+        }, {
+            indexes: key.split(',').slice(0, -2).reverse(),
+            updateKey: 'name',
+            updateValue: e.target.value
+        });
+        // this.setFolderData(key, 'name', e.target.value);
     }
 
     // 设置文件夹数据
@@ -525,10 +625,10 @@ export default class NavSection extends React.Component {
                                 menuItem.editable ? <CustomInput
                                                         style={{ width: 120 }}
                                                         className="input-folder"
-                                                        onPressEnter={ () => this.setEditable(key, false)}
-                                                        onBlur={ () => this.setEditable(key, false) }
-                                                        value={ menuItem.name }
-                                                        onChange={ (e) => this.setFolderName(e, key) }/> : menuItem.name
+                                                        onPressEnter={ () => this.createOrUpdateFileFolder(menuItem, key)}
+                                                        onBlur={ () => this.createOrUpdateFileFolder(menuItem, key) }
+                                                        defaultValue={ menuItem.name }
+                                                        onChange={ (e) => this.newFileFolder = e.target.value }/> : menuItem.name
                             }
                         </div>
                     </div>
@@ -542,6 +642,10 @@ export default class NavSection extends React.Component {
                         </Menu.SubMenu>
                         {
                             parentIndex !== -1 && <Menu.Item key="2" onClick={ () => this.renameFolderName(key)}>重命名</Menu.Item>
+                        }
+
+                        {
+                            parentIndex !== -1 && <Menu.Item key="3" onClick={ () => this.putDirToBin(menuItem)}>删除</Menu.Item>
                         }
                     </Menu>
                 );
@@ -594,16 +698,29 @@ export default class NavSection extends React.Component {
         if(this.state.isCollapsed === prevState.isCollapsed && prevProps.drawerStore.isVisible !== this.state.isCollapsed) {
             this.toggleCollapse();
         }
+
+        const { fileFolderList } = this.props.menuStore;
+
+        if(JSON.stringify(fileFolderList) !== JSON.stringify(prevProps.menuStore.fileFolderList)) {
+            this.setState(({ menuList }) => {
+                menuList[2].children = JSON.parse(JSON.stringify(fileFolderList));
+    
+                return {
+                    menuList
+                };
+            })
+        }
     }
 
     render() {
         const { 
             menuList,
             templateModalVisible,
-            isCollapsed
+            isCollapsed,
         } = this.state;
 
         const { isVisible } = this.props.drawerStore;
+        const { loading } = this.props.menuStore;
 
         const menu = (<Menu>
             <Menu.Item onClick={ this.addNewNote }>新建笔记</Menu.Item>
@@ -614,34 +731,36 @@ export default class NavSection extends React.Component {
         </Menu>);
 
         return <NavSectionWrapper>
-            <div className="expand-layout" style={{ display: isCollapsed ? 'none' : 'block' }}>
-                <div className="operation-tools">
-                    <Dropdown overlay={ menu }><a className="btn-new-doc"><i className="icon-add"></i>新文档</a></Dropdown>
+            <Spin spinning={ loading } delay={500}>
+                <div className="expand-layout" style={{ display: isCollapsed ? 'none' : 'block' }}>
+                    <div className="operation-tools">
+                        <Dropdown overlay={ menu }><a className="btn-new-doc"><i className="icon-add"></i>新文档</a></Dropdown>
+                    </div>
+
+                    <ul className="menu-list">
+                        {
+                            this.renderMenuTree(menuList)
+                        }
+                    </ul>
+
+                    <i className="icon-collapse iconfont icon-db-left-arrow" onClick={ this.toggleCollapse }></i>
                 </div>
 
-                <ul className="menu-list">
+                <div className="collapse-layout" style={{ display: isCollapsed ? 'block' : 'none' }}>
+                    <div className="sidebar-item" title="添加">
+                        <i className="iconfont icon-add-doc"></i>
+                    </div>
                     {
-                        this.renderMenuTree(menuList)
+                        (menuList && !!menuList.length) && menuList.map((menu, index) => {
+                            return <div className="sidebar-item" title={ menu.name } key={ index }>
+                                <i className={ menu.icon }></i>
+                            </div>
+                        })
                     }
-                </ul>
 
-                <i className="icon-collapse iconfont icon-db-left-arrow" onClick={ this.toggleCollapse }></i>
-            </div>
-
-            <div className="collapse-layout" style={{ display: isCollapsed ? 'block' : 'none' }}>
-                <div className="sidebar-item" title="添加">
-                    <i className="iconfont icon-add-doc"></i>
+                    <i className="icon-expand iconfont icon-db-right-arrow" onClick={ this.toggleCollapse }></i>
                 </div>
-                {
-                    (menuList && !!menuList.length) && menuList.map((menu, index) => {
-                        return <div className="sidebar-item" title={ menu.name } key={ index }>
-                            <i className={ menu.icon }></i>
-                        </div>
-                    })
-                }
-
-                <i className="icon-expand iconfont icon-db-right-arrow" onClick={ this.toggleCollapse }></i>
-            </div>
+            </Spin>
             
             <Modal visible={ templateModalVisible } footer={ null } 
                 onCancel={ () => this.setModalVisible('templateModalVisible', false)}>
