@@ -1,23 +1,3 @@
-const temp = [
-    {
-        id: 1,
-        title: '头部',
-        outSync: true,
-        tag: '<div><div style="border: 1px dashed #98BCFF; width: 100%; min-height: 100px; position: relative;margin-top: 30px;padding: 10px">' +
-            '<span contenteditable="false" style="position: absolute; top: -19px; left: -1px;background: #D8E9F6;color: #98BCFF; padding: 0 15px; border: 1px solid #98BCFF; border-bottom: none; border-radius: 4px; font-size: 10px">头部</span>' +
-            '<span>&nbsp;</span>' +
-            '</div></div>'
-    },
-    {
-        id: 2,
-        title: '标题',
-        outSync: true,
-        tag: '<div><div style="border: 1px dashed #98BCFF; width: 100%; height: 100px; position: relative;margin-top: 30px;padding: 10px">' +
-            '<span contenteditable="false" style="position: absolute; top: -19px; left: -1px;background: #D8E9F6;color: #98BCFF; padding: 0 15px; border: 1px solid #98BCFF; border-bottom: none; border-radius: 4px; font-size: 10px">标题</span>' +
-            '<span>&nbsp;</span>' +
-            '</div></div>'
-    },
-];
 const tables = [
     {
         id: 1,
@@ -65,7 +45,5 @@ const MENTIONS = [
         tag: '<span name="temporary" style="color: blue;">贵州茅台(600519).</span>'
     },
 ];
-module.exports.temp = temp;
 module.exports.tables = tables;
 module.exports.MENTIONS = MENTIONS;
-// export default {temp, tables, MENTIONS}
