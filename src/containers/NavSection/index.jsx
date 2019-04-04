@@ -8,6 +8,7 @@ import moment from 'moment';
 import eventEmitter from "../../event";
 import CustomInput from './CustomInput';
 import MenuWithContext from '../../components/MenuWithContext';
+import { toJS } from 'mobx';
 
 const NavSectionWrapper = styled.section`
     background-color: #F5F5F5;
@@ -346,30 +347,39 @@ export default class NavSection extends React.Component {
 
         this.newFileFolder = '';            // 新的文件夹名称
         this.addNewNote = this.addNewNote.bind(this);
-    }
-
-    componentDidMount() {
-        this.fetchFileFolderList();
-    }
-
-    // 获取文件夹列表 
-    async fetchFileFolderList() {
-        await this.props.menuStore.getFileFolderList({
+        this.requestParams = {
             userId: '12131',
             directoryLevel: 1,
             status: 1,
             parentId: -1
-        });
+        };
+    }
 
-        const { fileFolderList } = this.props.menuStore;
-
-        this.setState(({ menuList }) => {
-            menuList[2].children = JSON.parse(JSON.stringify(fileFolderList));
-
-            return {
-                menuList
-            };
-        })
+    // 获取文件夹列表 
+    async fetchFileFolderList(key) {
+        if(key) {
+            Object.assign(this.requestParams, {
+                directoryLevel: key.split(',').length - 1, 
+                parentId: this.getDeepItemByKey(key).id
+            });
+    
+            await this.props.menuStore.getFileFolderList(this.requestParams);
+            const { fileFolderList } = this.props.menuStore;
+    
+            this.setState(({ menuList }) => {
+                if(!key || key.split(',').length === 2) {
+                    menuList[2].children = JSON.parse(JSON.stringify(fileFolderList));
+                }else {
+                    const item = this.getDeepItemByKey(key);
+    
+                    item.children = toJS(fileFolderList);
+                }
+    
+                return {
+                    menuList
+                };
+            })
+        }
     }
 
     setModalVisible(name, value) {
@@ -398,8 +408,6 @@ export default class NavSection extends React.Component {
 
     // 创建文件夹
     createFolder = (key) => {
-        console.log('key: ', key);
-
         if(typeof key === 'undefined') {
             // 此是从新文档中创建文件夹触发的
             // 1. 如果此时未选中我的文件夹，则加入我的文件夹的下层
@@ -439,43 +447,41 @@ export default class NavSection extends React.Component {
     }
 
     // 确定创建文件夹
-    confirmCreateFileFolder(menuItem, key) {
+    async confirmCreateFileFolder(key) {
         let parentId;
-        debugger;
 
         if(key.split(',').length === 3) {
             parentId = -1;
         }else {
-            console.log('item', this.getDeepItemByKey(key));
-            debugger;
+            parentId = this.getDeepItemByKey(key, key.split(',').length - 2).id;
         }
-        this.props.menuStore.createFileFolder({
+        await this.props.menuStore.createFileFolder({
             userId: '12131',
             parentId,
             directoryName: this.newFileFolder,
-            directoryLevel: 1,
+            directoryLevel: key.split(',').length - 2,
             orderLevel: 1
         });
         
         this.setEditable(key, false);
-
-        this.fetchFileFolderList();
+        debugger;
+        this.fetchFileFolderList(key.split(',').slice(1).toString());
     }
 
     // 创建或更新文件夹
     createOrUpdateFileFolder(menuItem, key) {
         if(menuItem.add) {
-            this.confirmCreateFileFolder(menuItem, key);
+            this.confirmCreateFileFolder(key);
         }else {
             this.updateFileFolder(menuItem, key);
         }
     }
 
     // 更新文件夹名称
-    updateFileFolder(menuItem, key) {
+    async updateFileFolder(menuItem, key) {
         const { newFileFolder } = this;
 
-        this.props.menuStore.updateFileFolder({
+        await this.props.menuStore.updateFileFolder({
             id: menuItem.id,
             userId: menuItem.userId,
             parentId: menuItem.parentId,
@@ -483,23 +489,21 @@ export default class NavSection extends React.Component {
             directoryLevel: menuItem.directoryLevel,
             orderLevel: menuItem.orderLevel,
             status: menuItem.status
-        }, {
-            indexes: key.split(',').slice(0, -2).reverse(),
-            updateKey: 'name',
-            updateValue: newFileFolder
         });
 
         // 请求数据
         this.setEditable(key, false);
+        // 更新父节点下面的子节点
+        this.fetchFileFolderList(key.split(',').slice(1).toString());
     }
 
     // 删除文件夹(到回收站)
-    async putDirToBin(menuItem) {
+    async putDirToBin(menuItem, key) {
         await this.props.menuStore.removeFileFolder(menuItem.id);
-        this.fetchFileFolderList();
+        this.fetchFileFolderList(key.split(',').slice(1).toString());
     }
 
-    // 根据key如1,2,3 下标,取出最终项, stopLen停止长度
+    // 根据key如当前节点下标,父节点下载...-1,取出最终项, stopLen停止长度 
     getDeepItemByKey(key, stopLen) {
         let indexList = key.split(',');
             
@@ -526,38 +530,10 @@ export default class NavSection extends React.Component {
 
     // 设置编辑名称状态
     setEditable(key, editFlag) {
-        this.setFolderData(key, 'editable', editFlag);
-    }
-
-    // 重命名文件名称
-    renameFolderName(key) {
-        this.setEditable(key, true);
-    }
-
-    // 设置文件夹名称
-    setFolderName(e, menuItem, key) {
-        this.props.menuStore.updateFileFolder({
-            id: menuItem.id,
-            userId: menuItem.userId,
-            parentId: menuItem.parentId,
-            directoryName: e.target.value,
-            directoryLevel: menuItem.directoryLevel,
-            orderLevel: menuItem.orderLevel,
-            status: menuItem.status
-        }, {
-            indexes: key.split(',').slice(0, -2).reverse(),
-            updateKey: 'name',
-            updateValue: e.target.value
-        });
-        // this.setFolderData(key, 'name', e.target.value);
-    }
-
-    // 设置文件夹数据
-    setFolderData(key, attr, value) {
         const item = this.getDeepItemByKey(key);
 
         if(item) {
-            item[attr] = value;
+            item.editable = editFlag;
         }
 
         this.setState({
@@ -565,9 +541,13 @@ export default class NavSection extends React.Component {
         });
     }
 
+    // 重命名文件名称
+    renameFolderName(key) {
+        this.setEditable(key, true);
+    }
+
     // 设置已经展开的选项
     setOpenedKeys(key, openFlag) {
-        // console.log('key: ', key);
         let { openedKeys } = this.state;
 
         if(openedKeys && openedKeys.length) {
@@ -576,6 +556,10 @@ export default class NavSection extends React.Component {
 
             if(~foundIndex && openFlag !== true) {
                 openedKeys.splice(foundIndex, 1);
+                this.setState({
+                    openedKeys
+                });
+                return;
             }else {
                 openedKeys.push(key);
             }
@@ -586,6 +570,10 @@ export default class NavSection extends React.Component {
 
         this.setState({
             openedKeys
+        }, () => {
+            if(openFlag !== true) {
+                this.fetchFileFolderList(key);
+            }
         });
     }
 
@@ -645,7 +633,7 @@ export default class NavSection extends React.Component {
                         }
 
                         {
-                            parentIndex !== -1 && <Menu.Item key="3" onClick={ () => this.putDirToBin(menuItem)}>删除</Menu.Item>
+                            parentIndex !== -1 && <Menu.Item key="3" onClick={ () => this.putDirToBin(menuItem, key)}>删除</Menu.Item>
                         }
                     </Menu>
                 );

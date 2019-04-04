@@ -46,23 +46,11 @@ export default class MenuStore {
     });
 
     // 更新文件夹
-    updateFileFolder = flow(function* (data, updateParams) {
+    updateFileFolder = flow(function* (data) {
         this.loading = true;
         try {
             yield ajax('apiUpdateFileFolder', { data });
             this.loading = false;
-            
-            const { indexes, updateKey, updateValue } = updateParams;
-            const { fileFolderList } = this;
-
-            let i = 0;
-            let item = fileFolderList;
-            while(i !== indexes.length) {
-                item = item[i];
-                i++;
-            }
-
-            item[updateKey] = updateValue;
         }catch(err) {
             this.loading = false;
             console.log('err: ', err);
@@ -73,8 +61,11 @@ export default class MenuStore {
     // 删除文件夹
     removeFileFolder = flow(function* (directoryId) {
         try {
+            this.loading = true;
             yield ajax('apiPutDirToBin', { url: `/api/note/fianceNote/putMyDirInCrash/${ directoryId }` });
+            this.loading = false;
         }catch(err) {
+            this.loading = false;
             console.log('err: ', err);
             message.error(err || '删除文件夹失败！');
         }
@@ -83,8 +74,10 @@ export default class MenuStore {
     // 获取文件夹列表
     getFileFolderList = flow(function* (params) {
         try {
+            this.loading = true;
             const data = yield ajax('apiFetchFileFolderList', { params });
 
+            this.loading = false;
             console.log('data: ', data);
             if(data) {
 
@@ -101,6 +94,7 @@ export default class MenuStore {
             }
 
         }catch(err) {
+            this.loading = false;
             console.log('err: ', err);
             message.error(err || '获取文件夹列表失败！');
         }
