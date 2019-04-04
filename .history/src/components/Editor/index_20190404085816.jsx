@@ -17,7 +17,6 @@ import { saveAs } from 'file-saver';
 import * as jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
 import EditorTemplate from './styled';
-import { Icon } from 'antd';
 import { tables, MENTIONS } from '../../mockData/commandData'
 let doing = false;
 
@@ -172,26 +171,6 @@ export default class Editor extends React.Component {
             const valueKey = '金融';
             let arr = data.content.split(valueKey);
             let content = arr.join(`<span style="color:red;">${valueKey}</span>`);
-            content += `<style>
-                span[name = 'select_box']:after{
-                    content: url(${require('../../img/arr.png')});
-                    width: 12px;
-                    margin-top: 5px;
-                    position: relative;
-                }
-                .bowen{position: relative;color: #953039;}
-                    .bowen:after{
-                        content: '';
-                        position: absolute;
-                        bottom: -2px;
-                        left: 0%;
-                        width: 100%;
-                        height: 2px;
-                        background: -webkit-linear-gradient(315deg, transparent, transparent 45%, #953039, transparent 55%, transparent 100%),-webkit-linear-gradient(45deg, transparent, transparent 45%, #953039, transparent 55%, transparent 100%); 
-                        background-size: 4px 4px;
-                        background-repeat: repeat-x;
-                    }
-            </style>`;
             this.setState({ data: content, title: data.title })
             setTimeout(() => {
                 this.setEditorIframe();
@@ -295,7 +274,7 @@ export default class Editor extends React.Component {
                 //     eventEmitter.emit('COMMAND_POPUP', signal + item.tag);
                 // }
                 if (that.range) {
-                    that.range.endContainer.$.parentNode.className = '';
+                    that.range.endContainer.$.parentNode.style.borderBottom = 'none';
                 }
                 if (item.charts) {
                     const menu = document.getElementById('charts');
@@ -306,10 +285,10 @@ export default class Editor extends React.Component {
                     menu.style.display = 'block';
                     let x = position.x + offset.x;
                     let y = position.y + offset.y;
-                    if (x + menu.offsetWidth - scrollX >= document.body.offsetWidth) {
+                    if(x + menu.offsetWidth - scrollX >= document.body.offsetWidth){
                         x -= menu.offsetWidth
                     }
-                    if (y + menu.offsetHeight - scrollY >= document.body.offsetHeight) {
+                    if(y + menu.offsetHeight - scrollY >= document.body.offsetHeight){
                         y -= menu.offsetHeight
                     }
                     menu.style.left = x + 'px';
@@ -341,7 +320,7 @@ export default class Editor extends React.Component {
             if (currentStr === '~' || currentStr === '～') {
                 currentStr = '~'
             }
-            if (range.startContainer.$.parentNode.getAttribute('name') === 'temporary') {　//选择公司后进入此逻辑
+            if (range.startContainer.$.parentNode.className === 'temporary') {　//选择公司后进入此逻辑
                 const pNode = this.getParentNode(range.startContainer.$);
                 const matchArr = text.split('~'), matchText = matchArr[matchArr.length - 1];
                 const innertext = pNode.innerText;
@@ -382,9 +361,9 @@ export default class Editor extends React.Component {
                     if (lastText.indexOf('归母晶') !== -1) {
                         this.callbackData = tables;
                         this.range = range;
-                        range.endContainer.$.parentNode.className = 'bowen';
+                        range.endContainer.$.parentNode.style.borderBottom = '1px solid red';
                     } else {
-                        range.endContainer.$.parentNode.className = '';
+                        range.endContainer.$.parentNode.style.borderBottom = 'none';
                     }
                     return {
                         start: text.lastIndexOf('.') + 1,
@@ -398,7 +377,7 @@ export default class Editor extends React.Component {
                             id: 1,
                             title: '使用智能命令~',
                             detail: '~',
-                            tag: '<span name="temporary" style="color: blue">~</span>'
+                            tag: '<span class="temporary" style="color: blue">~</span>'
                         }];
                         this.autocomplete.view.itemTemplate.source = '<li data-id="{id}" style="width: 100px">{title}</li>';
                         return {
@@ -475,7 +454,7 @@ export default class Editor extends React.Component {
     }
 
     getParentNode = (node) => {
-        if (node.parentNode.getAttribute('name') === 'temporary') {
+        if (node.parentNode.className === 'temporary') {
             return this.getParentNode(node.parentNode)
         }
         return node;
@@ -674,7 +653,6 @@ export default class Editor extends React.Component {
                 </ul>
             </div>
             <div id="charts">
-                <p><Icon type='close' style={{float: 'right', cursor: 'pointer'}} onClick={() => {this.setPNodeHtml()}}></Icon></p>
                 <Preview></Preview>
             </div>
         </EditorTemplate>

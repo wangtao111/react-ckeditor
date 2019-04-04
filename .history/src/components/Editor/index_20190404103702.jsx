@@ -17,7 +17,6 @@ import { saveAs } from 'file-saver';
 import * as jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
 import EditorTemplate from './styled';
-import { Icon } from 'antd';
 import { tables, MENTIONS } from '../../mockData/commandData'
 let doing = false;
 
@@ -674,7 +673,7 @@ export default class Editor extends React.Component {
                 </ul>
             </div>
             <div id="charts">
-                <p><Icon type='close' style={{float: 'right', cursor: 'pointer'}} onClick={() => {this.setPNodeHtml()}}></Icon></p>
+                <p>Icon </p>
                 <Preview></Preview>
             </div>
         </EditorTemplate>

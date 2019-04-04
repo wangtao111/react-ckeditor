@@ -674,7 +674,7 @@ export default class Editor extends React.Component {
                 </ul>
             </div>
             <div id="charts">
-                <p><Icon type='close' style={{float: 'right', cursor: 'pointer'}} onClick={() => {this.setPNodeHtml()}}></Icon></p>
+                <p><Icon type='close'></Icon></p>
                 <Preview></Preview>
             </div>
         </EditorTemplate>

@@ -8,6 +8,7 @@ const FileData = [
         type: 1,
         content: `
                     <div>
+                        
                          <div style="background: #3b8dee; color: #fff; padding: 15px 0;text-align: center">
                              <h1>欢迎使用金融云笔记</h1>
                              <p>——— 满足金融从业人员撰写调研记录、晨会纪要等工作场景的在线工具</p>
@@ -23,7 +24,6 @@ const FileData = [
                                     <li>选择 '使用智能命令~' 后进入命令模式，输入'公司主体名称（例如 ‘中国’）匹配对应公司主体</li>
                                     <li>输入中文句号会有提示，直接回车即可</li>
                                     <li>然后输入 '.' 加文字（例如 '利润表'）可以匹配具体金融信息、图表</li>
-                                    <li>输入 '.' 加文字（例如 '归母晶'）会提示纠错选项</li>
                                     <li>已生成命令可进行简化选择，例如<span style="border: 1px dashed #999;color: blue; cursor: pointer" contenteditable="false" name="select_box">归母净利润580.95亿元</span></li>
                                 </ol>
                             </li>
@@ -60,6 +60,26 @@ const FileData = [
     {
         title: '《看研报》产品分析报告', briefContent: '产品亮点1、核心能力：核心提供【搜索+订阅内容服务】，在推荐层面较弱', imgUrl: require('../img/kanyanbao.png'), size: '6.6MB', date: '2019-02-01', type: 1,
         content: '<div style="font-size: 15px;">' +
+            `<style>
+                        span[name = 'select_box']:after{
+                            content: url(${require('../img/arr.png')});
+                            width: 12px;
+                            margin-top: 5px;
+                            position: relative;
+                        }
+                        .bowen{position: relative;color: #953039;}
+                            .bowen:after{
+                                content: '';
+                                position: absolute;
+                                bottom: -2px;
+                                left: 0%;
+                                width: 100%;
+                                height: 2px;
+                                background: -webkit-linear-gradient(315deg, transparent, transparent 45%, #953039, transparent 55%, transparent 100%),-webkit-linear-gradient(45deg, transparent, transparent 45%, #953039, transparent 55%, transparent 100%); 
+                                background-size: 4px 4px;
+                                background-repeat: repeat-x;
+                            }
+                    </style>` +
             '<p style="text-align: center;font-size: 18px;font-weight: bold; color: #444;margin-bottom: 40px">产品亮点</p>' +
             '<div style="margin-bottom: 60px">' +
             '<p style="font-weight: bold; color: #555;" ><span style="border: 1px dashed #999;color: blue; cursor: pointer" contenteditable="false" name="select_box">【金融工程】震荡调整继续， 9月低配规则、EEP因子</span></p>' +

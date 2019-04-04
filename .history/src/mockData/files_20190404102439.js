@@ -23,7 +23,6 @@ const FileData = [
                                     <li>选择 '使用智能命令~' 后进入命令模式，输入'公司主体名称（例如 ‘中国’）匹配对应公司主体</li>
                                     <li>输入中文句号会有提示，直接回车即可</li>
                                     <li>然后输入 '.' 加文字（例如 '利润表'）可以匹配具体金融信息、图表</li>
-                                    <li>输入 '.' 加文字（例如 '归母晶'）会提示纠错选项</li>
                                     <li>已生成命令可进行简化选择，例如<span style="border: 1px dashed #999;color: blue; cursor: pointer" contenteditable="false" name="select_box">归母净利润580.95亿元</span></li>
                                 </ol>
                             </li>

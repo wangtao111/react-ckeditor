@@ -17,7 +17,6 @@ import { saveAs } from 'file-saver';
 import * as jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
 import EditorTemplate from './styled';
-import { Icon } from 'antd';
 import { tables, MENTIONS } from '../../mockData/commandData'
 let doing = false;
 
@@ -172,26 +171,6 @@ export default class Editor extends React.Component {
             const valueKey = '金融';
             let arr = data.content.split(valueKey);
             let content = arr.join(`<span style="color:red;">${valueKey}</span>`);
-            content += `<style>
-                span[name = 'select_box']:after{
-                    content: url(${require('../../img/arr.png')});
-                    width: 12px;
-                    margin-top: 5px;
-                    position: relative;
-                }
-                .bowen{position: relative;color: #953039;}
-                    .bowen:after{
-                        content: '';
-                        position: absolute;
-                        bottom: -2px;
-                        left: 0%;
-                        width: 100%;
-                        height: 2px;
-                        background: -webkit-linear-gradient(315deg, transparent, transparent 45%, #953039, transparent 55%, transparent 100%),-webkit-linear-gradient(45deg, transparent, transparent 45%, #953039, transparent 55%, transparent 100%); 
-                        background-size: 4px 4px;
-                        background-repeat: repeat-x;
-                    }
-            </style>`;
             this.setState({ data: content, title: data.title })
             setTimeout(() => {
                 this.setEditorIframe();
@@ -306,10 +285,10 @@ export default class Editor extends React.Component {
                     menu.style.display = 'block';
                     let x = position.x + offset.x;
                     let y = position.y + offset.y;
-                    if (x + menu.offsetWidth - scrollX >= document.body.offsetWidth) {
+                    if(x + menu.offsetWidth - scrollX >= document.body.offsetWidth){
                         x -= menu.offsetWidth
                     }
-                    if (y + menu.offsetHeight - scrollY >= document.body.offsetHeight) {
+                    if(y + menu.offsetHeight - scrollY >= document.body.offsetHeight){
                         y -= menu.offsetHeight
                     }
                     menu.style.left = x + 'px';
@@ -674,7 +653,6 @@ export default class Editor extends React.Component {
                 </ul>
             </div>
             <div id="charts">
-                <p><Icon type='close' style={{float: 'right', cursor: 'pointer'}} onClick={() => {this.setPNodeHtml()}}></Icon></p>
                 <Preview></Preview>
             </div>
         </EditorTemplate>

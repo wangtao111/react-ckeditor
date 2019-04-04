@@ -17,7 +17,6 @@ import { saveAs } from 'file-saver';
 import * as jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
 import EditorTemplate from './styled';
-import { Icon } from 'antd';
 import { tables, MENTIONS } from '../../mockData/commandData'
 let doing = false;
 
@@ -61,6 +60,7 @@ export default class Editor extends React.Component {
             showMore: false,
             visible: false,
             command: false,
+            chartsShow: false
         }
 
         this.editorRef = React.createRef();
@@ -303,7 +303,7 @@ export default class Editor extends React.Component {
                     const scrollY = document.documentElement.scrollTop || document.body.scrollTop;
                     const offset = that.getPoint(document.getElementById('cke_1_contents'));
                     const position = that.position;
-                    menu.style.display = 'block';
+                    that.setState({chartsShow: true});
                     let x = position.x + offset.x;
                     let y = position.y + offset.y;
                     if (x + menu.offsetWidth - scrollX >= document.body.offsetWidth) {
@@ -331,7 +331,7 @@ export default class Editor extends React.Component {
         const iframe = document.getElementById('cke_1_contents').children[1].contentWindow;
         const ranges = iframe.getSelection().getRangeAt(0);
         this.position = ranges.getBoundingClientRect();
-        document.getElementById('charts').style.display = 'none';
+        this.setState({chartsShow: false})
         // const editor = this.editorRef.current.editor;
         return window.CKEDITOR.plugins.textMatch.match(range, (txt, offset) => {
             let text = JSON.parse(JSON.stringify(txt));
@@ -412,7 +412,7 @@ export default class Editor extends React.Component {
         });
     }
     setPNodeHtml = () => {
-        document.getElementById('charts').style.display = 'none';
+        this.setState({chartsShow: false});
         if (!this.pNode) return;
         this.pNode.innerHTML = '';
         // const s = this.pNode.previousSibling.textContent;
@@ -579,7 +579,7 @@ export default class Editor extends React.Component {
 
 
     render() {
-        const { data, title, tools, visible, dropList, moreList, showMore } = this.state;
+        const { data, title, tools, visible, dropList, moreList, showMore, chartsShow } = this.state;
         const contentCss = process.env.NODE_ENV === 'production' ? [`${window.origin}/static/ckeditor/contents.css`, `${window.origin}/static/ckeditor/external.css`] : ['http://localhost:5500/build/static/ckeditor/contents.css', 'http://localhost:5500/build/static/ckeditor/external.css'];
         const config = {
             extraPlugins: 'autocomplete,notification,textmatch,textwatcher,tableresizerowandcolumn,save-to-pdf,quicktable,templates,template,image2,uploadimage,uploadwidget,filebrowser',
@@ -673,10 +673,12 @@ export default class Editor extends React.Component {
                     }
                 </ul>
             </div>
-            <div id="charts">
-                <p><Icon type='close' style={{float: 'right', cursor: 'pointer'}} onClick={() => {this.setPNodeHtml()}}></Icon></p>
-                <Preview></Preview>
-            </div>
+            {
+                chartsShow &&  <div id="charts">
+                    <Preview></Preview>
+                </div>
+            }
+           
         </EditorTemplate>
     }
 }

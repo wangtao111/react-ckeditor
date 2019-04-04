@@ -24,28 +24,28 @@ const tables = [
         title: '归母净利润',
         source: '数据中心',
         detail: '归母净利润[Q1Q2]587,415,463,762.1',
-        tag: '<span name="temporary" style="color: blue">归母净利润[Q1Q2]587,415,463,762.1</span>'
+        tag: '<span class="temporary" style="color: blue">归母净利润[Q1Q2]587,415,463,762.1</span>'
     },
     {
         id: 8,
         title: '归母净利为正',
         source: '平台',
         detail: '归母净利为正[Q1Q2]',
-        tag: '<span name="temporary" style="color: blue">归母净利为正[Q1Q2]</span>'
+        tag: '<span class="temporary" style="color: blue">归母净利为正[Q1Q2]</span>'
     },
     {
         id: 9,
         title: '归母净利为负',
         source: 'windows',
         detail: '归母净利为负[Q1Q2]',
-        tag: '<span name="temporary" style="color: blue">归母净利为负[Q1Q2]</span>'
+        tag: '<span class="temporary" style="color: blue">归母净利为负[Q1Q2]</span>'
     },
     {
         id: 10,
         title: '归属于上市公司股东净利润',
         source: '数据中心',
         detail: '归属于上市公司股东净利润[Q1Q2]',
-        tag: '<span name="temporary" style="color: blue">归属于上市公司股东净利润[Q1Q2]</span>'
+        tag: '<span class="temporary" style="color: blue">归属于上市公司股东净利润[Q1Q2]</span>'
     },
     {
         id: 11,
@@ -53,7 +53,7 @@ const tables = [
         source: '数据中心',
         detail: '利润表',
         charts: true,
-        tag: '<span name="temporary" style="color: blue">利润表</span>'
+        tag: '<span class="temporary" style="color: blue">利润表</span>'
     },
 ]
 const MENTIONS = [
@@ -61,25 +61,25 @@ const MENTIONS = [
         id: 1,
         title: '中国移动(601314)',
         detail: '中国移动(601314)',
-        tag: '<span name="temporary" style="color: blue;">中国移动(601314)</span>'
+        tag: '<span class="temporary" style="color: blue;">中国移动(601314)</span>'
     },
     {
         id: 2,
         title: '中国平安(601318)',
         detail: `中国平安(601318)`,
-        tag: '<span name="temporary" style="color: blue;">中国平安(601318)</span>'
+        tag: '<span class="temporary" style="color: blue;">中国平安(601318)</span>'
     },
     {
         id: 3,
         title: '中国联通(601384)',
         detail: '中国联通(601384)',
-        tag: '<span name="temporary" style="color: blue;">中国联通(601384)</span>'
+        tag: '<span class="temporary" style="color: blue;">中国联通(601384)</span>'
     },
     {
         id: 4,
         title: '中国银行(681384)',
         detail: '中国银行(681384)',
-        tag: '<span name="temporary" style="color: blue;">中国银行(681384)</span>'
+        tag: '<span class="temporary" style="color: blue;">中国银行(681384)</span>'
     }
 ];
 module.exports.temp = temp;
