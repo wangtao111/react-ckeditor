@@ -20,67 +20,50 @@ const temp = [
 ];
 const tables = [
     {
-        id: 6,
+        id: 1,
         title: '归母净利润',
         source: '数据中心',
         detail: '归母净利润[Q1Q2]587,415,463,762.1',
         tag: '<span name="temporary" style="color: blue">归母净利润[Q1Q2]587,415,463,762.1</span>'
     },
     {
-        id: 8,
-        title: '归母净利为正',
-        source: '平台',
-        detail: '归母净利为正[Q1Q2]',
-        tag: '<span name="temporary" style="color: blue">归母净利为正[Q1Q2]</span>'
-    },
-    {
-        id: 9,
-        title: '归母净利为负',
-        source: 'windows',
-        detail: '归母净利为负[Q1Q2]',
-        tag: '<span name="temporary" style="color: blue">归母净利为负[Q1Q2]</span>'
-    },
-    {
-        id: 10,
-        title: '归属于上市公司股东净利润',
-        source: '数据中心',
-        detail: '归属于上市公司股东净利润[Q1Q2]',
-        tag: '<span name="temporary" style="color: blue">归属于上市公司股东净利润[Q1Q2]</span>'
-    },
-    {
-        id: 11,
+        id: 2,
         title: '利润表',
         source: '数据中心',
         detail: '利润表',
         charts: true,
         tag: '<span name="temporary" style="color: blue">利润表</span>'
     },
-]
-const MENTIONS = [
-    {
-        id: 1,
-        title: '中国移动(601314)',
-        detail: '中国移动(601314)',
-        tag: '<span name="temporary" style="color: blue;">中国移动(601314)</span>'
-    },
-    {
-        id: 2,
-        title: '中国平安(601318)',
-        detail: `中国平安(601318)`,
-        tag: '<span name="temporary" style="color: blue;">中国平安(601318)</span>'
-    },
     {
         id: 3,
-        title: '中国联通(601384)',
-        detail: '中国联通(601384)',
-        tag: '<span name="temporary" style="color: blue;">中国联通(601384)</span>'
+        title: '资产负债表',
+        source: '数据中心',
+        detail: '资产负债表',
+        charts: true,
+        tag: '<span name="temporary" style="color: blue">资产负债表</span>'
     },
     {
         id: 4,
-        title: '中国银行(681384)',
-        detail: '中国银行(681384)',
-        tag: '<span name="temporary" style="color: blue;">中国银行(681384)</span>'
-    }
+        title: '现金流量表',
+        source: '数据中心',
+        detail: '现金流量表',
+        charts: true,
+        tag: '<span name="temporary" style="color: blue">现金流量表</span>'
+    },
+]
+const MENTIONS = [
+    {
+        id: 2,
+        title: '中国平安(601318)',
+        detail: `中国,平安,z,zg,pa,zhongguo,pingan,601318`,
+        tag: '<span name="temporary" style="color: blue;">中国平安(601318).</span>'
+    },
+    {
+        id: 3,
+        title: '贵州茅台(600519)',
+        detail: `贵州,茅台,g,gz,mt,guizhou,maotai,600519`,
+        tag: '<span name="temporary" style="color: blue;">贵州茅台(600519).</span>'
+    },
 ];
 module.exports.temp = temp;
 module.exports.tables = tables;

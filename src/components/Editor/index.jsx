@@ -351,9 +351,20 @@ export default class Editor extends React.Component {
                 }
                 if (matchArr.length > 1) {
                     let data = MENTIONS.filter(function (item) {
-                        return item.title.indexOf(matchText) !== -1;
+                        const arr = item.detail.split(',');
+                        let flag = false;
+                        arr.forEach((val) => {
+                            if(matchText.indexOf(val) !== -1){
+                                flag = true;
+                            }
+                        })
+                        return flag;
                     });
-                    this.callbackData = data;
+                    if(!matchText){
+                        this.callbackData = [];    
+                    } else {
+                        this.callbackData = data;
+                    }
                     this.autocomplete.view.itemTemplate.source = '<li data-id="{id}"><div style="display: flex"><strong class="item-title" style="min-width: 100px">{title}</strong></div></li>';
                     return {
                         start: text.lastIndexOf('~') + 1,
