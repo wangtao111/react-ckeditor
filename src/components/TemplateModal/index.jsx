@@ -83,6 +83,7 @@ export default class TemplateModal extends React.Component {
     addNewTemplate = () => {
         this.props.drawerStore.setVisible(true);
         this.props.drawerStore.setComponentWidget(true);
+        this.props.addNewNote && this.props.addNewNote({ title: '空白文档', content: ''})
         
         this.props.closeCallback && this.props.closeCallback();
     }

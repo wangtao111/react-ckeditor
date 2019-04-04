@@ -5,7 +5,6 @@
  */
 
 import axios from 'axios'
-
 import api from '../config'
 
 //可以拿到 不同环境 需要在
@@ -16,6 +15,8 @@ import api from '../config'
 // 在这个框架里面可以配置 packjson 里面的 proxy 来确定代理
 // 正式开发的时候 去掉 baseURL
 // const baseURL = 'http://rap2api.taobao.org/app/mock/12201/'
+
+const baseURL = 'https://api-invest-dev.modeling.ai/';
 
 export default function ask(name, opt = {}) {
 
@@ -37,21 +38,29 @@ export default function ask(name, opt = {}) {
         url
     } = api[name]
 
+
+    if(typeof url === 'undefined') {
+        url = opt.url;
+    }
+
     let instance = axios.create({
-        // baseURL,
+        baseURL,
         // `withCredentials` 表示跨域请求时是否需要使用凭证
         withCredentials: false
     })
 
     // 响应中间处理层
     instance.interceptors.response.use(function (response) {
-        // 请求成功后 处理在此
-        return response.data
+        const responseData = response.data;
+
+        if(responseData && responseData.code === 200) {
+            // 请求成功后 处理在此
+            return Promise.resolve(responseData.data);
+        }else {
+            return Promise.reject(responseData.message);
+        }
     }, function (error) {
-
         // 请求失败 错误在此
-
-        
         return Promise.reject(error)
     });
 
