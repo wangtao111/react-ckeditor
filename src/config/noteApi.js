@@ -4,7 +4,7 @@
  * @Author: lfzhu
  * @LastEditors: lfzhu
  * @Date: 2019-04-03 09:55:14
- * @LastEditTime: 2019-04-04 10:05:26
+ * @LastEditTime: 2019-04-04 16:44:32
  */
 
 const noteApi = {
@@ -30,6 +30,16 @@ const noteApi = {
     // 获取最新修改的笔记列表
     apiRecentNoteList: {
         method: 'get'
+    },
+    // 发布笔记文档
+    apiPublishNote: {
+        method: 'post',
+        url: '/api/note/fianceNote/publishNote'
+    },
+    // 更新文档
+    apiUpdateNote: {
+        method: 'post',
+        url: '/api/note/fianceNote/updateNote'
     }
 }
 

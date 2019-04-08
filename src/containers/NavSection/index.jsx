@@ -393,11 +393,11 @@ export default class NavSection extends React.Component {
         const { noTitleNum } = this.props.noteStore;
 
         const noteData = {
-            title: title || `无标题笔记${ noTitleNum ? `(${noTitleNum})` : ''}`,
+            articleTitle: title || `无标题笔记${ noTitleNum ? `(${noTitleNum})` : ''}`,
             briefContent: '',
-            content: content || '',
-            date: moment().format('YYYY-MM-DD'),
-            size: '',
+            articleContent: content || '',
+            createTime: +new Date,
+            fileSize: '',
             imgUrl: ''
         }
 
@@ -582,6 +582,31 @@ export default class NavSection extends React.Component {
         this.props.menuStore.setSelectedKey(key);
     }
 
+    // 点击菜单
+    clickNavItem(menuItem, key) {
+        this.setSelectedKey(key);
+
+        switch(menuItem.name) {
+            case '最新文档':
+                this.props.noteStore.getRecentNoteList({
+                    userId: '2000',
+                    orderBy: 'modifyTime',
+                    orderRule: 'desc',
+                    pageSize: 10,
+                    pageIndex: 1
+                });
+                break;
+            case '回收站':
+                this.props.menuStore.getBinDirList({
+                    userId: '12131',
+                    status: -1,
+                    parentId: -1
+                });
+
+                break;
+        }
+    }
+
     // 渲染菜单树结构
     renderMenuTree(menuList, parentIndex = -1) {
         if(!menuList || !menuList.length) return;
@@ -593,7 +618,7 @@ export default class NavSection extends React.Component {
             const key = `${ index },${ parentIndex }`;
 
             if(!menuItem.expandable) {
-                return <li className="menu-tree-item" onClick={ () => this.setSelectedKey(key) }>
+                return <li className="menu-tree-item" onClick={ () => this.clickNavItem(menuItem, key) }>
                     <Link icon={ menuItem.icon } selected={ selectedKey === key ? 'selected': '' }>
                         { menuItem.name }
                     </Link>
@@ -605,7 +630,7 @@ export default class NavSection extends React.Component {
                         className={`tree-title${ selectedKey === key ? ' selected': ''}${ openedKeys.includes(key) ? ' opened' : '' }`} 
                         style={{ paddingLeft: 20 * (parentIndex.toString().split(',').length - 1) }}
                         onClick={ () => this.setSelectedKey(key) }>
-                        <div className="toggle-arrow"  onClick={ () => { this.setOpenedKeys(key)}}></div>
+                        <div className="toggle-arrow"  onClick={ (e) => { e.stopPropagation(); this.setOpenedKeys(key)}}></div>
 
                         <div className="name">
                             <i className="icon-folder"></i>

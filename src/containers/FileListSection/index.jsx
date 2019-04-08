@@ -388,12 +388,12 @@ export default class FileListSection extends React.Component {
                                 eventEmitter.emit('SKIM_ARTICLE', noteItem)
                             }}>
                                 <a className={`article-item ${index === activeIndex && 'article-item-hover'}`}>
-                                    <h3>{noteItem.title}</h3>
+                                    <h3>{noteItem.articleTitle }</h3>
                                     <div className='content'><p>{noteItem.briefContent}</p><img src={noteItem.imgUrl}
                                                                                                 alt=""/></div>
                                     <div className="article-footer">
-                                        <time>{noteItem.date}</time>
-                                        <span>{noteItem.size}</span>
+                                        <time>{typeof noteItem.createTime === 'number' ? moment(noteItem.createTime).format('YYYY-MM-DD'): noteItem.createTime}</time>
+                                        <span>{noteItem.fileSize}</span>
                                         <Button icon='delete'
                                                 size='small'
                                                 style={{marginLeft: '20px'}}

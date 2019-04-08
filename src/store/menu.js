@@ -7,6 +7,7 @@ export default class MenuStore {
     @observable goBackDisabled = true;     // 返回上一级默认按钮是可用的
     @observable fileFolderList = [];       // 文件夹列表
     @observable loading = false;           // 加载中...
+    @observable dustbinDir = [];           // 回车站文件夹列表
 
     @action.bound
     setSelectedKey(selectedKey) {
@@ -99,4 +100,39 @@ export default class MenuStore {
             message.error(err || '获取文件夹列表失败！');
         }
     })
+
+    // 把文件夹从回收站收回
+    restoreDirFromBin = flow(function* (directoryId) {
+        try {
+            yield ajax('apiRestoreDirFromBin', {
+                url: `/api/note/fianceNote/putMyDirOutCrash/${ directoryId }`
+            });
+        }catch(err) {
+            console.log('err: ', err);
+            message.error(err || '从回收站恢复失败！');
+        }
+    });
+
+    // 获取回收站中的文件夹
+    getBinDirList = flow(function*(params) {
+        try {
+            const data = yield ajax('apiFetchFileFolderList', { params } );
+            
+            this.dustbinDir = data;
+        }catch(err) {
+            console.log('err: ', err);
+            message.error(err || '获取回收站的文件夹失败！');
+        }
+    })
+
+    // 获取指定id的文件夹信息
+    getDirInfoById = flow(function* (params) {
+        try {
+            const data = yield ajax('apiGetDirInfoById', { params });
+        }catch(err) {
+            console.log('err: ', err);
+            message.error(err || '获取指定Id文件夹信息失败！');
+        }
+    })
+
 }

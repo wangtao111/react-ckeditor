@@ -4,7 +4,7 @@
  * @Author: lfzhu
  * @LastEditors: lfzhu
  * @Date: 2019-04-03 09:33:45
- * @LastEditTime: 2019-04-04 10:02:27
+ * @LastEditTime: 2019-04-04 16:35:34
  */
 
 
@@ -30,6 +30,14 @@ const menuApi = {
     },
     // 文件夹从回收站收回
     apiRestoreDirFromBin: {
+        method: 'get'
+    },
+    // 获取最新修改的笔记列表
+    apiGetRecentNoteList: {
+        method: 'get'
+    },
+    // 根据文件夹ID获取文件夹信息
+    apiGetDirInfoById: {
         method: 'get'
     }
 }

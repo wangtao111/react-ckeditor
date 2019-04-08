@@ -170,7 +170,7 @@ export default class Editor extends React.Component {
         // 浏览文章
         eventEmitter.on('SKIM_ARTICLE', (data) => {
             const valueKey = '金融';
-            let arr = data.content.split(valueKey);
+            let arr = data.articleContent.split(valueKey);
             let content = arr.join(`<span style="color:red;">${valueKey}</span>`);
             content += `<style>
                 span[name = 'select_box']:after{
@@ -192,7 +192,7 @@ export default class Editor extends React.Component {
                         background-repeat: repeat-x;
                     }
             </style>`;
-            this.setState({ data: content, title: data.title })
+            this.setState({ data: content, title: data.articleTitle })
             setTimeout(() => {
                 this.setEditorIframe();
             }, 100)
