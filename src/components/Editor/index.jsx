@@ -18,7 +18,7 @@ import * as jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
 import EditorTemplate from './styled';
 import { Icon } from 'antd';
-import { tables, MENTIONS } from '../../mockData/commandData'
+import { tables, MENTIONS, commonTables } from '../../mockData/commandData'
 let doing = false;
 
 @inject('editorStore')
@@ -270,34 +270,10 @@ export default class Editor extends React.Component {
             });
         this.autocomplete.getHtmlToInsert = function (item) {
             setTimeout(() => {
-                // if (!document.getElementById('editable-cmd-content')) return;
-                // const inputText = document.getElementById('editable-cmd-content').innerText;
-                // let signal = '.';
-                // let symbol = inputText.split(signal);
-                // if (symbol.length <= 1) {
-                //     signal = '~';
-                //     if (inputText.split('~').length <= 1) {
-                //         signal = '～';
-                //     }
-                // }
-                // symbol = inputText.split(signal);
-                // symbol[symbol.length - 1] = item.detail;
-                // if (that.pNode) {
-                //     let str = that.pNode.previousSibling.textContent;
-                //     if (str.charAt(str.length - 1) === '~') {
-                //         str = '~';
-                //     }
-                //     if (str.charAt(str.length - 1) === '～') {
-                //         str = '～';
-                //     }
-                //     eventEmitter.emit('COMMAND_POPUP', str + that.pNode.innerHTML);
-                // } else {
-                //     eventEmitter.emit('COMMAND_POPUP', signal + item.tag);
-                // }
                 if (that.range) {
                     that.range.endContainer.$.parentNode.className = '';
                 }
-                if(item.endTag){
+                if (item.endTag) {
                     that.pNode.innerHTML = item.tag;
                 }
                 if (item.charts) {
@@ -357,14 +333,14 @@ export default class Editor extends React.Component {
                         const arr = item.detail.split(',');
                         let flag = false;
                         arr.forEach((val) => {
-                            if(matchText.indexOf(val) !== -1){
+                            if (val === matchText) {
                                 flag = true;
                             }
                         })
-                        return flag;
+                        return item.title.indexOf(matchText) !== -1 || flag;
                     });
-                    if(!matchText){
-                        this.callbackData = [];    
+                    if (!matchText) {
+                        this.callbackData = [];
                     } else {
                         this.callbackData = data;
                     }
@@ -375,7 +351,7 @@ export default class Editor extends React.Component {
                     };
                 } else {
                     const arr = text.split('.'), lastText = arr[arr.length - 1];
-                    if (text.substr(text.length - 1, 1) === '。') {
+                    if (text.substr(text.length - 1, 1) === '。') { //中文句号提示
                         this.callbackData = [{
                             id: 1,
                             title: '.',
@@ -388,19 +364,25 @@ export default class Editor extends React.Component {
                             end: text.length
                         };
                     }
-                    let data = tables.filter(function (item) {
+
+                    let data = tables.filter(function (item) { //匹配模板
                         const arr = item.detail.split(',');
                         let flag = false;
                         arr.forEach((val) => {
-                            if(val.indexOf(lastText) !== -1){
+                            if (val === lastText) {
                                 flag = true;
                             }
                         })
-                        return lastText.indexOf(item.title) !== -1 || flag;
+                        return item.title.indexOf(lastText) !== -1 || flag;
                     });
                     this.callbackData = data;
-                    this.autocomplete.view.itemTemplate.source = '<li data-id="{id}"><div style="display: flex"><strong class="item-title" style="width: 150px">{title}</strong><strong style="margin-left: 10px">{source}</strong></div></li>';
-                    if (lastText.indexOf('归母晶') !== -1) {
+                    this.autocomplete.view.itemTemplate.source = '<li data-id="{id}" style="width:350px"><div style="display: flex"><strong class="item-title" style="width: 240px">{title}</strong><strong style="margin-left: 10px">{source}</strong></div></li>';
+
+                    if (!lastText) { //'.'后为空时提示三大表
+                        this.callbackData = commonTables;
+                    }
+
+                    if (lastText.indexOf('归母晶') !== -1) { //智能纠错
                         this.callbackData = tables;
                         this.range = range;
                         range.endContainer.$.parentNode.className = 'bowen';
@@ -695,7 +677,7 @@ export default class Editor extends React.Component {
                 </ul>
             </div>
             <div id="charts">
-                <p><Icon type='close' style={{float: 'right', cursor: 'pointer'}} onClick={() => {this.setPNodeHtml()}}></Icon></p>
+                <p><Icon type='close' style={{ float: 'right', cursor: 'pointer' }} onClick={() => { document.getElementById('charts').style.display = 'none' }}></Icon></p>
                 <Preview chartId={'intelliCharts'}></Preview>
             </div>
         </EditorTemplate>
