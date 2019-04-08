@@ -87,7 +87,7 @@ export default class CommandPopup extends React.Component {
                     {/* 智能命令 */}
                     <IntelliCommand closeCallback={this.onClose}/>
                     {/* 预览 */}
-                    <Preview closeCallback={this.onClose}/>
+                    <Preview closeCallback={this.onClose} chartId={'commandPopup'}/>
                 </React.Fragment>
             }
 

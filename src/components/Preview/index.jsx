@@ -249,7 +249,7 @@ export default class Preview extends React.Component {
                 break;
             }
             case '图表': {
-                const chartId = 'chartContainer';
+                const chartId = this.props.chartId;
 
                 this.props.editorStore.setChartData({
                     [chartId]: this.chartOption
@@ -264,7 +264,7 @@ export default class Preview extends React.Component {
     }
 
     componentDidMount() {
-        Highcharts.chart('chartContainer', this.chartOption);
+        Highcharts.chart(this.props.chartId, this.chartOption);
     }
 
     render() {
@@ -293,6 +293,7 @@ export default class Preview extends React.Component {
         ]
         
         const { selectedIndex, selectedRowKeys, selectedType, toBeInsertTableRows } = this.state;
+        const { chartId } = this.props;
         const rowSelection = {
             selectedRowKeys,
             onChange: this.handleRowSelectChange
@@ -326,7 +327,7 @@ export default class Preview extends React.Component {
 
             {/* 图表展示数据 */}
             <div className="chart-show-wrapper" style={ { display: selectedType === '图表' ? 'block' : 'none'} }>
-                <div id="chartContainer"></div>
+                <div id={chartId}></div>
             </div>
             <Button type="primary" className="drawer-btn-insert" onClick={ this.insertData } disabled={ !toBeInsertTableRows.length && selectedType === '表格' }>插入</Button>
         </PreviewWrapper>

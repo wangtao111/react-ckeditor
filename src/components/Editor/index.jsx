@@ -389,7 +389,14 @@ export default class Editor extends React.Component {
                         };
                     }
                     let data = tables.filter(function (item) {
-                        return lastText.indexOf(item.detail) !== -1;
+                        const arr = item.detail.split(',');
+                        let flag = false;
+                        arr.forEach((val) => {
+                            if(val.indexOf(lastText) !== -1){
+                                flag = true;
+                            }
+                        })
+                        return lastText.indexOf(item.title) !== -1 || flag;
                     });
                     this.callbackData = data;
                     this.autocomplete.view.itemTemplate.source = '<li data-id="{id}"><div style="display: flex"><strong class="item-title" style="width: 150px">{title}</strong><strong style="margin-left: 10px">{source}</strong></div></li>';
@@ -689,7 +696,7 @@ export default class Editor extends React.Component {
             </div>
             <div id="charts">
                 <p><Icon type='close' style={{float: 'right', cursor: 'pointer'}} onClick={() => {this.setPNodeHtml()}}></Icon></p>
-                <Preview></Preview>
+                <Preview chartId={'intelliCharts'}></Preview>
             </div>
         </EditorTemplate>
     }
