@@ -1,5 +1,7 @@
-import { observable, action } from "mobx";
+import { observable, action, flow } from "mobx";
 import FileData from '../mockData/files';
+import ajax from '../lib/ask';
+import { message } from 'antd';
 
 export default class NoteStore {
     @observable noteList = FileData;
@@ -31,4 +33,40 @@ export default class NoteStore {
     deleteNote(index) {
         this.noteList.splice(index, 1);
     }
+
+    // 发布文档
+    publishNote = flow(function*(params) {
+        try {
+            yield ajax('apiPublishNote')
+        }catch(err) {
+
+        }
+    })
+
+    // 更新文档
+    updateNote = flow(function*(params) {
+        try {
+            yield ajax('apiUpdateNote');
+        }catch(err) {
+
+        }
+    })
+
+    // 最新文档笔记列表
+    getRecentNoteList = flow(function* (params) {
+        try {
+            const { userId, ...restParams } = params;
+
+            const data = yield ajax('apiGetRecentNoteList', { 
+                params: restParams,
+                url: `/api/note/fianceNote/getNewNotes/${ userId }`
+            });
+
+            this.noteList = data.list;
+        }catch(err) {
+            console.log('err: ', err);
+            message.error(err || '最新文档笔记列表！');
+        }
+    })
+    
 }
