@@ -33,8 +33,8 @@ export default class Editor extends React.Component {
             data: '',
             title: '',
             dropList: [
-                { name: '中国平安Q1Q2归母公司净利润58,1545,4545元' },
-                { name: '中国平安Q1Q2半年归母公司净利润580.95亿元' },
+                { name: '中国平安归母公司净利润58,1545,4545元' },
+                { name: '中国平安半年归母公司净利润580.95亿元' },
                 { name: '归母净利润580.95亿元' }
             ],
             tools: [
@@ -297,6 +297,9 @@ export default class Editor extends React.Component {
                 if (that.range) {
                     that.range.endContainer.$.parentNode.className = '';
                 }
+                if(item.endTag){
+                    that.pNode.innerHTML = item.tag;
+                }
                 if (item.charts) {
                     const menu = document.getElementById('charts');
                     const scrollX = document.documentElement.scrollLeft || document.body.scrollLeft;
@@ -309,9 +312,9 @@ export default class Editor extends React.Component {
                     if (x + menu.offsetWidth - scrollX >= document.body.offsetWidth) {
                         x -= menu.offsetWidth
                     }
-                    if (y + menu.offsetHeight - scrollY >= document.body.offsetHeight) {
-                        y -= menu.offsetHeight
-                    }
+                    // if (y + menu.offsetHeight - scrollY >= document.body.offsetHeight) {
+                    //     y -= menu.offsetHeight
+                    // }
                     menu.style.left = x + 'px';
                     menu.style.top = y + 20 + 'px';
                 }
@@ -386,7 +389,7 @@ export default class Editor extends React.Component {
                         };
                     }
                     let data = tables.filter(function (item) {
-                        return item.title.indexOf(lastText) !== -1;
+                        return lastText.indexOf(item.detail) !== -1;
                     });
                     this.callbackData = data;
                     this.autocomplete.view.itemTemplate.source = '<li data-id="{id}"><div style="display: flex"><strong class="item-title" style="width: 150px">{title}</strong><strong style="margin-left: 10px">{source}</strong></div></li>';

@@ -3,7 +3,6 @@ import styled from "styled-components";
 const EditorTemplate = styled.div`
     #charts{
         max-width: 400px;
-        max-height: 200px;
         background: #fff;
         padding: 10px;
         position: absolute;
