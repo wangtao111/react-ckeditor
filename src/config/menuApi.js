@@ -4,7 +4,7 @@
  * @Author: lfzhu
  * @LastEditors: lfzhu
  * @Date: 2019-04-03 09:33:45
- * @LastEditTime: 2019-04-04 16:35:34
+ * @LastEditTime: 2019-04-09 11:40:30
  */
 
 
@@ -38,6 +38,10 @@ const menuApi = {
     },
     // 根据文件夹ID获取文件夹信息
     apiGetDirInfoById: {
+        method: 'get'
+    },
+    // 获取用户文件夹下子文件夹和笔记列表
+    apiGetSubDirAndNotes: {
         method: 'get'
     }
 }

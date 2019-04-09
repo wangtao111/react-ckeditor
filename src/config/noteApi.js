@@ -4,7 +4,7 @@
  * @Author: lfzhu
  * @LastEditors: lfzhu
  * @Date: 2019-04-03 09:55:14
- * @LastEditTime: 2019-04-04 16:44:32
+ * @LastEditTime: 2019-04-09 14:30:03
  */
 
 const noteApi = {
@@ -40,6 +40,11 @@ const noteApi = {
     apiUpdateNote: {
         method: 'post',
         url: '/api/note/fianceNote/updateNote'
+    },
+    // 按关键字搜索笔记
+    apiGetNotesByKeyword: {
+        method: 'get',
+        url: '/api/note/fianceNote/getNotesBySearch'
     }
 }
 
