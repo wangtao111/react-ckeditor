@@ -115,12 +115,10 @@ export default class Editor extends React.Component {
             // 调用插入表格的widget
             const editor = this.editorRef.current.editor;
             const tableTime = new Date().getTime();
+            insertTable(`${tableTime}`, editor, this.pNode.innerHTML + "");
             this.setPNodeHtml();
-            insertTable(`${tableTime}`, editor);
-
             const widgetInstances = editor.widgets.instances;
             editor.execCommand(`inserttable-widget${tableTime}`);
-
             if (widgetInstances) {
                 for (let key in widgetInstances) {
                     if (widgetInstances.hasOwnProperty(key)) {
@@ -157,13 +155,9 @@ export default class Editor extends React.Component {
         // 新建文档
         eventEmitter.on('NEW_PAGE', (data) => {
             this.setState({ title: '', data: '' });
-            // if (!type) {
-            //     return
-            // }
             const { name, template } = data;
             setTimeout(() => {
                 this.setTemplate(template);
-
                 this.setState({ title: name });
             }, 100)
         });
@@ -460,6 +454,11 @@ export default class Editor extends React.Component {
                 el.style.top = y + offset.y - scrollY + 20 + 'px';
                 document.getElementById('command_tag_pane').style.display = 'block';
                 this.tag = e.target;
+            }
+            if(tag === 'editCommand'){
+                // let content = document.createElement("span");
+                // content.innerHTML = `<span name='temporary'>${e.target.lastChild.innerHTML}</span>`
+                // e.target.parentNode.parentNode.parentNode.replaceChild(content, e.target.parentNode.parentNode)
             }
         }
     }

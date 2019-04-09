@@ -1,5 +1,5 @@
 const tableIdData = {};     // 表格Id与数据的映射
-export default function(widgetNum, editor) {
+export default function(widgetNum, editor, command) {
     let conf = editor.config,
         quickBorder = conf.qtBorder || '1',
         quickStyle = conf.qtStyle || null,
@@ -46,9 +46,13 @@ export default function(widgetNum, editor) {
         }, 0);
         editor.fire('removeFormatCleanup', table);
     }
-
     editor.widgets.add(`inserttable-widget${ widgetNum }`, {
-        template: `<div id=tableWrapper${ widgetNum } class="container"></div>`,
+        template: `<div style="position: relative">
+        <div id="tableWrapper${widgetNum}" class="container"></div>` +
+        // `<div style="position: absolute; right: 0;top: 0; height:24px;line-height: 24px;font-size: 12px;border-radius:2px;background: #3b8dee; color: #fff;cursor: pointer; padding: 2px 10px;" name='editCommand'>
+        //     编辑命令<p name='command' style='width:0;height:0;overflow:hidden'>${command}</p>
+        // </div>` +
+        `</div>`,
         requireContent: 'div(container)',
         upcast: function(element) {
             return element.name === 'div' && element.hasClass('container')

@@ -11,7 +11,7 @@ const tables = [
         id: 2,
         title: '利润表',
         source: '数据中心',
-        detail: 'l,li,lr,lrb',
+        detail: 'l,li,lr,lrb,lirun',
         charts: true,
         tag: '<span name="temporary">利润表</span>'
     },
@@ -19,7 +19,7 @@ const tables = [
         id: 21,
         title: '利润表[营业总收]',
         source: '数据中心',
-        detail: 'l,li,lr,lrb',
+        detail: 'l,li,lr,lrb,lirun',
         charts: true,
         tag: '<span name="temporary">利润表[营业总收]</span>'
     },
@@ -27,7 +27,7 @@ const tables = [
         id: 22,
         title: '利润表[营业总收，营业收入][2018Q1:Q2]',
         source: '数据中心',
-        detail: 'l,li,lr,lrb',
+        detail: 'l,li,lr,lrb,lirun',
         charts: true,
         tag: '<span name="temporary">利润表[营业总收，营业收入][2018Q1:Q2]</span>'
     },
@@ -35,7 +35,7 @@ const tables = [
         id: 23,
         title: '利润表[营业总收，营业收入，营业利润][2018Q1:Q2]',
         source: '数据中心',
-        detail: 'l,li,lr,lrb',
+        detail: 'l,li,lr,lrb,lirun',
         charts: true,
         tag: '<span name="temporary">利润表[营业总收，营业收入，营业利润][2018Q1:Q2]</span>'
     },
@@ -43,23 +43,23 @@ const tables = [
         id: 24,
         title: '利润表[营业总收，营业收入，营业利润，营业总成本][2018Q1:Q2]',
         source: '数据中心',
-        detail: '利润表',
+        detail: 'l,li,lr,lrb,lirun',
         charts: true,
         tag: '<span name="temporary" style="color: blue">利润表</span>'
     },
     {
         id: 25,
-        title: '利润表[营业总收，营业收入，营业利润，营业总成本][2018Q1:Q2]',
+        title: '利润表[营业总收，营业收入，营业利润，营业总成本][2017Q1:Q2]',
         source: '数据中心',
-        detail: '利润表',
+        detail: 'l,li,lr,lrb,lirun',
         charts: true,
-        tag: '<span name="temporary" style="color: blue">利润表</span>'
+        tag: '<span name="temporary" style="color: blue">利润表[营业总收，营业收入，营业利润，营业总成本][2017Q1:Q2]</span>'
     },
     {
         id: 3,
         title: '资产负债表',
         source: '数据中心',
-        detail: '资产负债表',
+        detail: 'z,zc,zi,zichan',
         charts: true,
         tag: '<span name="temporary" style="color: blue">资产负债表</span>'
     },
@@ -67,7 +67,7 @@ const tables = [
         id: 4,
         title: '现金流量表',
         source: '数据中心',
-        detail: '现金流量表',
+        detail: 'x,xj,xian,xianjin',
         charts: true,
         tag: '<span name="temporary" style="color: blue">现金流量表</span>'
     },
@@ -75,7 +75,7 @@ const tables = [
         id: 5,
         title: '归母净利润',
         source: '数据中心',
-        detail: 'g,gm,gmj',
+        detail: 'g,gm,gmj,gui,guimu',
         endTag: true,
         tag: '<span style="border: 1px dashed #999;color: blue; cursor: pointer" contenteditable="false" name="select_box">归母净利润580.95亿元</span><span>&nbsp;</span>'
     },
@@ -85,7 +85,7 @@ const commonTables = [
         id: 2,
         title: '利润表',
         source: '数据中心',
-        detail: 'l,li,lr,lrb',
+        detail: 'l,li,lr,lrb,li,lirun',
         charts: true,
         tag: '<span name="temporary">利润表</span>'
     },
@@ -93,7 +93,7 @@ const commonTables = [
         id: 3,
         title: '资产负债表',
         source: '数据中心',
-        detail: '资产负债表',
+        detail: 'z,zc,zi,zichan',
         charts: true,
         tag: '<span name="temporary" style="color: blue">资产负债表</span>'
     },
@@ -101,7 +101,7 @@ const commonTables = [
         id: 4,
         title: '现金流量表',
         source: '数据中心',
-        detail: '现金流量表',
+        detail: 'x,xj,xian,xianjin',
         charts: true,
         tag: '<span name="temporary" style="color: blue">现金流量表</span>'
     }
@@ -110,7 +110,7 @@ const MENTIONS = [
     {
         id: 2,
         title: '中国平安(601318)',
-        detail: `z,zg,pa,zhong,zhongguo,pingan,601318`,
+        detail: `z,zh,zg,pa,zhong,zhongguo,pingan,601318`,
         tag: '<span name="temporary" style="color: blue;">中国平安(601318).</span>'
     },
     {
