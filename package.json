@@ -4,6 +4,7 @@
   "private": false,
   "main": "index.js",
   "dependencies": {
+    "abc-chart-editor": "^0.9.44",
     "abc-standard-chart": "^1.0.3",
     "antd": "3.12.3",
     "autoprefixer": "7.1.6",

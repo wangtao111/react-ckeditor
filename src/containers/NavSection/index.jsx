@@ -464,7 +464,6 @@ export default class NavSection extends React.Component {
         });
         
         this.setEditable(key, false);
-        debugger;
         this.fetchFileFolderList(key.split(',').slice(1).toString());
     }
 
@@ -779,6 +778,7 @@ export default class NavSection extends React.Component {
                 onCancel={ () => this.setModalVisible('templateModalVisible', false)}>
                 <TemplateModal closeCallback={ () => {this.setModalVisible('templateModalVisible', false)} } addNewNote={ this.addNewNote }></TemplateModal>
             </Modal>
+
         </NavSectionWrapper>
     }
 }

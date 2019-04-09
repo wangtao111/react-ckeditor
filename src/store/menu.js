@@ -81,8 +81,9 @@ export default class MenuStore {
             this.loading = false;
             console.log('data: ', data);
             if(data) {
-
-                this.fileFolderList = data.map(item => {
+                const { directoryModelList } = data;
+                
+                this.fileFolderList = directoryModelList.map(item => {
                     const { directoryName, ...rest } = item;
 
                     return {

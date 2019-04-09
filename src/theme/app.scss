@@ -194,3 +194,186 @@ a {
 	height: 0;
 	visibility: hidden;
 }
+
+.ant-modal-body {
+    max-height: 800px;
+    overflow: auto;
+}
+
+.layout-wrapper {
+    .ant-modal-body {
+        display: flex;
+        flex-direction: column;
+        padding-top: 0;
+        padding-bottom: 0;
+
+        h2 {
+            font-size: 14px;
+            color: #333;
+            margin: 15px 0;
+        }
+
+        .layout-box {
+            padding-bottom: 30px;
+
+            .layout-list {
+                display: flex;
+                justify-content: space-between;
+                
+                .layout-item {
+                    position: relative;
+                    width: 31%;
+                    border: 1px solid #E2E2E2;
+                    padding: 13px;
+                    transition: all 0.3s;
+                    cursor: pointer;
+    
+                    .layout-block {
+                        background-color: #a8adb7;
+                    }
+
+                    &.active,
+                    &:hover {
+                        border-color: #407CD5;
+                        background-color: rgba(64, 124, 213, 0.1);
+                    }
+                }
+    
+                .layout-1 {
+                    .top {
+                        height: 26px;
+                        margin-bottom: 8px;
+                    }
+    
+                    .bottom {
+                        display: flex;
+                        justify-content: space-between;
+                        height: 60px;
+                        .left {
+                            width: 63%;
+                            height: inherit;
+                        }
+    
+                        .right {
+                            width: 30%;
+                            height: inherit;
+                        }
+                    }
+                }
+    
+                .layout-2 {
+                    display: flex;
+                    flex-direction: column;
+                    .top,
+                    .middle {
+                        height: 22px;
+                    }
+    
+                    .top {
+                        margin-bottom: 4px;
+                    }
+    
+                    .middle {
+                        margin-bottom: 8px;
+                    }
+    
+                    .bottom {
+                        display: flex;
+                        flex: auto;
+                        justify-content: space-between;
+    
+                        .left,
+                        .center,
+                        .right {
+                            width: 30%;
+                        }
+                    }
+                }
+    
+                .layout-3 {
+                    display: flex;
+                    flex-direction: column;
+                    .top {
+                        height: 26px;
+                        margin-bottom: 8px;
+                    }
+    
+                    .bottom {
+                        display: flex;
+                        flex: auto;
+                        justify-content: space-between;
+    
+                        .left,
+                        .right {
+                            width: 24%;
+                        }
+    
+                        .center {
+                            width: 42%;
+                        }
+                    }
+                }
+
+                .layout-name {
+                    position: absolute;
+                    bottom: -30px;
+                    left: 0;
+                    color: #333;
+                }
+            }
+        }
+
+        .theme-color-box {
+            .color-list {
+                overflow: hidden;
+
+                & > a {
+                    float: left;
+                    width: 40px;
+                    height: 40px;
+                    margin-right: 15px;
+                }
+            }
+        }
+
+        .other-color-box {
+            height: 40px;
+            margin: 20px 0;
+            color: #333;
+
+            .multi-colors {
+                display: inline-block;
+                position: relative;
+                width: 40px;
+                height: 40px;
+                vertical-align: -12px;
+                margin-right: 15px;
+                overflow: hidden;
+                cursor: pointer;
+
+                > span {
+                    position: absolute;
+                    display: inline-block;
+                    width: 23px;
+                    height: 23px;
+                    border-radius: 50%;
+
+                    &:nth-child(1) {
+                        left: 0;
+                        bottom: 0;
+                    }
+
+                    &:nth-child(2) {
+                        right: 0;
+                        bottom: 0;
+                    }
+
+                    &:nth-child(3) {
+                        left: 9px;
+                        bottom: 13px;
+                    }
+                }
+            }
+        }
+    }
+}

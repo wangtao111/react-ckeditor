@@ -344,6 +344,12 @@ body[contenteditable="false"] .cke_widget_wrapper .cke_widget_editable.cke_widge
 .chartContainer {
 	position: relative;
 }
+
+.chartContainer > .setting {
+	width: 20px;
+	border: 1px solid red;
+	
+}
 /* 图表的样式 */
 .chartContainer > .resize {
 	position: absolute;
