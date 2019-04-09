@@ -5,9 +5,11 @@ import App from './App'
 import { Provider } from 'mobx-react'
 import { BrowserRouter } from 'react-router-dom'
 import Store from './store'
+import zhCN from 'antd/lib/locale-provider/zh_CN';
 // import registerServiceWorker from './registerServiceWorker'
 import $ from 'jquery';
 import api from './api/api';
+import { LocaleProvider } from 'antd';
 window.jQuery = $;
 window.$ = $;
 window.confirm = () => {};
@@ -23,7 +25,9 @@ React.Component.prototype.$api = api;
 const Wrap = (
     <Provider {...new Store()}>
       <BrowserRouter basename="/">
-        <App />
+        <LocaleProvider locale={zhCN}>
+          <App />
+        </LocaleProvider>
       </BrowserRouter>
     </Provider>
   )

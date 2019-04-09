@@ -17,8 +17,11 @@ import { saveAs } from 'file-saver';
 import * as jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
 import EditorTemplate from './styled';
-import { Icon } from 'antd';
-import { tables, MENTIONS, commonTables } from '../../mockData/commandData'
+import { Icon, Modal } from 'antd';
+import { tables, MENTIONS, commonTables} from '../../mockData/commandData';
+import ChartEditor from 'abc-chart-editor';
+import chartData from '../../mockData/chart';
+import 'abc-chart-editor/build/lib/css/main.css';
 let doing = false;
 
 @inject('editorStore')
@@ -61,6 +64,10 @@ export default class Editor extends React.Component {
             showMore: false,
             visible: false,
             command: false,
+            chartSettingVisible: false,     // 图表配置
+            layoutVisible: false,           // 布局可见
+            indexConf: JSON.parse(JSON.stringify(chartData.edbIndex_format)),
+            dataConf: chartData.edbChartDatas
         }
 
         this.editorRef = React.createRef();
@@ -94,7 +101,11 @@ export default class Editor extends React.Component {
             const editor = this.editorRef.current.editor;
             const chartTime = new Date().getTime();
             this.setPNodeHtml();
-            insertChart(`${chartTime}`, editor);
+            insertChart(`${chartTime}`, editor, () => {
+                this.setState({
+                    chartSettingVisible: true
+                })
+            });
             const chartOption = this.props.editorStore.chartDataObj[chartId];
             const widgetInstances = editor.widgets.instances;
 
@@ -226,10 +237,26 @@ export default class Editor extends React.Component {
         editor.insertHtml(Template.generateTemplateHtml(template));
     }
 
+    hideMoreOptions() {
+        document.getElementById('checkedInput').checked = false; 
+    }
+
     // 增加更多工具组
     addMoreToolGroup = () => {
         console.log('in');
         const ckeTop = window.CKEDITOR.document.getById('cke_1_toolbox');
+
+        new window.CKEDITOR.dom.window( window ).$.componentClick = () => {
+            this.hideMoreOptions();
+            this.props.drawerStore.setComponentWidget(true);
+        }
+
+        new window.CKEDITOR.dom.window( window).$.layoutClick = () => {
+            this.hideMoreOptions();
+            this.setState({
+                layoutVisible: true
+            });
+        }
 
         const toolGroup = window.CKEDITOR.dom.element.createFromHtml(`<span class="more-box" id="moreBox" title="更多...">
             <label for="checkedInput">
@@ -240,8 +267,8 @@ export default class Editor extends React.Component {
                 <a class="button" title="附件" onclick="document.getElementById('checkedInput').checked=false;"><i class="button-attachment"></i></a>
                 <a class="button" title="目录" onclick="document.getElementById('checkedInput').checked=false;"><i class="button-directory"></i></a>
                 <a class="button" title="笔记背景" onclick="document.getElementById('checkedInput').checked=false;"><i class="button-note-bg"></i></a>
-                <a class="button" title="布局" onclick="document.getElementById('checkedInput').checked=false;"><i class="button-layout"></i></a>
-                <a class="button" title="组件" onclick="document.getElementById('checkedInput').checked=false;"><i class="button-puzzle"></i></a>
+                <a class="button" title="布局" onclick="layoutClick()"><i class="button-layout"></i></a>
+                <a class="button" title="组件" onclick="componentClick()"><i class="button-puzzle"></i></a>
             </div>
         </span>`);
 
@@ -581,7 +608,7 @@ export default class Editor extends React.Component {
 
 
     render() {
-        const { data, title, tools, visible, dropList, moreList, showMore } = this.state;
+        const { data, title, tools, visible, dropList, moreList, showMore, chartSettingVisible, layoutVisible } = this.state;
         const contentCss = process.env.NODE_ENV === 'production' ? [`${window.origin}/static/ckeditor/contents.css`, `${window.origin}/static/ckeditor/external.css`] : ['http://localhost:5500/build/static/ckeditor/contents.css', 'http://localhost:5500/build/static/ckeditor/external.css'];
         const config = {
             extraPlugins: 'autocomplete,notification,textmatch,textwatcher,tableresizerowandcolumn,save-to-pdf,quicktable,templates,template,image2,uploadimage,uploadwidget,filebrowser',
@@ -628,6 +655,59 @@ export default class Editor extends React.Component {
         const EDITOR_DEV_URL = 'http://localhost:5500/build/static/ckeditor/ckeditor.js';
         const EDITOR_PRO_URL = `${window.origin}/static/ckeditor/ckeditor.js`;
         CKEditor.editorUrl = process.env.NODE_ENV === 'development' ? EDITOR_DEV_URL : EDITOR_PRO_URL;
+
+        const onSelectDataRange = (dataRange, type)=>{ // dataRange,时间范围， type： 1-距离时间，如3M，2-时间段，【moment， moment】
+            // do anything u want 
+            alert(dataRange); 
+            // 发请求到服务器端请求数据，然后刷新图表数据
+            // this.charteditor.updateDataConf(xxx);
+          };
+        const simple1 = {
+            id: 'chart-editor',
+            dType: 'datetime',
+            viewMode: 'chart', 
+            chartConf: null,
+            indexConf: this.state.indexConf, 
+            dataConf: this.state.dataConf,
+            afterSetExtremes: (e, max, min)=>{
+                console.log('max: '+ max + ',min: '+ min);
+              }, 
+            // custDatePicker: (<RangePicker style={{ display: 'inline-block' }}
+            //     onChange={(timeRange) => onSelectDataRange(timeRange, 2)} />),
+            onSelectDataRange: onSelectDataRange,
+            //地图配置
+            mapType: '',
+            highData: '',
+            bubble: '', 
+            //自定义配置
+            customConfig: null,
+            showTopToolbar: true,
+            showLabel: true,
+            showButtonGroup: true,
+            showChartToolbar: true,
+            showType: true,
+            showTimeDuring: true,
+            showCalendar: true,
+            timeOptions: ['1W', '1M', '6M', '1Y', '3Y'],
+            defaultTimeRange: null,
+            showDataChart: true,
+            //图表区域显示隐藏
+            showChartTitle: true,
+            showAbbreviatedAxis: true,
+            showIndexEditor: true,
+            custIndexColumns: null,
+            chartWidth: null,
+            chartConf_pre: null,
+            chartConf_next: null,
+            //高级功能
+            timePlay: false,
+            timeInterval: 1000,
+            showIndexPanel: false,
+            showEditorPanel: false
+        }
+
+        const colors = ['#DF3F2B', '#D5952C', '#8B572A', '#417505', '#7C38B8', '#4A90E2', '#9B9B9B', '#000000', '#1C5773', '#CAA260'];
+
         return <EditorTemplate>
             <div style={{ display: 'flex', marginBottom: '2px' }}>
                 <input className='title_input' type='textarea' value={title} onChange={this.titleChange} />
@@ -679,6 +759,71 @@ export default class Editor extends React.Component {
                 <p><Icon type='close' style={{ float: 'right', cursor: 'pointer' }} onClick={() => { document.getElementById('charts').style.display = 'none' }}></Icon></p>
                 <Preview chartId={'intelliCharts'}></Preview>
             </div>
+
+            <Modal width={ 800 } visible={ chartSettingVisible } title="设置图表" onCancel={ () => this.setState({ chartSettingVisible: false })}>
+                {/* <ChartPanel indexConf={indexConf} dataConf={dataConf} ref={(ce)=>{this.charteditor = ce}} /> */}
+                <ChartEditor id='home-demo' {...simple1}/>
+            </Modal>
+
+            <Modal width={ 600 } title="布局" wrapClassName="layout-wrapper" visible={ layoutVisible } onCancel={ () => this.setState({ layoutVisible: false })}>
+                <div className="layout-box">
+                    <h2>布局</h2>
+                    <div className="layout-list">
+                        <div className="layout-item layout-1 active">
+                            <div className="top layout-block"></div>
+                            <div className="bottom">
+                                <div className="left layout-block"></div>
+                                <div className="right layout-block"></div>
+                            </div>
+
+                            <span className="layout-name">布局1</span>
+                        </div>
+
+                        <div className="layout-item layout-2">
+                            <div className="top layout-block"></div>
+                            <div className="middle layout-block"></div>
+                            <div className="bottom">
+                                <div className="left layout-block"></div>
+                                <div className="center layout-block"></div>
+                                <div className="right layout-block"></div>
+                            </div>
+
+                            <span className="layout-name">布局2</span>
+                        </div>
+
+                        <div className="layout-item layout-3">
+                            <div className="top layout-block"></div>
+                            <div className="bottom">
+                                <div className="left layout-block"></div>
+                                <div className="center layout-block"></div>
+                                <div className="right layout-block"></div>
+                            </div>
+
+                            <span className="layout-name">布局3</span>
+                        </div>
+                    </div>
+                </div>
+                <div className="theme-color-box">
+                    <h2>主题色</h2>
+
+                    <div className="color-list">
+                        {
+                            colors.map((color, index) => {
+                                return <a style={{ backgroundColor: color}} key={ index }></a>
+                            })
+                        }
+                    </div>
+                    
+                </div>
+                <div className="other-color-box">
+                    <div className="multi-colors">
+                        <span style={{ backgroundColor: '#43BCFF'}}></span>
+                        <span style={{ backgroundColor: '#ED3D7D'}}></span>
+                        <span style={{ backgroundColor: '#4360A0'}}></span>
+                    </div>
+                    其它颜色
+                </div>
+            </Modal>
         </EditorTemplate>
     }
 }

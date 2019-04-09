@@ -1,10 +1,9 @@
-
-
-export default function(widgetNum, editor) {
+export default function(widgetNum, editor, setClickCallback) {
     // 加载highchart.js，并在回调中处理画图表
     // this.last
+    editor.document.getWindow().$.clickCallback = setClickCallback;
     editor.widgets.add(`insertchart-widget${ widgetNum }`, {
-        template: `<div class="chartContainer"><div id="chartContainer${ widgetNum }"></div><span class="resize" id="resizer"><span></div>`,
+        template: `<div class="chartContainer"><i class="setting" title="设置" onclick="clickCallback()"></i><div id="chartContainer${ widgetNum }"></div><span class="resize" id="resizer"><span></div>`,
         requireContent: 'div(chartContainer)',
         upcast: function(element) {
             return element.name === 'div' && element.hasClass('chartContainer')
@@ -16,7 +15,7 @@ export default function(widgetNum, editor) {
             if(chartOption) {
                 let chart = null;
                 setTimeout(() => {
-                    window.CKEDITOR.scriptLoader.load('https://code.highcharts.com/highcharts.js', () => {
+                    window.CKEDITOR.scriptLoader.load('https://cdn.bootcss.com/highcharts/7.1.0/highcharts.js', () => {
                         chart = window.Highcharts.chart(this.editor.document.getById(`chartContainer${ widgetNum }`).$, chartOption);
                         editor.focus();
                         const range = editor.getSelection().getRanges()[0];

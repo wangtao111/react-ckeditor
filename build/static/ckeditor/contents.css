@@ -344,6 +344,20 @@ body[contenteditable="false"] .cke_widget_wrapper .cke_widget_editable.cke_widge
 .chartContainer {
 	position: relative;
 }
+
+.chartContainer > .setting {
+    display: none;
+    position: absolute;
+    right: 0;
+    top: 0;
+	width: 20px;
+    height: 20px;
+    border: 1px solid #ccc;
+    background-image: url('./images/icon_widget_setting.png');
+    background-size: 20px;
+    z-index: 1;
+    cursor: pointer;
+}
 /* 图表的样式 */
 .chartContainer > .resize {
 	position: absolute;
@@ -356,9 +370,11 @@ body[contenteditable="false"] .cke_widget_wrapper .cke_widget_editable.cke_widge
     border-style: dashed solid solid dashed;
 }
 
-.cke_widget_wrapper:hover .resize {
+.cke_widget_wrapper:hover .resize,
+.cke_widget_wrapper:hover .setting {
 	display: block;
 }
+
 .text-hover {
 	border: 1px dashed transparent;
 }
