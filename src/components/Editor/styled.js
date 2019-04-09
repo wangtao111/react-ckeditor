@@ -8,6 +8,7 @@ const EditorTemplate = styled.div`
         position: absolute;
         overflow: auto;
         display: none;
+        z-index: 10000;
     }
     .title_input{
         flex: 1;

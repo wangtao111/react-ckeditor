@@ -453,8 +453,12 @@ export default class Editor extends React.Component {
         }, false);
         document.onclick = function (e) {
             const tagMenu = document.getElementById('command_tag_pane'), commandMenu = document.getElementById('command_tag_list');
+            const charts = document.getElementById('charts');
             if (tagMenu) {
                 tagMenu.style.display = 'none';
+            }
+            if (charts) {
+                charts.style.display = 'none';
             }
             if (commandMenu) {
                 commandMenu.style.display = 'none';
@@ -463,8 +467,12 @@ export default class Editor extends React.Component {
         dom.onclick = (e) => {
             const tag = e.target.getAttribute('name');
             const tagMenu = document.getElementById('command_tag_pane'), commandMenu = document.getElementById('command_tag_list');
+            const charts = document.getElementById('charts');
             if (tagMenu) {
                 tagMenu.style.display = 'none';
+            }
+            if (charts) {
+                charts.style.display = 'none';
             }
             if (commandMenu) {
                 commandMenu.style.display = 'none';
