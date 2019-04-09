@@ -8,7 +8,7 @@ export default class NoteStore {
 
     @observable noTitleNum = 0;     // 无标题笔记个数
     @observable activeIndex = 0;       //  当前激活的笔记下标
-
+    @observable directoryList = [];     // 文件夹列表
 
     // 设置激活笔记下标
     @action.bound
@@ -69,4 +69,49 @@ export default class NoteStore {
         }
     })
     
+    // 获取回收站中的文件夹
+    getBinDirList = flow(function*(params) {
+        try {
+            const data = yield ajax('apiFetchFileFolderList', { params } );
+            
+          
+            this.directoryList = data;
+        }catch(err) {
+            console.log('err: ', err);
+            message.error(err || '获取回收站的文件夹失败！');
+        }
+    })
+
+    // 获取子文件夹和笔记列表
+    getSubDirAndNotes = flow(function* (params) {
+        try {
+            const { userId, dirId } = params;
+
+            const data = yield ajax('apiGetSubDirAndNotes', {
+                url: `/api/note/fianceNote/getNotesOfDir/${ userId }/${ dirId }`
+            });
+
+            if(data) {
+                const { financeNoteModelList, directoryModelList} = data;
+
+                this.directoryList = directoryModelList.filter(item => item.status !== -1);
+                this.noteList = financeNoteModelList;
+            }
+        }catch(err) {
+            console.log('err: ', err);
+            message.error(err || '获取子文件夹和笔记列表失败！');
+        }
+    })
+
+    // 全文搜索
+    getNotesBySearchKey = flow(function* (params) {
+        try {
+            const data = yield ajax('apiGetNotesByKeyword', {
+                params
+            })
+        }catch(err) {
+            console.log('err: ', err);
+            message.error(err || '全文搜索失败！');
+        }
+    })
 }

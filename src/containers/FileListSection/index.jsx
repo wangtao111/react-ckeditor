@@ -10,7 +10,8 @@ const FileListSectionWrapper = styled.div`
     position: relative;
     flex-shrink: 0;
     height: 100vh;
-
+    max-height: 100vh;
+    
     .file-list-container {
         width: 360px;
     }
@@ -143,26 +144,50 @@ const FileListSectionWrapper = styled.div`
         }
     }
 
+    .article-list {
+        max-height: calc(100vh - 50px);
+        overflow: auto;
+
+        & > li:hover {
+            .remove-btn {
+                display: block;
+            }
+        }
+
+        .remove-btn {
+            display: none;
+            position: absolute;
+            right: 10px;
+            top: 16px;
+            width: 28px;
+            height: 22px;
+            background: url('${require('../../theme/images/icon_recycle_bin.png')}') no-repeat scroll center / 18px;
+        }
+    }
+
     .article-item-hover{
         background-color: #EAF0FB;
     }
 
-    .article-item {
+    .article-item,
+    .directory-item {
+        position: relative;
         display: block;
         border: 1px solid #E1E2E6;
         font-size: 12px;
         color: #333;
         padding: 19px 22px;
-        >h3{font-weight: bold; color: #666}
-        .article-footer{color: #999}
+        >h3{font-weight: 500; color: #333; display: inline-block;font-size: 12px;}
+        .article-footer,
+        .directory-footer {color: #999}
         .content{
              display: flex;
             >p{
                 float:left;
                 width: 70%;
                 overflow: hidden;
-                font-size: 13px;
-                color:#888;
+                font-size: 12px;
+                color:#82828C;
                 height: 40px;
                 margin: 15px 10px;
                 overflow: hidden;
@@ -332,10 +357,20 @@ export default class FileListSection extends React.Component {
 
             setNoteList(noteList);
         }
+        this.props.menuStore.getNotesBySearchKey();
+    }
+
+    // 删除文件夹(到回收站)
+    async putDirToBin(directory) {
+        await this.props.menuStore.removeFileFolder(directory.id);
+        this.props.noteStore.getSubDirAndNotes({
+            userId: '12131',
+            dirId: directory.parentId
+        });
     }
 
     render() {
-        const noteList = this.props.noteStore.noteList;
+        const { noteList, directoryList } = this.props.noteStore;
         const {activeIndex, isShrink, popDownSettingVisible} = this.state;
         const {isVisible} = this.props.drawerStore;
         const { goBackDisabled } = this.props.menuStore;
@@ -381,6 +416,21 @@ export default class FileListSection extends React.Component {
 
                 <ul className="article-list">
                     {
+                        (directoryList && !!directoryList.length) && directoryList.map((directory, index) => {
+                            return <li key={ index } >
+                                <a className="directory-item">
+                                    <img src={ require('../../theme/images/icon_folder.png') } alt="文件夹logo" width="16px" style={{ verticalAlign: '-1px', marginRight: '10px'}} />
+                                    <h3>{ directory.directoryName }</h3>
+                                    <div className="directory-footer">
+                                        <time>{typeof directory.createTime === 'number' ? moment(directory.createTime).format('YYYY-MM-DD'): directory.createTime || '--'}</time>
+                                    </div>
+
+                                    <a className="remove-btn" title="删除" onClick={ () => this.putDirToBin(directory)}></a>
+                                </a>
+                            </li>
+                        })
+                    }
+                    {
                         (noteList && !!noteList.length) && noteList.map((noteItem, index) => {
                             return <li key={index} onClick={() => {
                                 this.setActiveNote.bind(this, index);
@@ -389,8 +439,10 @@ export default class FileListSection extends React.Component {
                             }}>
                                 <a className={`article-item ${index === activeIndex && 'article-item-hover'}`}>
                                     <h3>{noteItem.articleTitle }</h3>
-                                    <div className='content'><p>{noteItem.briefContent}</p><img src={noteItem.imgUrl}
-                                                                                                alt=""/></div>
+                                    <div className='content'>
+                                        <p>{noteItem.briefContent}</p>
+                                        <img src={noteItem.imgUrl} alt=""/>
+                                    </div>
                                     <div className="article-footer">
                                         <time>{typeof noteItem.createTime === 'number' ? moment(noteItem.createTime).format('YYYY-MM-DD'): noteItem.createTime}</time>
                                         <span>{noteItem.fileSize}</span>

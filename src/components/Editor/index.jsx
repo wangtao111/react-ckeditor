@@ -614,6 +614,15 @@ export default class Editor extends React.Component {
         })
     }
 
+    // 设置编辑器背景
+    setEditorBg(color) {
+        const editor = this.editorRef.current.editor;
+        editor.document.getBody().setStyle('background-color', color);
+        
+        this.setState({
+            layoutVisible: false
+        })
+    }
 
     render() {
         const { data, title, tools, visible, dropList, moreList, showMore, chartSettingVisible, layoutVisible } = this.state;
@@ -773,7 +782,7 @@ export default class Editor extends React.Component {
                 <ChartEditor id='home-demo' {...simple1}/>
             </Modal>
 
-            <Modal width={ 600 } title="布局" wrapClassName="layout-wrapper" visible={ layoutVisible } onCancel={ () => this.setState({ layoutVisible: false })}>
+            <Modal width={ 600 } title="布局" wrapClassName="layout-wrapper" visible={ layoutVisible } onCancel={ () => this.setState({ layoutVisible: false })} footer={ null }>
                 <div className="layout-box">
                     <h2>布局</h2>
                     <div className="layout-list">
@@ -817,7 +826,7 @@ export default class Editor extends React.Component {
                     <div className="color-list">
                         {
                             colors.map((color, index) => {
-                                return <a style={{ backgroundColor: color}} key={ index }></a>
+                                return <a style={{ backgroundColor: color}} key={ index } onClick={ () => this.setEditorBg(color)}></a>
                             })
                         }
                     </div>

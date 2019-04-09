@@ -81,9 +81,7 @@ export default class MenuStore {
             this.loading = false;
             console.log('data: ', data);
             if(data) {
-                const { directoryModelList } = data;
-                
-                this.fileFolderList = directoryModelList.map(item => {
+                this.fileFolderList = data.map(item => {
                     const { directoryName, ...rest } = item;
 
                     return {
@@ -113,18 +111,6 @@ export default class MenuStore {
             message.error(err || '从回收站恢复失败！');
         }
     });
-
-    // 获取回收站中的文件夹
-    getBinDirList = flow(function*(params) {
-        try {
-            const data = yield ajax('apiFetchFileFolderList', { params } );
-            
-            this.dustbinDir = data;
-        }catch(err) {
-            console.log('err: ', err);
-            message.error(err || '获取回收站的文件夹失败！');
-        }
-    })
 
     // 获取指定id的文件夹信息
     getDirInfoById = flow(function* (params) {

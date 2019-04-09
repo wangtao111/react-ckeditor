@@ -577,13 +577,20 @@ export default class NavSection extends React.Component {
     }
 
     // 设置已选中的项
-    setSelectedKey(key) {
+    setSelectedKey(key, id) {
         this.props.menuStore.setSelectedKey(key);
+
+        if(key.endsWith('2,-1')) {
+            this.props.noteStore.getSubDirAndNotes({
+                userId: '12131',
+                dirId: id || '-1'
+            });
+        }
     }
 
     // 点击菜单
     clickNavItem(menuItem, key) {
-        this.setSelectedKey(key);
+        this.props.menuStore.setSelectedKey(key);
 
         switch(menuItem.name) {
             case '最新文档':
@@ -596,7 +603,7 @@ export default class NavSection extends React.Component {
                 });
                 break;
             case '回收站':
-                this.props.menuStore.getBinDirList({
+                this.props.noteStore.getBinDirList({
                     userId: '12131',
                     status: -1,
                     parentId: -1
@@ -628,7 +635,7 @@ export default class NavSection extends React.Component {
                     <div 
                         className={`tree-title${ selectedKey === key ? ' selected': ''}${ openedKeys.includes(key) ? ' opened' : '' }`} 
                         style={{ paddingLeft: 20 * (parentIndex.toString().split(',').length - 1) }}
-                        onClick={ () => this.setSelectedKey(key) }>
+                        onClick={ (e) => { e.stopPropagation(); this.setSelectedKey(key, menuItem.id)} }>
                         <div className="toggle-arrow"  onClick={ (e) => { e.stopPropagation(); this.setOpenedKeys(key)}}></div>
 
                         <div className="name">
@@ -662,7 +669,7 @@ export default class NavSection extends React.Component {
                     </Menu>
                 );
 
-                return <li className="menu-tree-item" onClick={ (e) => { e.stopPropagation(); this.setSelectedKey(key);}}>
+                return <li className="menu-tree-item" onClick={ (e) => { e.stopPropagation(); this.setSelectedKey(key, menuItem.id);}}>
                     <div className="menu-tree">
                         {
                             menuItem.contextMenu ? <MenuWithContext contextMenus={ folderMenu }>
