@@ -66,23 +66,28 @@ class DrawerStore {
     setSearchResultFlag() {
         this.isSearchResult = true;
         this.isCommandPop = false;
+        this.isComponentWidgets = false;
     }
 
     @action.bound
     setCommandPopFlag() {
         this.isCommandPop = true;
         this.isSearchResult = false;
+        this.isComponentWidgets = false;
     }
 
     @action.bound 
     setComponentWidget(flag) {
         this.isComponentWidgets = flag;
+        this.isCommandPop = false;
+        this.isSearchResult = false;
     }
 
     @action.bound
     setFlagFalse() {
         this.isCommandPop = false;
         this.isSearchResult = false;
+        this.isComponentWidgets = false;
     }
 
 }

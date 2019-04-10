@@ -139,6 +139,24 @@ const FileListSectionWrapper = styled.div`
                         background: #f4f9ff;
                         cursor: pointer;
                     }
+
+                    .arrow {
+                        display: inline-block;
+                        width: 20px;
+                        height: 20px;
+                        vertical-align: -5px;
+                        background-size: 16px;
+                        background-position: center;
+                        background-repeat: no-repeat;
+                    }
+
+                    .desc {
+                        background-image: url('${require('../../theme/images/icon-arrow-down.png')}');
+                    }
+
+                    .asc {
+                        background-image: url('${require('../../theme/images/icon-arrow-up.png')}');
+                    }
                 }
             }
         }
@@ -221,6 +239,9 @@ export default class FileListSection extends React.Component {
             isShrink: props.drawerStore.isVisible,        // 默认不收缩
             popDownSettingVisible: false,               // 设置默认不可见
         };
+
+        this.orderRule = 'desc';            // 降序
+        this.orderBy = 'modifyTime';        // modifyTime: 修改时间, articleTitle: 笔记标题, createTime: '创建时间', fileSize: '文件大小'
     }
 
     componentDidMount() {
@@ -286,26 +307,42 @@ export default class FileListSection extends React.Component {
 
     // 选项操作
     actionOperation(value) {
-        let { noteList, setNoteList } = this.props.noteStore;
+        let { noteList } = this.props.noteStore;
+        let filterFlag = false;
 
         if(noteList && noteList.length) {
             switch(value) {
                 case '创建时间':
-                        noteList = noteList.sort((a, b) => {
-                            return +moment(b.date) - +moment(a.date);
-                        });
-    
-                        setNoteList(noteList);
+                    this.orderRule = this.orderBy !== 'createTime' ? 'desc' : (this.orderRule === 'desc' ? 'asc' : 'desc');
+                    this.orderBy = 'createTime';
+                    filterFlag = true;
+                    break;
+                case '修改时间': 
+                    this.orderRule = this.orderBy !== 'modifyTime' ? 'desc' : (this.orderRule === 'desc' ? 'asc' : 'desc');
+                    this.orderBy = 'modifyTime';
+                    filterFlag = true;
                     break;
                 case '文件名称':
-                        noteList = noteList.sort((a, b) => a.title.charCodeAt(0) - b.title.charCodeAt(0));
-
-                        setNoteList(noteList);
+                    this.orderRule = this.orderBy !== 'articleTitle' ? 'desc' : (this.orderRule === 'desc' ? 'asc' : 'desc');
+                    this.orderBy = 'articleTitle';
+                    filterFlag = true;
                     break;
+                case '文件大小':
+                    this.orderRule = this.orderBy !== 'fileSize' ? 'desc' : (this.orderRule === 'desc' ? 'asc' : 'desc');
+                    this.orderBy = 'fileSize';
+                    filterFlag = true;
+                    break;
+            }
 
-                case '文件大小': 
-                        noteList = noteList.sort((a, b) => b.size.replace(/[A-Z|a-z]/g, '') - a.size.replace(/[A-Z|a-z]/g, ''));
-                        setNoteList(noteList);
+            if(filterFlag) {
+                this.props.noteStore.getSubDirAndNotes({
+                    userId: '12131',
+                    dirId: this.props.menuStore.selectedId,
+                    pageSize: 10,
+                    pageIndex: 0,
+                    orderBy: this.orderBy,
+                    orderRule: this.orderRule
+                });
             }
         }
 
@@ -347,7 +384,13 @@ export default class FileListSection extends React.Component {
 
         if(Array.isArray(toJS(noteList))) {
             if(this.keyword && this.keyword.trim() !== '') {
-                noteList = noteList.filter(note => note.title.includes(this.keyword));
+                // noteList = noteList.filter(note => note.title.includes(this.keyword));
+
+                this.props.noteStore.getNotesBySearchKey({
+                    queryKey: this.keyword,
+                    pageIndex: 1,
+                    pageSize: 10
+                });
             }else {
                 noteList = await import('../../mockData/files');
                 noteList = noteList.default;
@@ -357,7 +400,6 @@ export default class FileListSection extends React.Component {
 
             setNoteList(noteList);
         }
-        this.props.menuStore.getNotesBySearchKey();
     }
 
     // 删除文件夹(到回收站)
@@ -371,9 +413,11 @@ export default class FileListSection extends React.Component {
 
     render() {
         const { noteList, directoryList } = this.props.noteStore;
-        const {activeIndex, isShrink, popDownSettingVisible} = this.state;
-        const {isVisible} = this.props.drawerStore;
+        const { activeIndex, isShrink, popDownSettingVisible, } = this.state;
+        const { isVisible } = this.props.drawerStore;
         const { goBackDisabled } = this.props.menuStore;
+        const orderBy = this.orderBy;
+        const orderRule = this.orderRule;
 
         const popDownMenus = [
             {
@@ -383,16 +427,20 @@ export default class FileListSection extends React.Component {
                 name: '列表'
             },
             {
-                name: '创建时间'
+                name: '创建时间',
+                value: 'createTime'
             },
             {
-                name: '修改时间'
+                name: '修改时间',
+                value: 'modifyTime'
             },
             {
-                name: '文件名称'
+                name: '文件名称',
+                value: 'articleTitle'
             },
             {
-                name: '文件大小'
+                name: '文件大小',
+                value: 'fileSize'
             }
         ];
 
@@ -407,7 +455,7 @@ export default class FileListSection extends React.Component {
                         <ul className="pop-down-setting" style={{ display: popDownSettingVisible ? 'block' : 'none'}}>
                             {
                                 popDownMenus.map((item, index) => {
-                                    return <li key={ index } onClick={ () => this.actionOperation(item.name) }>{ item.name }</li>
+                                    return <li key={ index } onClick={ () => this.actionOperation(item.name) }>{ item.name } { orderBy === item.value && <i className={ `arrow ${ orderRule }` }></i>}</li>
                                 })
                             }
                         </ul>

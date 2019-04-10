@@ -4,7 +4,7 @@
  * @Author: lfzhu
  * @LastEditors: lfzhu
  * @Date: 2019-04-03 09:33:45
- * @LastEditTime: 2019-04-09 11:40:30
+ * @LastEditTime: 2019-04-10 09:15:36
  */
 
 
@@ -42,6 +42,10 @@ const menuApi = {
     },
     // 获取用户文件夹下子文件夹和笔记列表
     apiGetSubDirAndNotes: {
+        method: 'get'
+    },
+    // 获取用户加入回收站的文件夹和文件
+    apiGetDirAndNotesInCrash: {
         method: 'get'
     }
 }

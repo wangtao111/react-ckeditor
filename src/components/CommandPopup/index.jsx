@@ -17,10 +17,7 @@ const CommandPopupWrapper = styled.div`
 
     ${props => props.visible && css`
         display: block;
-        width: 380px;
-        #popup_btn {
-            display: none;
-        }
+        width: 450px;
     `}
 
     ${props => props.autoWidth && css`
@@ -70,18 +67,9 @@ export default class CommandPopup extends React.Component {
     }
 
     render() {
-        const { setCommandPopFlag, isVisible, setVisible, isComponentWidgets } = this.props.drawerStore;
+        const { isVisible, isComponentWidgets } = this.props.drawerStore;
         
         return <CommandPopupWrapper visible={ isVisible } autoWidth={ isComponentWidgets }>
-            <Button
-                icon='left-circle'
-                style={{
-                    position: 'fixed',
-                    top: '50%',
-                    right: 0,
-                }}
-                id='popup_btn'
-                onClick={() => {  setVisible(true); setCommandPopFlag(); }}></Button>
             {
                 this.props.drawerStore.isCommandPop && <React.Fragment>
                     {/* 智能命令 */}

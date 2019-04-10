@@ -69,13 +69,19 @@ export default class NoteStore {
         }
     })
     
-    // 获取回收站中的文件夹
-    getBinDirList = flow(function*(params) {
+    // 获取回收站中的文件夹及笔记列表
+    getBinDirAndNoteList = flow(function*(params) {
         try {
-            const data = yield ajax('apiFetchFileFolderList', { params } );
+            const data = yield ajax('apiGetDirAndNotesInCrash', {
+                url: `/api/note/fianceNote/getNoteAndDirInCrash/${ params.userId }`
+            });
             
-          
-            this.directoryList = data;
+            if(data) {
+                const { directoryModelList, financeNoteModelList } = data;
+
+                this.directoryList = directoryModelList;
+                this.noteList = financeNoteModelList;
+            }
         }catch(err) {
             console.log('err: ', err);
             message.error(err || '获取回收站的文件夹失败！');
@@ -85,10 +91,11 @@ export default class NoteStore {
     // 获取子文件夹和笔记列表
     getSubDirAndNotes = flow(function* (params) {
         try {
-            const { userId, dirId } = params;
+            const { userId, dirId, ...restParams } = params;
 
             const data = yield ajax('apiGetSubDirAndNotes', {
-                url: `/api/note/fianceNote/getNotesOfDir/${ userId }/${ dirId }`
+                url: `/api/note/fianceNote/getNotesOfDir/${ userId }/${ dirId }`,
+                params: restParams
             });
 
             if(data) {
@@ -108,7 +115,12 @@ export default class NoteStore {
         try {
             const data = yield ajax('apiGetNotesByKeyword', {
                 params
-            })
+            });
+
+            if(data) {
+                this.noteList = data.data;
+                this.directoryList = [];
+            }
         }catch(err) {
             console.log('err: ', err);
             message.error(err || '全文搜索失败！');

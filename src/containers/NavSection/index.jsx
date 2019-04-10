@@ -579,11 +579,16 @@ export default class NavSection extends React.Component {
     // 设置已选中的项
     setSelectedKey(key, id) {
         this.props.menuStore.setSelectedKey(key);
+        this.props.menuStore.setSelectedId(id || '-1');
 
         if(key.endsWith('2,-1')) {
             this.props.noteStore.getSubDirAndNotes({
                 userId: '12131',
-                dirId: id || '-1'
+                dirId: id || '-1',
+                orderRule: 'desc',
+                pageSize: 10,
+                pageIndex: 0,
+                orderBy: 'modifyTime'
             });
         }
     }
@@ -603,10 +608,8 @@ export default class NavSection extends React.Component {
                 });
                 break;
             case '回收站':
-                this.props.noteStore.getBinDirList({
-                    userId: '12131',
-                    status: -1,
-                    parentId: -1
+                this.props.noteStore.getBinDirAndNoteList({
+                    userId: '23333000'
                 });
 
                 break;

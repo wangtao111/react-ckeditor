@@ -1,10 +1,13 @@
 import React from 'react';
 import styled from 'styled-components';
 import { inject, observer } from 'mobx-react';
-import {Table, Button, Icon} from 'antd';
+import { Table, Button, Icon, Input } from 'antd';
 import eventEmitter from '../../event';
 
 const SearchResultWrapper = styled.div`
+    position: relative;
+    padding-top: 40px;
+
     .search-tabs {
         border-bottom: 1px solid #E9E9E9;
         li {
@@ -25,6 +28,14 @@ const SearchResultWrapper = styled.div`
             }
         }
     }
+
+    .anticon-close {
+        position: absolute;
+        right: 6px;
+        top: 16px;
+        cursor: pointer;
+    }
+
     .close{
         color: #bbb;
         float: right;
@@ -116,6 +127,23 @@ const SearchResultWrapper = styled.div`
             }
         }
     }
+
+    .search-form {
+        display: flex;
+        padding: 0 20px;
+
+        .ant-input {
+            border-radius: 0;
+        }
+
+        .search-btn {
+            background-color: #287DDC;
+            color: #fff;
+            margin-left: -1px;
+            border-radius: 0;
+            border: 1px solid transparent;
+        }
+    }
 `;
 
 @inject('drawerStore')
@@ -139,6 +167,10 @@ export default class SearchResult extends React.Component {
         eventEmitter.emit('EDITOR_INSERT_TABLE_CODE', document.getElementById(`report-${ index }`).parentNode.innerHTML);
     }
 
+    handleSearch() {
+
+    }
+
     render() {
         const tabs = [
             {
@@ -155,6 +187,9 @@ export default class SearchResult extends React.Component {
             },
             {
                 name: '数据表'
+            },
+            {
+                name: '笔记'
             }
         ];
 
@@ -176,7 +211,11 @@ export default class SearchResult extends React.Component {
             }
         ]
         return <SearchResultWrapper>
-            <Icon type='close' className='close' onClick={() => {this.props.closeCallback()}}></Icon>
+            <Icon type='close' onClick={() => {this.props.closeCallback()}}></Icon>
+            <form className="search-form" action="#">
+                <Input placeholder="输入关键词搜索"/>
+                <Button className="search-btn" onClick={ this.handleSearch }>搜索</Button>
+            </form>
             <div className="search-tabs">
                 <ul>
                     {
