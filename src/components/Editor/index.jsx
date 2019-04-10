@@ -18,7 +18,7 @@ import * as jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
 import EditorTemplate from './styled';
 import { Icon, Modal } from 'antd';
-import { tables, MENTIONS, commonTables} from '../../mockData/commandData';
+import { tables, MENTIONS, commonTables } from '../../mockData/commandData';
 import ChartEditor from 'abc-chart-editor';
 import chartData from '../../mockData/chart';
 import 'abc-chart-editor/build/lib/css/main.css';
@@ -184,6 +184,12 @@ export default class Editor extends React.Component {
                     margin-top: 5px;
                     position: relative;
                 }
+                .charts_container:hover > .editCommand{
+                    display: block;
+                  }
+                  .editCommand{
+                    display: none;position: absolute; right: -2px;top: -28px; height:24px;line-height: 24px;font-size: 12px;border-radius:2px;background: #3b8dee; color: #fff;cursor: pointer; padding: 2px 10px;
+                  }
                 .bowen{position: relative;color: #953039;}
                     .bowen:after{
                         content: '';
@@ -238,7 +244,7 @@ export default class Editor extends React.Component {
     }
 
     hideMoreOptions() {
-        document.getElementById('checkedInput').checked = false; 
+        document.getElementById('checkedInput').checked = false;
     }
 
     // 增加更多工具组
@@ -246,12 +252,12 @@ export default class Editor extends React.Component {
         console.log('in');
         const ckeTop = window.CKEDITOR.document.getById('cke_1_toolbox');
 
-        new window.CKEDITOR.dom.window( window ).$.componentClick = () => {
+        new window.CKEDITOR.dom.window(window).$.componentClick = () => {
             this.hideMoreOptions();
             this.props.drawerStore.setComponentWidget(true);
         }
 
-        new window.CKEDITOR.dom.window( window).$.layoutClick = () => {
+        new window.CKEDITOR.dom.window(window).$.layoutClick = () => {
             this.hideMoreOptions();
             this.setState({
                 layoutVisible: true
@@ -336,12 +342,13 @@ export default class Editor extends React.Component {
         return window.CKEDITOR.plugins.textMatch.match(range, (txt, offset) => {
             let text = JSON.parse(JSON.stringify(txt));
             let currentStr = text.split('')[range.endOffset - 1];
+            const node = range.startContainer.$.parentNode;
             this.pNode = null;
             this.range = null;
             if (currentStr === '~' || currentStr === '～') {
                 currentStr = '~'
             }
-            if (range.startContainer.$.parentNode.getAttribute('name') === 'temporary') {　//选择公司后进入此逻辑
+            if (node.getAttribute('name') === 'temporary') {　//选择公司后进入此逻辑
                 const pNode = this.getParentNode(range.startContainer.$);
                 const matchArr = text.split('~'), matchText = matchArr[matchArr.length - 1];
                 const innertext = pNode.innerText;
@@ -451,32 +458,12 @@ export default class Editor extends React.Component {
         dom.addEventListener('compositionend', function (e) {
             doing = false;
         }, false);
-        document.onclick = function (e) {
-            const tagMenu = document.getElementById('command_tag_pane'), commandMenu = document.getElementById('command_tag_list');
-            const charts = document.getElementById('charts');
-            if (tagMenu) {
-                tagMenu.style.display = 'none';
-            }
-            if (charts) {
-                charts.style.display = 'none';
-            }
-            if (commandMenu) {
-                commandMenu.style.display = 'none';
-            }
+        document.onclick = (e) => {
+            this.hideItem(e);
         }
         dom.onclick = (e) => {
             const tag = e.target.getAttribute('name');
-            const tagMenu = document.getElementById('command_tag_pane'), commandMenu = document.getElementById('command_tag_list');
-            const charts = document.getElementById('charts');
-            if (tagMenu) {
-                tagMenu.style.display = 'none';
-            }
-            if (charts) {
-                charts.style.display = 'none';
-            }
-            if (commandMenu) {
-                commandMenu.style.display = 'none';
-            }
+            this.hideItem(e);
             if (tag === 'select_box') {
                 const scrollX = dom.documentElement.scrollLeft || dom.body.scrollLeft;
                 const scrollY = dom.documentElement.scrollTop || dom.body.scrollTop;
@@ -490,13 +477,28 @@ export default class Editor extends React.Component {
                 document.getElementById('command_tag_pane').style.display = 'block';
                 this.tag = e.target;
             }
-            if(tag === 'editCommand'){
-                // let content = document.createElement("span");
-                // content.innerHTML = `<span name='temporary'>${e.target.lastChild.innerHTML}</span>`
-                // e.target.parentNode.parentNode.parentNode.replaceChild(content, e.target.parentNode.parentNode)
+            if (tag === 'editCommand') {
+                let content = document.createElement("span");
+                content.innerHTML = `<span name='temporary' style='color: blue'>${e.target.previousSibling.innerHTML}</span>`
+                e.target.parentNode.parentNode.parentNode.replaceChild(content, e.target.parentNode.parentNode)
             }
         }
     }
+
+    hideItem = (e) => {
+        const tagMenu = document.getElementById('command_tag_pane'), commandMenu = document.getElementById('command_tag_list');
+        const charts = document.getElementById('charts');
+        if (tagMenu) {
+            tagMenu.style.display = 'none';
+        }
+        if (charts) {
+            charts.style.display = 'none';
+        }
+        if (commandMenu) {
+            commandMenu.style.display = 'none';
+        }
+    }
+
     changeSelectItem = (li) => {
         this.tag.innerHTML = li.name;
     }
@@ -618,10 +620,13 @@ export default class Editor extends React.Component {
     setEditorBg(color) {
         const editor = this.editorRef.current.editor;
         editor.document.getBody().setStyle('background-color', color);
-        
+
         this.setState({
             layoutVisible: false
         })
+    }
+    stopP = (e) => {
+        e.nativeEvent.stopImmediatePropagation();
     }
 
     render() {
@@ -673,29 +678,29 @@ export default class Editor extends React.Component {
         const EDITOR_PRO_URL = `${window.origin}/static/ckeditor/ckeditor.js`;
         CKEditor.editorUrl = process.env.NODE_ENV === 'development' ? EDITOR_DEV_URL : EDITOR_PRO_URL;
 
-        const onSelectDataRange = (dataRange, type)=>{ // dataRange,时间范围， type： 1-距离时间，如3M，2-时间段，【moment， moment】
+        const onSelectDataRange = (dataRange, type) => { // dataRange,时间范围， type： 1-距离时间，如3M，2-时间段，【moment， moment】
             // do anything u want 
-            alert(dataRange); 
+            alert(dataRange);
             // 发请求到服务器端请求数据，然后刷新图表数据
             // this.charteditor.updateDataConf(xxx);
-          };
+        };
         const simple1 = {
             id: 'chart-editor',
             dType: 'datetime',
-            viewMode: 'chart', 
+            viewMode: 'chart',
             chartConf: null,
-            indexConf: this.state.indexConf, 
+            indexConf: this.state.indexConf,
             dataConf: this.state.dataConf,
-            afterSetExtremes: (e, max, min)=>{
-                console.log('max: '+ max + ',min: '+ min);
-              }, 
+            afterSetExtremes: (e, max, min) => {
+                console.log('max: ' + max + ',min: ' + min);
+            },
             // custDatePicker: (<RangePicker style={{ display: 'inline-block' }}
             //     onChange={(timeRange) => onSelectDataRange(timeRange, 2)} />),
             onSelectDataRange: onSelectDataRange,
             //地图配置
             mapType: '',
             highData: '',
-            bubble: '', 
+            bubble: '',
             //自定义配置
             customConfig: null,
             showTopToolbar: true,
@@ -726,8 +731,8 @@ export default class Editor extends React.Component {
         const colors = ['#DF3F2B', '#D5952C', '#8B572A', '#417505', '#7C38B8', '#4A90E2', '#9B9B9B', '#000000', '#1C5773', '#CAA260'];
 
         return <EditorTemplate>
-            <div style={{ display: 'flex', marginBottom: '2px' }}>
-                <input className='title_input' type='textarea' value={title} onChange={this.titleChange} />
+            <div style={{ display: 'flex', marginBottom: '2px' }}  >
+                <input className='title_input' type='textarea' value={title} onChange={this.titleChange}/>
                 <div style={{ position: 'relative' }}>
                     <ul className='tools'>
                         {
@@ -772,17 +777,17 @@ export default class Editor extends React.Component {
                     }
                 </ul>
             </div>
-            <div id="charts">
+            <div id="charts" onClick={this.stopP}>
                 <p><Icon type='close' style={{ float: 'right', cursor: 'pointer' }} onClick={() => { document.getElementById('charts').style.display = 'none' }}></Icon></p>
                 <Preview chartId={'intelliCharts'}></Preview>
             </div>
 
-            <Modal width={ 800 } visible={ chartSettingVisible } title="设置图表" onCancel={ () => this.setState({ chartSettingVisible: false })}>
+            <Modal width={800} visible={chartSettingVisible} title="设置图表" onCancel={() => this.setState({ chartSettingVisible: false })}>
                 {/* <ChartPanel indexConf={indexConf} dataConf={dataConf} ref={(ce)=>{this.charteditor = ce}} /> */}
-                <ChartEditor id='home-demo' {...simple1}/>
+                <ChartEditor id='home-demo' {...simple1} />
             </Modal>
 
-            <Modal width={ 600 } title="布局" wrapClassName="layout-wrapper" visible={ layoutVisible } onCancel={ () => this.setState({ layoutVisible: false })} footer={ null }>
+            <Modal width={600} title="布局" wrapClassName="layout-wrapper" visible={layoutVisible} onCancel={() => this.setState({ layoutVisible: false })} footer={null}>
                 <div className="layout-box">
                     <h2>布局</h2>
                     <div className="layout-list">
@@ -826,17 +831,17 @@ export default class Editor extends React.Component {
                     <div className="color-list">
                         {
                             colors.map((color, index) => {
-                                return <a style={{ backgroundColor: color}} key={ index } onClick={ () => this.setEditorBg(color)}></a>
+                                return <a style={{ backgroundColor: color }} key={index} onClick={() => this.setEditorBg(color)}></a>
                             })
                         }
                     </div>
-                    
+
                 </div>
                 <div className="other-color-box">
                     <div className="multi-colors">
-                        <span style={{ backgroundColor: '#43BCFF'}}></span>
-                        <span style={{ backgroundColor: '#ED3D7D'}}></span>
-                        <span style={{ backgroundColor: '#4360A0'}}></span>
+                        <span style={{ backgroundColor: '#43BCFF' }}></span>
+                        <span style={{ backgroundColor: '#ED3D7D' }}></span>
+                        <span style={{ backgroundColor: '#4360A0' }}></span>
                     </div>
                     其它颜色
                 </div>

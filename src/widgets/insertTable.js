@@ -47,11 +47,12 @@ export default function(widgetNum, editor, command) {
         editor.fire('removeFormatCleanup', table);
     }
     editor.widgets.add(`inserttable-widget${ widgetNum }`, {
-        template: `<div style="position: relative">
-        <div id="tableWrapper${widgetNum}" class="container"></div>` +
-        // `<div style="position: absolute; right: 0;top: 0; height:24px;line-height: 24px;font-size: 12px;border-radius:2px;background: #3b8dee; color: #fff;cursor: pointer; padding: 2px 10px;" name='editCommand'>
-        //     编辑命令<p name='command' style='width:0;height:0;overflow:hidden'>${command}</p>
-        // </div>` +
+        template: `<div style="position: relative" class="charts_container">
+        <div id="tableWrapper${widgetNum}" class="container"></div>
+        <p name='command' style='width:0;height:0;overflow:hidden;position: absolute;'>${command}</p>` +
+        `<div class="editCommand" name='editCommand'>
+            编辑命令
+        </div>` +
         `</div>`,
         requireContent: 'div(container)',
         upcast: function(element) {

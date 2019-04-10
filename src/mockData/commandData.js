@@ -110,14 +110,14 @@ const MENTIONS = [
     {
         id: 2,
         title: '中国平安(601318)',
-        detail: `z,zh,zg,pa,zhong,zhongguo,pingan,601318`,
-        tag: '<span name="temporary" style="color: blue;">中国平安(601318).</span>'
+        detail: `z,zh,zho,zhon,zg,pa,zhong,zhongguo,pingan,601318`,
+        tag: '<span name="temporary">中国平安(601318).</span>'
     },
     {
         id: 3,
         title: '贵州茅台(600519)',
         detail: `g,gz,mt,gui,guizhou,maotai,600519`,
-        tag: '<span name="temporary" style="color: blue;">贵州茅台(600519).</span>'
+        tag: '<span name="temporary">贵州茅台(600519).</span>'
     },
 ];
 module.exports.tables = tables;
