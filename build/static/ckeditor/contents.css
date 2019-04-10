@@ -346,9 +346,21 @@ body[contenteditable="false"] .cke_widget_wrapper .cke_widget_editable.cke_widge
 }
 
 .chartContainer > .setting {
+	display: none;
+	position: absolute;
+	top: 0;
+	right: 0;
+	z-index: 1;
 	width: 20px;
-	border: 1px solid red;
-	
+	height: 20px;
+	border: 1px solid #ccc;
+	background-image: url('./images/icon_widget_setting.png');
+	background-size: 20px;
+	cursor: pointer;
+}
+
+.cke_widget_wrapper:hover .setting {
+	display: block;
 }
 /* 图表的样式 */
 .chartContainer > .resize {

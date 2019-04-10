@@ -4,6 +4,7 @@ import { message } from 'antd';
 
 export default class MenuStore {
     @observable selectedKey = '0,-1';       // 选中的菜单项key
+    @observable selectedId = '-1';         // 选择的Id
     @observable goBackDisabled = true;     // 返回上一级默认按钮是可用的
     @observable fileFolderList = [];       // 文件夹列表
     @observable loading = false;           // 加载中...
@@ -19,6 +20,11 @@ export default class MenuStore {
         }else {
             this.goBackDisabled = true;
         }
+    }
+
+    @action.bound 
+    setSelectedId(selectedId) {
+        this.selectedId = selectedId;
     }
 
     // 返回到上一级
