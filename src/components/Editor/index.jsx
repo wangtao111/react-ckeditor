@@ -776,7 +776,7 @@ export default class Editor extends React.Component {
 
         return <EditorTemplate>
             <div style={{ display: 'flex', marginBottom: '2px' }}>
-                <input className='title_input' type='textarea' value={title} onChange={this.titleChange} />
+                <input className='title_input' type='textarea' value={title} onChange={this.titleChange} id="artical_tilte" />
                 <div style={{ position: 'relative', borderRight: '1px solid #e1e1e1' }}>
                     <ul className='tools'>
                         {
