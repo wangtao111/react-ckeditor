@@ -358,7 +358,6 @@ export default class Editor extends React.Component {
             const node = range.startContainer.$.parentNode;
             this.pNode = null;
             this.range = null;
-            console.log(currentStr)
             if (node.getAttribute('name') === 'temporary') {　//选择公司后～进入此逻辑
                 const pNode = this.getParentNode(range.startContainer.$);
                 const matchArr = text.split('~'), matchText = matchArr[matchArr.length - 1];
@@ -500,13 +499,19 @@ export default class Editor extends React.Component {
         document.onclick = (e) => {
             this.hideItem(e);
             this.setEditorHeight();
-            this.setState({ showMore: false });
+            const fullscreenElement = document.fullscreenElement || document.mozFullScreenElement || document.webkitCurrentFullScreenElement;
+            if (!fullscreenElement) {
+                this.setState({ showMore: false });
+            }
         }
         dom.onclick = (e) => {
             const tag = e.target.getAttribute('name');
             this.setEditorHeight();
             this.hideItem(e);
-            this.setState({ showMore: false });
+            const fullscreenElement = document.fullscreenElement || document.mozFullScreenElement || document.webkitCurrentFullScreenElement;
+            if (!fullscreenElement) {
+                this.setState({ showMore: false });
+            }
             if (tag === 'select_box') {
                 const menu = document.getElementById('command_tag_pane'),
                     editorContent = document.getElementById('cke_1_contents');
