@@ -43,7 +43,7 @@ const EditorTemplate = styled.div`
     }
     .tools{
         float: left;
-        min-width: 270px;
+        min-width: 280px;
        >li{
             float: left;
             margin-right: 30px;

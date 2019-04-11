@@ -133,7 +133,7 @@ export default class Header extends React.Component {
     render() {
         const { activeMode } = this.state;
 
-        return <AppHeader>
+        return <AppHeader id="header">
             <h1>金融云笔记</h1>
             <div className="operation-mode">
                 <Radio.Group defaultValue={ activeMode } buttonStyle="solid" onChange={ this.handleChange }>

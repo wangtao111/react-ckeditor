@@ -8,12 +8,11 @@ import { toJS } from 'mobx';
 
 const FileListSectionWrapper = styled.div`
     position: relative;
-    flex-shrink: 0;
-    height: 100vh;
-    max-height: 100vh;
-    
+    flex-shrink: 0;    
     .file-list-container {
         width: 360px;
+        display: flex;
+        flex-direction: column;
     }
 
     ${props => props.shrink && css`
@@ -163,7 +162,6 @@ const FileListSectionWrapper = styled.div`
     }
 
     .article-list {
-        max-height: calc(100vh - 50px);
         overflow: auto;
 
         & > li:hover {
@@ -445,7 +443,7 @@ export default class FileListSection extends React.Component {
         ];
 
         return <FileListSectionWrapper shrink={isShrink}>
-            <div className="file-list-container">
+            <div className="file-list-container" id="file_list">
                 <div className="file-list-header">
                     <i className={`icon-back${ goBackDisabled ? ' disabled': '' }`} title="返回上一级" onClick={ () => this.props.menuStore.goBackLevel()}></i>
                     <Input prefix={<i className="icon-search"></i>} placeholder="搜索..." className="search-ipt" onChange={ this.handleChange } onPressEnter={ this.handleSearch }/>

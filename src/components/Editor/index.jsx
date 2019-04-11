@@ -345,7 +345,7 @@ export default class Editor extends React.Component {
             const node = range.startContainer.$.parentNode;
             this.pNode = null;
             this.range = null;
-            if (currentStr === '~' || currentStr === '～') {
+            if (currentStr === '~' || currentStr === '～' || currentStr === '一') {
                 currentStr = '~'
             }
             if (node.getAttribute('name') === 'temporary') {　//选择公司后进入此逻辑
@@ -446,12 +446,27 @@ export default class Editor extends React.Component {
         document.getElementById('charts').style.display = 'none';
         if (!this.pNode) return;
         this.pNode.innerHTML = '';
-        // const s = this.pNode.previousSibling.textContent;
-        // this.pNode.previousSibling.textContent = s.substring(0, s.length - 1);
+    }
+    setEditorHeight = () => {
+        setTimeout(() => {
+             const toolbar = document.getElementById('cke_1_top'),
+              bottom = document.getElementById('cke_1_bottom'),
+              header = document.getElementById('header'),
+              title = document.getElementById('artical_tilte');
+        const height = document.body.offsetHeight - toolbar.offsetHeight - title.offsetHeight - header.offsetHeight - bottom.offsetHeight;
+        const iframe = document.getElementById('cke_1_contents').children[1];
+        let dom = iframe.contentWindow.document;
+        document.getElementById('cke_1_contents').style.height = height - 5 + 'px';
+        document.getElementById('cke_1_contents').style.overflow = 'auto';
+        document.getElementById('file_list').style.height = document.body.offsetHeight - header.offsetHeight - 5 + 'px';
+        console.log(dom.body.offsetHeight);
+        iframe.style.height = dom.body.offsetHeight + 80 +'px';
+        })
     }
     setEditorIframe = () => {
         const iframe = document.getElementById('cke_1_contents').children[1].contentWindow;
         let dom = iframe.document;
+        this.setEditorHeight();
         dom.addEventListener('compositionstart', function (e) {
             doing = true;
         }, false);
@@ -460,9 +475,11 @@ export default class Editor extends React.Component {
         }, false);
         document.onclick = (e) => {
             this.hideItem(e);
+            this.setEditorHeight()
         }
         dom.onclick = (e) => {
             const tag = e.target.getAttribute('name');
+            this.setEditorHeight();
             this.hideItem(e);
             if (tag === 'select_box') {
                 const scrollX = dom.documentElement.scrollLeft || dom.body.scrollLeft;
@@ -635,7 +652,6 @@ export default class Editor extends React.Component {
         const config = {
             extraPlugins: 'autocomplete,notification,textmatch,textwatcher,tableresizerowandcolumn,save-to-pdf,quicktable,templates,template,image2,uploadimage,uploadwidget,filebrowser',
             allowedContent: true,
-            height: 800,
             toolbarGroups: [
                 // {name: 'clipboard', groups: ['undo']},
                 // {name: 'document', groups: ['doctools']},
@@ -731,7 +747,7 @@ export default class Editor extends React.Component {
         const colors = ['#DF3F2B', '#D5952C', '#8B572A', '#417505', '#7C38B8', '#4A90E2', '#9B9B9B', '#000000', '#1C5773', '#CAA260'];
 
         return <EditorTemplate>
-            <div style={{ display: 'flex', marginBottom: '2px' }}  >
+            <div style={{ display: 'flex', marginBottom: '2px' }}  id="artical_tilte">
                 <input className='title_input' type='textarea' value={title} onChange={this.titleChange}/>
                 <div style={{ position: 'relative' }}>
                     <ul className='tools'>
