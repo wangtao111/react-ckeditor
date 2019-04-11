@@ -93,15 +93,18 @@ export default class Preview extends React.Component {
         this.columns = [
             {
                 title: '利润表',
-                dataIndex: 'profit'
+                dataIndex: 'profit',
+                width: 140
             },
             {
-                title: '2018Q1',
-                dataIndex: 'merge1'
+                title: '2018Q1     合并报表',
+                dataIndex: 'merge1',
+                width: 180
             },
             {
-                title: '2018Q2',
-                dataIndex: 'merge2'
+                title: '2018Q2     合并报表',
+                dataIndex: 'merge2',
+                width: 180
             }
         ];
         this.dataSource = [

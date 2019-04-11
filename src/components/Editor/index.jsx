@@ -464,13 +464,12 @@ export default class Editor extends React.Component {
     setEditorHeight = () => {
         setTimeout(() => {
             const toolbar = document.getElementById('cke_1_top'),
-                bottom = document.getElementById('cke_1_bottom'),
                 header = document.getElementById('header'),
                 title = document.getElementById('artical_tilte');
             if (!document.body) {
                 return
             }
-            const height = document.body.offsetHeight - toolbar.offsetHeight - title.offsetHeight - header.offsetHeight - bottom.offsetHeight;
+            const height = document.body.offsetHeight - toolbar.offsetHeight - title.offsetHeight - header.offsetHeight;
             const iframe = document.getElementById('cke_1_contents').children[1];
             let dom = iframe.contentWindow.document;
             document.getElementById('command_popup').style.height = document.body.offsetHeight - title.offsetHeight + 'px';
@@ -704,7 +703,7 @@ export default class Editor extends React.Component {
             qtClass: 'editor-table-widget',
             qtStyle: 'border: 1px solid #a7a7a7;',
             contentsCss: contentCss,
-            removePlugins: 'forms,bidi',
+            removePlugins: 'forms,bidi,elementspath,resize',
             autoParagraph: false,
             // Configure your file manager integration. This example uses CKFinder 3 for PHP.
             filebrowserBrowseUrl: '/apps/ckfinder/3.4.5/ckfinder.html',

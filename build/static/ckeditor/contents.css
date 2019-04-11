@@ -286,10 +286,13 @@ select {
 	border-bottom-right-radius: 0;
 }
 
+.editor-table-widget {
+	min-width: 800px;
+}
 .editor-table-widget,
 .editor-table-widget tr th,
 .editor-table-widget tr td{
-    border: 1px solid #a7a7a7 !important;
+    border: 1px solid #EBEBEB !important;
     border-collapse:collapse;
 }
 
