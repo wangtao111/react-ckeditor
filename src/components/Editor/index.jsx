@@ -84,6 +84,9 @@ export default class Editor extends React.Component {
 
     componentDidMount() {
         this.addEventEmitter();
+        window.onresize = () => {
+            this.setEditorHeight();
+        }
     }
 
     componentDidUpdate(prevProps) {
@@ -304,22 +307,7 @@ export default class Editor extends React.Component {
                     that.pNode.innerHTML = item.tag;
                 }
                 if (item.charts) {
-                    const menu = document.getElementById('charts');
-                    const scrollX = document.documentElement.scrollLeft || document.body.scrollLeft;
-                    const scrollY = document.documentElement.scrollTop || document.body.scrollTop;
-                    const offset = that.getPoint(document.getElementById('cke_1_contents'));
-                    const position = that.position;
-                    menu.style.display = 'block';
-                    let x = position.x + offset.x;
-                    let y = position.y + offset.y;
-                    if (x + menu.offsetWidth - scrollX >= document.body.offsetWidth) {
-                        x -= menu.offsetWidth
-                    }
-                    // if (y + menu.offsetHeight - scrollY >= document.body.offsetHeight) {
-                    //     y -= menu.offsetHeight
-                    // }
-                    menu.style.left = x + 'px';
-                    menu.style.top = y + 20 + 'px';
+                    that.openChartsPopup();
                 }
             });
             return this
@@ -328,7 +316,27 @@ export default class Editor extends React.Component {
         }
         eventEmitter.emit('SKIM_ARTICLE', this.props.noteStore.noteList[0]);
         this.setEditorIframe();
+        const editorContent = document.getElementById('cke_1_contents');
+        editorContent.appendChild(document.getElementById('charts'));
         document.getElementsByClassName('cke_autocomplete_panel')[0].style.width = 'auto';
+    }
+    openChartsPopup = () => {
+        const menu = document.getElementById('charts'),
+              editorContent = document.getElementById('cke_1_contents');
+        const scrollX = editorContent.scrollLeft;
+        const scrollY = editorContent.scrollTop;
+        const position = this.position;
+        menu.style.display = 'block';
+        let x = position.x;
+        let y = position.y;
+        if (x + menu.offsetWidth - scrollX >= editorContent.offsetWidth) {
+            x = editorContent.offsetWidth - menu.offsetWidth
+        }
+        // if (y + menu.offsetHeight - scrollY >= document.body.offsetHeight) {
+        //     y -= menu.offsetHeight
+        // }
+        menu.style.left = x + 'px';
+        menu.style.top = y + 20 + 'px';
     }
     textTestCallback = (range) => {
         if (!range.collapsed) {
@@ -336,8 +344,11 @@ export default class Editor extends React.Component {
         }
         const iframe = document.getElementById('cke_1_contents').children[1].contentWindow;
         const ranges = iframe.getSelection().getRangeAt(0);
+        const charts = document.getElementById('charts');
         this.position = ranges.getBoundingClientRect();
-        document.getElementById('charts').style.display = 'none';
+        if (charts) {
+            charts.style.display = 'none';
+        }
         // const editor = this.editorRef.current.editor;
         return window.CKEDITOR.plugins.textMatch.match(range, (txt, offset) => {
             let text = JSON.parse(JSON.stringify(txt));
@@ -443,25 +454,32 @@ export default class Editor extends React.Component {
         });
     }
     setPNodeHtml = () => {
-        document.getElementById('charts').style.display = 'none';
+        const charts = document.getElementById('charts');
+        if (charts) {
+            charts.style.display = 'none';
+        }
         if (!this.pNode) return;
         this.pNode.innerHTML = '';
     }
     setEditorHeight = () => {
         setTimeout(() => {
-             const toolbar = document.getElementById('cke_1_top'),
-              bottom = document.getElementById('cke_1_bottom'),
-              header = document.getElementById('header'),
-              title = document.getElementById('artical_tilte');
-        const height = document.body.offsetHeight - toolbar.offsetHeight - title.offsetHeight - header.offsetHeight - bottom.offsetHeight;
-        const iframe = document.getElementById('cke_1_contents').children[1];
-        let dom = iframe.contentWindow.document;
-        document.getElementById('cke_1_contents').style.height = height - 5 + 'px';
-        document.getElementById('cke_1_contents').style.overflow = 'auto';
-        document.getElementById('file_list').style.height = document.body.offsetHeight - header.offsetHeight - 5 + 'px';
-        console.log(dom.body.offsetHeight);
-        iframe.style.height = dom.body.offsetHeight + 80 +'px';
-        })
+            const toolbar = document.getElementById('cke_1_top'),
+                bottom = document.getElementById('cke_1_bottom'),
+                header = document.getElementById('header'),
+                title = document.getElementById('artical_tilte');
+            const height = document.body.offsetHeight - toolbar.offsetHeight - title.offsetHeight - header.offsetHeight - bottom.offsetHeight;
+            const iframe = document.getElementById('cke_1_contents').children[1];
+            let dom = iframe.contentWindow.document;
+            document.getElementById('cke_1_contents').style.height = height - 5 + 'px';
+            document.getElementById('cke_1_contents').style.position = 'relative';
+            document.getElementById('cke_1_contents').style.overflow = 'auto';
+            document.getElementById('file_list').style.height = document.body.offsetHeight - header.offsetHeight - 5 + 'px';
+            if (!dom.body) {
+                return;
+            }
+            iframe.style.height = dom.body.offsetHeight + 80 + 'px';
+            dom.body.style.overflowY = 'hidden';
+        }, 0)
     }
     setEditorIframe = () => {
         const iframe = document.getElementById('cke_1_contents').children[1].contentWindow;
@@ -747,8 +765,8 @@ export default class Editor extends React.Component {
         const colors = ['#DF3F2B', '#D5952C', '#8B572A', '#417505', '#7C38B8', '#4A90E2', '#9B9B9B', '#000000', '#1C5773', '#CAA260'];
 
         return <EditorTemplate>
-            <div style={{ display: 'flex', marginBottom: '2px' }}  id="artical_tilte">
-                <input className='title_input' type='textarea' value={title} onChange={this.titleChange}/>
+            <div style={{ display: 'flex', marginBottom: '2px' }} id="artical_tilte">
+                <input className='title_input' type='textarea' value={title} onChange={this.titleChange} />
                 <div style={{ position: 'relative' }}>
                     <ul className='tools'>
                         {
@@ -767,6 +785,10 @@ export default class Editor extends React.Component {
                         </ul>
                     }
                 </div>
+            </div>
+            <div id="charts" onClick={this.stopP}>
+                <p><Icon type='close' style={{ float: 'right', cursor: 'pointer' }} onClick={() => { document.getElementById('charts').style.display = 'none' }}></Icon></p>
+                <Preview chartId={'intelliCharts'}></Preview>
             </div>
             <FullScreen visible={visible} editorHandle={true} exit={() => this.setState({ visible: false })}
                 afterEnter={this.afterEnter} afterExit={this.afterExit} PDFTile={title}>
@@ -792,10 +814,6 @@ export default class Editor extends React.Component {
                         })
                     }
                 </ul>
-            </div>
-            <div id="charts" onClick={this.stopP}>
-                <p><Icon type='close' style={{ float: 'right', cursor: 'pointer' }} onClick={() => { document.getElementById('charts').style.display = 'none' }}></Icon></p>
-                <Preview chartId={'intelliCharts'}></Preview>
             </div>
 
             <Modal width={800} visible={chartSettingVisible} title="设置图表" onCancel={() => this.setState({ chartSettingVisible: false })}>
