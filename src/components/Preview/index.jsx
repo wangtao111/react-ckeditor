@@ -300,7 +300,6 @@ export default class Preview extends React.Component {
         }
 
         return <PreviewWrapper>
-            <h2>预览</h2>
             <div className="data-show-type">
                 {
                     dataShowTypes.map((showType, index) => {
