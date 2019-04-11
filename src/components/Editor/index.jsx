@@ -472,9 +472,11 @@ export default class Editor extends React.Component {
             const height = document.body.offsetHeight - toolbar.offsetHeight - title.offsetHeight - header.offsetHeight - bottom.offsetHeight;
             const iframe = document.getElementById('cke_1_contents').children[1];
             let dom = iframe.contentWindow.document;
+            document.getElementById('command_popup').style.height = document.body.offsetHeight - title.offsetHeight + 'px';
             document.getElementById('cke_1_contents').style.height = height - 5 + 'px';
             document.getElementById('cke_1_contents').style.position = 'relative';
             document.getElementById('cke_1_contents').style.overflow = 'auto';
+            document.getElementById('cke_1_contents').style.background = '#fff';
             document.getElementById('cke_1_contents').style.background = '#fff';
             document.getElementById('file_list').style.height = document.body.offsetHeight - header.offsetHeight - 5 + 'px';
             if (!dom.body) {
@@ -482,7 +484,7 @@ export default class Editor extends React.Component {
             }
             iframe.style.height = dom.body.offsetHeight + 80 + 'px';
             dom.body.style.overflowY = 'hidden';
-        }, 10)
+        }, 0)
     }
     setEditorIframe = () => {
         const iframe = document.getElementById('cke_1_contents').children[1].contentWindow;
