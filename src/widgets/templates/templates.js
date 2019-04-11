@@ -13,12 +13,12 @@ const TEMPLATES = [
                 <option value="尾部">尾部</option>
             </select>
 
-            <div class="header-wrapper" style="overflow:hidden;">
+            <div class="header-wrapper tpl-dashed-border" style="overflow:hidden;">
                 <div style="float: left;margin-top: 12px;" class="editable-img">
                     <img src="{headerLogo}" title="{headerTitle}" width="130"/>
                 </div>
 
-                <div style="float: right;margin-top: 7px;" class="editable-inline">
+                <div style="float: right;margin-top: 15px;" class="editable-inline">
                     <div class="tpl-type">{templateType}</div>
                     <p style="margin: 0"><span>{date}</span></p>
                 </div>
@@ -111,7 +111,7 @@ const TEMPLATES = [
                     <option value="尾部">尾部</option>
                 </select>
 
-                <div class="editable-content-wrapper">
+                <div class="editable-content-wrapper tpl-dashed-border">
                     <div class="editable-content"></div>
                 </div>
             </section>

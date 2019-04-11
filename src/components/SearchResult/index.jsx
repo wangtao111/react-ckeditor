@@ -9,7 +9,40 @@ const SearchResultWrapper = styled.div`
     padding-top: 40px;
 
     .search-tabs {
+        position: relative;
+
+        .icon-arrow {
+            font-size: 22px;
+            color: #b8b8b8;
+
+            &:hover {
+                color: #407CD5;
+            }
+        }
+
+        .tabs-disabled {
+            cursor: not-allowed;
+            color: #ccc;
+        }
+
+        .tabs-prev {
+            position: absolute;
+            top: 12px;
+            left: 0;
+        }
+
+        .tabs-next {
+            position: absolute;
+            top: 12px;
+            right: 0;
+        }
+    }
+
+    .search-tabs-header {
+        margin: 0 20px;
         border-bottom: 1px solid #E9E9E9;
+        overflow: hidden;
+
         li {
             display: inline-block;
             cursor: pointer;
@@ -26,6 +59,16 @@ const SearchResultWrapper = styled.div`
             &.active {
                 border-bottom-color: #108EE9;
             }
+        }
+    }
+
+    .search-tabs-headbox {
+        position: relative;
+
+        ul {
+            display: inline;
+            word-break: keep-all;
+            white-space: nowrap;
         }
     }
 
@@ -153,14 +196,120 @@ export default class SearchResult extends React.Component {
         super(props);
 
         this.state = {
-            activeTabIndex: 3
+            activeTabIndex: 3,
+            overflow: false,
+            transX: 0,
+            disable: {
+                prev: false,
+                next: false
+            },
+            tabs: [
+                {
+                    name: '公告'
+                },
+                {
+                    name: '研报'
+                },
+                {
+                    name: '资讯'
+                },
+                {
+                    name: '数据图'
+                },
+                {
+                    name: '数据表'
+                },
+                {
+                    name: '笔记'
+                }
+            ]
         }
     }
 
-    switchTab(index) {
+    componentDidMount() {
+        this.setOverflow();
+    }
+
+    setOverflow() {
+        if(this.refs.head.offsetWidth < this.refs.box.offsetWidth) {
+            this.setState({
+                overflow: true
+            });
+
+            this.setTransX(this.state.transX);
+        }
+    }
+
+    setTransX(transX) {
+        let disable = null;
+        if(transX === 0) {
+            disable = {
+                prev: true,
+                next: false
+            };
+        }else if(-transX == this.refs.box.offsetWidth - this.refs.head.offsetWidth) {
+            disable = {
+                prev: false,
+                next: true
+            }
+        }else {
+            disable = {
+                prev: false,
+                next: false
+            }
+        }
+
+        this.setState({
+            transX,
+            disable
+        })
+    }
+
+    // 设置transX
+    setTranslate3d(that, index) {
+        let thatLeft = that.offsetLeft + that.offsetWidth,
+            headWidth = this.refs.head.offsetWidth,
+            transX = Math.abs(this.state.transX);
+
+        // 左超出
+        if(transX > that.offsetLeft - 10) {
+            transX = that.offsetWidth - thatLeft + (index == 0 ? 0: that.previousSibling.offsetWidth)
+        }else if(thatLeft - transX > headWidth - (that.nextSibling ? that.nextSibling.offsetWidth : 0)) {
+            transX = headWidth - thatLeft - (this.state.tabs.length == index + 1 ? 0 : that.nextSibling.offsetWidth);
+        }else {
+            transX = -transX;
+        }
+
+        this.setTransX(transX);
+
+    }
+
+    switchTab = (index) => {
         this.setState({
             activeTabIndex: index
-        })
+        }, () => {
+            this.setTranslate3d(this.refs[`tab_${index}`], index)
+        });
+
+        // 点击回调
+        this.props.clickBack ? this.props.clickBack(index) : null;
+    }
+
+    // 上一页,下一页
+    prevAndNextClick(mark) {
+        let transX = Math.abs(this.state.transX);
+        if (mark == 'prev') {
+            transX = transX - this.refs.head.offsetWidth;
+            if (transX < 0) {
+                transX = 0;
+            }
+        } else {
+            transX = transX + this.refs.head.offsetWidth;
+            if (this.refs.box.offsetWidth - transX < this.refs.head.offsetWidth) {
+                transX = this.refs.box.offsetWidth - this.refs.head.offsetWidth;
+            }
+        }
+        this.setTransX(-transX);
     }
 
     insertTable(index) {
@@ -172,29 +321,7 @@ export default class SearchResult extends React.Component {
     }
 
     render() {
-        const tabs = [
-            {
-                name: '公告'
-            },
-            {
-                name: '研报'
-            },
-            {
-                name: '资讯'
-            },
-            {
-                name: '数据图'
-            },
-            {
-                name: '数据表'
-            },
-            {
-                name: '笔记'
-            }
-        ];
-
-        const { activeTabIndex } = this.state;
-
+        const { activeTabIndex, tabs, overflow } = this.state;
         const { searchResult } = this.props.drawerStore;
         const columns = [
             {
@@ -209,7 +336,9 @@ export default class SearchResult extends React.Component {
                 title: '2016年市场份额',
                 dataIndex: 'market'
             }
-        ]
+        ];
+
+        const style = { transform: `translate3d(${ this.state.transX }px, 0, 0)`};
         return <SearchResultWrapper>
             <Icon type='close' onClick={() => {this.props.closeCallback()}}></Icon>
             <form className="search-form" action="#">
@@ -217,13 +346,20 @@ export default class SearchResult extends React.Component {
                 <Button className="search-btn" onClick={ this.handleSearch }>搜索</Button>
             </form>
             <div className="search-tabs">
-                <ul>
-                    {
-                        tabs.map((tabItem, index) => {
-                            return <li key={ index } onClick={ this.switchTab.bind(this, index) } className={ activeTabIndex === index ? 'active' : undefined}>{ tabItem.name }</li>
-                        })
-                    }
-                </ul>
+                <a className={`tabs-prev${(this.state.disable.prev ? ' tabs-disabled' : '')}` } onClick={ this.prevAndNextClick.bind(this, 'prev') }><i className="icon-arrow iconfont icon-abc-arrow-left"></i></a>
+                <a className={`tabs-next${(this.state.disable.next ? ' tabs-disabled' : '')}` } onClick={ this.prevAndNextClick.bind(this, 'next') }><i className="icon-arrow iconfont icon-abc-arrow-right"></i></a>
+                <div className={`search-tabs-header ${ overflow ? 'tabs-overflow' : ''}`} ref="head">
+                    <div className="search-tabs-headbox" style={style}>
+                        <ul ref="box">
+                            {
+                                tabs.map((tabItem, index) => {
+                                    return <li ref={`tab_${ index }`} key={ index } onClick={ this.switchTab.bind(this, index) } className={ activeTabIndex === index ? 'active' : undefined}>{ tabItem.name }</li>
+                                })
+                            }
+                        </ul>
+                    </div>
+                </div>
+
             </div>
 
             <div className="search-result-content">

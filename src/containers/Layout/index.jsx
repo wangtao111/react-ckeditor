@@ -29,41 +29,49 @@ const AppContent = styled.section`
     .aside-tools {
         width: 40px;
         text-align: center;
-        background-color: #F2F2F2;
+        background-color: #F7F7F7;
         line-height: 30px;
-        margin-top: 14px;
+        padding-top: 14px;
     }
 
     .aside-icon {
-        display: inline-block;
-        width: 30px;
-        height: 30px;
-        border: 1px solid #fff;
-        border-radius: 50%;
+        position: relative;
+        display: block;
+        height: 36px;
+        line-height: 36px;
         background-position: center;
         background-size: 18px;
         background-repeat: no-repeat;
+        font-size: 20px;
+        color: #696969;
         cursor: pointer;
-    }
+        
+        .triangle {
+            display: none;
+            position: absolute;
+            border: 5px solid transparent;
+            border-left-color: #5A5A5A;
+            top: calc(50% - 0.2em);
+        }
 
-    .wise-search {
-        background-color: #87C0F3;
-        background-image: url('${require('../../theme/images/icon-side-search.png')}');
-    }
+        &:hover {
+            color: #fff;
+            background-color: #6C9AF0;
 
-    .wise-command {
-        background-color: #C27FD9;
-        background-image: url('${require('../../theme/images/icon-side-cmd.png')}');
-    }
+            i {
+                display: block;
+            }
 
-    .component-list {
-        background-color: #8BC780;
-        background-image: url('${require('../../theme/images/icon-side-list.png')}');
-    }
-
-    .other-setting {
-        background-color: #F0C282;
-        background-image: url('${require('../../theme/images/icon-side-setting.png')}');
+            &:after {
+                position: absolute;
+                left: -73px;
+                top: 0;
+                content: attr(data-title);
+                background-color: #5A5A5A;
+                font-size: 14px;
+                padding: 0 0.6em;
+            }
+        }
     }
 `;
 
@@ -132,10 +140,10 @@ export default class Layout extends React.Component {
                 <FinEditor />
 
                 <ul className="aside-tools">
-                    <li className="wise-search aside-icon" title="智能搜索" onClick={ this.wiseSearch }></li>
-                    <li className="wise-command aside-icon" title="智能命令" onClick={ this.setCommandPop }></li>
-                    <li className="component-list aside-icon" title="组件列表" onClick={ this.setComponentList }></li>
-                    <li className="other-setting aside-icon" title="其它设置" onClick={ () => this.setLayout(true) }></li>
+                    <li className="aside-icon iconfont icon-abc-search" data-title="智能搜索" onClick={ this.wiseSearch }><i className="triangle"></i></li>
+                    <li className="aside-icon iconfont icon-abc-edit" data-title="智能命令" onClick={ this.setCommandPop }><i className="triangle"></i></li>
+                    <li className="aside-icon iconfont icon-abc-list" data-title="组件列表" onClick={ this.setComponentList }><i className="triangle"></i></li>
+                    <li className="aside-icon iconfont icon-abc-setting" data-title="其它设置" onClick={ () => this.setLayout(true) }><i className="triangle"></i></li>
                 </ul>
                 <CommandPopup></CommandPopup>
 
