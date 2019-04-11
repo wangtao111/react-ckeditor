@@ -341,6 +341,16 @@ body[contenteditable="false"] .cke_widget_wrapper .cke_widget_editable.cke_widge
 	outline: none;
 }
 
+body[contenteditable="false"] .tpl-dashed-border,
+body[contenteditable="false"] .editable-content {
+	border-color: transparent;
+	margin: 0;
+}
+
+body[contenteditable="false"] .cke_widget_wrapper:hover .cke_widget_editable {
+	outline: 0;
+}
+
 .chartContainer {
 	position: relative;
 }

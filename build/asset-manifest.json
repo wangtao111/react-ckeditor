@@ -1,8 +1,8 @@
 {
   "main.css": "static/css/main.497235e2.css",
   "main.css.map": "static/css/main.497235e2.css.map",
-  "main.js": "static/js/main.0858ed05.js",
-  "main.js.map": "static/js/main.0858ed05.js.map",
+  "main.js": "static/js/main.b20d1c23.js",
+  "main.js.map": "static/js/main.b20d1c23.js.map",
   "static/media/019f5f61e0699941e294d749b26bce9b.svg": "static/media/019f5f61e0699941e294d749b26bce9b.019f5f61.svg",
   "static/media/462dbad6f0467e39f28ba2889b33748e.eot": "static/media/462dbad6f0467e39f28ba2889b33748e.462dbad6.eot",
   "static/media/67160a55e890b6ec1a8299bc8b71aaf5.ttf": "static/media/67160a55e890b6ec1a8299bc8b71aaf5.67160a55.ttf",
@@ -12,9 +12,13 @@
   "static/media/icon_add_template.png": "static/media/icon_add_template.1f421835.png",
   "static/media/icon_more_tools.png": "static/media/icon_more_tools.bd4cf0cb.png",
   "static/media/iconfont.eot?t=1552718321562": "static/media/iconfont.b657e5c6.eot",
+  "static/media/iconfont.eot?t=1554953280618": "static/media/iconfont.184814bb.eot",
   "static/media/iconfont.svg?t=1552718321562": "static/media/iconfont.7be88448.svg",
+  "static/media/iconfont.svg?t=1554953280618": "static/media/iconfont.c4fbd37b.svg",
   "static/media/iconfont.ttf?t=1552718321562": "static/media/iconfont.b53a11d5.ttf",
+  "static/media/iconfont.ttf?t=1554953280618": "static/media/iconfont.135550a5.ttf",
   "static/media/iconfont.woff?t=1552718321562": "static/media/iconfont.a0873066.woff",
+  "static/media/iconfont.woff?t=1554953280618": "static/media/iconfont.e92381a0.woff",
   "static/media/research_report_logo.png": "static/media/research_report_logo.214cebe0.png",
   "static/media/yanjiu.png": "static/media/yanjiu.6f07a8f2.png"
 }

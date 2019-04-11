@@ -148,8 +148,8 @@ CKEDITOR.plugins.add('template', {
                 position: absolute;
                 width: 20px;
                 height: 20px;
-                bottom: -4px;
-                right: -4px;
+                bottom: -5px;
+                right: -15px;
                 outline: 1px solid transparent;
                 line-height: 0;
                 cursor: se-resize;

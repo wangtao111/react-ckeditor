@@ -701,6 +701,8 @@ export default class Editor extends React.Component {
                 { name: 'others', groups: ['others'] },
                 { name: 'about', groups: ['about'] }
             ],
+            magicline_color: '#407CD5',
+            // magicline_everywhere: true,
             removeButtons: 'PasteFromWord,Paste,Resize,AutoSave,Clipboard,Smiley,ColorButton, Source,Templates,Chart,Source,Flash,SpecialChar,PageBreak,Iframe,ShowBlocks,About,Language,CreateDiv,Form,Checkbox,Radio,TextField,Textarea,Select,Button,ImageButton,HiddenField,Scayt,SelectAll,BidiRtl,BidiLtr,Superscript,Subscript,Styles',
             qtCellPadding: '0',
             qtCellSpacing: '0',
@@ -781,9 +783,9 @@ export default class Editor extends React.Component {
         const colors = ['#DF3F2B', '#D5952C', '#8B572A', '#417505', '#7C38B8', '#4A90E2', '#9B9B9B', '#000000', '#1C5773', '#CAA260'];
 
         return <EditorTemplate>
-            <div style={{ display: 'flex', marginBottom: '2px' }} id="artical_tilte">
-                <input className='title_input' type='textarea' value={title} onChange={this.titleChange} />
-                <div style={{ position: 'relative' }}>
+            <div style={{ display: 'flex', marginBottom: '2px' }}>
+                <input className='title_input' type='textarea' value={title} onChange={this.titleChange} id="artical_tilte" />
+                <div style={{ position: 'relative', borderRight: '1px solid #e1e1e1' }}>
                     <ul className='tools'>
                         {
                             tools.map((li, index) => {

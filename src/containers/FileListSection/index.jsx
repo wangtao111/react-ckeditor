@@ -491,14 +491,14 @@ export default class FileListSection extends React.Component {
                                     </div>
                                     <div className="article-footer">
                                         <time>{typeof noteItem.createTime === 'number' ? moment(noteItem.createTime).format('YYYY-MM-DD'): noteItem.createTime}</time>
-                                        <span>{noteItem.fileSize}</span>
-                                        <Button icon='delete'
+                                        <span>{noteItem.fileSize + 'KB'}</span>
+                                        {/* <Button icon='delete'
                                                 size='small'
                                                 style={{marginLeft: '20px'}}
                                                 onClick={(e) => {
                                                     e.stopPropagation();
                                                     this.removeNote(index)
-                                                }}></Button>
+                                                }}></Button> */}
                                     </div>
                                 </a>
                             </li>

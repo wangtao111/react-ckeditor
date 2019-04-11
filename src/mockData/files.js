@@ -2,7 +2,7 @@ const FileData = [
     {
         articleTitle: '欢迎使用金融云笔记',
         briefContent: '欢迎使用全新的金融云笔记--工作效率更高',
-        fileSize: '7.1MB',
+        fileSize: '7.1',
         createTime: '2019-01-03',
         imgUrl: require('../img/welcome.png'),
         type: 1,
@@ -57,7 +57,7 @@ const FileData = [
                 `
     },
     {
-        articleTitle: '《看研报》产品分析报告', briefContent: '产品亮点1、核心能力：核心提供【搜索+订阅内容服务】，在推荐层面较弱', imgUrl: require('../img/kanyanbao.png'), fileSize: '6.6MB', createTime: '2019-02-01', type: 1,
+        articleTitle: '《看研报》产品分析报告', briefContent: '产品亮点1、核心能力：核心提供【搜索+订阅内容服务】，在推荐层面较弱', imgUrl: require('../img/kanyanbao.png'), fileSize: '6.6', createTime: '2019-02-01', type: 1,
         articleContent: '<div style="font-size: 15px;">' +
             `<style>
                         span[name = 'select_box']:after{
@@ -97,7 +97,7 @@ const FileData = [
             '</div>'
     },
     {
-        articleTitle: '光大证券-【光大研究每日速递】20180904', briefContent: '【金融工程】震荡调整继续、九月低配规模、EEP因子1、择时与风格: 市场大概', imgUrl: require('../img/guangda.png'), fileSize: '7.13MB', createTime: '2018-09-03', type: 1,
+        articleTitle: '光大证券-【光大研究每日速递】20180904', briefContent: '【金融工程】震荡调整继续、九月低配规模、EEP因子1、择时与风格: 市场大概', imgUrl: require('../img/guangda.png'), fileSize: '7.13', createTime: '2018-09-03', type: 1,
         articleContent: '<div style="font-size: 15px;">' +
             '<p style="text-align: center;font-size: 18px;font-weight: bold; color: #444;margin-bottom: 40px">今日聚焦</p>' +
             '<div style="margin-bottom: 60px">' +
