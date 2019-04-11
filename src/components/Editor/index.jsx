@@ -238,6 +238,7 @@ export default class Editor extends React.Component {
         this.setState({
             data: evt.editor.getData()
         });
+        this.setEditorHeight();
     }
 
     setTemplate = (template) => {
