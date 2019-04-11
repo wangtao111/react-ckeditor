@@ -30,6 +30,7 @@ const EditorTemplate = styled.div`
         position: absolute;
         right: 40px;
         top: 50px;
+        z-index: 100;
         background: #fff;
         box-shadow: 0px 2px 10px 0px #bbb;
         >li{

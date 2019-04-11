@@ -77,7 +77,7 @@ const tables = [
         source: '数据中心',
         detail: 'g,gm,gmj,gui,guimu',
         endTag: true,
-        tag: '<span style="border: 1px dashed #999;color: blue; cursor: pointer" contenteditable="false" name="select_box">归母净利润580.95亿元</span><span>&nbsp;</span>'
+        tag: '<span style="border: 1px dashed #999;color: blue; cursor: pointer" contenteditable="false" name="select_box">归母净利润580.95亿元</span><span style="color: #000;">&nbsp;</span>'
     },
 ];
 const commonTables = [

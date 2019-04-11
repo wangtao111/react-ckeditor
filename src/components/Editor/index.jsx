@@ -318,11 +318,12 @@ export default class Editor extends React.Component {
         this.setEditorIframe();
         const editorContent = document.getElementById('cke_1_contents');
         editorContent.appendChild(document.getElementById('charts'));
+        editorContent.appendChild(document.getElementById('command_tag_pane'));
         document.getElementsByClassName('cke_autocomplete_panel')[0].style.width = 'auto';
     }
     openChartsPopup = () => {
         const menu = document.getElementById('charts'),
-              editorContent = document.getElementById('cke_1_contents');
+            editorContent = document.getElementById('cke_1_contents');
         const scrollX = editorContent.scrollLeft;
         const scrollY = editorContent.scrollTop;
         const position = this.position;
@@ -356,10 +357,8 @@ export default class Editor extends React.Component {
             const node = range.startContainer.$.parentNode;
             this.pNode = null;
             this.range = null;
-            if (currentStr === '~' || currentStr === '～' || currentStr === '一') {
-                currentStr = '~'
-            }
-            if (node.getAttribute('name') === 'temporary') {　//选择公司后进入此逻辑
+            console.log(currentStr)
+            if (node.getAttribute('name') === 'temporary') {　//选择公司后～进入此逻辑
                 const pNode = this.getParentNode(range.startContainer.$);
                 const matchArr = text.split('~'), matchText = matchArr[matchArr.length - 1];
                 const innertext = pNode.innerText;
@@ -434,7 +433,7 @@ export default class Editor extends React.Component {
                     };
                 }
             } else {
-                if (currentStr === '~') {
+                if (currentStr === '~' || currentStr === '～') {
                     if (!doing) { // 匹配'~'进入此逻辑
                         this.callbackData = [{
                             id: 1,
@@ -444,8 +443,8 @@ export default class Editor extends React.Component {
                         }];
                         this.autocomplete.view.itemTemplate.source = '<li data-id="{id}" style="width: 100px">{title}</li>';
                         return {
-                            start: text.lastIndexOf('~'),
-                            end: text.lastIndexOf('~') + 1
+                            start: text.lastIndexOf(currentStr),
+                            end: text.lastIndexOf(currentStr) + 1
                         };
                     }
                     return null;
@@ -473,6 +472,7 @@ export default class Editor extends React.Component {
             document.getElementById('cke_1_contents').style.height = height - 5 + 'px';
             document.getElementById('cke_1_contents').style.position = 'relative';
             document.getElementById('cke_1_contents').style.overflow = 'auto';
+            document.getElementById('cke_1_contents').style.background = '#fff';
             document.getElementById('file_list').style.height = document.body.offsetHeight - header.offsetHeight - 5 + 'px';
             if (!dom.body) {
                 return;
@@ -493,23 +493,27 @@ export default class Editor extends React.Component {
         }, false);
         document.onclick = (e) => {
             this.hideItem(e);
-            this.setEditorHeight()
+            this.setEditorHeight();
+            this.setState({ showMore: false });
         }
         dom.onclick = (e) => {
             const tag = e.target.getAttribute('name');
             this.setEditorHeight();
             this.hideItem(e);
+            this.setState({ showMore: false });
             if (tag === 'select_box') {
-                const scrollX = dom.documentElement.scrollLeft || dom.body.scrollLeft;
-                const scrollY = dom.documentElement.scrollTop || dom.body.scrollTop;
-                const offset = this.getPoint(document.getElementById('cke_1_contents'));
-                const x = e.target.offsetLeft;
-                const y = e.target.offsetTop;
-                const el = document.getElementById('command_tag_pane');
-                el.style.display = 'block';
-                el.style.left = x + offset.x - scrollX + 'px';
-                el.style.top = y + offset.y - scrollY + 20 + 'px';
-                document.getElementById('command_tag_pane').style.display = 'block';
+                const menu = document.getElementById('command_tag_pane'),
+                    editorContent = document.getElementById('cke_1_contents');
+                const scrollX = editorContent.scrollLeft;
+                const scrollY = editorContent.scrollTop;
+                menu.style.display = 'block';
+                let x = e.target.offsetLeft;
+                let y = e.target.offsetTop;
+                menu.style.left = x - scrollX + 'px';
+                menu.style.top = y - scrollY + 20 + 'px';
+                if (x + menu.offsetWidth - scrollX >= editorContent.offsetWidth) {
+                    x = editorContent.offsetWidth - menu.offsetWidth
+                }
                 this.tag = e.target;
             }
             if (tag === 'editCommand') {
@@ -563,8 +567,9 @@ export default class Editor extends React.Component {
         this.setState({ title: val.target.value });
     }
 
-    toolBarCharge = (li) => {
+    toolBarCharge = (li, e) => {
         this.setState({ showMore: false });
+        e.nativeEvent.stopImmediatePropagation();
         switch (li.title) {
             case '分享':
                 this.shareModalRef.showModal();
@@ -771,7 +776,7 @@ export default class Editor extends React.Component {
                     <ul className='tools'>
                         {
                             tools.map((li, index) => {
-                                return <li key={index} onClick={() => this.toolBarCharge(li)}><span className='tool_item' title={li.title}></span></li>
+                                return <li key={index} onClick={(e) => this.toolBarCharge(li, e)}><span className='tool_item' title={li.title}></span></li>
                             })
                         }
                     </ul>
