@@ -13,6 +13,7 @@ const CommandPopupWrapper = styled.div`
     width: 0;
     border-left: 1px solid #E1E2E6;
     margin-left: -1px;
+    overflow: auto;
     /* box-shadow: 0px 2px 6px 0px rgba(0, 0, 0, 0.3); */
 
     ${props => props.visible && css`
@@ -69,7 +70,7 @@ export default class CommandPopup extends React.Component {
     render() {
         const { isVisible, isComponentWidgets } = this.props.drawerStore;
         
-        return <CommandPopupWrapper visible={ isVisible } autoWidth={ isComponentWidgets }>
+        return <CommandPopupWrapper visible={ isVisible } autoWidth={ isComponentWidgets } id="command_popup">
             {
                 this.props.drawerStore.isCommandPop && <React.Fragment>
                     {/* 智能命令 */}
