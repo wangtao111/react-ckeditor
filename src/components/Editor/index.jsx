@@ -291,7 +291,6 @@ export default class Editor extends React.Component {
         const itemTemplate = '<li data-id="{id}"><div style="display: flex"><strong class="item-title" style="min-width: 100px">{title}</strong></div></li>';
         const outputTemplate = '{tag}';
         const that = this;
-        document.getElementById('cke_1_bottom').style.display = 'none';        
         this.autocomplete = new window.CKEDITOR
             .plugins
             .autocomplete(editor, {
@@ -464,7 +463,6 @@ export default class Editor extends React.Component {
     setEditorHeight = () => {
         setTimeout(() => {
             const toolbar = document.getElementById('cke_1_top'),
-                bottom = document.getElementById('cke_1_bottom'),
                 header = document.getElementById('header'),
                 title = document.getElementById('artical_tilte');
             if (!document.body) {
@@ -710,7 +708,7 @@ export default class Editor extends React.Component {
             qtClass: 'editor-table-widget',
             qtStyle: 'border: 1px solid #a7a7a7;',
             contentsCss: contentCss,
-            removePlugins: 'forms,bidi,elementspath',
+            removePlugins: 'forms,bidi,elementspath,resize',
             autoParagraph: false,
             // Configure your file manager integration. This example uses CKFinder 3 for PHP.
             filebrowserBrowseUrl: '/apps/ckfinder/3.4.5/ckfinder.html',
