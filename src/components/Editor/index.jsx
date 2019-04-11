@@ -466,6 +466,9 @@ export default class Editor extends React.Component {
                 bottom = document.getElementById('cke_1_bottom'),
                 header = document.getElementById('header'),
                 title = document.getElementById('artical_tilte');
+            if (!document.body) {
+                return
+            }
             const height = document.body.offsetHeight - toolbar.offsetHeight - title.offsetHeight - header.offsetHeight - bottom.offsetHeight;
             const iframe = document.getElementById('cke_1_contents').children[1];
             let dom = iframe.contentWindow.document;
@@ -479,7 +482,7 @@ export default class Editor extends React.Component {
             }
             iframe.style.height = dom.body.offsetHeight + 80 + 'px';
             dom.body.style.overflowY = 'hidden';
-        }, 0)
+        }, 10)
     }
     setEditorIframe = () => {
         const iframe = document.getElementById('cke_1_contents').children[1].contentWindow;
