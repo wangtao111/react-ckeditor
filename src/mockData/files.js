@@ -59,17 +59,9 @@ const FileData = [
     {
         articleTitle: '《看研报》产品分析报告', briefContent: '产品亮点1、核心能力：核心提供【搜索+订阅内容服务】，在推荐层面较弱', imgUrl: require('../img/kanyanbao.png'), fileSize: '6.6', createTime: '2019-02-01', type: 1,
         articleContent: '<div style="font-size: 15px;">' +
-            `<style>
-                        span[name = 'select_box']:after{
-                            content: url(${require('../img/arr.png')});
-                            width: 12px;
-                            margin-top: 5px;
-                            position: relative;
-                        }
-                    </style>` +
             '<p style="text-align: center;font-size: 18px;font-weight: bold; color: #444;margin-bottom: 40px">产品亮点</p>' +
             '<div style="margin-bottom: 60px">' +
-            '<p style="font-weight: bold; color: #555;" ><span style="border: 1px dashed #999;color: blue; cursor: pointer" contenteditable="false" name="select_box">【金融工程】震荡调整继续， 9月低配规则、EEP因子</span></p>' +
+            '<p style="font-weight: bold; color: #555;" ><span>【金融工程】震荡调整继续， 9月低配规则、EEP因子</span></p>' +
             '<ul style="margin: 15px 0; color: #666; list-style: none;padding: 0">' +
             '<li>1. 择时与风格： 坚持“以金融人为本”的经营主张，致力于职业经理人的人文关怀，积极为现代金融企业职业经理人提供前沿的金融理论、独到的管理理念，成为从事金融理论与实践研究的专家学者及各界同行的交流平台</li>' +
             '<li>2. 行业轮动： 小微企业融资一直是我国经济社会发展的重要难题，由于小微企业自身的经营风险和信用风险较高，在传统的金融资源获取方面一直处于劣势。随着互联网金融的蓬勃发展，互联网金融与小微企业融资理论和实践的研究越来越多</li>' +

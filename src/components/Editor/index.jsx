@@ -529,11 +529,10 @@ export default class Editor extends React.Component {
             if (tag === 'select_box') {
                 const menu = document.getElementById('command_tag_pane'),
                     editorContent = document.getElementById('cke_1_contents');
-                const scrollX = editorContent.scrollLeft;
-                const scrollY = editorContent.scrollTop;
+                const offset = this.offsetDis(e.target);
                 menu.style.display = 'block';
-                let x = e.target.offsetLeft;
-                let y = e.target.offsetTop;
+                let x = offset.x;
+                let y = offset.y;
                 menu.style.left = x + 'px';
                 menu.style.top = y + 20 + 'px';
                 if (x + menu.offsetWidth >= editorContent.offsetWidth) {
@@ -547,6 +546,15 @@ export default class Editor extends React.Component {
                 e.target.parentNode.parentNode.parentNode.replaceChild(content, e.target.parentNode.parentNode)
             }
         }
+    }
+    offsetDis = (obj) => {
+        var l = 0, t = 0;
+        while(obj) {
+            l = l + obj.offsetLeft + obj.clientLeft;
+            t = t + obj.offsetTop + obj.clientTop;
+            obj = obj.offsetParent;
+        }
+        return {x: l, y: t};
     }
 
     hideItem = (e) => {
