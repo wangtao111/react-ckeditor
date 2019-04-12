@@ -187,9 +187,10 @@ export default class Editor extends React.Component {
         });
     }
     beforeCommandInsert = (data) => {
-        const valueKey = '金融';
-        let arr = data.split(valueKey);
-        let content = arr.join(`<span style="color:red;">${valueKey}</span>`);
+        // const valueKey = '金融';
+        // let arr = data.split(valueKey);
+        // let content = arr.join(`<span style="color:red;">${valueKey}</span>`);
+        let content = data;
         content += `<style>
             span[name = 'select_box']:after{
                 content: url(${require('../../img/arr.png')});
@@ -314,7 +315,7 @@ export default class Editor extends React.Component {
                 if (that.range) {
                     that.range.endContainer.$.parentNode.className = '';
                 }
-                if (item.endTag) {
+                if (item.endTag && that.pNode) {
                     that.pNode.innerHTML = item.tag;
                 }
                 if (item.charts) {
@@ -533,9 +534,9 @@ export default class Editor extends React.Component {
                 menu.style.display = 'block';
                 let x = e.target.offsetLeft;
                 let y = e.target.offsetTop;
-                menu.style.left = x - scrollX + 'px';
-                menu.style.top = y - scrollY + 20 + 'px';
-                if (x + menu.offsetWidth - scrollX >= editorContent.offsetWidth) {
+                menu.style.left = x + 'px';
+                menu.style.top = y + 20 + 'px';
+                if (x + menu.offsetWidth >= editorContent.offsetWidth) {
                     x = editorContent.offsetWidth - menu.offsetWidth
                 }
                 this.tag = e.target;
