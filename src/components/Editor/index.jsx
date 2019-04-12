@@ -129,7 +129,8 @@ export default class Editor extends React.Component {
             // 调用插入表格的widget
             const editor = this.editorRef.current.editor;
             const tableTime = new Date().getTime();
-            insertTable(`${tableTime}`, editor, this.pNode.innerHTML + "");
+            const command = this.pNode ? this.pNode.innerHTML + '' : '';
+            insertTable(`${tableTime}`, editor, command);
             this.setPNodeHtml();
             const widgetInstances = editor.widgets.instances;
             editor.execCommand(`inserttable-widget${tableTime}`);
