@@ -47,7 +47,7 @@ export default function(widgetNum, editor, command) {
         editor.fire('removeFormatCleanup', table);
     }
     editor.widgets.add(`inserttable-widget${ widgetNum }`, {
-        template: `<div style="position: relative" class="charts_container">
+        template: `<div style="position: relative" class="tableContainer">
         <div id="tableWrapper${widgetNum}" class="container"></div>
         <p name='command' style='width:0;height:0;overflow:hidden;position: absolute;'>${command}</p>` +
         `<img class="editCommand" name='editCommand' src="${require('../img/edit.png')}" title="编辑命令"/>` +

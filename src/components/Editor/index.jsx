@@ -103,12 +103,14 @@ export default class Editor extends React.Component {
         eventEmitter.on('EDITOR_INSERT_CHART', (chartId) => {
             const editor = this.editorRef.current.editor;
             const chartTime = new Date().getTime();
+            const command = this.pNode ? this.pNode.innerHTML + '': '';
             this.setPNodeHtml();
+            debugger;
             insertChart(`${chartTime}`, editor, () => {
                 this.setState({
                     chartSettingVisible: true
                 })
-            });
+            }, command);
             const chartOption = this.props.editorStore.chartDataObj[chartId];
             const widgetInstances = editor.widgets.instances;
 
@@ -130,6 +132,7 @@ export default class Editor extends React.Component {
             const editor = this.editorRef.current.editor;
             const tableTime = new Date().getTime();
             const command = this.pNode ? this.pNode.innerHTML + '' : '';
+            debugger;
             insertTable(`${tableTime}`, editor, command);
             this.setPNodeHtml();
             const widgetInstances = editor.widgets.instances;
@@ -198,7 +201,8 @@ export default class Editor extends React.Component {
                 margin-top: 5px;
                 position: relative;
             }
-            .charts_container:hover > .editCommand{
+            .tableContainer:hover > .editCommand,
+            .chartContainer:hover > .editCommand {
                 display: block;
               }
               .editCommand{
@@ -552,7 +556,7 @@ export default class Editor extends React.Component {
             }
             if (tag === 'editCommand') {
                 let content = document.createElement("span");
-                content.innerHTML = `<span name='temporary' style='color: blue'>${e.target.previousSibling.innerHTML}</span>`
+                content.innerHTML = `<span name='temporary' style='color: blue'>${e.target.previousElementSibling.innerHTML}</span>`
                 e.target.parentNode.parentNode.parentNode.replaceChild(content, e.target.parentNode.parentNode)
             }
         }
@@ -742,7 +746,7 @@ export default class Editor extends React.Component {
             qtStyle: 'border: 1px solid #a7a7a7;',
             contentsCss: contentCss,
             removePlugins: 'forms,bidi,elementspath,resize',
-            autoParagraph: false,
+            // autoParagraph: false,
             // Configure your file manager integration. This example uses CKFinder 3 for PHP.
             filebrowserBrowseUrl: '/apps/ckfinder/3.4.5/ckfinder.html',
             filebrowserImageBrowseUrl: '/apps/ckfinder/3.4.5/ckfinder.html?type=Images',

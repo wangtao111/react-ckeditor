@@ -125,7 +125,7 @@ const TEMPLATES = [
                     <option>摘要</option>
                 </select>
 
-                <div class="editable-content-wrapper">
+                <div class="editable-content-wrapper tpl-dashed-border">
                     <div class="editable-content">
                         <h3>{titleName}</h3>
                     </div>
@@ -141,7 +141,7 @@ const TEMPLATES = [
                     <option value="股价">股价</option>
                 </select>
 
-                <h3>{titleName}</h3>
+                <div class="tpl-dashed-border"><h3>{titleName}</h3></div>
             </section>
         `
     },
@@ -153,7 +153,7 @@ const TEMPLATES = [
                     <option value="作者">作者</option>
                 </select>
 
-                <div class="editable-content-wrapper">
+                <div class="editable-content-wrapper tpl-dashed-border">
                     <div class="editable-content">
                         <div class="content-wrapper">
                             <h3>{titleName}</h3>

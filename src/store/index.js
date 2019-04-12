@@ -11,6 +11,7 @@ import EditorStore from './editor';
 import NoteStore from './note';
 import DrawerStore from './drawer';
 import MenuStore from './menu';
+import SearchStore from './search';
 
 // 只允许 内部改变 state
 configure({ enforceActions: true })
@@ -22,6 +23,7 @@ class Store {
         this.noteStore = new NoteStore(this);
         this.drawerStore = new DrawerStore(this);
         this.menuStore = new MenuStore(this);
+        this.searchStore = new SearchStore(this);
     }
 }
 

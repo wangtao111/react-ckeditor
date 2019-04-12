@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { inject, observer } from 'mobx-react';
 import { Table, Button, Icon, Input } from 'antd';
 import eventEmitter from '../../event';
+import DataTableCard from 'abc-data-table-card';
 
 const SearchResultWrapper = styled.div`
     position: relative;
@@ -190,6 +191,7 @@ const SearchResultWrapper = styled.div`
 `;
 
 @inject('drawerStore')
+@inject('searchStore')
 @observer
 export default class SearchResult extends React.Component {
     constructor(props) {
@@ -316,13 +318,23 @@ export default class SearchResult extends React.Component {
         eventEmitter.emit('EDITOR_INSERT_TABLE_CODE', document.getElementById(`report-${ index }`).parentNode.innerHTML);
     }
 
-    handleSearch() {
+    handleSearch = () => {
+        this.props.searchStore.getAnalystTableSearch({
+            keyword: this.keyword,
+            limit: 10,
+            offset: 0
+        });
+    }
 
+    handleInput = (e) => {
+        const value = e.target.value;
+        this.keyword = value;
     }
 
     render() {
         const { activeTabIndex, tabs, overflow } = this.state;
         const { searchResult } = this.props.drawerStore;
+        const { analystTable } = this.props.searchStore;
         const columns = [
             {
                 title: '厂商',
@@ -341,8 +353,8 @@ export default class SearchResult extends React.Component {
         const style = { transform: `translate3d(${ this.state.transX }px, 0, 0)`};
         return <SearchResultWrapper>
             <Icon type='close' onClick={() => {this.props.closeCallback()}}></Icon>
-            <form className="search-form" action="#">
-                <Input placeholder="输入关键词搜索"/>
+            <form className="search-form">
+                <Input placeholder="输入关键词搜索" onChange={ this.handleInput }/>
                 <Button className="search-btn" onClick={ this.handleSearch }>搜索</Button>
             </form>
             <div className="search-tabs">
@@ -394,6 +406,12 @@ export default class SearchResult extends React.Component {
                         </div>
                     })
                 }
+
+                {/* {
+                    (analystTable.items && !!analystTable.items.length) && analystTable.items.map((item, index) => {
+                        return <DataTableCard keyword={ analystTable.keyword }></DataTableCard>
+                    })
+                } */}
                 
             </div>
         </SearchResultWrapper>
