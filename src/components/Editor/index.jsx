@@ -432,7 +432,17 @@ export default class Editor extends React.Component {
                     }
 
                     if (lastText.indexOf('归母晶') !== -1) { //智能纠错
-                        this.callbackData = tables;
+                        let data = tables.filter(function (item) { //匹配模板
+                            const arr = item.detail.split(',');
+                            let flag = false;
+                            arr.forEach((val) => {
+                                if (val === lastText) {
+                                    flag = true;
+                                }
+                            })
+                            return item.title.indexOf('归') !== -1 || flag;
+                        });
+                        this.callbackData = data;
                         this.range = range;
                         range.endContainer.$.parentNode.className = 'bowen';
                     } else {
