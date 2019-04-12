@@ -50,9 +50,7 @@ export default function(widgetNum, editor, command) {
         template: `<div style="position: relative" class="charts_container">
         <div id="tableWrapper${widgetNum}" class="container"></div>
         <p name='command' style='width:0;height:0;overflow:hidden;position: absolute;'>${command}</p>` +
-        `<div class="editCommand" name='editCommand'>
-            编辑命令
-        </div>` +
+        `<img class="editCommand" name='editCommand' src="${require('../img/edit.png')}" title="编辑命令"/>` +
         `</div>`,
         requireContent: 'div(container)',
         upcast: function(element) {

@@ -170,47 +170,55 @@ export default class Editor extends React.Component {
         eventEmitter.on('NEW_PAGE', (data) => {
             this.setState({ title: '', data: '' });
             const { name, template } = data;
-            setTimeout(() => {
-                this.setTemplate(template);
-                this.setState({ title: name });
-            }, 100)
-        });
-        // 浏览文章
-        eventEmitter.on('SKIM_ARTICLE', (data) => {
-            const valueKey = '金融';
-            let arr = data.articleContent.split(valueKey);
-            let content = arr.join(`<span style="color:red;">${valueKey}</span>`);
-            content += `<style>
-                span[name = 'select_box']:after{
-                    content: url(${require('../../img/arr.png')});
-                    width: 12px;
-                    margin-top: 5px;
-                    position: relative;
-                }
-                .charts_container:hover > .editCommand{
-                    display: block;
-                  }
-                  .editCommand{
-                    display: none;position: absolute; right: -2px;top: -28px; height:24px;line-height: 24px;font-size: 12px;border-radius:2px;background: #3b8dee; color: #fff;cursor: pointer; padding: 2px 10px;
-                  }
-                .bowen{position: relative;color: #953039;}
-                    .bowen:after{
-                        content: '';
-                        position: absolute;
-                        bottom: -2px;
-                        left: 0%;
-                        width: 100%;
-                        height: 2px;
-                        background: -webkit-linear-gradient(315deg, transparent, transparent 45%, #953039, transparent 55%, transparent 100%),-webkit-linear-gradient(45deg, transparent, transparent 45%, #953039, transparent 55%, transparent 100%); 
-                        background-size: 4px 4px;
-                        background-repeat: repeat-x;
-                    }
-            </style>`;
+            const content = this.beforeCommandInsert(this.getTemplate(template));
             this.setState({ data: content, title: data.articleTitle })
             setTimeout(() => {
                 this.setEditorIframe();
             }, 100)
         });
+        // 浏览文章
+        eventEmitter.on('SKIM_ARTICLE', (data) => {
+            const content = this.beforeCommandInsert(data.articleContent);
+            this.setState({ data: content, title: data.articleTitle })
+            setTimeout(() => {
+                this.setEditorIframe();
+            }, 100)
+        });
+    }
+    beforeCommandInsert = (data) => {
+        const valueKey = '金融';
+        let arr = data.split(valueKey);
+        let content = arr.join(`<span style="color:red;">${valueKey}</span>`);
+        content += `<style>
+            span[name = 'select_box']:after{
+                content: url(${require('../../img/arr.png')});
+                width: 12px;
+                margin-top: 5px;
+                position: relative;
+            }
+            .charts_container:hover > .editCommand{
+                display: block;
+              }
+              .editCommand{
+                position: absolute; right: -2px;top: -20px; overflow: hidden;height:24px;line-height: 24px;font-size: 12px;border-radius:2px;cursor: pointer!important;
+                display: none;
+                width: 20px;
+                height: 20px;
+            }
+            .bowen{position: relative;color: #953039;}
+                .bowen:after{
+                    content: '';
+                    position: absolute;
+                    bottom: -2px;
+                    left: 0%;
+                    width: 100%;
+                    height: 2px;
+                    background: -webkit-linear-gradient(315deg, transparent, transparent 45%, #953039, transparent 55%, transparent 100%),-webkit-linear-gradient(45deg, transparent, transparent 45%, #953039, transparent 55%, transparent 100%); 
+                    background-size: 4px 4px;
+                    background-repeat: repeat-x;
+                }
+        </style>`;
+        return content;
     }
     afterEnter = () => {
         const editor = this.editorRef.current.editor;
@@ -241,10 +249,10 @@ export default class Editor extends React.Component {
         this.setEditorHeight();
     }
 
-    setTemplate = (template) => {
+    getTemplate = (template) => {
         const editor = this.editorRef.current.editor;
         this.props.editorStore.setEditor(editor);
-        editor.insertHtml(Template.generateTemplateHtml(template));
+        return Template.generateTemplateHtml(template);
     }
 
     hideMoreOptions() {
@@ -285,6 +293,7 @@ export default class Editor extends React.Component {
         ckeTop.append(toolGroup);
     }
     instanceReady = () => {
+        console.log(888)
         const editor = this.editorRef.current.editor;
         // 工具栏中增加更多工具组
         this.addMoreToolGroup();
@@ -482,10 +491,14 @@ export default class Editor extends React.Component {
                 return;
             }
             iframe.style.height = dom.body.offsetHeight + 80 + 'px';
+            dom.body.style.minHeight = height - 100 + 'px';
             dom.body.style.overflowY = 'hidden';
         }, 0)
     }
     setEditorIframe = () => {
+        if (!document.getElementById('cke_1_contents')) {
+            return;
+        }
         const iframe = document.getElementById('cke_1_contents').children[1].contentWindow;
         let dom = iframe.document;
         this.setEditorHeight();
