@@ -163,6 +163,8 @@ const FileListSectionWrapper = styled.div`
 
     .article-list {
         overflow: auto;
+        border-left: 1px solid #E1E2E6;
+        height: calc(100vh - 110px);
 
         & > li:hover {
             .remove-btn {
@@ -190,6 +192,7 @@ const FileListSectionWrapper = styled.div`
         position: relative;
         display: block;
         border: 1px solid #E1E2E6;
+        border-left: 0;
         font-size: 12px;
         color: #333;
         padding: 19px 22px;
@@ -484,7 +487,7 @@ export default class FileListSection extends React.Component {
                                 eventEmitter.emit('SKIM_ARTICLE', noteItem)
                             }}>
                                 <a className={`article-item ${index === activeIndex && 'article-item-hover'}`}>
-                                    <h3>{noteItem.articleTitle }</h3>
+                                    <h3><img src={ require('../../theme/images/icon_note.png')} alt="笔记logo" width={16} style={{ marginRight: 10, verticalAlign: '-5px'}} />{noteItem.articleTitle }</h3>
                                     <div className='content'>
                                         <p>{noteItem.briefContent}</p>
                                         <img src={noteItem.imgUrl} alt=""/>

@@ -1,9 +1,15 @@
-export default function(widgetNum, editor, setClickCallback) {
+export default function(widgetNum, editor, setClickCallback, command) {
     // 加载highchart.js，并在回调中处理画图表
     // this.last
     editor.document.getWindow().$.clickCallback = setClickCallback;
     editor.widgets.add(`insertchart-widget${ widgetNum }`, {
-        template: `<div class="chartContainer"><i class="setting" title="设置" onclick="clickCallback()"></i><div id="chartContainer${ widgetNum }"></div><span class="resize" id="resizer"><span></div>`,
+        template: `<div class="chartContainer">
+        <i class="setting iconfont icon-abc-setting" title="设置图表" onclick="clickCallback()"></i>
+        <div id="chartContainer${ widgetNum }"></div>
+        <p name='command' style='width:0;height:0;overflow:hidden;position: absolute;'>${command}</p>
+        <img class="editCommand" name='editCommand' src="${require('../img/edit.png')}" title="编辑命令"/>
+        <span class="resize" id="resizer"><span>
+        </div>`,
         requireContent: 'div(chartContainer)',
         upcast: function(element) {
             return element.name === 'div' && element.hasClass('chartContainer')
