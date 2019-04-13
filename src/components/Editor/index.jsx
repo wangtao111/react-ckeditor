@@ -295,7 +295,6 @@ export default class Editor extends React.Component {
         ckeTop.append(toolGroup);
     }
     instanceReady = () => {
-        console.log(888)
         const editor = this.editorRef.current.editor;
         // 工具栏中增加更多工具组
         this.addMoreToolGroup();
