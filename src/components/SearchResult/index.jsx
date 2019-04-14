@@ -4,6 +4,7 @@ import { inject, observer } from 'mobx-react';
 import { Table, Button, Icon, Input } from 'antd';
 import eventEmitter from '../../event';
 import DataTableCard from 'abc-data-table-card';
+import DataChartCard from 'abc-data-chart-card';
 
 const SearchResultWrapper = styled.div`
     position: relative;
@@ -95,13 +96,42 @@ const SearchResultWrapper = styled.div`
     .search-result-content {
         margin: 16px 20px;
         
-        .table-panel-wrapper {
-            border: 1px solid #E1E2E6;
-            padding: 20px;
+        .table-panel-wrapper,
+        .chart-panel-wrapper {
+            position: relative;
             margin-bottom: 20px;
+            overflow: hidden;
+
+            .data-chart-card_pos-right,
+            .pos-right {
+                display: none !important;
+            }
+
+            .right {
+                position: absolute;
+                right: 13px;
+                top: 13px;
+                width: 55px;
+                height: 24px;
+
+                .insert-btn {
+                    border-radius: 2px;
+                    background-color: #287DDC;
+                    font-size: 12px;
+                    color: #fff;
+
+                    &[disabled],
+                    &[disabled]:hover {
+                        color: rgba(0,0,0,.25);
+                        background-color: #f5f5f5;
+                        border-color: #d9d9d9;
+                        text-shadow: none;
+                    }
+                }
+            }
         }
         
-        .table-panel-header {
+        /* .table-panel-header {
             display: flex;
             justify-content: space-between;
             margin-bottom: 15px;
@@ -119,16 +149,7 @@ const SearchResultWrapper = styled.div`
                 }
             }
 
-            .right {
-                flex-basis: 55px;
-
-                .insert-btn {
-                    border-radius: 2px;
-                    background-color: #287DDC;
-                    font-size: 12px;
-                    color: #fff;
-                }
-            }
+            
         }
 
         .table-panel-footer {
@@ -169,7 +190,7 @@ const SearchResultWrapper = styled.div`
                     background-color: #f7f8fa;
                 }
             }
-        }
+        } */
     }
 
     .search-form {
@@ -198,7 +219,7 @@ export default class SearchResult extends React.Component {
         super(props);
 
         this.state = {
-            activeTabIndex: 3,
+            activeTabIndex: 4,
             overflow: false,
             transX: 0,
             disable: {
@@ -207,22 +228,28 @@ export default class SearchResult extends React.Component {
             },
             tabs: [
                 {
-                    name: '公告'
+                    name: '公告',
+                    fetchMethod: ''
                 },
                 {
-                    name: '研报'
+                    name: '研报',
+                    fetchMethod: ''
                 },
                 {
-                    name: '资讯'
+                    name: '资讯',
+                    fetchMethod: ''
                 },
                 {
-                    name: '数据图'
+                    name: '数据图',
+                    fetchMethod: 'getAnalystChartSearch'
                 },
                 {
-                    name: '数据表'
+                    name: '数据表',
+                    fetchMethod: 'getAnalystTableSearch'
                 },
                 {
-                    name: '笔记'
+                    name: '笔记',
+                    fetchMethod: ''
                 }
             ]
         }
@@ -283,14 +310,15 @@ export default class SearchResult extends React.Component {
         }
 
         this.setTransX(transX);
-
     }
 
     switchTab = (index) => {
         this.setState({
             activeTabIndex: index
         }, () => {
-            this.setTranslate3d(this.refs[`tab_${index}`], index)
+            this.setTranslate3d(this.refs[`tab_${index}`], index);
+
+            this.handleSearch();
         });
 
         // 点击回调
@@ -318,8 +346,16 @@ export default class SearchResult extends React.Component {
         eventEmitter.emit('EDITOR_INSERT_TABLE_CODE', document.getElementById(`report-${ index }`).parentNode.innerHTML);
     }
 
-    handleSearch = () => {
-        this.props.searchStore.getAnalystTableSearch({
+    handleSearch = (e) => {
+        e && e.preventDefault();
+
+        const { activeTabIndex, tabs } = this.state;
+
+        if(![3, 4].includes(activeTabIndex)) {
+            alert('其它Tab接口尚未联调！');
+            return;
+        }
+        this.props.searchStore[tabs[activeTabIndex].fetchMethod]({
             keyword: this.keyword,
             limit: 10,
             offset: 0
@@ -331,30 +367,24 @@ export default class SearchResult extends React.Component {
         this.keyword = value;
     }
 
+    // 插入图表或图片
+    insertChartOrImg = (index) => {
+        const { analystChart } = this.props.searchStore;
+        const chartItem = analystChart.item[index];
+
+        eventEmitter.emit('EDITOR_INSERT_CHART', JSON.parse(JSON.stringify(chartItem.chart_data.data)));
+    }
+
+
     render() {
         const { activeTabIndex, tabs, overflow } = this.state;
-        const { searchResult } = this.props.drawerStore;
-        const { analystTable } = this.props.searchStore;
-        const columns = [
-            {
-                title: '厂商',
-                dataIndex: 'firm'
-            },
-            {
-                title: '2016出货量',
-                dataIndex: 'shipment'
-            },
-            {
-                title: '2016年市场份额',
-                dataIndex: 'market'
-            }
-        ];
+        const { analystTable, analystChart, chartLoading } = this.props.searchStore;
 
         const style = { transform: `translate3d(${ this.state.transX }px, 0, 0)`};
         return <SearchResultWrapper>
             <Icon type='close' onClick={() => {this.props.closeCallback()}}></Icon>
             <form className="search-form">
-                <Input placeholder="输入关键词搜索" onChange={ this.handleInput }/>
+                <Input placeholder="输入关键词搜索" onChange={ this.handleInput } onPressEnter={ this.handleSearch }/>
                 <Button className="search-btn" onClick={ this.handleSearch }>搜索</Button>
             </form>
             <div className="search-tabs">
@@ -375,44 +405,57 @@ export default class SearchResult extends React.Component {
             </div>
 
             <div className="search-result-content">
+                {/* 数据图 */}
                 {
-                    (searchResult && !!searchResult.length) && searchResult.map((searchItem, index) => {
+                    (analystChart.item && !!analystChart.item.length && activeTabIndex === 3) && analystChart.item.map((item, index) => {
+                        const data = {
+                            id: item.id,
+                            image_title: item.image_title,
+                            time: item.time,
+                            title: item.title,
+                            type: item.type,
+                            author: item.author,
+                            chart_data: item.chart_data ? JSON.parse(JSON.stringify(item.chart_data.data || {})) : null,
+                            image_url: item.image_url
+                        }
+                        return <div className="chart-panel-wrapper">
+                            <DataChartCard
+                                    data={ data }
+                                    loading={ chartLoading }
+                                    isBitPicture={ item.chart_data ? item.chart_data.is_bitmap : false}
+                                    detailLink={`https://charttable.analyst.ai/chart/${ item.id || item.real_id}`}
+                                    sourceLink={`https://report.analyst.ai/report/article/${ item.file_id}`}
+                                    chartSize={{ height: 300, width: 350 }} />
+                            <div className="right">
+                                <Button type="primary" className="insert-btn" onClick={ this.insertChartOrImg.bind(this, index) }>插入</Button>
+                            </div>
+                        </div>
+                    })
+                    
+                }
+
+                {/* 数据表 */}
+                {
+                    (analystTable.items && !!analystTable.items.length && activeTabIndex === 4) && analystTable.items.map((item, index) => {
+                        const data = {
+                            table_data: item.table_data.data || [],
+                            table_title: item.table_title,
+                            time: item.time,
+                            title: item.title,
+                            type: item.type,
+                            company: item.company
+                        }
+
                         return <div className="table-panel-wrapper">
-                            <div className="table-panel-header">
-                                <div className="left">
-                                    <h2>{ searchItem.title }</h2>
-                                    <span className="date">{ searchItem.date }</span>
-                                </div>
-                               
-                                <div className="right">
-                                    <Button type="primary" className="insert-btn" onClick={ this.insertTable.bind(this, index) }>插入</Button>
-                                </div>
+                            <DataTableCard keyword={ analystTable.keyword } data={ data } key={ index }
+                                detailLink={`https://charttable.analyst.ai/table/${ item.id }`}
+                                sourceLink={`https://report.analyst.ai/detail?srcId=${ item.src_id }&page=${ item.filePage }`}></DataTableCard>
+                            <div className="right">
+                                <Button type="primary" className="insert-btn" disabled={ (!data.table_data || !data.table_data.length) } onClick={ this.insertTable.bind(this, index) }>插入</Button>
                             </div>
-
-                            <Table
-                                id={ `report-${ index }` }
-                                bordered
-                                columns={ columns }
-                                dataSource={ searchItem.data } 
-                                key={ index}
-                                pagination={ false }></Table>
-
-                            <div className="table-panel-footer">
-                                <p>公司: { searchItem.company || '--'}</p>
-                                <p>来源: <a className="link-a">{ searchItem.source || '--'}</a></p>
-                                <p>类别: { searchItem.type || '--'}</p>
-                            </div>
-
                         </div>
                     })
                 }
-
-                {/* {
-                    (analystTable.items && !!analystTable.items.length) && analystTable.items.map((item, index) => {
-                        return <DataTableCard keyword={ analystTable.keyword }></DataTableCard>
-                    })
-                } */}
-                
             </div>
         </SearchResultWrapper>
     }

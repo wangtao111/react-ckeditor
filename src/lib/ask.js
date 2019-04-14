@@ -53,7 +53,7 @@ export default function ask(name, opt = {}) {
     instance.interceptors.response.use(function (response) {
         const responseData = response.data;
 
-        if(responseData && responseData.code === 200) {
+        if(responseData && responseData.code === 200 || responseData.err_code === '0') {
             // 请求成功后 处理在此
             return Promise.resolve(responseData.data);
         }else {
