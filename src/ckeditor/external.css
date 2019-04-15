@@ -720,3 +720,269 @@
     margin: -8px -16px -9px;
   }
   
+/* abc-table-card */
+
+.gaoliang {
+  color: #DD4B39 !important;
+  background-color: transparent; }
+
+.DataTable-Container .single-tab-tableData {
+  position: relative;
+  background: #ffffff;
+  height: 100%;
+  width: 100%;
+  float: left;
+  margin-right: 0px;
+  border: 1px solid #eee;
+  box-sizing: border-box; }
+  .DataTable-Container .single-tab-tableData:hover {
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15); }
+  .DataTable-Container .single-tab-tableData .pos-right {
+    position: absolute;
+    right: 20px;
+    top: 18px;
+    display: block; }
+    .DataTable-Container .single-tab-tableData .pos-right .ant-dropdown-link {
+      font-weight: lighter;
+      color: #8c8c8c;
+      font-size: 16px; }
+  .DataTable-Container .single-tab-tableData a {
+    cursor: pointer;
+    color: #333;
+    font-weight: bolder;
+    font-size: 15px; }
+  .DataTable-Container .single-tab-tableData a:hover {
+    color: #287ddc;
+    text-decoration: none; }
+  .DataTable-Container .single-tab-tableData .color-gray {
+    line-height: 17px;
+    color: #9a9fa5; }
+  .DataTable-Container .single-tab-tableData .font-10, .DataTable-Container .single-tab-tableData .font-12 {
+    font-size: 12px; }
+  .DataTable-Container .single-tab-tableData .color-blue {
+    color: #9A9FA5;
+    text-decoration: underline; }
+  .DataTable-Container .single-tab-tableData .color-blue:hover {
+    color: #38609d; }
+  .DataTable-Container .single-tab-tableData .single-tab-table-show {
+    height: 236px;
+    width: 100%;
+    overflow: hidden;
+    background-color: white;
+    position: relative; }
+    .DataTable-Container .single-tab-tableData .single-tab-table-show .table-fixed {
+      margin: 16px;
+      overflow: hidden;
+      position: relative;
+      height: 219px;
+      cursor: pointer;
+      overflow-y: auto; }
+      .DataTable-Container .single-tab-tableData .single-tab-table-show .table-fixed:hover {
+        overflow-x: auto; }
+    .DataTable-Container .single-tab-tableData .single-tab-table-show .table-fixed::-webkit-scrollbar {
+      width: 6px !important; }
+    .DataTable-Container .single-tab-tableData .single-tab-table-show .table-fixed:hover::-webkit-scrollbar-thumb {
+      background: rgba(0, 0, 0, 0.1); }
+    .DataTable-Container .single-tab-tableData .single-tab-table-show .table-fixed::-webkit-scrollbar-thumb {
+      background: #eeeeee; }
+  .DataTable-Container .single-tab-tableData .single-tab-table-desc {
+    height: 120px;
+    background-color: #ffffff;
+    box-shadow: 0 2px 3px 0 rgba(0, 0, 0, 0.1);
+    padding: 10px 19px 11px 17px; }
+    .DataTable-Container .single-tab-tableData .single-tab-table-desc p {
+      padding: 0;
+      margin: 0; }
+    .DataTable-Container .single-tab-tableData .single-tab-table-desc .title {
+      height: 21px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap; }
+    .DataTable-Container .single-tab-tableData .single-tab-table-desc > div {
+      margin-bottom: 8px; }
+    .DataTable-Container .single-tab-tableData .single-tab-table-desc .source {
+      height: 16px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap; }
+    .DataTable-Container .single-tab-tableData .single-tab-table-desc p {
+      font-size: 12px;
+      color: #9A9FA5;
+      margin-top: 10px;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis; }
+      .DataTable-Container .single-tab-tableData .single-tab-table-desc p > a {
+        font-size: inherit;
+        font-weight: normal; }
+    .DataTable-Container .single-tab-tableData .single-tab-table-desc span {
+      margin-right: 5px; }
+  .DataTable-Container .single-tab-tableData .single-tab-chart-head {
+    padding: 15px;
+    background-color: #ffffff;
+    border-bottom: 1px solid #F0F0F0; }
+    .DataTable-Container .single-tab-tableData .single-tab-chart-head .title {
+      margin-bottom: 5px;
+      width: 90%;
+      line-height: 20px; }
+    .DataTable-Container .single-tab-tableData .single-tab-chart-head .ellipsis {
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis; }
+
+.DataTable-Container table {
+  border-bottom: 1px solid #eee;
+  table-layout: fixed;
+  background-color: white;
+  min-height: auto;
+  min-width: 100%;
+  font-size: 12px;
+  width: auto;
+  white-space: nowrap; }
+
+.DataTable-Container tbody {
+  display: table-row-group;
+  vertical-align: middle;
+  border-color: inherit; }
+
+.DataTable-Container table tr {
+  font-size: 12px;
+  line-height: 20px;
+  text-align: left; }
+
+.DataTable-Container table thead tr:first-child {
+  font-weight: bold;
+  background: #f8f8f8 !important; }
+
+.DataTable-Container table th {
+  padding: 5px; }
+
+.DataTable-Container table td {
+  min-width: 50px;
+  padding: 5px;
+  height: 20px;
+  line-height: 20px;
+  border: 1px solid #fff;
+  color: #757575;
+  white-space: nowrap;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  background-color: #f6f6f6; }
+
+.DataTable-Container tr.odd td {
+  background: #f7f8fa; }
+
+.DataTable-Container tr.even td {
+  background: #fff; }
+
+.DataTable-Container tr.even:last-child td {
+  border-bottom: 1px solid #f0f0f0; }
+
+.DataTable-Container tr.head-flag {
+  background-color: #949cb3;
+  color: #fff; }
+  .DataTable-Container tr.head-flag th, .DataTable-Container tr.head-flag td {
+    border: 1px solid rgba(212, 212, 212, 0.25);
+    background-color: #949cb3;
+    color: #fff; }
+
+.DataTable-Container .center {
+  text-align: center; }
+
+.DataTable-Container .item-count {
+  width: 200px;
+  height: 18px;
+  font-size: 13px;
+  font-family: PingFangSC-Regular;
+  color: #4A4A4A;
+  line-height: 18px;
+  display: block;
+  margin-top: 14px;
+  text-decoration: underline; }
+
+.DataTable-Container .tableListView-title {
+  width: 80px;
+  height: 28px;
+  font-size: 20px;
+  font-family: PingFangSC-Medium;
+  color: #333333;
+  line-height: 28px;
+  font-weight: bold; }
+
+.DataTable-Container .tableListViewContainer {
+  position: relative;
+  width: 890px;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  margin-top: 14px; }
+  .DataTable-Container .tableListViewContainer .tableListView {
+    margin: -5px;
+    position: relative;
+    overflow: hidden;
+    list-style: none;
+    padding: 0;
+    z-index: 1;
+    padding: 5px;
+    height: 100%; }
+    .DataTable-Container .tableListViewContainer .tableListView ul {
+      -webkit-transform: translate3d(0, 0, 0);
+      transform: translate3d(0, 0, 0);
+      position: relative;
+      width: 96%;
+      height: 100%;
+      z-index: 1;
+      display: flex;
+      -webkit-transition-property: -webkit-transform;
+      transition-property: -webkit-transform;
+      -o-transition-property: transform;
+      transition-property: transform;
+      transition-property: transform, -webkit-transform;
+      -webkit-box-sizing: content-box;
+      box-sizing: content-box; }
+      .DataTable-Container .tableListView {
+        overflow: hidden;
+      }
+      .DataTable-Container .tableListViewContainer .tableListView ul li {
+        display: flex;
+        box-pack: center;
+        -ms-flex-pack: center;
+        -webkit-justify-content: center;
+        justify-content: center;
+        box-align: center;
+        -ms-flex-align: center;
+        -webkit-align-items: center;
+        align-items: center;
+        flex-shrink: 0;
+        width: 100%;
+        height: 100%;
+        position: relative;
+        -webkit-transition-property: -webkit-transform;
+        transition-property: -webkit-transform;
+        -o-transition-property: transform;
+        transition-property: transform;
+        transition-property: transform, -webkit-transform; }
+  .DataTable-Container .tableListViewContainer .slidePre2,
+  .DataTable-Container .tableListViewContainer .slideNext2 {
+    width: 30px;
+    height: 30px;
+    display: block;
+    position: absolute;
+    bottom: 50%;
+    z-index: 1;
+    cursor: pointer; }
+    .DataTable-Container .tableListViewContainer .slidePre2:focus,
+    .DataTable-Container .tableListViewContainer .slideNext2:focus {
+      border: 0;
+      outline: none; }
+    .DataTable-Container .tableListViewContainer .slidePre2 img,
+    .DataTable-Container .tableListViewContainer .slideNext2 img {
+      width: 100%;
+      height: 100%; }
+  .DataTable-Container .tableListViewContainer .slidePre2 {
+    left: -18px; }
+  .DataTable-Container .tableListViewContainer .slideNext2 {
+    right: -18px; }
+  .DataTable-Container .tableListViewContainer .TableCard-button-disabled {
+    display: none; }

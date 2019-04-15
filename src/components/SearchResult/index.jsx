@@ -247,19 +247,12 @@ export default class SearchResult extends React.Component {
                     fetchMethod: ''
                 },
                 {
-<<<<<<< HEAD
-                    name: '数据表'
-                },
-                {
-                    name: '数据图'
-=======
                     name: '数据图',
                     fetchMethod: 'getAnalystChartSearch'
                 },
                 {
                     name: '数据表',
                     fetchMethod: 'getAnalystTableSearch'
->>>>>>> d3f14aac818edd69b9cfc085f380b5254d7f8fb9
                 },
                 {
                     name: '笔记',
@@ -356,8 +349,21 @@ export default class SearchResult extends React.Component {
         this.setTransX(-transX);
     }
 
-    insertTable(index) {
-        eventEmitter.emit('EDITOR_INSERT_TABLE_CODE', document.getElementById(`report-${index}`).parentNode.innerHTML);
+    insertTable(e, index) {
+        console.log('e: ', e);
+        const parentNode = e.target.parentNode.parentNode;
+        // 表格主体
+        const tableMain = parentNode.querySelector('.single-tab-table-show').cloneNode(true);
+
+        eventEmitter.emit('EDITOR_INSERT_TABLE_CODE', `
+            <div class="DataTable-Container">
+                <div class="tableListView">
+                    <div class="single-tab single-tab-tableData">
+                        ${ tableMain.outerHTML }
+                    </div>
+                </div>
+            </div>
+        `);
     }
 
     handleSearch = (e) => {
@@ -392,40 +398,15 @@ export default class SearchResult extends React.Component {
 
 
     render() {
-<<<<<<< HEAD
-        const { activeTabIndex, tabs, overflow, searchShow } = this.state;
-        const { searchResult } = this.props.drawerStore;
-        const { analystTable } = this.props.searchStore;
-        const columns = [
-            {
-                title: '厂商',
-                dataIndex: 'firm'
-            },
-            {
-                title: '2016出货量',
-                dataIndex: 'shipment'
-            },
-            {
-                title: '2016年市场份额',
-                dataIndex: 'market'
-            }
-        ];
-=======
         const { activeTabIndex, tabs, overflow } = this.state;
         const { analystTable, analystChart, chartLoading } = this.props.searchStore;
->>>>>>> d3f14aac818edd69b9cfc085f380b5254d7f8fb9
 
         const style = { transform: `translate3d(${this.state.transX}px, 0, 0)` };
         return <SearchResultWrapper>
             <Icon type='close' onClick={() => { this.props.closeCallback() }}></Icon>
             <form className="search-form">
-<<<<<<< HEAD
-                <Input placeholder="输入关键词搜索" onChange={this.handleInput}/>
-                <Button className="search-btn" onClick={this.handleSearch}>搜索</Button>
-=======
                 <Input placeholder="输入关键词搜索" onChange={ this.handleInput } onPressEnter={ this.handleSearch }/>
                 <Button className="search-btn" onClick={ this.handleSearch }>搜索</Button>
->>>>>>> d3f14aac818edd69b9cfc085f380b5254d7f8fb9
             </form>
             <div className="search-tabs">
                 <a className={`tabs-prev${(this.state.disable.prev ? ' tabs-disabled' : '')}`} onClick={this.prevAndNextClick.bind(this, 'prev')}><i className="icon-arrow iconfont icon-abc-arrow-left"></i></a>
@@ -443,51 +424,6 @@ export default class SearchResult extends React.Component {
                 </div>
 
             </div>
-<<<<<<< HEAD
-            {
-                searchShow ? <div className="search-result-content">
-                    {
-                        (searchResult && !!searchResult.length) && searchResult.map((searchItem, index) => {
-                            return <div className="table-panel-wrapper">
-                                <div className="table-panel-header">
-                                    <div className="left">
-                                        <h2>{searchItem.title}</h2>
-                                        <span className="date">{searchItem.date}</span>
-                                    </div>
-
-                                    <div className="right">
-                                        <Button type="primary" className="insert-btn" onClick={this.insertTable.bind(this, index)}>插入</Button>
-                                    </div>
-                                </div>
-
-                                <Table
-                                    id={`report-${index}`}
-                                    bordered
-                                    columns={columns}
-                                    dataSource={searchItem.data}
-                                    key={index}
-                                    pagination={false}></Table>
-
-                                <div className="table-panel-footer">
-                                    <p>公司: {searchItem.company || '--'}</p>
-                                    <p>来源: <a className="link-a">{searchItem.source || '--'}</a></p>
-                                    <p>类别: {searchItem.type || '--'}</p>
-                                </div>
-
-                            </div>
-                        })
-                    }
-
-                    {/* {
-                    (analystTable.items && !!analystTable.items.length) && analystTable.items.map((item, index) => {
-                        return <DataTableCard keyword={ analystTable.keyword }></DataTableCard>
-                    })
-                } */}
-
-                </div> :
-                <div class="temporary">暂无数据</div>
-            }
-=======
 
             <div className="search-result-content">
                 {/* 数据图 */}
@@ -536,13 +472,12 @@ export default class SearchResult extends React.Component {
                                 detailLink={`https://charttable.analyst.ai/table/${ item.id }`}
                                 sourceLink={`https://report.analyst.ai/detail?srcId=${ item.src_id }&page=${ item.filePage }`}></DataTableCard>
                             <div className="right">
-                                <Button type="primary" className="insert-btn" disabled={ (!data.table_data || !data.table_data.length) } onClick={ this.insertTable.bind(this, index) }>插入</Button>
+                                <Button type="primary" className="insert-btn" disabled={ (!data.table_data || !data.table_data.length) } onClick={ e => this.insertTable(e, index) }>插入</Button>
                             </div>
                         </div>
                     })
                 }
             </div>
->>>>>>> d3f14aac818edd69b9cfc085f380b5254d7f8fb9
         </SearchResultWrapper>
     }
 }
