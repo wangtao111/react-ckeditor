@@ -171,6 +171,12 @@ const SearchResultWrapper = styled.div`
             }
         }
     }
+    .temporary{
+        text-align: center;
+        font-size: 20px;
+        color: #bebebe;
+        margin-top: 100px;
+    }
 
     .search-form {
         display: flex;
@@ -200,6 +206,7 @@ export default class SearchResult extends React.Component {
         this.state = {
             activeTabIndex: 3,
             overflow: false,
+            searchShow: false,
             transX: 0,
             disable: {
                 prev: false,
@@ -216,10 +223,10 @@ export default class SearchResult extends React.Component {
                     name: '资讯'
                 },
                 {
-                    name: '数据图'
+                    name: '数据表'
                 },
                 {
-                    name: '数据表'
+                    name: '数据图'
                 },
                 {
                     name: '笔记'
@@ -233,7 +240,7 @@ export default class SearchResult extends React.Component {
     }
 
     setOverflow() {
-        if(this.refs.head.offsetWidth < this.refs.box.offsetWidth) {
+        if (this.refs.head.offsetWidth < this.refs.box.offsetWidth) {
             this.setState({
                 overflow: true
             });
@@ -244,17 +251,17 @@ export default class SearchResult extends React.Component {
 
     setTransX(transX) {
         let disable = null;
-        if(transX === 0) {
+        if (transX === 0) {
             disable = {
                 prev: true,
                 next: false
             };
-        }else if(-transX == this.refs.box.offsetWidth - this.refs.head.offsetWidth) {
+        } else if (-transX == this.refs.box.offsetWidth - this.refs.head.offsetWidth) {
             disable = {
                 prev: false,
                 next: true
             }
-        }else {
+        } else {
             disable = {
                 prev: false,
                 next: false
@@ -274,11 +281,11 @@ export default class SearchResult extends React.Component {
             transX = Math.abs(this.state.transX);
 
         // 左超出
-        if(transX > that.offsetLeft - 10) {
-            transX = that.offsetWidth - thatLeft + (index == 0 ? 0: that.previousSibling.offsetWidth)
-        }else if(thatLeft - transX > headWidth - (that.nextSibling ? that.nextSibling.offsetWidth : 0)) {
+        if (transX > that.offsetLeft - 10) {
+            transX = that.offsetWidth - thatLeft + (index == 0 ? 0 : that.previousSibling.offsetWidth)
+        } else if (thatLeft - transX > headWidth - (that.nextSibling ? that.nextSibling.offsetWidth : 0)) {
             transX = headWidth - thatLeft - (this.state.tabs.length == index + 1 ? 0 : that.nextSibling.offsetWidth);
-        }else {
+        } else {
             transX = -transX;
         }
 
@@ -315,7 +322,7 @@ export default class SearchResult extends React.Component {
     }
 
     insertTable(index) {
-        eventEmitter.emit('EDITOR_INSERT_TABLE_CODE', document.getElementById(`report-${ index }`).parentNode.innerHTML);
+        eventEmitter.emit('EDITOR_INSERT_TABLE_CODE', document.getElementById(`report-${index}`).parentNode.innerHTML);
     }
 
     handleSearch = () => {
@@ -324,6 +331,7 @@ export default class SearchResult extends React.Component {
             limit: 10,
             offset: 0
         });
+        this.setState({searchShow: true});
     }
 
     handleInput = (e) => {
@@ -332,7 +340,7 @@ export default class SearchResult extends React.Component {
     }
 
     render() {
-        const { activeTabIndex, tabs, overflow } = this.state;
+        const { activeTabIndex, tabs, overflow, searchShow } = this.state;
         const { searchResult } = this.props.drawerStore;
         const { analystTable } = this.props.searchStore;
         const columns = [
@@ -350,22 +358,22 @@ export default class SearchResult extends React.Component {
             }
         ];
 
-        const style = { transform: `translate3d(${ this.state.transX }px, 0, 0)`};
+        const style = { transform: `translate3d(${this.state.transX}px, 0, 0)` };
         return <SearchResultWrapper>
-            <Icon type='close' onClick={() => {this.props.closeCallback()}}></Icon>
+            <Icon type='close' onClick={() => { this.props.closeCallback() }}></Icon>
             <form className="search-form">
-                <Input placeholder="输入关键词搜索" onChange={ this.handleInput }/>
-                <Button className="search-btn" onClick={ this.handleSearch }>搜索</Button>
+                <Input placeholder="输入关键词搜索" onChange={this.handleInput}/>
+                <Button className="search-btn" onClick={this.handleSearch}>搜索</Button>
             </form>
             <div className="search-tabs">
-                <a className={`tabs-prev${(this.state.disable.prev ? ' tabs-disabled' : '')}` } onClick={ this.prevAndNextClick.bind(this, 'prev') }><i className="icon-arrow iconfont icon-abc-arrow-left"></i></a>
-                <a className={`tabs-next${(this.state.disable.next ? ' tabs-disabled' : '')}` } onClick={ this.prevAndNextClick.bind(this, 'next') }><i className="icon-arrow iconfont icon-abc-arrow-right"></i></a>
-                <div className={`search-tabs-header ${ overflow ? 'tabs-overflow' : ''}`} ref="head">
+                <a className={`tabs-prev${(this.state.disable.prev ? ' tabs-disabled' : '')}`} onClick={this.prevAndNextClick.bind(this, 'prev')}><i className="icon-arrow iconfont icon-abc-arrow-left"></i></a>
+                <a className={`tabs-next${(this.state.disable.next ? ' tabs-disabled' : '')}`} onClick={this.prevAndNextClick.bind(this, 'next')}><i className="icon-arrow iconfont icon-abc-arrow-right"></i></a>
+                <div className={`search-tabs-header ${overflow ? 'tabs-overflow' : ''}`} ref="head">
                     <div className="search-tabs-headbox" style={style}>
                         <ul ref="box">
                             {
                                 tabs.map((tabItem, index) => {
-                                    return <li ref={`tab_${ index }`} key={ index } onClick={ this.switchTab.bind(this, index) } className={ activeTabIndex === index ? 'active' : undefined}>{ tabItem.name }</li>
+                                    return <li ref={`tab_${index}`} key={index} onClick={this.switchTab.bind(this, index)} className={activeTabIndex === index ? 'active' : undefined}>{tabItem.name}</li>
                                 })
                             }
                         </ul>
@@ -373,47 +381,49 @@ export default class SearchResult extends React.Component {
                 </div>
 
             </div>
+            {
+                searchShow ? <div className="search-result-content">
+                    {
+                        (searchResult && !!searchResult.length) && searchResult.map((searchItem, index) => {
+                            return <div className="table-panel-wrapper">
+                                <div className="table-panel-header">
+                                    <div className="left">
+                                        <h2>{searchItem.title}</h2>
+                                        <span className="date">{searchItem.date}</span>
+                                    </div>
 
-            <div className="search-result-content">
-                {
-                    (searchResult && !!searchResult.length) && searchResult.map((searchItem, index) => {
-                        return <div className="table-panel-wrapper">
-                            <div className="table-panel-header">
-                                <div className="left">
-                                    <h2>{ searchItem.title }</h2>
-                                    <span className="date">{ searchItem.date }</span>
+                                    <div className="right">
+                                        <Button type="primary" className="insert-btn" onClick={this.insertTable.bind(this, index)}>插入</Button>
+                                    </div>
                                 </div>
-                               
-                                <div className="right">
-                                    <Button type="primary" className="insert-btn" onClick={ this.insertTable.bind(this, index) }>插入</Button>
+
+                                <Table
+                                    id={`report-${index}`}
+                                    bordered
+                                    columns={columns}
+                                    dataSource={searchItem.data}
+                                    key={index}
+                                    pagination={false}></Table>
+
+                                <div className="table-panel-footer">
+                                    <p>公司: {searchItem.company || '--'}</p>
+                                    <p>来源: <a className="link-a">{searchItem.source || '--'}</a></p>
+                                    <p>类别: {searchItem.type || '--'}</p>
                                 </div>
+
                             </div>
+                        })
+                    }
 
-                            <Table
-                                id={ `report-${ index }` }
-                                bordered
-                                columns={ columns }
-                                dataSource={ searchItem.data } 
-                                key={ index}
-                                pagination={ false }></Table>
-
-                            <div className="table-panel-footer">
-                                <p>公司: { searchItem.company || '--'}</p>
-                                <p>来源: <a className="link-a">{ searchItem.source || '--'}</a></p>
-                                <p>类别: { searchItem.type || '--'}</p>
-                            </div>
-
-                        </div>
-                    })
-                }
-
-                {/* {
+                    {/* {
                     (analystTable.items && !!analystTable.items.length) && analystTable.items.map((item, index) => {
                         return <DataTableCard keyword={ analystTable.keyword }></DataTableCard>
                     })
                 } */}
-                
-            </div>
+
+                </div> :
+                <div class="temporary">暂无数据</div>
+            }
         </SearchResultWrapper>
     }
 }
