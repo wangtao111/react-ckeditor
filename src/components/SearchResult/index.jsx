@@ -247,10 +247,19 @@ export default class SearchResult extends React.Component {
                     fetchMethod: ''
                 },
                 {
+<<<<<<< HEAD
                     name: '数据表'
                 },
                 {
                     name: '数据图'
+=======
+                    name: '数据图',
+                    fetchMethod: 'getAnalystChartSearch'
+                },
+                {
+                    name: '数据表',
+                    fetchMethod: 'getAnalystTableSearch'
+>>>>>>> 18e7fa76bf4cb2c6d722a6ce06103284e8755fbc
                 },
                 {
                     name: '笔记',
@@ -347,8 +356,21 @@ export default class SearchResult extends React.Component {
         this.setTransX(-transX);
     }
 
-    insertTable(index) {
-        eventEmitter.emit('EDITOR_INSERT_TABLE_CODE', document.getElementById(`report-${index}`).parentNode.innerHTML);
+    insertTable(e, index) {
+        console.log('e: ', e);
+        const parentNode = e.target.parentNode.parentNode;
+        // 表格主体
+        const tableMain = parentNode.querySelector('.single-tab-table-show').cloneNode(true);
+
+        eventEmitter.emit('EDITOR_INSERT_TABLE_CODE', `
+            <div class="DataTable-Container">
+                <div class="tableListView">
+                    <div class="single-tab single-tab-tableData">
+                        ${ tableMain.outerHTML }
+                    </div>
+                </div>
+            </div>
+        `);
     }
 
     handleSearch = (e) => {
@@ -385,6 +407,10 @@ export default class SearchResult extends React.Component {
     render() {
         const { activeTabIndex, tabs, overflow } = this.state;
         const { analystTable, analystChart, chartLoading } = this.props.searchStore;
+<<<<<<< HEAD
+=======
+
+>>>>>>> 18e7fa76bf4cb2c6d722a6ce06103284e8755fbc
         const style = { transform: `translate3d(${this.state.transX}px, 0, 0)` };
         return <SearchResultWrapper>
             <Icon type='close' onClick={() => { this.props.closeCallback() }}></Icon>
@@ -456,7 +482,7 @@ export default class SearchResult extends React.Component {
                                 detailLink={`https://charttable.analyst.ai/table/${ item.id }`}
                                 sourceLink={`https://report.analyst.ai/detail?srcId=${ item.src_id }&page=${ item.filePage }`}></DataTableCard>
                             <div className="right">
-                                <Button type="primary" className="insert-btn" disabled={ (!data.table_data || !data.table_data.length) } onClick={ this.insertTable.bind(this, index) }>插入</Button>
+                                <Button type="primary" className="insert-btn" disabled={ (!data.table_data || !data.table_data.length) } onClick={ e => this.insertTable(e, index) }>插入</Button>
                             </div>
                         </div>
                     })
