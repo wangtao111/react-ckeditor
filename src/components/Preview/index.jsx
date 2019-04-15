@@ -252,12 +252,7 @@ export default class Preview extends React.Component {
                 break;
             }
             case '图表': {
-                const chartId = this.props.chartId;
-
-                this.props.editorStore.setChartData({
-                    [chartId]: this.chartOption
-                });
-                eventEmitter.emit('EDITOR_INSERT_CHART', chartId);
+                eventEmitter.emit('EDITOR_INSERT_CHART', this.chartOption);
                 // this.props.closeCallback && this.props.closeCallback();
                 break;
             }
