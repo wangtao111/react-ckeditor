@@ -317,7 +317,7 @@ export default class Editor extends React.Component {
                     that.range.endContainer.$.parentNode.className = '';
                 }
                 if (item.endTag && that.pNode) {
-                    that.pNode.innerHTML = item.tag;
+                    that.pNode.innerHTML = item.tag + '<span style="color: #000;">&nbsp;</span>';
                 }
                 if (item.charts) {
                     that.openChartsPopup();
@@ -362,6 +362,18 @@ export default class Editor extends React.Component {
         this.position = ranges.getBoundingClientRect();
         if (charts) {
             charts.style.display = 'none';
+        }
+        if(range.endContainer.$.textContent.indexOf('\u200B') !== -1) {
+            setTimeout(() => {
+                range.endContainer.$.textContent = range.endContainer.$.textContent.replace(/\u200B/g,'');
+                const ranges = iframe.getSelection().getRangeAt(0);
+                const len = ranges.startContainer.innerText ?  ranges.startContainer.innerText.length : ranges.startContainer.textContent.length;
+                if(ranges.startContainer.innerText && range.endOffset > len){
+                    return;
+                }
+                ranges.setStart(ranges.startContainer, range.endOffset);
+                ranges.collapse();
+            })
         }
         // const editor = this.editorRef.current.editor;
         return window.CKEDITOR.plugins.textMatch.match(range, (txt, offset) => {

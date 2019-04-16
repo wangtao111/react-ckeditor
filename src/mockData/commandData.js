@@ -5,7 +5,7 @@ const tables = [
         source: '数据中心',
         detail: 'y,yy,ying,yingye',
         endTag: true,
-        tag: '<span>营业总收入1890.55亿元</span><span style="color: #000;">&nbsp;</span>'
+        tag: '<span>营业总收入1890.55亿元</span>'
     },
     {
         id: 2,
@@ -13,7 +13,7 @@ const tables = [
         source: '数据中心',
         detail: 'l,li,lr,lrb,lirun',
         charts: true,
-        tag: '<span name="temporary">利润表</span><span style="color: #000;">&nbsp;</span>'
+        tag: '<span name="temporary">利润表</span>'
     },
     {
         id: 21,
@@ -21,7 +21,7 @@ const tables = [
         source: '数据中心',
         detail: 'l,li,lr,lrb,lirun',
         charts: true,
-        tag: '<span name="temporary">利润表[营业总收]</span><span style="color: #000;">&nbsp;</span>'
+        tag: '<span name="temporary">利润表[营业总收]</span>'
     },
     {
         id: 22,
@@ -29,7 +29,7 @@ const tables = [
         source: '数据中心',
         detail: 'l,li,lr,lrb,lirun',
         charts: true,
-        tag: '<span name="temporary">利润表[营业总收，营业收入][2018Q1:Q2]</span><span style="color: #000;">&nbsp;</span>'
+        tag: '<span name="temporary">利润表[营业总收，营业收入][2018Q1:Q2]</span>'
     },
     {
         id: 23,
@@ -37,7 +37,7 @@ const tables = [
         source: '数据中心',
         detail: 'l,li,lr,lrb,lirun',
         charts: true,
-        tag: '<span name="temporary">利润表[营业总收，营业收入，营业利润][2018Q1:Q2]</span><span style="color: #000;">&nbsp;</span>'
+        tag: '<span name="temporary">利润表[营业总收，营业收入，营业利润][2018Q1:Q2]</span>'
     },
     {
         id: 24,
@@ -45,7 +45,7 @@ const tables = [
         source: '数据中心',
         detail: 'l,li,lr,lrb,lirun',
         charts: true,
-        tag: '<span name="temporary" style="color: blue">利润表</span><span style="color: #000;">&nbsp;</span>'
+        tag: '<span name="temporary" style="color: blue">利润表</span>'
     },
     {
         id: 25,
@@ -53,7 +53,7 @@ const tables = [
         source: '数据中心',
         detail: 'l,li,lr,lrb,lirun',
         charts: true,
-        tag: '<span name="temporary" style="color: blue">利润表[营业总收，营业收入，营业利润，营业总成本][2017Q1:Q2]</span><span style="color: #000;">&nbsp;</span>'
+        tag: '<span name="temporary" style="color: blue">利润表[营业总收，营业收入，营业利润，营业总成本][2017Q1:Q2]</span>'
     },
     {
         id: 3,
@@ -61,7 +61,7 @@ const tables = [
         source: '数据中心',
         detail: 'z,zc,zi,zichan',
         charts: true,
-        tag: '<span name="temporary" style="color: blue">资产负债表</span><span style="color: #000;">&nbsp;</span>'
+        tag: '<span name="temporary" style="color: blue">资产负债表</span>'
     },
     {
         id: 4,
@@ -69,7 +69,7 @@ const tables = [
         source: '数据中心',
         detail: 'x,xj,xian,xianjin',
         charts: true,
-        tag: '<span name="temporary" style="color: blue">现金流量表</span><span style="color: #000;">&nbsp;</span>'
+        tag: '<span name="temporary" style="color: blue">现金流量表</span>'
     },
     {
         id: 5,
@@ -77,7 +77,7 @@ const tables = [
         source: '数据中心',
         detail: 'g,gm,gmj,gui,guimu',
         endTag: true,
-        tag: '<span style="border: 1px dashed #999;color: blue; cursor: pointer" contenteditable="false" name="select_box">归母净利润580.95亿元</span><span style="color: #000;">&nbsp;</span>'
+        tag: '<span style="border: 1px dashed #999;color: blue; cursor: pointer" contenteditable="false" name="select_box">归母净利润580.95亿元</span>'
     },
     {
         id: 55,
@@ -85,7 +85,7 @@ const tables = [
         source: '数据中心',
         detail: 'g,gm,gmj,gui,guimu',
         endTag: true,
-        tag: '<span>归母净利润580.95亿元</span><span style="color: #000;">&nbsp;</span>'
+        tag: '<span>归母净利润580.95亿元</span>'
     },
     {
         id: 56,
@@ -93,7 +93,7 @@ const tables = [
         source: '数据中心',
         detail: 'g,gm,gmj,gui,guimu',
         endTag: true,
-        tag: '<span>归母净利润-10.95亿元</span><span style="color: #000;">&nbsp;</span>'
+        tag: '<span>归母净利润-10.95亿元</span>'
     },
     {
         id: 57,
@@ -101,7 +101,7 @@ const tables = [
         source: '数据中心',
         detail: 'g,gm,gmj,gui,guimu',
         endTag: true,
-        tag: '<span>归母净利润402.95亿元</span><span style="color: #000;">&nbsp;</span>'
+        tag: '<span>归母净利润402.95亿元</span>'
     },
 ];
 const commonTables = [

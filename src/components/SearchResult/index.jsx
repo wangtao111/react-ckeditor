@@ -247,19 +247,12 @@ export default class SearchResult extends React.Component {
                     fetchMethod: ''
                 },
                 {
-<<<<<<< HEAD
-                    name: '数据表'
-                },
-                {
-                    name: '数据图'
-=======
                     name: '数据图',
                     fetchMethod: 'getAnalystChartSearch'
                 },
                 {
                     name: '数据表',
                     fetchMethod: 'getAnalystTableSearch'
->>>>>>> 18e7fa76bf4cb2c6d722a6ce06103284e8755fbc
                 },
                 {
                     name: '笔记',
@@ -407,10 +400,7 @@ export default class SearchResult extends React.Component {
     render() {
         const { activeTabIndex, tabs, overflow } = this.state;
         const { analystTable, analystChart, chartLoading } = this.props.searchStore;
-<<<<<<< HEAD
-=======
 
->>>>>>> 18e7fa76bf4cb2c6d722a6ce06103284e8755fbc
         const style = { transform: `translate3d(${this.state.transX}px, 0, 0)` };
         return <SearchResultWrapper>
             <Icon type='close' onClick={() => { this.props.closeCallback() }}></Icon>
