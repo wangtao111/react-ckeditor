@@ -94,7 +94,7 @@ export default class Editor extends React.Component {
     }
 
     // Ctrl Or Command + S组件键回调
-    saveKeysCallback(event) {
+    saveKeysCallback = (event) => {
         var e = event || window.event || arguments.callee.caller.arguments[0];
         // console.log('e: ', e, 'keyCode:', e.keyCode);
 
@@ -112,6 +112,10 @@ export default class Editor extends React.Component {
                 title: this.props.noteStore.noteList.length ? this.props.noteStore.noteList[0].title : ''
             })
         }
+    }
+
+    componentWillUnmount() {
+        window.document.removeEventListener('keydown', this.saveKeysCallback);
     }
 
     addEventEmitter = () => {
@@ -202,6 +206,7 @@ export default class Editor extends React.Component {
             }, 100)
         });
     }
+
     beforeCommandInsert = (data) => {
         // const valueKey = '金融';
         // let arr = data.split(valueKey);
@@ -758,14 +763,11 @@ export default class Editor extends React.Component {
     // 保存笔记(更新笔记内容)
     saveNote = () => {
         const editor = this.editorRef.current.editor;
-        const { isSaving, activeIndex, noteList } = this.props.noteStore;
+        const { isSaving } = this.props.noteStore;
 
         if(isSaving)  return;
 
-        const currentNote = noteList[activeIndex];
-
         this.updateNote({
-            ...currentNote,
             articleContent: editor.getData()
         })
     }
@@ -773,22 +775,23 @@ export default class Editor extends React.Component {
     // 更新笔记 
     updateNote = async (params) => {
         const { activeIndex, noteList } = this.props.noteStore;
-
         const currentNote = noteList[activeIndex];
-        const requestBody = {
+        const updatedNote = {
             ...currentNote,
             ...params
         }
-
-        await this.props.noteStore.updateNote(requestBody);
         
+        await this.props.noteStore.updateNote(updatedNote);
+        
+        // 更新笔记项
+        this.props.noteStore.updateNoteItem(updatedNote);
         // 重新获取文件夹和笔记
-        this.props.noteStore.getSubDirAndNotes({
-            userId: currentNote.authorId,
-            dirId: currentNote.directoryId,
-            pageIndex: 0,
-            pageSize: 10
-        });
+        // this.props.noteStore.getSubDirAndNotes({
+        //     userId: currentNote.authorId,
+        //     dirId: currentNote.directoryId,
+        //     pageIndex: 0,
+        //     pageSize: 10
+        // });
     }   
 
     render() {

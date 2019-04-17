@@ -17,6 +17,12 @@ export default class NoteStore {
         this.activeIndex = index;
     }
     
+    // 更新笔记项
+    @action.bound
+    updateNoteItem(updatedNote) {
+        this.noteList.splice(this.activeIndex, 1, updatedNote);
+    } 
+
     // 新建一个新笔记
     @action.bound
     async addNewNote(params) {

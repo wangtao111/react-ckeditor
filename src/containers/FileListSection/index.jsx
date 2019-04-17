@@ -277,7 +277,6 @@ export default class FileListSection extends React.Component {
         super(props);
 
         this.state = {
-            articleIndex: 0,
             isShrink: props.drawerStore.isVisible,        // 默认不收缩
             popDownSettingVisible: false,               // 设置默认不可见
         };
@@ -287,9 +286,6 @@ export default class FileListSection extends React.Component {
     }
 
     componentDidMount() {
-        this.props.noteStore.setActiveIndex(0);
-        this.setState({activeIndex: 0});
-
         window.addEventListener('click', this.clickCallback, false);
     }
 
@@ -317,19 +313,14 @@ export default class FileListSection extends React.Component {
     }
 
     // 移除笔记
-    removeNote(index) {
-        this.props.noteStore.deleteNote(index);
-        if (this.props.noteStore.noteList[index]) {
-            this.setActiveNote.bind(this, index);
-            this.setState({activeIndex: index});
-            eventEmitter.emit('SKIM_ARTICLE', this.props.noteStore.noteList[index])
-        }
-    }
-
-    // 设置激活的笔记
-    setActiveNote(index) {
-        this.props.noteStore.setActiveIndex(index);
-    }
+    // removeNote(index) {
+    //     this.props.noteStore.deleteNote(index);
+    //     if (this.props.noteStore.noteList[index]) {
+    //         this.setActiveNote.bind(this, index);
+    //         this.setState({activeIndex: index});
+    //         eventEmitter.emit('SKIM_ARTICLE', this.props.noteStore.noteList[index])
+    //     }
+    // }
 
     toggleWidth = () => {
         const {isShrink} = this.state;
@@ -472,10 +463,11 @@ export default class FileListSection extends React.Component {
     }
 
     render() {
-        const { noteList, directoryList } = this.props.noteStore;
-        const { activeIndex, isShrink, popDownSettingVisible, } = this.state;
+        const { noteList, directoryList, activeIndex } = this.props.noteStore;
+        const { isShrink, popDownSettingVisible, } = this.state;
         const { isVisible } = this.props.drawerStore;
         const { goBackDisabled } = this.props.menuStore;
+        
         const orderBy = this.orderBy;
         const orderRule = this.orderRule;
 
@@ -543,8 +535,7 @@ export default class FileListSection extends React.Component {
                             {
                                 (noteList && !!noteList.length) && noteList.map((noteItem, index) => {
                                     return <li key={index} onClick={() => {
-                                        this.setActiveNote.bind(this, index);
-                                        this.setState({activeIndex: index});
+                                        this.props.noteStore.setActiveIndex(index)
                                         eventEmitter.emit('SKIM_ARTICLE', noteItem)
                                     }}>
                                         <a className={`article-item ${index === activeIndex && 'article-item-hover'}`}>
@@ -556,13 +547,6 @@ export default class FileListSection extends React.Component {
                                             <div className="article-footer">
                                                 <time>{typeof noteItem.createTime === 'number' ? moment(noteItem.createTime).format('YYYY-MM-DD'): noteItem.createTime}</time>
                                                 <span>{noteItem.fileSize + 'KB'}</span>
-                                                {/* <Button icon='delete'
-                                                        size='small'
-                                                        style={{marginLeft: '20px'}}
-                                                        onClick={(e) => {
-                                                            e.stopPropagation();
-                                                            this.removeNote(index)
-                                                        }}></Button> */}
                                             </div>
                                         </a>
                                     </li>
