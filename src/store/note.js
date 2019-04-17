@@ -16,6 +16,12 @@ export default class NoteStore {
     setActiveIndex(index) {
         this.activeIndex = index;
     }
+
+    // 设置笔记列表
+    @action.bound
+    setNoteList(noteList) {
+        this.noteList = noteList;
+    }
     
     // 更新笔记项
     @action.bound
@@ -151,7 +157,7 @@ export default class NoteStore {
             });
 
             if(data) {
-                this.noteList = data.data;
+                this.noteList = data.data || [];
                 this.directoryList = [];
             }
         }catch(err) {

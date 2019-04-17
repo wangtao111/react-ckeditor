@@ -419,7 +419,7 @@ export default class FileListSection extends React.Component {
             if(this.keyword && this.keyword.trim() !== '') {
                 // noteList = noteList.filter(note => note.title.includes(this.keyword));
 
-                this.props.noteStore.getNotesBySearchKey({
+                await this.props.noteStore.getNotesBySearchKey({
                     queryKey: this.keyword,
                     pageIndex: 1,
                     pageSize: 10
@@ -430,8 +430,7 @@ export default class FileListSection extends React.Component {
             }
 
             setActiveIndex(0);
-
-            setNoteList(noteList);
+            setNoteList(noteList || []);
         }
     }
 

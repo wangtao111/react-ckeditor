@@ -16,7 +16,7 @@ export default class FinEditor extends React.Component {
     // }
 
     render() {
-        const { noteList, activeIndex } = this.props.noteStore;
+        const { noteList = [], activeIndex } = this.props.noteStore;
         const currentNote = noteList[activeIndex] || {};
 
         return <FinEditorWrapper>

@@ -414,13 +414,14 @@ export default class NavSection extends React.Component {
     }
 
     // 增加笔记 
-    async addNewNote() {
+    async addNewNote(articleInfo) {
         const { selectedId } = this.props.menuStore;
 
         await this.props.noteStore.addNewNote({
             authorId: '2000',
             directoryId: selectedId,
-            typeId: '-1'
+            typeId: '-1',
+            ...articleInfo
         });
 
         const { activeIndex, noteList } = this.props.noteStore;

@@ -190,15 +190,6 @@ export default class Editor extends React.Component {
             }
         })
 
-        // 新建文档
-        eventEmitter.on('NEW_PAGE', (data) => {
-            const { name, template } = data;
-            const content = this.beforeCommandInsert(this.getTemplate(template));
-            this.setState({ data: content, title: data.articleTitle })
-            setTimeout(() => {
-                this.setEditorIframe();
-            }, 100)
-        });
         // 浏览文章
         eventEmitter.on('SKIM_ARTICLE', (data) => {
             const content = this.beforeCommandInsert(data.articleContent);
