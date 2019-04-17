@@ -377,9 +377,11 @@ body[contenteditable="false"] .cke_widget_wrapper:hover .cke_widget_editable {
 	cursor: pointer;
 }
 
-.cke_widget_wrapper:hover .setting {
+.tableContainer:hover > .setting,
+.chartContainer:hover > .setting {
 	display: block;
 }
+
 /* 图表的样式 */
 .chartContainer > .resize {
 	position: absolute;
@@ -388,7 +390,7 @@ body[contenteditable="false"] .cke_widget_wrapper:hover .cke_widget_editable {
 	display: none;
 	cursor: nwse-resize;
 	border-width: 5px;
-    border-color: transparent #000 #000 transparent;
+    border-color: transparent #666 #666 transparent;
     border-style: dashed solid solid dashed;
 }
 

@@ -131,7 +131,6 @@ export default class Editor extends React.Component {
             const editor = this.editorRef.current.editor;
             const tableTime = new Date().getTime();
             const command = this.pNode ? this.pNode.innerHTML + '' : '';
-            debugger;
             insertTable(`${tableTime}`, editor, command);
             this.setPNodeHtml();
             const widgetInstances = editor.widgets.instances;
