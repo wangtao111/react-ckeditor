@@ -28,6 +28,9 @@ class FullScreen extends React.Component {
     }
     componentWillReceiveProps(nextProps) {
         if(this.props.editorHandle){ // 金融云特殊处理
+            if(!document.getElementById('cke_1_contents')){
+                return;
+            }
             const iframe = document.getElementById('cke_1_contents').children[1].contentWindow;
             this.document = iframe.document;
             this.scale = iframe.document.body;

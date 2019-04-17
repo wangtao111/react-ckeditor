@@ -79,6 +79,7 @@ export default class Editor extends React.Component {
         this.tag = null;
         this.range = null;
         this.position = null;
+        this.timer = null;
         this.onEditorChange = this.onEditorChange.bind(this);
     }
 
@@ -103,7 +104,7 @@ export default class Editor extends React.Component {
         eventEmitter.on('EDITOR_INSERT_CHART', (chartOption) => {
             const editor = this.editorRef.current.editor;
             const chartTime = new Date().getTime();
-            const command = this.pNode ? this.pNode.innerHTML + '': '';
+            const command = this.pNode ? this.pNode.innerHTML + '' : '';
             this.setPNodeHtml();
             insertChart(`${chartTime}`, editor, () => {
                 this.setState({
@@ -312,12 +313,13 @@ export default class Editor extends React.Component {
                 outputTemplate: outputTemplate
             });
         this.autocomplete.getHtmlToInsert = function (item) {
+            if (item.endTag && that.pNode) {
+                that.pNode.innerHTML = '';
+                item.tag += '<span style="color: #000;">&nbsp;</span>';
+            }
             setTimeout(() => {
                 if (that.range) {
                     that.range.endContainer.$.parentNode.className = '';
-                }
-                if (item.endTag && that.pNode) {
-                    that.pNode.innerHTML = item.tag + '<span style="color: #000;">&nbsp;</span>';
                 }
                 if (item.charts) {
                     that.openChartsPopup();
@@ -327,6 +329,7 @@ export default class Editor extends React.Component {
                 .outputTemplate
                 .output(item);
         }
+        this.callbackData = [];
         eventEmitter.emit('SKIM_ARTICLE', this.props.noteStore.noteList[0]);
         this.setEditorIframe();
         const editorContent = document.getElementById('cke_1_contents');
@@ -360,20 +363,20 @@ export default class Editor extends React.Component {
         const ranges = iframe.getSelection().getRangeAt(0);
         const charts = document.getElementById('charts');
         this.position = ranges.getBoundingClientRect();
+        const innerText = ranges.startContainer.innerText ? ranges.startContainer.innerText : ranges.startContainer.textContent;
         if (charts) {
             charts.style.display = 'none';
         }
-        if(range.endContainer.$.textContent.indexOf('\u200B') !== -1) {
+        if (innerText.indexOf('\u200B') !== -1) {
             setTimeout(() => {
-                range.endContainer.$.textContent = range.endContainer.$.textContent.replace(/\u200B/g,'');
+                range.endContainer.$.textContent = range.endContainer.$.textContent.replace(/\u200B/g, '');
                 const ranges = iframe.getSelection().getRangeAt(0);
-                const len = ranges.startContainer.innerText ?  ranges.startContainer.innerText.length : ranges.startContainer.textContent.length;
-                if(ranges.startContainer.innerText && range.endOffset > len){
+                if (ranges.startContainer.innerText && range.endOffset > innerText.length) {
                     return;
                 }
                 ranges.setStart(ranges.startContainer, range.endOffset);
                 ranges.collapse();
-            })
+            }, 10)
         }
         // const editor = this.editorRef.current.editor;
         return window.CKEDITOR.plugins.textMatch.match(range, (txt, offset) => {
@@ -383,12 +386,16 @@ export default class Editor extends React.Component {
             this.pNode = null;
             this.range = null;
             if (node.getAttribute('name') === 'temporary') {　//选择公司后～进入此逻辑
+                console.log(1)
                 const pNode = this.getParentNode(range.startContainer.$);
                 const matchArr = text.split('~'), matchText = matchArr[matchArr.length - 1];
                 const innertext = pNode.innerText;
                 this.pNode = pNode;
                 if (innertext.substr(0, 1) !== '~') {
                     return;
+                }
+                if (this.timer) {
+                    clearTimeout(this.timer);
                 }
                 if (matchArr.length > 1) {
                     let data = MENTIONS.filter(function (item) {
@@ -401,17 +408,15 @@ export default class Editor extends React.Component {
                         })
                         return item.title.indexOf(matchText) !== -1 || flag;
                     });
-                    if (!matchText) {
-                        this.callbackData = [];
-                    } else {
-                        this.callbackData = data;
-                    }
+                    this.callbackData = data;
+                    console.log(111)
                     this.autocomplete.view.itemTemplate.source = '<li data-id="{id}"><div style="display: flex"><strong class="item-title" style="min-width: 100px">{title}</strong></div></li>';
                     return {
                         start: text.lastIndexOf('~') + 1,
                         end: range.endOffset
                     };
                 } else {
+                    console.log(12)
                     const arr = text.split('.'), lastText = arr[arr.length - 1];
                     if (text.substr(text.length - 1, 1) === '。') { //中文句号提示
                         this.callbackData = [{
@@ -426,7 +431,6 @@ export default class Editor extends React.Component {
                             end: text.length
                         };
                     }
-
                     let data = tables.filter(function (item) { //匹配模板
                         const arr = item.detail.split(',');
                         let flag = false;
@@ -467,7 +471,9 @@ export default class Editor extends React.Component {
                     };
                 }
             } else {
+                console.log(2)
                 if (currentStr === '~' || currentStr === '～') {
+                    console.log(21)
                     if (!doing) { // 匹配'~'进入此逻辑
                         this.callbackData = [{
                             id: 1,
@@ -481,8 +487,11 @@ export default class Editor extends React.Component {
                             end: text.lastIndexOf(currentStr) + 1
                         };
                     }
+                    this.callbackData = [];
                     return null;
                 }
+                this.callbackData = [];
+                return null;
             }
         });
     }
@@ -572,12 +581,12 @@ export default class Editor extends React.Component {
     }
     offsetDis = (obj) => {
         var l = 0, t = 0;
-        while(obj) {
+        while (obj) {
             l = l + obj.offsetLeft + obj.clientLeft;
             t = t + obj.offsetTop + obj.clientTop;
             obj = obj.offsetParent;
         }
-        return {x: l, y: t};
+        return { x: l, y: t };
     }
 
     hideItem = (e) => {
