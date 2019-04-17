@@ -6,11 +6,11 @@ import axios from "axios";
 export default class SearchStore {
     @observable analystTable = {};      // 搜索数据表
     @observable analystChart = {};      // 搜索数据图
-
-    @observable chartLoading = true;    // 图表加载中
+    @observable loading = false;        // 数据加载
     // 获取搜索数据表
     getAnalystTableSearch = flow(function* (params) {
         try {
+            this.loading = true;
             const data = yield ajax('apiAnalystTableSearch', {
                 params
             });
@@ -22,9 +22,10 @@ export default class SearchStore {
             })).then(tableData => {
                 data.items = tableData;
             });
-
+            this.loading = false;
             this.analystTable = data;
         }catch(err) {
+            this.loading = false;
             console.log('err: ', err);
             message.error(err || '获取搜索数据表失败！');
         }
@@ -33,6 +34,7 @@ export default class SearchStore {
     // 获取搜索数据图
     getAnalystChartSearch = flow(function* (params) {
         try {
+            this.loading = true;
             const data = yield ajax('apiAnalystChartSearch', {
                 params
             });
@@ -45,9 +47,10 @@ export default class SearchStore {
                 data.item = chartData;
             });
             
-            this.chartLoading = false;
+            this.loading = false;
             this.analystChart = data;
         }catch(err) {
+            this.loading = false;
             console.log('err: ', err);
             message.error(err || '获取搜索数据图失败！')
         }

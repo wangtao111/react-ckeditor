@@ -785,6 +785,8 @@ export default class Editor extends React.Component {
 
         // 更新笔记项
         this.props.noteStore.updateNoteItem(updatedNote);
+
+        eventEmitter.emit('SKIM_ARTICLE', updatedNote);
         // 重新获取文件夹和笔记
         // this.props.noteStore.getSubDirAndNotes({
         //     userId: currentNote.authorId,

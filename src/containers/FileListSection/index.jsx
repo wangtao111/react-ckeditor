@@ -445,21 +445,17 @@ export default class FileListSection extends React.Component {
     }
 
     // 增加笔记 
-    addNewNote = ({title, content}) => {
-        const { noTitleNum } = this.props.noteStore;
+    addNewNote = async () => {
+        const { selectedId } = this.props.menuStore;
 
-        const noteData = {
-            articleTitle: title || `无标题笔记${ noTitleNum ? `(${noTitleNum})` : ''}`,
-            briefContent: '',
-            articleContent: content || '',
-            createTime: +new Date,
-            fileSize: '',
-            imgUrl: ''
-        }
+        await this.props.noteStore.addNewNote({
+            authorId: '2000',
+            directoryId: selectedId,
+            typeId: '-1'
+        });
 
-        this.props.noteStore.addNote(noteData);
-        this.props.noteStore.setActiveIndex(0);
-        eventEmitter.emit('SKIM_ARTICLE', noteData)
+        const { activeIndex, noteList } = this.props.noteStore;
+        eventEmitter.emit('SKIM_ARTICLE', noteList[activeIndex]);
     }
 
     render() {

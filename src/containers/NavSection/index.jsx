@@ -414,32 +414,17 @@ export default class NavSection extends React.Component {
     }
 
     // 增加笔记 
-    // addNewNote({title, content}) {
-    //     const { noTitleNum } = this.props.noteStore;
-
-    //     const noteData = {
-    //         articleTitle: title || `无标题笔记${ noTitleNum ? `(${noTitleNum})` : ''}`,
-    //         briefContent: '',
-    //         articleContent: content || '',
-    //         createTime: +new Date,
-    //         fileSize: '',
-    //         imgUrl: ''
-    //     }
-
-    //     this.props.noteStore.addNote(noteData);
-    //     this.props.noteStore.setActiveIndex(0);
-    //     eventEmitter.emit('SKIM_ARTICLE', noteData)
-    // }
-
-    // 增加笔记 
-    addNewNote() {
+    async addNewNote() {
         const { selectedId } = this.props.menuStore;
 
-        this.props.noteStore.addNewNote({
+        await this.props.noteStore.addNewNote({
             authorId: '2000',
             directoryId: selectedId,
             typeId: '-1'
         });
+
+        const { activeIndex, noteList } = this.props.noteStore;
+        eventEmitter.emit('SKIM_ARTICLE', noteList[activeIndex]);
     }
 
     // 创建文件夹
@@ -613,12 +598,12 @@ export default class NavSection extends React.Component {
     }
 
     // 设置已选中的项
-    setSelectedKey(key, id) {
+    async setSelectedKey(key, id) {
         this.props.menuStore.setSelectedKey(key);
         this.props.menuStore.setSelectedId(id || '-1');
 
         if(key.endsWith('2,-1')) {
-            this.props.noteStore.getSubDirAndNotes({
+            await this.props.noteStore.getSubDirAndNotes({
                 userId: '2000',
                 dirId: id || '-1',
                 orderRule: 'desc',
@@ -626,6 +611,10 @@ export default class NavSection extends React.Component {
                 pageIndex: 0,
                 orderBy: 'modifyTime'
             });
+
+            const { activeIndex, noteList } = this.props.noteStore;
+
+            eventEmitter.emit('SKIM_ARTICLE', noteList[activeIndex]);
         }
     }
 

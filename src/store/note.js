@@ -28,7 +28,7 @@ export default class NoteStore {
     async addNewNote(params) {
         const { authorId, directoryId } = params;
         const requestBody = {
-            articleTitle: `无标题笔记${ this.noTitleNum ? `(${this.noTitleNum})` : ''}`,
+            articleTitle: `无标题笔记${ this.noTitleNum ? `(${this.noTitleNum + 1})` : ''}`,
             markWords: '',
             status: 1,
             checkStatus: 1,
@@ -37,7 +37,7 @@ export default class NoteStore {
         }
 
         await this.publishNote(requestBody);
-        this.getSubDirAndNotes({
+        await this.getSubDirAndNotes({
             userId: authorId,
             dirId: directoryId,
             pageIndex: 0,
@@ -127,6 +127,15 @@ export default class NoteStore {
 
                 this.directoryList = directoryModelList.filter(item => item.status !== -1);
                 this.noteList = financeNoteModelList;
+                this.setActiveIndex(0);
+
+                let noTitleNum = 0;
+                this.noteList.forEach(note => {
+                    if(note.articleTitle.includes('无标题笔记')) {
+                        noTitleNum++;
+                    }
+                });
+                this.noTitleNum = noTitleNum;
             }
         }catch(err) {
             console.log('err: ', err);
