@@ -81,6 +81,7 @@ export default class Editor extends React.Component {
         this.range = null;
         this.position = null;
         this.timer = null;
+        this.intalled = null;
         this.onEditorChange = this.onEditorChange.bind(this);
     }
 
@@ -189,7 +190,6 @@ export default class Editor extends React.Component {
 
         // 新建文档
         eventEmitter.on('NEW_PAGE', (data) => {
-            this.setState({ title: '', data: '' });
             const { name, template } = data;
             const content = this.beforeCommandInsert(this.getTemplate(template));
             this.setState({ data: content, title: data.articleTitle })
@@ -316,6 +316,98 @@ export default class Editor extends React.Component {
 
         ckeTop.append(toolGroup);
     }
+    keyUp = (e) => {
+        const iframe = document.getElementById('cke_1_contents').children[1].contentWindow;
+        const range = iframe.getSelection().getRangeAt(0), text = range.endContainer.textContent;
+        const scrollX = document.documentElement.scrollLeft || document.body.scrollLeft;
+        const scrollY = document.documentElement.scrollTop || document.body.scrollTop;
+        let position = range.getBoundingClientRect(), menu = document.getElementById('command_tag_list');
+        this.range = range;
+        if(menu.style.display === 'block') {
+            const keyCode = parseInt(e.keyCode)
+            if(keyCode === 38){
+                if(this.state.dropIndex === 0) {
+                    this.setState({dropIndex: this.state.dropList.length - 1});    
+                } else {
+                    this.setState({dropIndex: this.state.dropIndex - 1});
+                }
+                return;
+            }
+            if(keyCode === 40){
+                if(this.state.dropIndex === this.state.dropList.length - 1) {
+                    this.setState({dropIndex: 0});    
+                } else {
+                    this.setState({dropIndex: this.state.dropIndex + 1});
+                }
+                return;
+            }
+            if(keyCode === 13) {
+                this.templateClick(this.state.dropList[this.state.dropIndex]);
+                menu.style.display === 'none';
+                return;
+            }
+        }
+        if(text.charAt(text.length - 1) === '~' || text.charAt(text.length - 1) ==='～') {
+            this.position = position;
+        }
+        if (text.indexOf('~') !== -1 || text.indexOf('～') !== -1) {
+            this.setState({dropList: MENTIONS});
+            menu.style.display = 'block';
+            setTimeout(() => {
+                const menu = document.getElementById('command_tag_list');
+                if(position.x + menu.offsetWidth >= document.body.offsetWidth){
+                    position.x = document.body.offsetWidth - menu.offsetWidth - 10
+                }
+                menu.style.left = position.left + scrollX + 'px';
+                menu.style.top = position.top + scrollY + 14 + 'px';
+            })
+        } else if(range.endContainer.parentElement.className === 'temporary') {
+            const index = text.lastIndexOf('.');
+            if(index !== -1) {
+                this.setState({dropList: tables});
+                menu.style.display = 'block';
+                setTimeout(() => {
+                    const menu = document.getElementById('command_tag_list');
+                    if(position.x + menu.offsetWidth >= document.body.offsetWidth){
+                        position.x = document.body.offsetWidth - menu.offsetWidth - 10
+                    }
+                    menu.style.left = position.left + scrollX + 'px';
+                    menu.style.top = position.top + scrollY + 14 + 'px';
+                })
+            } else {
+                menu.style.display = 'none';
+            }
+        } else {
+            menu.style.display = 'none';
+        }
+    }
+    keyDown = (e) => {
+        const menu = document.getElementById('command_tag_list');
+        const keyCode = parseInt(e.keyCode)
+        if(menu.style.display === 'block') {
+            if(keyCode === 38 || keyCode === 40 || keyCode === 13){
+                e.preventDefault()
+            }
+        }
+    }
+    templateClick = (li) => {
+        const range = this.range,
+            menu = document.getElementById('command_tag_list'),
+            text = range.endContainer.textContent,
+            index = text.lastIndexOf('.');
+        let offset = 1;
+        if(range.endContainer.parentElement.className === 'temporary' && index !== -1) {
+            offset = index + 1;
+        }
+        range.setStart(range.endContainer, offset);
+        range.deleteContents();
+        const node = document.createElement('span');
+        node.innerHTML = li.tag
+        range.insertNode(node);
+        range.collapse();
+        menu.style.display = 'none';
+    }
+
     instanceReady = () => {
         const editor = this.editorRef.current.editor;
 
@@ -333,9 +425,9 @@ export default class Editor extends React.Component {
             .plugins
             .autocomplete(editor, {
                 textTestCallback: this.textTestCallback,
-                dataCallback: this.dataCallback,
-                itemTemplate: itemTemplate,
-                outputTemplate: outputTemplate
+                // dataCallback: this.dataCallback,
+                // itemTemplate: itemTemplate,
+                // outputTemplate: outputTemplate
             });
         this.autocomplete.getHtmlToInsert = function (item) {
             if (item.endTag && that.pNode) {
@@ -343,18 +435,18 @@ export default class Editor extends React.Component {
                 item.tag += '<span style="color: #000;">&nbsp;</span>';
             }
             setTimeout(() => {
-                if (that.range) {
+                if (that.range) { 
                     that.range.endContainer.$.parentNode.className = '';
                 }
                 if (item.charts) {
-                    that.openChartsPopup();
+                    that.openChartsPopup('charts');
                 }
             });
             return this
                 .outputTemplate
                 .output(item);
         }
-        this.callbackData = [];
+        this.intalled = true;
         eventEmitter.emit('SKIM_ARTICLE', this.props.noteStore.noteList[0]);
         this.setEditorIframe();
         const editorContent = document.getElementById('cke_1_contents');
@@ -362,8 +454,8 @@ export default class Editor extends React.Component {
         editorContent.appendChild(document.getElementById('command_tag_pane'));
         document.getElementsByClassName('cke_autocomplete_panel')[0].style.width = 'auto';
     }
-    openChartsPopup = () => {
-        const menu = document.getElementById('charts'),
+    openChartsPopup = (id) => {
+        const menu = document.getElementById(id),
             editorContent = document.getElementById('cke_1_contents');
         const scrollX = editorContent.scrollLeft;
         const scrollY = editorContent.scrollTop;
@@ -385,14 +477,13 @@ export default class Editor extends React.Component {
             return null;
         }
         const iframe = document.getElementById('cke_1_contents').children[1].contentWindow;
-        const ranges = iframe.getSelection().getRangeAt(0);
         const charts = document.getElementById('charts');
+        const ranges = iframe.getSelection().getRangeAt(0);
         this.position = ranges.getBoundingClientRect();
-        const innerText = ranges.startContainer.innerText ? ranges.startContainer.innerText : ranges.startContainer.textContent;
         if (charts) {
             charts.style.display = 'none';
         }
-        if (innerText.indexOf('\u200B') !== -1) {
+        if (range.endContainer.$ && range.endContainer.$.textContent && range.endContainer.$.textContent.indexOf('\u200B') !== -1) {
             setTimeout(() => {
                 range.endContainer.$.textContent = range.endContainer.$.textContent.replace(/\u200B/g, '');
                 // const ranges = iframe.getSelection().getRangeAt(0);
@@ -758,7 +849,7 @@ export default class Editor extends React.Component {
         const editor = this.editorRef.current.editor;
         const { isSaving } = this.props.noteStore;
 
-        if(isSaving)  return;
+        if (isSaving) return;
 
         this.updateNote({
             articleContent: editor.getData()
@@ -773,9 +864,9 @@ export default class Editor extends React.Component {
             ...currentNote,
             ...params
         }
-        
+
         await this.props.noteStore.updateNote(updatedNote);
-        
+
         // 更新笔记项
         this.props.noteStore.updateNoteItem(updatedNote);
         // 重新获取文件夹和笔记
@@ -785,7 +876,7 @@ export default class Editor extends React.Component {
         //     pageIndex: 0,
         //     pageSize: 10
         // });
-    }   
+    }
 
     render() {
         const { data, title, tools, visible, dropList, moreList, showMore, chartSettingVisible, layoutVisible } = this.state;
@@ -892,9 +983,9 @@ export default class Editor extends React.Component {
 
         return <EditorTemplate>
             <div style={{ display: 'flex', marginBottom: '2px' }}>
-                <input className='title_input' type='textarea' value={title} autoComplete="off" onChange={ this.titleChange } onBlur={ (e) => this.updateNote({articleTitle: e.target.value }) } id="artical_tilte" />
+                <input className='title_input' type='textarea' value={title} autoComplete="off" onChange={this.titleChange} onBlur={(e) => this.updateNote({ articleTitle: e.target.value })} id="artical_tilte" />
                 <div style={{ position: 'relative', borderRight: '1px solid #e1e1e1' }}>
-                    <Button className="save-btn" onClick={ this.saveNote }>{ isSaving ? '正在保存中...' : '保存' }</Button>
+                    <Button className="save-btn" onClick={this.saveNote}>{isSaving ? '正在保存中...' : '保存'}</Button>
                     <ul className='tools'>
                         {
                             tools.map((li, index) => {
@@ -916,6 +1007,15 @@ export default class Editor extends React.Component {
             <div id="charts" onClick={this.stopP}>
                 <p><Icon type='close' style={{ float: 'right', cursor: 'pointer' }} onClick={() => { document.getElementById('charts').style.display = 'none' }}></Icon></p>
                 <Preview chartId={'intelliCharts'}></Preview>
+            </div>
+            <div id="command_tag_list">
+                <ul>
+                    {
+                        dropList.map((li, index) => {
+                            return <li key={index} style={{background: dropIndex === index ? '#eff0ef': 'inherit'}} onClick={() => {this.templateClick(li)}}>{li.title}</li>
+                        })
+                    }
+                </ul>
             </div>
             <FullScreen visible={visible} editorHandle={true} exit={() => this.setState({ visible: false })}
                 afterEnter={this.afterEnter} afterExit={this.afterExit} PDFTile={title}>
