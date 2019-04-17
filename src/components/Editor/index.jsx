@@ -369,13 +369,13 @@ export default class Editor extends React.Component {
         if (innerText.indexOf('\u200B') !== -1) {
             setTimeout(() => {
                 range.endContainer.$.textContent = range.endContainer.$.textContent.replace(/\u200B/g, '');
-                const ranges = iframe.getSelection().getRangeAt(0);
-                if (ranges.startContainer.innerText && range.endOffset > innerText.length) {
-                    return;
-                }
-                ranges.setStart(ranges.startContainer, range.endOffset);
-                ranges.collapse();
-            }, 10)
+                // const ranges = iframe.getSelection().getRangeAt(0);
+                // if (ranges.startContainer.innerText && range.endOffset > innerText.length) {
+                //     return;
+                // }
+                // ranges.setStart(ranges.startContainer, range.endOffset);
+                // ranges.collapse();
+            }, 100)
         }
         // const editor = this.editorRef.current.editor;
         return window.CKEDITOR.plugins.textMatch.match(range, (txt, offset) => {
@@ -385,7 +385,6 @@ export default class Editor extends React.Component {
             this.pNode = null;
             this.range = null;
             if (node.getAttribute('name') === 'temporary') {　//选择公司后～进入此逻辑
-                console.log(1)
                 const pNode = this.getParentNode(range.startContainer.$);
                 const matchArr = text.split('~'), matchText = matchArr[matchArr.length - 1];
                 const innertext = pNode.innerText;
@@ -408,14 +407,12 @@ export default class Editor extends React.Component {
                         return item.title.indexOf(matchText) !== -1 || flag;
                     });
                     this.callbackData = data;
-                    console.log(111)
                     this.autocomplete.view.itemTemplate.source = '<li data-id="{id}"><div style="display: flex"><strong class="item-title" style="min-width: 100px">{title}</strong></div></li>';
                     return {
                         start: text.lastIndexOf('~') + 1,
                         end: range.endOffset
                     };
                 } else {
-                    console.log(12)
                     const arr = text.split('.'), lastText = arr[arr.length - 1];
                     if (text.substr(text.length - 1, 1) === '。') { //中文句号提示
                         this.callbackData = [{
@@ -470,9 +467,7 @@ export default class Editor extends React.Component {
                     };
                 }
             } else {
-                console.log(2)
                 if (currentStr === '~' || currentStr === '～') {
-                    console.log(21)
                     if (!doing) { // 匹配'~'进入此逻辑
                         this.callbackData = [{
                             id: 1,
@@ -486,10 +481,8 @@ export default class Editor extends React.Component {
                             end: text.lastIndexOf(currentStr) + 1
                         };
                     }
-                    this.callbackData = [];
                     return null;
                 }
-                this.callbackData = [];
                 return null;
             }
         });
