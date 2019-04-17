@@ -36,7 +36,9 @@ export default class Editor extends React.Component {
         this.state = {
             data: '',
             title: '',
-            dropList: [
+            dropList: [],
+            dropIndex: 0,
+            commandList: [
                 { name: '中国平安归母公司净利润58,1545,4545元' },
                 { name: '中国平安半年归母公司净利润580.95亿元' },
                 { name: '归母净利润580.95亿元' }
@@ -316,97 +318,6 @@ export default class Editor extends React.Component {
 
         ckeTop.append(toolGroup);
     }
-    keyUp = (e) => {
-        const iframe = document.getElementById('cke_1_contents').children[1].contentWindow;
-        const range = iframe.getSelection().getRangeAt(0), text = range.endContainer.textContent;
-        const scrollX = document.documentElement.scrollLeft || document.body.scrollLeft;
-        const scrollY = document.documentElement.scrollTop || document.body.scrollTop;
-        let position = range.getBoundingClientRect(), menu = document.getElementById('command_tag_list');
-        this.range = range;
-        if(menu.style.display === 'block') {
-            const keyCode = parseInt(e.keyCode)
-            if(keyCode === 38){
-                if(this.state.dropIndex === 0) {
-                    this.setState({dropIndex: this.state.dropList.length - 1});    
-                } else {
-                    this.setState({dropIndex: this.state.dropIndex - 1});
-                }
-                return;
-            }
-            if(keyCode === 40){
-                if(this.state.dropIndex === this.state.dropList.length - 1) {
-                    this.setState({dropIndex: 0});    
-                } else {
-                    this.setState({dropIndex: this.state.dropIndex + 1});
-                }
-                return;
-            }
-            if(keyCode === 13) {
-                this.templateClick(this.state.dropList[this.state.dropIndex]);
-                menu.style.display === 'none';
-                return;
-            }
-        }
-        if(text.charAt(text.length - 1) === '~' || text.charAt(text.length - 1) ==='～') {
-            this.position = position;
-        }
-        if (text.indexOf('~') !== -1 || text.indexOf('～') !== -1) {
-            this.setState({dropList: MENTIONS});
-            menu.style.display = 'block';
-            setTimeout(() => {
-                const menu = document.getElementById('command_tag_list');
-                if(position.x + menu.offsetWidth >= document.body.offsetWidth){
-                    position.x = document.body.offsetWidth - menu.offsetWidth - 10
-                }
-                menu.style.left = position.left + scrollX + 'px';
-                menu.style.top = position.top + scrollY + 14 + 'px';
-            })
-        } else if(range.endContainer.parentElement.className === 'temporary') {
-            const index = text.lastIndexOf('.');
-            if(index !== -1) {
-                this.setState({dropList: tables});
-                menu.style.display = 'block';
-                setTimeout(() => {
-                    const menu = document.getElementById('command_tag_list');
-                    if(position.x + menu.offsetWidth >= document.body.offsetWidth){
-                        position.x = document.body.offsetWidth - menu.offsetWidth - 10
-                    }
-                    menu.style.left = position.left + scrollX + 'px';
-                    menu.style.top = position.top + scrollY + 14 + 'px';
-                })
-            } else {
-                menu.style.display = 'none';
-            }
-        } else {
-            menu.style.display = 'none';
-        }
-    }
-    keyDown = (e) => {
-        const menu = document.getElementById('command_tag_list');
-        const keyCode = parseInt(e.keyCode)
-        if(menu.style.display === 'block') {
-            if(keyCode === 38 || keyCode === 40 || keyCode === 13){
-                e.preventDefault()
-            }
-        }
-    }
-    templateClick = (li) => {
-        const range = this.range,
-            menu = document.getElementById('command_tag_list'),
-            text = range.endContainer.textContent,
-            index = text.lastIndexOf('.');
-        let offset = 1;
-        if(range.endContainer.parentElement.className === 'temporary' && index !== -1) {
-            offset = index + 1;
-        }
-        range.setStart(range.endContainer, offset);
-        range.deleteContents();
-        const node = document.createElement('span');
-        node.innerHTML = li.tag
-        range.insertNode(node);
-        range.collapse();
-        menu.style.display = 'none';
-    }
 
     instanceReady = () => {
         const editor = this.editorRef.current.editor;
@@ -425,9 +336,9 @@ export default class Editor extends React.Component {
             .plugins
             .autocomplete(editor, {
                 textTestCallback: this.textTestCallback,
-                // dataCallback: this.dataCallback,
-                // itemTemplate: itemTemplate,
-                // outputTemplate: outputTemplate
+                dataCallback: this.dataCallback,
+                itemTemplate: itemTemplate,
+                outputTemplate: outputTemplate
             });
         this.autocomplete.getHtmlToInsert = function (item) {
             if (item.endTag && that.pNode) {
@@ -435,7 +346,7 @@ export default class Editor extends React.Component {
                 item.tag += '<span style="color: #000;">&nbsp;</span>';
             }
             setTimeout(() => {
-                if (that.range) { 
+                if (that.range) {
                     that.range.endContainer.$.parentNode.className = '';
                 }
                 if (item.charts) {
@@ -645,6 +556,8 @@ export default class Editor extends React.Component {
         const iframe = document.getElementById('cke_1_contents').children[1].contentWindow;
         let dom = iframe.document;
         this.setEditorHeight();
+        // dom.onkeydown = this.keyDown;
+        // dom.onkeyup = this.keyUp;
         dom.addEventListener('compositionstart', function (e) {
             doing = true;
         }, false);
@@ -734,7 +647,10 @@ export default class Editor extends React.Component {
     }
 
     dataCallback = (matchInfo, callback) => {
-        callback(this.callbackData);
+        console.log(matchInfo);
+        setTimeout(() => {
+            callback(this.callbackData);
+        }, 2000)
     }
 
     titleChange = (val) => {
@@ -879,7 +795,7 @@ export default class Editor extends React.Component {
     }
 
     render() {
-        const { data, title, tools, visible, dropList, moreList, showMore, chartSettingVisible, layoutVisible } = this.state;
+        const { data, title, tools, visible, dropList, dropIndex, commandList, moreList, showMore, chartSettingVisible, layoutVisible } = this.state;
         const contentCss = process.env.NODE_ENV === 'production' ? [`${window.origin}/static/ckeditor/contents.css`, `${window.origin}/static/ckeditor/external.css`] : ['http://localhost:5500/build/static/ckeditor/contents.css', 'http://localhost:5500/build/static/ckeditor/external.css'];
         const config = {
             extraPlugins: 'autocomplete,notification,textmatch,textwatcher,tableresizerowandcolumn,save-to-pdf,quicktable,templates,template,image2,uploadimage,uploadwidget,filebrowser',
@@ -1008,15 +924,6 @@ export default class Editor extends React.Component {
                 <p><Icon type='close' style={{ float: 'right', cursor: 'pointer' }} onClick={() => { document.getElementById('charts').style.display = 'none' }}></Icon></p>
                 <Preview chartId={'intelliCharts'}></Preview>
             </div>
-            <div id="command_tag_list">
-                <ul>
-                    {
-                        dropList.map((li, index) => {
-                            return <li key={index} style={{background: dropIndex === index ? '#eff0ef': 'inherit'}} onClick={() => {this.templateClick(li)}}>{li.title}</li>
-                        })
-                    }
-                </ul>
-            </div>
             <FullScreen visible={visible} editorHandle={true} exit={() => this.setState({ visible: false })}
                 afterEnter={this.afterEnter} afterExit={this.afterExit} PDFTile={title}>
                 <CKEditor
@@ -1036,7 +943,7 @@ export default class Editor extends React.Component {
             <div id="command_tag_pane">
                 <ul>
                     {
-                        dropList.map((li, index) => {
+                        commandList.map((li, index) => {
                             return <li key={index} onClick={() => this.changeSelectItem(li)}>{li.name}</li>
                         })
                     }

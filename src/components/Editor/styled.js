@@ -1,6 +1,23 @@
 import styled from "styled-components";
 
 const EditorTemplate = styled.div`
+    #command_tag_list{
+        display: none;
+        position: absolute;
+        border: 1px solid #ddd;
+        border-radius: 2px;
+        background: #fff;
+        font-size: 12px;
+        white-space: nowrap;
+        >ul>li{
+            padding: 3px 20px;
+            cursor: pointer;
+            &:hover{
+                background: #dbe9f9;
+                color: #82abe5;
+            }
+        }
+    }
     #charts{
         max-width: 400px;
         background: #fff;
