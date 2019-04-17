@@ -92,6 +92,30 @@ const NavSectionWrapper = styled.section`
             .icon-add-doc {
                 color: #407CD5;
             }
+
+            &.selected {
+                background-color: #3f7cd5;
+
+                .icon_doc {
+                    background-image: url('${require('../../theme/images/icon_doc_selected.png')}');
+                }
+
+                .icon_share_me {
+                    background-image: url('${require('../../theme/images/icon_share_me_selected.png')}');
+                }
+
+                .icon_file_folder {
+                    background-image: url('${require('../../theme/images/icon_file_folder_selected.png')}');
+                }
+
+                .icon_tag {
+                    background-image: url('${require('../../theme/images/icon_tag_selected.png')}');
+                }
+
+                .icon_recycle_bin {
+                    background-image: url('${require('../../theme/images/icon_recycle_bin_selected.png')}');
+                }
+            }
         }
 
         .icon_doc,
@@ -348,11 +372,12 @@ export default class NavSection extends React.Component {
         this.newFileFolder = '';            // 新的文件夹名称
         this.addNewNote = this.addNewNote.bind(this);
         this.requestParams = {
-            userId: '12131',
+            userId: '2000',
             directoryLevel: 1,
             status: 1,
             parentId: -1
         };
+        this.notExpandFlag = false;     // 不扩展
     }
 
     // 获取文件夹列表 
@@ -389,21 +414,32 @@ export default class NavSection extends React.Component {
     }
 
     // 增加笔记 
-    addNewNote({title, content}) {
-        const { noTitleNum } = this.props.noteStore;
+    // addNewNote({title, content}) {
+    //     const { noTitleNum } = this.props.noteStore;
 
-        const noteData = {
-            articleTitle: title || `无标题笔记${ noTitleNum ? `(${noTitleNum})` : ''}`,
-            briefContent: '',
-            articleContent: content || '',
-            createTime: +new Date,
-            fileSize: '',
-            imgUrl: ''
-        }
+    //     const noteData = {
+    //         articleTitle: title || `无标题笔记${ noTitleNum ? `(${noTitleNum})` : ''}`,
+    //         briefContent: '',
+    //         articleContent: content || '',
+    //         createTime: +new Date,
+    //         fileSize: '',
+    //         imgUrl: ''
+    //     }
 
-        this.props.noteStore.addNote(noteData);
-        this.props.noteStore.setActiveIndex(0);
-        eventEmitter.emit('SKIM_ARTICLE', noteData)
+    //     this.props.noteStore.addNote(noteData);
+    //     this.props.noteStore.setActiveIndex(0);
+    //     eventEmitter.emit('SKIM_ARTICLE', noteData)
+    // }
+
+    // 增加笔记 
+    addNewNote() {
+        const { selectedId } = this.props.menuStore;
+
+        this.props.noteStore.addNewNote({
+            authorId: '2000',
+            directoryId: selectedId,
+            typeId: '-1'
+        });
     }
 
     // 创建文件夹
@@ -456,7 +492,7 @@ export default class NavSection extends React.Component {
             parentId = this.getDeepItemByKey(key, key.split(',').length - 2).id;
         }
         await this.props.menuStore.createFileFolder({
-            userId: '12131',
+            userId: '2000',
             parentId,
             directoryName: this.newFileFolder,
             directoryLevel: key.split(',').length - 2,
@@ -583,7 +619,7 @@ export default class NavSection extends React.Component {
 
         if(key.endsWith('2,-1')) {
             this.props.noteStore.getSubDirAndNotes({
-                userId: '12131',
+                userId: '2000',
                 dirId: id || '-1',
                 orderRule: 'desc',
                 pageSize: 10,
@@ -595,7 +631,13 @@ export default class NavSection extends React.Component {
 
     // 点击菜单
     clickNavItem(menuItem, key) {
-        this.props.menuStore.setSelectedKey(key);
+        this.setSelectedKey(key);
+
+        if(key && key.split(',').length === 2) {
+            this.notExpandFlag = true;
+        }else {
+            this.notExpandFlag = false;
+        }
 
         switch(menuItem.name) {
             case '最新文档':
@@ -647,10 +689,11 @@ export default class NavSection extends React.Component {
                                 menuItem.editable ? <CustomInput
                                                         style={{ width: 120 }}
                                                         className="input-folder"
+                                                        onClick={ e => e.stopPropagation() }
                                                         onPressEnter={ () => this.createOrUpdateFileFolder(menuItem, key)}
                                                         onBlur={ () => this.createOrUpdateFileFolder(menuItem, key) }
                                                         defaultValue={ menuItem.name }
-                                                        onChange={ (e) => this.newFileFolder = e.target.value }/> : menuItem.name
+                                                        onChange={ (e) => { this.newFileFolder = e.target.value }}/>: menuItem.name
                             }
                         </div>
                     </div>
@@ -699,8 +742,6 @@ export default class NavSection extends React.Component {
     toggleCollapse = () => {
         let { isCollapsed } = this.state;
 
-        // isCollapsed = !isCollapsed;
-
         this.setState({ 
             isCollapsed: !isCollapsed
         }, () => {
@@ -717,7 +758,7 @@ export default class NavSection extends React.Component {
             });
         }
 
-        if(this.state.isCollapsed === prevState.isCollapsed && prevProps.drawerStore.isVisible !== this.state.isCollapsed) {
+        if(!this.notExpandFlag && this.state.isCollapsed === prevState.isCollapsed && prevProps.drawerStore.isVisible !== this.state.isCollapsed) {
             this.toggleCollapse();
         }
 
@@ -743,12 +784,13 @@ export default class NavSection extends React.Component {
 
         const { isVisible } = this.props.drawerStore;
         const { loading } = this.props.menuStore;
+        const { selectedKey } = this.props.menuStore;
 
         const menu = (<Menu>
             <Menu.Item onClick={ this.addNewNote }>新建笔记</Menu.Item>
             <Menu.Item onClick={ () => this.setModalVisible('templateModalVisible', true) }>新建模板笔记</Menu.Item>
             <Menu.Item onClick={ () => this.createFolder() }>新建文件夹</Menu.Item>
-            <Menu.Item>导入word文档</Menu.Item>
+            <Menu.Item>导入Word文档</Menu.Item>
             <Menu.Item>导入PDF文档</Menu.Item>
         </Menu>);
 
@@ -756,7 +798,11 @@ export default class NavSection extends React.Component {
             <Spin spinning={ loading } delay={500}>
                 <div className="expand-layout" style={{ display: isCollapsed ? 'none' : 'block' }}>
                     <div className="operation-tools">
-                        <Dropdown overlay={ menu }><a className="btn-new-doc"><i className="icon-add"></i>新文档</a></Dropdown>
+                        <Dropdown overlay={ menu } trigger="click" overlayClassName="dropdown-overlay">
+                            <a className="btn-new-doc">
+                                <i className="icon-add"></i>新文档
+                            </a>
+                        </Dropdown>
                     </div>
 
                     <ul className="menu-list">
@@ -770,11 +816,17 @@ export default class NavSection extends React.Component {
 
                 <div className="collapse-layout" style={{ display: isCollapsed ? 'block' : 'none' }}>
                     <div className="sidebar-item" title="添加">
-                        <i className="iconfont icon-add-doc"></i>
+                        <Dropdown overlay={ menu } trigger="click" overlayClassName="dropdown-overlay">
+                            <i className="iconfont icon-add-doc"></i>
+                        </Dropdown>
                     </div>
                     {
                         (menuList && !!menuList.length) && menuList.map((menu, index) => {
-                            return <div className="sidebar-item" title={ menu.name } key={ index }>
+                            return <div 
+                                        className={`sidebar-item ${ selectedKey === `${ index },-1` ? 'selected' : '' }`}
+                                        title={ menu.name }
+                                        key={ index }
+                                        onClick={ () => this.clickNavItem(menu, `${index},-1`)}>
                                 <i className={ menu.icon }></i>
                             </div>
                         })

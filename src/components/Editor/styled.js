@@ -189,5 +189,20 @@ const EditorTemplate = styled.div`
             }
          } 
      }
+
+     .save-btn {
+        float: left;
+        margin-top: 12px;
+        margin-right: 20px;
+        color: #82B6F4;
+        border: 1px solid #e2e2e2;
+        font-size: 12px;
+        padding: 0 24px;
+
+        &:hover {
+            color: #398dee;
+            border: 1px solid #B9BBC5;
+        }
+     }
 `;
 export default EditorTemplate;

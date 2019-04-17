@@ -13,6 +13,47 @@ const FileListSectionWrapper = styled.div`
         width: 360px;
         display: flex;
         flex-direction: column;
+
+        .content-wrapper {
+            position: absolute;
+            top: 60px;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            border-left: 1px solid #e1e2e6; 
+        }
+
+        .no-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+
+            p {
+                color: #868686;
+                margin-top: 5px;
+                white-space: nowrap;
+                font-size: 12px;
+            }
+
+            .ant-btn {
+                width: 100px;
+                margin-top: 10px;
+                font-size: 12px;
+                display: inline-block;
+                vertical-align: middle;
+                text-align: center;
+                padding: 0 5px;
+                line-height: 32px;
+                color: #ffffff;
+                background: #398dee;
+                border-radius: 2px;
+                border: 1px solid #398dee;
+                cursor: pointer;
+                outline: none;
+            }
+        }
     }
 
     ${props => props.shrink && css`
@@ -236,7 +277,6 @@ export default class FileListSection extends React.Component {
         super(props);
 
         this.state = {
-            articleIndex: 0,
             isShrink: props.drawerStore.isVisible,        // 默认不收缩
             popDownSettingVisible: false,               // 设置默认不可见
         };
@@ -246,9 +286,6 @@ export default class FileListSection extends React.Component {
     }
 
     componentDidMount() {
-        this.props.noteStore.setActiveIndex(0);
-        this.setState({activeIndex: 0});
-
         window.addEventListener('click', this.clickCallback, false);
     }
 
@@ -276,19 +313,14 @@ export default class FileListSection extends React.Component {
     }
 
     // 移除笔记
-    removeNote(index) {
-        this.props.noteStore.deleteNote(index);
-        if (this.props.noteStore.noteList[index]) {
-            this.setActiveNote.bind(this, index);
-            this.setState({activeIndex: index});
-            eventEmitter.emit('SKIM_ARTICLE', this.props.noteStore.noteList[index])
-        }
-    }
-
-    // 设置激活的笔记
-    setActiveNote(index) {
-        this.props.noteStore.setActiveIndex(index);
-    }
+    // removeNote(index) {
+    //     this.props.noteStore.deleteNote(index);
+    //     if (this.props.noteStore.noteList[index]) {
+    //         this.setActiveNote.bind(this, index);
+    //         this.setState({activeIndex: index});
+    //         eventEmitter.emit('SKIM_ARTICLE', this.props.noteStore.noteList[index])
+    //     }
+    // }
 
     toggleWidth = () => {
         const {isShrink} = this.state;
@@ -412,11 +444,30 @@ export default class FileListSection extends React.Component {
         });
     }
 
+    // 增加笔记 
+    addNewNote = ({title, content}) => {
+        const { noTitleNum } = this.props.noteStore;
+
+        const noteData = {
+            articleTitle: title || `无标题笔记${ noTitleNum ? `(${noTitleNum})` : ''}`,
+            briefContent: '',
+            articleContent: content || '',
+            createTime: +new Date,
+            fileSize: '',
+            imgUrl: ''
+        }
+
+        this.props.noteStore.addNote(noteData);
+        this.props.noteStore.setActiveIndex(0);
+        eventEmitter.emit('SKIM_ARTICLE', noteData)
+    }
+
     render() {
-        const { noteList, directoryList } = this.props.noteStore;
-        const { activeIndex, isShrink, popDownSettingVisible, } = this.state;
+        const { noteList, directoryList, activeIndex } = this.props.noteStore;
+        const { isShrink, popDownSettingVisible, } = this.state;
         const { isVisible } = this.props.drawerStore;
         const { goBackDisabled } = this.props.menuStore;
+        
         const orderBy = this.orderBy;
         const orderRule = this.orderRule;
 
@@ -463,51 +514,55 @@ export default class FileListSection extends React.Component {
                     </div>
                 </div>
 
-                <ul className="article-list">
-                    {
-                        (directoryList && !!directoryList.length) && directoryList.map((directory, index) => {
-                            return <li key={ index } >
-                                <a className="directory-item">
-                                    <img src={ require('../../theme/images/icon_folder.png') } alt="文件夹logo" width="16px" style={{ verticalAlign: '-1px', marginRight: '10px'}} />
-                                    <h3>{ directory.directoryName }</h3>
-                                    <div className="directory-footer">
-                                        <time>{typeof directory.createTime === 'number' ? moment(directory.createTime).format('YYYY-MM-DD'): directory.createTime || '--'}</time>
-                                    </div>
+                {
+                    (!!directoryList.length || !!noteList.length) ? (
+                        <ul className="article-list">
+                            {
+                                (directoryList && !!directoryList.length) && directoryList.map((directory, index) => {
+                                    return <li key={ index } >
+                                        <a className="directory-item">
+                                            <img src={ require('../../theme/images/icon_folder.png') } alt="文件夹logo" width="16px" style={{ verticalAlign: '-1px', marginRight: '10px'}} />
+                                            <h3>{ directory.directoryName }</h3>
+                                            <div className="directory-footer">
+                                                <time>{typeof directory.createTime === 'number' ? moment(directory.createTime).format('YYYY-MM-DD'): directory.createTime || '--'}</time>
+                                            </div>
 
-                                    <a className="remove-btn" title="删除" onClick={ () => this.putDirToBin(directory)}></a>
-                                </a>
-                            </li>
-                        })
-                    }
-                    {
-                        (noteList && !!noteList.length) && noteList.map((noteItem, index) => {
-                            return <li key={index} onClick={() => {
-                                this.setActiveNote.bind(this, index);
-                                this.setState({activeIndex: index});
-                                eventEmitter.emit('SKIM_ARTICLE', noteItem)
-                            }}>
-                                <a className={`article-item ${index === activeIndex && 'article-item-hover'}`}>
-                                    <h3><img src={ require('../../theme/images/icon_note.png')} alt="笔记logo" width={16} style={{ marginRight: 10, verticalAlign: '-5px'}} />{noteItem.articleTitle }</h3>
-                                    <div className='content'>
-                                        <p>{noteItem.briefContent}</p>
-                                        <img src={noteItem.imgUrl} alt=""/>
-                                    </div>
-                                    <div className="article-footer">
-                                        <time>{typeof noteItem.createTime === 'number' ? moment(noteItem.createTime).format('YYYY-MM-DD'): noteItem.createTime}</time>
-                                        <span>{noteItem.fileSize + 'KB'}</span>
-                                        {/* <Button icon='delete'
-                                                size='small'
-                                                style={{marginLeft: '20px'}}
-                                                onClick={(e) => {
-                                                    e.stopPropagation();
-                                                    this.removeNote(index)
-                                                }}></Button> */}
-                                    </div>
-                                </a>
-                            </li>
-                        })
-                    }
-                </ul>
+                                            <a className="remove-btn" title="删除" onClick={ () => this.putDirToBin(directory)}></a>
+                                        </a>
+                                    </li>
+                                })
+                            }
+                            {
+                                (noteList && !!noteList.length) && noteList.map((noteItem, index) => {
+                                    return <li key={index} onClick={() => {
+                                        this.props.noteStore.setActiveIndex(index)
+                                        eventEmitter.emit('SKIM_ARTICLE', noteItem)
+                                    }}>
+                                        <a className={`article-item ${index === activeIndex && 'article-item-hover'}`}>
+                                            <h3><img src={ require('../../theme/images/icon_note.png')} alt="笔记logo" width={16} style={{ marginRight: 10, verticalAlign: '-5px'}} />{noteItem.articleTitle }</h3>
+                                            <div className='content'>
+                                                <p>{noteItem.briefContent}</p>
+                                                <img src={noteItem.imgUrl} alt=""/>
+                                            </div>
+                                            <div className="article-footer">
+                                                <time>{typeof noteItem.createTime === 'number' ? moment(noteItem.createTime).format('YYYY-MM-DD'): noteItem.createTime}</time>
+                                                <span>{noteItem.fileSize + 'KB'}</span>
+                                            </div>
+                                        </a>
+                                    </li>
+                                })
+                            }
+                        </ul> 
+                    ): <div className="content-wrapper">
+                        <div className="no-content">
+                            <div>
+                                <p>没有找到文件</p>
+                                <Button onClick={ this.addNewNote }>新建笔记</Button>
+                            </div>
+                        </div>
+                    </div>
+                }
+                
             </div>
 
             <i className={`icon-${isShrink ? 'expand' : 'shrink'}`} title={isShrink ? '展开' : '收缩'}
