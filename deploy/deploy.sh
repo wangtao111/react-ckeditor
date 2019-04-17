@@ -17,7 +17,7 @@ if [ ! -n "$1" ];then
     exit
 fi
 
-export PROJECT_NAME=aop-portal
+export PROJECT_NAME=finnote-portal
 export APP_HOME=/niub/www
 
 SRC_DIR=$(dirname "$0")

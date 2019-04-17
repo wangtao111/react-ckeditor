@@ -17,7 +17,7 @@ import { saveAs } from 'file-saver';
 import * as jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
 import EditorTemplate from './styled';
-import { Icon, Modal } from 'antd';
+import { Icon, Modal, Button } from 'antd';
 import { tables, MENTIONS, commonTables } from '../../mockData/commandData';
 import ChartEditor from 'abc-chart-editor';
 import chartData from '../../mockData/chart';
@@ -27,6 +27,7 @@ let doing = false;
 @inject('editorStore')
 @inject('drawerStore')
 @inject('noteStore')
+@inject('menuStore')
 @observer
 export default class Editor extends React.Component {
     constructor(props) {
@@ -87,6 +88,20 @@ export default class Editor extends React.Component {
         this.addEventEmitter();
         window.onresize = () => {
             this.setEditorHeight();
+        }
+
+        window.document.addEventListener('keydown', this.saveKeysCallback);
+    }
+
+    // Ctrl Or Command + S组件键回调
+    saveKeysCallback(event) {
+        var e = event || window.event || arguments.callee.caller.arguments[0];
+        // console.log('e: ', e, 'keyCode:', e.keyCode);
+
+        if ((e.ctrlKey || e.metaKey) && e.key === 's') {
+            event.preventDefault();
+            // 保存笔记
+            this.saveNote();
         }
     }
 
@@ -298,6 +313,12 @@ export default class Editor extends React.Component {
     }
     instanceReady = () => {
         const editor = this.editorRef.current.editor;
+
+        // 失去焦点保存
+        // editor.on('blur', () => {
+        //     this.saveNote();
+        // });
+
         // 工具栏中增加更多工具组
         this.addMoreToolGroup();
         const itemTemplate = '<li data-id="{id}"><div style="display: flex"><strong class="item-title" style="min-width: 100px">{title}</strong></div></li>';
@@ -729,9 +750,46 @@ export default class Editor extends React.Component {
             layoutVisible: false
         })
     }
+
     stopP = (e) => {
         e.nativeEvent.stopImmediatePropagation();
     }
+
+    // 保存笔记(更新笔记内容)
+    saveNote = () => {
+        const editor = this.editorRef.current.editor;
+        const { isSaving, activeIndex, noteList } = this.props.noteStore;
+
+        if(isSaving)  return;
+
+        const currentNote = noteList[activeIndex];
+
+        this.updateNote({
+            ...currentNote,
+            articleContent: editor.getData()
+        })
+    }
+
+    // 更新笔记 
+    updateNote = async (params) => {
+        const { activeIndex, noteList } = this.props.noteStore;
+
+        const currentNote = noteList[activeIndex];
+        const requestBody = {
+            ...currentNote,
+            ...params
+        }
+
+        await this.props.noteStore.updateNote(requestBody);
+        
+        // 重新获取文件夹和笔记
+        this.props.noteStore.getSubDirAndNotes({
+            userId: currentNote.authorId,
+            dirId: currentNote.directoryId,
+            pageIndex: 0,
+            pageSize: 10
+        });
+    }   
 
     render() {
         const { data, title, tools, visible, dropList, moreList, showMore, chartSettingVisible, layoutVisible } = this.state;
@@ -834,11 +892,13 @@ export default class Editor extends React.Component {
         }
 
         const colors = ['#DF3F2B', '#D5952C', '#8B572A', '#417505', '#7C38B8', '#4A90E2', '#9B9B9B', '#000000', '#1C5773', '#CAA260'];
+        const { isSaving } = this.props.noteStore;
 
         return <EditorTemplate>
             <div style={{ display: 'flex', marginBottom: '2px' }}>
-                <input className='title_input' type='textarea' value={title} onChange={this.titleChange} id="artical_tilte" />
+                <input className='title_input' type='textarea' value={title} autoComplete="off" onChange={ this.titleChange } onBlur={ (e) => this.updateNote({articleTitle: e.target.value }) } id="artical_tilte" />
                 <div style={{ position: 'relative', borderRight: '1px solid #e1e1e1' }}>
+                    <Button className="save-btn" onClick={ this.saveNote }>{ isSaving ? '正在保存中...' : '保存' }</Button>
                     <ul className='tools'>
                         {
                             tools.map((li, index) => {

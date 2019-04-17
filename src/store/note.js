@@ -9,6 +9,7 @@ export default class NoteStore {
     @observable noTitleNum = 0;     // 无标题笔记个数
     @observable activeIndex = 0;       //  当前激活的笔记下标
     @observable directoryList = [];     // 文件夹列表
+    @observable isSaving = false;         // 保存中          
 
     // 设置激活笔记下标
     @action.bound
@@ -16,39 +17,56 @@ export default class NoteStore {
         this.activeIndex = index;
     }
     
-    // 设置笔记列表
+    // 新建一个新笔记
     @action.bound
-    setNoteList(noteList) {
-        this.noteList = noteList;
-    }
+    async addNewNote(params) {
+        const { authorId, directoryId } = params;
+        const requestBody = {
+            articleTitle: `无标题笔记${ this.noTitleNum ? `(${this.noTitleNum})` : ''}`,
+            markWords: '',
+            status: 1,
+            checkStatus: 1,
+            articleContent: '',
+            ...params
+        }
 
-    // 增加笔记
-    @action.bound
-    addNote(noteItem) {
+        await this.publishNote(requestBody);
+        this.getSubDirAndNotes({
+            userId: authorId,
+            dirId: directoryId,
+            pageIndex: 0,
+            pageSize: 10
+        });
         this.noTitleNum++;
-        this.noteList.splice(0, 0, noteItem);
-    }
-    // 删除笔记
-    @action.bound
-    deleteNote(index) {
-        this.noteList.splice(index, 1);
     }
 
     // 发布文档
-    publishNote = flow(function*(params) {
+    publishNote = flow(function*(requestBody) {
         try {
-            yield ajax('apiPublishNote')
-        }catch(err) {
+            this.isSaving = true;
+            yield ajax('apiPublishNote', {
+                data: requestBody
+            });
 
+            this.isSaving = false;
+        }catch(err) {
+            console.log('err: ', err);
+            message.error(err || '发布文档失败！');
         }
     })
 
     // 更新文档
-    updateNote = flow(function*(params) {
+    updateNote = flow(function*(requestBody) {
         try {
-            yield ajax('apiUpdateNote');
-        }catch(err) {
+            this.isSaving = true;
+            yield ajax('apiUpdateNote', {
+                data: requestBody
+            });
 
+            this.isSaving = false;
+        }catch(err) {
+            console.log('err: ', err);
+            message.error(err || '更新文档失败！');
         }
     })
 
