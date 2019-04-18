@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { inject, observer } from 'mobx-react';
-import { Table, Button, Icon, Input } from 'antd';
+import { Table, Button, Icon, Input, Spin } from 'antd';
 import eventEmitter from '../../event';
 import DataTableCard from 'abc-data-table-card';
 import DataChartCard from 'abc-data-chart-card';
@@ -9,6 +9,7 @@ import DataChartCard from 'abc-data-chart-card';
 const SearchResultWrapper = styled.div`
     position: relative;
     padding-top: 40px;
+    height: 100%;
 
     .search-tabs {
         position: relative;
@@ -95,6 +96,7 @@ const SearchResultWrapper = styled.div`
 
     .search-result-content {
         margin: 16px 20px;
+        min-height: 200px;
         
         .table-panel-wrapper,
         .chart-panel-wrapper {
@@ -399,7 +401,7 @@ export default class SearchResult extends React.Component {
 
     render() {
         const { activeTabIndex, tabs, overflow } = this.state;
-        const { analystTable, analystChart, chartLoading } = this.props.searchStore;
+        const { analystTable, analystChart, loading } = this.props.searchStore;
 
         const style = { transform: `translate3d(${this.state.transX}px, 0, 0)` };
         return <SearchResultWrapper>
@@ -425,59 +427,62 @@ export default class SearchResult extends React.Component {
 
             </div>
 
-            <div className="search-result-content">
-                {/* 数据图 */}
-                {
-                    (analystChart.item && !!analystChart.item.length && activeTabIndex === 3) && analystChart.item.map((item, index) => {
-                        const data = {
-                            id: item.id,
-                            image_title: item.image_title,
-                            time: item.time,
-                            title: item.title,
-                            type: item.type,
-                            author: item.author,
-                            chart_data: item.chart_data ? JSON.parse(JSON.stringify(item.chart_data.data || {})) : null,
-                            image_url: item.image_url
-                        }
-                        return <div className="chart-panel-wrapper">
-                            <DataChartCard
-                                    data={ data }
-                                    loading={ chartLoading }
-                                    isBitPicture={ item.chart_data ? item.chart_data.is_bitmap : false}
-                                    detailLink={`https://charttable.analyst.ai/chart/${ item.id || item.real_id}`}
-                                    sourceLink={`https://report.analyst.ai/report/article/${ item.file_id}`}
-                                    chartSize={{ height: 300, width: 350 }} />
-                            <div className="right">
-                                <Button type="primary" className="insert-btn" onClick={ this.insertChartOrImg.bind(this, index) }>插入</Button>
+            <Spin spinning={ loading }>
+                <div className="search-result-content">
+                    {/* 数据图 */}
+                    {
+                        (analystChart.item && !!analystChart.item.length && activeTabIndex === 3) && analystChart.item.map((item, index) => {
+                            const data = {
+                                id: item.id,
+                                image_title: item.image_title,
+                                time: item.time,
+                                title: item.title,
+                                type: item.type,
+                                author: item.author,
+                                chart_data: item.chart_data ? JSON.parse(JSON.stringify(item.chart_data.data || {})) : null,
+                                image_url: item.image_url
+                            }
+                            return <div className="chart-panel-wrapper">
+                                <DataChartCard
+                                        data={ data }
+                                        loading={ loading }
+                                        isBitPicture={ item.chart_data ? item.chart_data.is_bitmap : false}
+                                        detailLink={`https://charttable.analyst.ai/chart/${ item.id || item.real_id}`}
+                                        sourceLink={`https://report.analyst.ai/report/article/${ item.file_id}`}
+                                        chartSize={{ height: 300, width: 350 }} />
+                                <div className="right">
+                                    <Button type="primary" className="insert-btn" onClick={ this.insertChartOrImg.bind(this, index) }>插入</Button>
+                                </div>
                             </div>
-                        </div>
-                    })
-                    
-                }
+                        })
+                        
+                    }
 
-                {/* 数据表 */}
-                {
-                    (analystTable.items && !!analystTable.items.length && activeTabIndex === 4) && analystTable.items.map((item, index) => {
-                        const data = {
-                            table_data: item.table_data.data || [],
-                            table_title: item.table_title,
-                            time: item.time,
-                            title: item.title,
-                            type: item.type,
-                            company: item.company
-                        }
+                    {/* 数据表 */}
+                    {
+                        (analystTable.items && !!analystTable.items.length && activeTabIndex === 4) && analystTable.items.map((item, index) => {
+                            const data = {
+                                table_data: item.table_data.data || [],
+                                table_title: item.table_title,
+                                time: item.time,
+                                title: item.title,
+                                type: item.type,
+                                company: item.company
+                            }
 
-                        return <div className="table-panel-wrapper">
-                            <DataTableCard keyword={ analystTable.keyword } data={ data } key={ index }
-                                detailLink={`https://charttable.analyst.ai/table/${ item.id }`}
-                                sourceLink={`https://report.analyst.ai/detail?srcId=${ item.src_id }&page=${ item.filePage }`}></DataTableCard>
-                            <div className="right">
-                                <Button type="primary" className="insert-btn" disabled={ (!data.table_data || !data.table_data.length) } onClick={ e => this.insertTable(e, index) }>插入</Button>
+                            return <div className="table-panel-wrapper">
+                                <DataTableCard keyword={ analystTable.keyword } data={ data } key={ index }
+                                    detailLink={`https://charttable.analyst.ai/table/${ item.id }`}
+                                    sourceLink={`https://report.analyst.ai/detail?srcId=${ item.src_id }&page=${ item.filePage }`}></DataTableCard>
+                                <div className="right">
+                                    <Button type="primary" className="insert-btn" disabled={ (!data.table_data || !data.table_data.length) } onClick={ e => this.insertTable(e, index) }>插入</Button>
+                                </div>
                             </div>
-                        </div>
-                    })
-                }
+                        })
+                    }
             </div>
+            </Spin>
+            
         </SearchResultWrapper>
     }
 }

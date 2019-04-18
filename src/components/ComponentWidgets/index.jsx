@@ -66,17 +66,24 @@ const widgets = [
     },
     {
         name: '股价表现',
-        logo: 'stock_logo'
+        logo: 'stock_logo',
+        template: {
+            widget: '股价',
+            template: {
+                titleName: '股价表现',
+                className: 'align-left'
+            }
+        }
     },
     {
         name: '作者',
         logo: 'author_logo',
         template: {
-            widget: '摘要',
+            widget: '作者',
             template: {
-                titleName: '核心观点',
+                titleName: '分析师',
                 width: '65%',
-                className: 'align-left',
+                className: 'align-right',
             }
         }
     },

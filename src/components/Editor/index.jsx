@@ -190,6 +190,7 @@ export default class Editor extends React.Component {
             }
         })
 
+<<<<<<< HEAD
         // 新建模板笔记
         eventEmitter.on('NEW_PAGE', (data) => {
             const { name, template } = data;
@@ -201,6 +202,8 @@ export default class Editor extends React.Component {
                 this.setEditorIframe();
             }, 100)
         });
+=======
+>>>>>>> 00fc3759deab32a16198fabf335b7921ca8490ae
         // 浏览文章
         eventEmitter.on('SKIM_ARTICLE', (data) => {
             const content = this.beforeCommandInsert(data.articleContent);
@@ -786,6 +789,8 @@ export default class Editor extends React.Component {
 
         // 更新笔记项
         this.props.noteStore.updateNoteItem(updatedNote);
+
+        eventEmitter.emit('SKIM_ARTICLE', updatedNote);
         // 重新获取文件夹和笔记
         // this.props.noteStore.getSubDirAndNotes({
         //     userId: currentNote.authorId,

@@ -1,7 +1,6 @@
 import React from 'react';
 import { Tabs, Button, Row } from 'antd';
 import { inject, observer } from 'mobx-react';
-// import { TemplateHtmlStr } from '../../config/templateConfig';
 import styled from "styled-components";
 import eventEmitter from "../../event";
 import { researchReport, morningNote } from '../../widgets/templates';
@@ -67,17 +66,17 @@ export default class TemplateModal extends React.Component {
         }
     }
 
+    getTemplate = (template) => {
+        const editor = this.editorRef.current.editor;
+        this.props.editorStore.setEditor(editor);
+        return Template.generateTemplateHtml(template);
+    }
+
     useTemplate = (index) => {
-        // this.props.editorStore.editor.execCommand('cleardoc');
-        // this.props.editorStore.editor.execCommand('template', {
-        //     html: TemplateHtmlStr[index]
-        // });
-        
         const template = this.state.templates[index];
+
         this.props.closeCallback && this.props.closeCallback();
-        // eventEmitter.emit('NEW_PAGE', 1)
-        this.props.addNewNote && this.props.addNewNote({ title: template.name, content: Template.generateTemplateHtml(template.template)});
-        eventEmitter.emit('NEW_PAGE', template);
+        this.props.addNewNote && this.props.addNewNote({ articleTitle: template.name, articleContent: Template.generateTemplateHtml(template.template)});
     }
 
     addNewTemplate = () => {
