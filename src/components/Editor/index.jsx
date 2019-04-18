@@ -192,11 +192,11 @@ export default class Editor extends React.Component {
 
         // 浏览文章
         eventEmitter.on('SKIM_ARTICLE', (data) => {
-            const content = this.beforeCommandInsert(data.articleContent);
-            this.setState({ data: content, title: data.articleTitle })
-            setTimeout(() => {
+            const content = this.beforeCommandInsert(data.articleContent || '');
+            
+            this.setState({ data: content || '', title: data.articleTitle || ''}, () => {
                 this.setEditorIframe();
-            }, 100)
+            });
         });
     }
     beforeCommandInsert = (data) => {
@@ -256,9 +256,9 @@ export default class Editor extends React.Component {
     }
 
     onEditorChange(evt) {
-        this.setState({
-            data: evt.editor.getData()
-        });
+        // this.setState({
+        //     data: evt.editor.getData()
+        // });
         this.setEditorHeight();
     }
 

@@ -13,10 +13,10 @@
  * (1) https://ckeditor.com/cke4/builder
  *     Visit online builder to build CKEditor from scratch.
  *
- * (2) https://ckeditor.com/cke4/builder/24b9c70694664a8f8c19fb70d6892c50
+ * (2) https://ckeditor.com/cke4/builder/aecd1d87e396b12297670280970b22ac
  *     Visit online builder to build CKEditor, starting with the same setup as before.
  *
- * (3) https://ckeditor.com/cke4/builder/download/24b9c70694664a8f8c19fb70d6892c50
+ * (3) https://ckeditor.com/cke4/builder/download/aecd1d87e396b12297670280970b22ac
  *     Straight download link to the latest version of CKEditor (Optimized) with the same setup as before.
  *
  * NOTE:
@@ -55,11 +55,9 @@ var CKBUILDER_CONFIG = {
 		'a11yhelp' : 1,
 		'about' : 1,
 		'autocomplete' : 1,
-		'autosave' : 1,
 		'basicstyles' : 1,
 		'bidi' : 1,
 		'blockquote' : 1,
-		'chart' : 1,
 		'clipboard' : 1,
 		'colorbutton' : 1,
 		'colordialog' : 1,
@@ -100,6 +98,7 @@ var CKBUILDER_CONFIG = {
 		'removeformat' : 1,
 		'resize' : 1,
 		'save' : 1,
+		'save-to-pdf' : 1,
 		'scayt' : 1,
 		'selectall' : 1,
 		'showblocks' : 1,
@@ -110,10 +109,12 @@ var CKBUILDER_CONFIG = {
 		'stylescombo' : 1,
 		'tab' : 1,
 		'table' : 1,
+		'tableresizerowandcolumn' : 1,
 		'tableselection' : 1,
 		'tabletools' : 1,
 		'templates' : 1,
 		'textmatch' : 1,
+		'textwatcher' : 1,
 		'toolbar' : 1,
 		'undo' : 1,
 		'uploadimage' : 1,
