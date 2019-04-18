@@ -1,0 +1,109 @@
+.widget-component-wrapper {
+	margin: 10px 0;
+}
+
+.tpl-dashed-border {
+	border: 1px dashed #98BCFF;
+}
+
+.header-wrapper {
+	overflow: hidden;
+	box-shadow: 0px -3px 0 0 #000 inset;
+}
+
+.header-wrapper .tpl-type{
+	font-size: 20px;
+}
+
+.editable-content {
+	border: 1px dashed #dadada;
+	background-color: #fff;
+	font-size: 14px;
+	color: #333;
+	min-height: 120px;
+	margin: 10px;
+	padding: 8px;
+}
+
+.editable-content:not(:empty):after {
+	display: none;
+}
+
+.editable-content:after {
+	content: '请编辑内容';
+	display: inline-block;
+	color: #d4d4d4;
+}
+
+.editable-content p {
+	margin: 0;
+	padding: 0;
+}
+
+.tpl-dashed-border h2 {
+	margin: 0;
+	border-bottom: 3px solid #e70010; 
+	display: inline-block;
+	margin-top: 10px;
+	padding-bottom: 5px;
+	position:relative;
+	z-index:1;
+	font-size: 18px;
+}
+
+.divider-line {
+	position:relative;
+	height:4px;
+	background-color:#ebebeb;
+	top: -3px;
+}
+
+select {
+	border: none;
+	outline: none;
+	appearance: none;
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	background-color: #D8E9F6;
+	padding: 0 8px;
+	border: 1px solid #98BCFF;
+	border-bottom-left-radius: 0;
+	border-bottom-right-radius: 0;
+}
+
+.align-left {
+	float: left;
+}
+
+.align-right {
+	float: right;
+}
+
+.cke_widget_template.align-center {
+	display: block;
+	margin: 0 auto;
+}
+
+.widget-component-wrapper h3 {
+	font-size: 16px;
+	color: #333;
+	padding-left: 13px;
+}
+.editable-content dl,
+.editable-content dd {
+	margin: 0;
+	padding: 0;
+	line-height: 1.7;
+	font-size: 14px;
+}
+
+.content-wrapper {
+	padding: 12px;
+}
+
+.widget-component-wrapper .content-wrapper h3 {
+	margin-top: 2px;
+	padding: 0;
+	border-bottom: 1px solid;
+    padding-bottom: 12px;
+}

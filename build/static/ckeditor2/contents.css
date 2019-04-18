@@ -1,0 +1,431 @@
+/*
+Copyright (c) 2003-2019, CKSource - Frederico Knabben. All rights reserved.
+For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
+*/
+
+body
+{
+	/* Font */
+	/* Emoji fonts are added to visualise them nicely in Internet Explorer. */
+	font-family: sans-serif, Arial, Verdana, "Trebuchet MS", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+	font-size: 12px;
+
+	/* Text color */
+	color: #333;
+
+	/* Remove the background color to make it transparent. */
+	background-color: #fff;
+
+	margin: 20px;
+}
+
+.cke_editable
+{
+	font-size: 13px;
+	line-height: 1.6;
+
+	/* Fix for missing scrollbars with RTL texts. (#10488) */
+	word-wrap: break-word;
+}
+
+blockquote
+{
+	font-style: italic;
+	font-family: Georgia, Times, "Times New Roman", serif;
+	padding: 2px 0;
+	border-style: solid;
+	border-color: #ccc;
+	border-width: 0;
+}
+
+.cke_contents_ltr blockquote
+{
+	padding-left: 20px;
+	padding-right: 8px;
+	border-left-width: 5px;
+}
+
+.cke_contents_rtl blockquote
+{
+	padding-left: 8px;
+	padding-right: 20px;
+	border-right-width: 5px;
+}
+
+a
+{
+	color: #0782C1;
+}
+
+ol,ul,dl
+{
+	/* IE7: reset rtl list margin. (#7334) */
+	*margin-right: 0px;
+	/* Preserved spaces for list items with text direction different than the list. (#6249,#8049)*/
+	padding: 0 40px;
+}
+
+h1,h2,h3,h4,h5,h6
+{
+	font-weight: normal;
+	line-height: 1.2;
+}
+
+p {
+	margin: 0;
+	padding: 0;
+}
+
+hr
+{
+	border: 0px;
+	border-top: 1px solid #ccc;
+}
+
+img.right
+{
+	border: 1px solid #ccc;
+	float: right;
+	margin-left: 15px;
+	padding: 5px;
+}
+
+img.left
+{
+	border: 1px solid #ccc;
+	float: left;
+	margin-right: 15px;
+	padding: 5px;
+}
+
+pre
+{
+	white-space: pre-wrap; /* CSS 2.1 */
+	word-wrap: break-word; /* IE7 */
+	-moz-tab-size: 4;
+	tab-size: 4;
+}
+
+.marker
+{
+	background-color: Yellow;
+}
+
+span[lang]
+{
+	font-style: italic;
+}
+
+figure
+{
+	text-align: center;
+	outline: solid 1px #ccc;
+	background: rgba(0,0,0,0.05);
+	padding: 10px;
+	margin: 10px 20px;
+	display: inline-block;
+}
+
+figure > figcaption
+{
+	text-align: center;
+	display: block; /* For IE8 */
+}
+
+a > img {
+	padding: 1px;
+	margin: 1px;
+	border: none;
+	outline: 1px solid #0782C1;
+}
+
+/* Widget Styles */
+.code-featured
+{
+	border: 5px solid red;
+}
+
+.math-featured
+{
+	padding: 20px;
+	box-shadow: 0 0 2px rgba(200, 0, 0, 1);
+	background-color: rgba(255, 0, 0, 0.05);
+	margin: 10px;
+}
+
+.image-clean
+{
+	border: 0;
+	background: none;
+	padding: 0;
+}
+
+.image-clean > figcaption
+{
+	font-size: .9em;
+	text-align: right;
+}
+
+.image-grayscale
+{
+	background-color: white;
+	color: #666;
+}
+
+.image-grayscale img, img.image-grayscale
+{
+	filter: grayscale(100%);
+}
+
+.embed-240p
+{
+	max-width: 426px;
+	max-height: 240px;
+	margin:0 auto;
+}
+
+.embed-360p
+{
+	max-width: 640px;
+	max-height: 360px;
+	margin:0 auto;
+}
+
+.embed-480p
+{
+	max-width: 854px;
+	max-height: 480px;
+	margin:0 auto;
+}
+
+.embed-720p
+{
+	max-width: 1280px;
+	max-height: 720px;
+	margin:0 auto;
+}
+
+.embed-1080p
+{
+	max-width: 1920px;
+	max-height: 1080px;
+	margin:0 auto;
+}
+
+.template-box {
+    padding: 8px;
+    margin: 10px;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    box-shadow: 0 1px 1px #fff inset, 0 -1px 0px #ccc inset;
+}
+.template-box-title, .template-box-content {
+    box-shadow: 0 1px 1px #ddd inset;
+    border: 1px solid #cccccc;
+    border-radius: 5px;
+    background: #fff;
+}
+.template-box-title {
+    margin: 0 0 8px;
+    padding: 5px 8px;
+}
+.template-box-content {
+    padding: 0 8px;
+}
+
+.template-section {
+	margin-bottom: 10px;
+}
+
+.editable-content {
+	border: 1px dashed #dadada;
+	background-color: #fff;
+	font-size: 14px;
+	color: #333;
+	min-height: 120px;
+}
+
+.editable-content:not(:empty):after {
+	display: none;
+}
+
+.editable-content:after {
+	content: '请编辑内容';
+	display: inline-block;
+	color: #d4d4d4;
+}
+
+.section-title {
+	margin: 0;
+	border-bottom: 3px solid #e70010; 
+	display: inline-block;
+	margin-top: 10px;
+	padding-bottom: 5px;
+	position:relative;
+	z-index:1;
+	font-size: 18px;
+}
+
+.summary-title {
+	margin: 0;
+	padding: 5px;
+}
+
+.divider-line {
+	position:relative;
+	height:4px;
+	background-color:#ebebeb;
+	top: -3px;
+}
+
+select {
+	border: none;
+	outline: none;
+	appearance: none;
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	background-color: #D8E9F6;
+	padding: 0 8px;
+	border: 1px solid #98BCFF;
+	border-bottom-left-radius: 0;
+	border-bottom-right-radius: 0;
+}
+
+.editor-table-widget {
+	min-width: 80%;
+}
+
+.editor-table-widget,
+.editor-table-widget tr th,
+.editor-table-widget tr td{
+    border: 1px solid #EBEBEB !important;
+    border-collapse:collapse;
+}
+
+.editor-table-widget > thead > tr > th {
+    background-color: #fff;
+    color: #999;
+    font-weight: normal;
+}
+
+.editor-table-widget > thead > tr > th,
+.editor-table-widget > tbody > tr > td {
+    padding: 8px 12px;
+    font-size: 12px;
+}
+
+.cke_notification_message {
+	display: inline-block;
+	background-color: rgb(120, 183, 120);
+	padding: 15px;
+	margin-right: 15px;
+}
+
+.ant-table .ant-table-thead tr > th {
+	background-color: #939cb3;
+	font-size: 12px;
+	color: #fff;
+}
+
+.ant-table .ant-table-thead > tr > th,
+.ant-table .ant-table-tbody > tr > td {
+	padding: 8px 15px;
+}
+
+.ant-table .ant-table-tbody > tr:nth-child(even) {
+	background-color: #f7f8fa;
+}
+
+/*全屏隐藏hover可移动和边框*/
+body[contenteditable="false"] .cke_widget_wrapper:hover>.cke_widget_element {
+	outline: none;
+}
+
+body[contenteditable="false"] .cke_widget_drag_handler_container {
+	display: none !important;
+}
+
+body[contenteditable="false"] .cke_widget_wrapper.cke_widget_focused > .cke_widget_element, 
+body[contenteditable="false"] .cke_widget_wrapper .cke_widget_editable.cke_widget_editable_focused {
+	outline: none;
+}
+
+body[contenteditable="false"] .tpl-dashed-border,
+body[contenteditable="false"] .editable-content {
+	border-color: transparent;
+	margin: 0;
+}
+
+body[contenteditable="false"] .cke_widget_wrapper:hover .cke_widget_editable {
+	outline: 0;
+}
+
+.chartContainer {
+	position: relative;
+}
+
+.chartContainer > .setting {
+	display: none;
+	position: absolute;
+	top: -20px;
+	right: 17px;
+	z-index: 1;
+	width: 20px;
+	height: 20px;
+	background-image: url('./images/icon-widget-setting.png');
+	background-size: 20px;
+	cursor: pointer;
+}
+
+.tableContainer:hover > .setting,
+.chartContainer:hover > .setting {
+	display: block;
+}
+
+/* 图表的样式 */
+.chartContainer > .resize {
+	position: absolute;
+	right: 0;
+	bottom: 0;
+	display: none;
+	cursor: nwse-resize;
+	border-width: 5px;
+    border-color: transparent #666 #666 transparent;
+    border-style: dashed solid solid dashed;
+}
+
+.cke_widget_wrapper:hover .resize {
+	display: block;
+}
+.text-hover {
+	border: 1px dashed transparent;
+}
+
+.text-hover:hover {
+	border-color:#a9a9a9;
+}
+
+.text-hover.active .arrow-down,
+.text-hover:hover .arrow-down {
+	display: inline-block;
+}
+
+.text-hover .arrow-down {
+	display: none;
+	width: 12px;
+	height: 11px;
+	border: 1px solid #979797;
+	border-radius: 2px;
+	background: #f2f7fc url('../ckeditor/images/icon_arrow_down_grey.png') no-repeat scroll center / 6px auto;
+	vertical-align: -5px;
+	cursor: pointer;
+}
+
+[contenteditable="false"] select {
+	display: none;
+}
+
+
+[contenteditable="true"] select {
+	display: block;
+}

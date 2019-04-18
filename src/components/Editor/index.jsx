@@ -190,20 +190,6 @@ export default class Editor extends React.Component {
             }
         })
 
-<<<<<<< HEAD
-        // 新建模板笔记
-        eventEmitter.on('NEW_PAGE', (data) => {
-            const { name, template } = data;
-            const content = this.beforeCommandInsert(this.getTemplate(template));
-            const iframe = document.getElementById('cke_1_contents').children[1].contentWindow;
-            iframe.document.body.innerHTML = '';
-            this.setState({ data: content, title: data.articleTitle })
-            setTimeout(() => {
-                this.setEditorIframe();
-            }, 100)
-        });
-=======
->>>>>>> 00fc3759deab32a16198fabf335b7921ca8490ae
         // 浏览文章
         eventEmitter.on('SKIM_ARTICLE', (data) => {
             const content = this.beforeCommandInsert(data.articleContent);
