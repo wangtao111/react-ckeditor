@@ -190,10 +190,12 @@ export default class Editor extends React.Component {
             }
         })
 
-        // 新建文档
+        // 新建模板笔记
         eventEmitter.on('NEW_PAGE', (data) => {
             const { name, template } = data;
             const content = this.beforeCommandInsert(this.getTemplate(template));
+            const iframe = document.getElementById('cke_1_contents').children[1].contentWindow;
+            iframe.document.body.innerHTML = '';
             this.setState({ data: content, title: data.articleTitle })
             setTimeout(() => {
                 this.setEditorIframe();
@@ -208,18 +210,14 @@ export default class Editor extends React.Component {
             }, 100)
         });
     }
-
     beforeCommandInsert = (data) => {
         // const valueKey = '金融';
         // let arr = data.split(valueKey);
         // let content = arr.join(`<span style="color:red;">${valueKey}</span>`);
         let content = data;
         content += `<style>
-            span[name = 'select_box']:after{
-                content: url(${require('../../img/arr.png')});
-                width: 12px;
-                margin-top: 5px;
-                position: relative;
+            span[name = 'select_box']{
+                border: 1px dashed #999;color: blue; cursor: pointer;
             }
             .tableContainer:hover > .editCommand,
             .chartContainer:hover > .editCommand {
@@ -287,7 +285,6 @@ export default class Editor extends React.Component {
 
     // 增加更多工具组
     addMoreToolGroup = () => {
-        console.log('in');
         const ckeTop = window.CKEDITOR.document.getById('cke_1_toolbox');
 
         new window.CKEDITOR.dom.window(window).$.componentClick = () => {
@@ -327,7 +324,7 @@ export default class Editor extends React.Component {
         //     this.saveNote();
         // });
 
-        // 工具栏中增加更多工具组
+        // 工具栏中增加更多工
         this.addMoreToolGroup();
         const itemTemplate = '<li data-id="{id}"><div style="display: flex"><strong class="item-title" style="min-width: 100px">{title}</strong></div></li>';
         const outputTemplate = '{tag}';
@@ -340,16 +337,21 @@ export default class Editor extends React.Component {
                 itemTemplate: itemTemplate,
                 outputTemplate: outputTemplate
             });
-        this.autocomplete.getHtmlToInsert = function (item) {
-            if (item.endTag && that.pNode) {
+        this.autocomplete.getHtmlToInsert = function (data) {
+            let item = JSON.parse(JSON.stringify(data));
+            item.tag = `<span mark="temporary" name="${item.name}" style='color:blue'>${item.tag}</span>`;
+            if(item.name === 'company') {
+                item.tag += `<span mark="temporary" name="number">.</span>`
+            }
+            if ((item.name === 'number' || item.name === 'select_box') && that.pNode) {
                 that.pNode.innerHTML = '';
-                item.tag += '<span style="color: #000;">&nbsp;</span>';
+                item.tag += `<span style="color: #000">&nbsp;</span>`;
             }
             setTimeout(() => {
                 if (that.range) {
                     that.range.endContainer.$.parentNode.className = '';
                 }
-                if (item.charts) {
+                if (item.name === 'charts') {
                     that.openChartsPopup('charts');
                 }
             });
@@ -396,9 +398,12 @@ export default class Editor extends React.Component {
         }
         if (range.endContainer.$ && range.endContainer.$.textContent && range.endContainer.$.textContent.indexOf('\u200B') !== -1) {
             setTimeout(() => {
-                range.endContainer.$.textContent = range.endContainer.$.textContent.replace(/\u200B/g, '');
+                // if(range.endContainer.$.nodeName !== '#text' && range.endContainer.$.getAttribute('mark') === 'temporary') {
+                //     range.endContainer.$.remove();
+                // } 
                 // const ranges = iframe.getSelection().getRangeAt(0);
-                // if (ranges.startContainer.innerText && range.endOffset > innerText.length) {
+                // const innerText = ranges.startContainer.innerText ? ranges.startContainer.innerText : ranges.startContainer.textContent;
+                // if (innerText && range.endOffset > innerText.length) {
                 //     return;
                 // }
                 // ranges.setStart(ranges.startContainer, range.endOffset);
@@ -410,9 +415,26 @@ export default class Editor extends React.Component {
             let text = JSON.parse(JSON.stringify(txt));
             let currentStr = text.split('')[range.endOffset - 1];
             const node = range.startContainer.$.parentNode;
+            const typeName = node.getAttribute('name'), mark = node.getAttribute('mark');
             this.pNode = null;
             this.range = null;
-            if (node.getAttribute('name') === 'temporary') {　//选择公司后～进入此逻辑
+            if ((currentStr === '~' || currentStr === '～') && mark !== 'temporary') {
+                if (!doing) { // 匹配'~'进入此逻辑
+                    this.callbackData = [{
+                        id: 1,
+                        title: '使用智能命令~',
+                        detail: '~',
+                        tag: '<span mark="temporary" name="company" style="color: blue">~</span>'
+                    }];
+                    this.autocomplete.view.itemTemplate.source = '<li data-id="{id}" style="width: 100px">{title}</li>';
+                    return {
+                        start: text.lastIndexOf(currentStr),
+                        end: text.lastIndexOf(currentStr) + 1
+                    };
+                }
+                return null;
+            }
+            if (mark === 'temporary') {　//选择～进入此逻辑
                 const pNode = this.getParentNode(range.startContainer.$);
                 const matchArr = text.split('~'), matchText = matchArr[matchArr.length - 1];
                 const innertext = pNode.innerText;
@@ -420,10 +442,7 @@ export default class Editor extends React.Component {
                 if (innertext.substr(0, 1) !== '~') {
                     return;
                 }
-                if (this.timer) {
-                    clearTimeout(this.timer);
-                }
-                if (matchArr.length > 1) {
+                if (typeName === 'company') {
                     let data = MENTIONS.filter(function (item) {
                         const arr = item.detail.split(',');
                         let flag = false;
@@ -440,7 +459,8 @@ export default class Editor extends React.Component {
                         start: text.lastIndexOf('~') + 1,
                         end: range.endOffset
                     };
-                } else {
+                } 
+                if(typeName === 'number' || typeName === 'charts'){
                     const arr = text.split('.'), lastText = arr[arr.length - 1];
                     if (text.substr(text.length - 1, 1) === '。') { //中文句号提示
                         this.callbackData = [{
@@ -468,7 +488,7 @@ export default class Editor extends React.Component {
                     this.callbackData = data;
                     this.autocomplete.view.itemTemplate.source = '<li data-id="{id}" style="width:350px"><div style="display: flex"><strong class="item-title" style="width: 240px">{title}</strong><strong style="margin-left: 10px">{source}</strong></div></li>';
 
-                    if (!lastText) { //'.'后为空时提示三大表
+                    if (!lastText) { //'.'后为空时提示表
                         this.callbackData = commonTables;
                     }
 
@@ -494,24 +514,6 @@ export default class Editor extends React.Component {
                         end: text.length
                     };
                 }
-            } else {
-                if (currentStr === '~' || currentStr === '～') {
-                    if (!doing) { // 匹配'~'进入此逻辑
-                        this.callbackData = [{
-                            id: 1,
-                            title: '使用智能命令~',
-                            detail: '~',
-                            tag: '<span name="temporary" style="color: blue">~</span>'
-                        }];
-                        this.autocomplete.view.itemTemplate.source = '<li data-id="{id}" style="width: 100px">{title}</li>';
-                        return {
-                            start: text.lastIndexOf(currentStr),
-                            end: text.lastIndexOf(currentStr) + 1
-                        };
-                    }
-                    return null;
-                }
-                return null;
             }
         });
     }
@@ -574,6 +576,8 @@ export default class Editor extends React.Component {
         }
         dom.onclick = (e) => {
             const tag = e.target.getAttribute('name');
+            e.preventDefault();
+            e.stopImmediatePropagation();
             this.setEditorHeight();
             this.hideItem(e);
             const fullscreenElement = document.fullscreenElement || document.mozFullScreenElement || document.webkitCurrentFullScreenElement;
@@ -596,7 +600,7 @@ export default class Editor extends React.Component {
             }
             if (tag === 'editCommand') {
                 let content = document.createElement("span");
-                content.innerHTML = `<span name='temporary' style='color: blue'>${e.target.previousElementSibling.innerHTML}</span>`
+                content.innerHTML = `<span mark='temporary' style='color: blue'>${e.target.previousElementSibling.innerHTML}</span>`
                 e.target.parentNode.parentNode.parentNode.replaceChild(content, e.target.parentNode.parentNode)
             }
         }
@@ -640,17 +644,14 @@ export default class Editor extends React.Component {
     }
 
     getParentNode = (node) => {
-        if (node.parentNode.getAttribute('name') === 'temporary') {
+        if (node.parentNode.getAttribute('mark') === 'temporary') {
             return this.getParentNode(node.parentNode)
         }
         return node;
     }
 
     dataCallback = (matchInfo, callback) => {
-        console.log(matchInfo);
-        setTimeout(() => {
-            callback(this.callbackData);
-        }, 2000)
+        callback(this.callbackData);
     }
 
     titleChange = (val) => {

@@ -429,3 +429,29 @@ body[contenteditable="false"] .cke_widget_wrapper:hover .cke_widget_editable {
 [contenteditable="true"] select {
 	display: block;
 }
+
+span[mark = 'temporary']{
+	color: blue;
+}
+.tableContainer:hover > .editCommand,
+.chartContainer:hover > .editCommand {
+	display: block;
+}
+.editCommand{
+	position: absolute; right: -2px;top: -20px; overflow: hidden;height:24px;line-height: 24px;font-size: 12px;border-radius:2px;cursor: pointer!important;
+	display: none;
+	width: 20px;
+	height: 20px;
+}
+.bowen{position: relative;color: #953039;}
+.bowen:after{
+	content: '';
+	position: absolute;
+	bottom: -2px;
+	left: 0%;
+	width: 100%;
+	height: 2px;
+	background: -webkit-linear-gradient(315deg, transparent, transparent 45%, #953039, transparent 55%, transparent 100%),-webkit-linear-gradient(45deg, transparent, transparent 45%, #953039, transparent 55%, transparent 100%); 
+	background-size: 4px 4px;
+	background-repeat: repeat-x;
+}
