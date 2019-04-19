@@ -1,10 +1,12 @@
-import {define} from './api_helper';
+import { define } from './api_helper';
 
-const url = '/api';
+const url = 'https://api-invest-dev.modeling.ai';
 const apiObject = {
-  test: {
-    url: `${url}/extra/site-infos`,
-    method: 'post'
+  command: {
+    getMainPart: {
+      url: `${url}/api/note/noteCommand/company/suggest`,
+      method: 'get'
+    }
   }
 };
 export default define(apiObject);
