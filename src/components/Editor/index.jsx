@@ -190,6 +190,7 @@ export default class Editor extends React.Component {
             }
         })
 
+<<<<<<< HEAD
         // 新建模板笔记
         eventEmitter.on('NEW_PAGE', (data) => {
             const { name, template } = data;
@@ -201,13 +202,15 @@ export default class Editor extends React.Component {
                 this.setEditorIframe();
             }, 100)
         });
+=======
+>>>>>>> 44f80d682a118d87c30c577df94b8e523a02fad5
         // 浏览文章
         eventEmitter.on('SKIM_ARTICLE', (data) => {
-            const content = this.beforeCommandInsert(data.articleContent);
-            this.setState({ data: content, title: data.articleTitle })
-            setTimeout(() => {
+            const content = this.beforeCommandInsert(data.articleContent || '');
+            
+            this.setState({ data: content || '', title: data.articleTitle || ''}, () => {
                 this.setEditorIframe();
-            }, 100)
+            });
         });
     }
     beforeCommandInsert = (data) => {
@@ -267,9 +270,9 @@ export default class Editor extends React.Component {
     }
 
     onEditorChange(evt) {
-        this.setState({
-            data: evt.editor.getData()
-        });
+        // this.setState({
+        //     data: evt.editor.getData()
+        // });
         this.setEditorHeight();
     }
 

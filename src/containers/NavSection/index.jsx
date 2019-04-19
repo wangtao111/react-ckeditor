@@ -370,7 +370,6 @@ export default class NavSection extends React.Component {
         }
 
         this.newFileFolder = '';            // 新的文件夹名称
-        this.addNewNote = this.addNewNote.bind(this);
         this.requestParams = {
             userId: '2000',
             directoryLevel: 1,
@@ -414,7 +413,7 @@ export default class NavSection extends React.Component {
     }
 
     // 增加笔记 
-    async addNewNote(articleInfo) {
+    addNewNote = async (articleInfo) => {
         const { selectedId } = this.props.menuStore;
 
         await this.props.noteStore.addNewNote({
@@ -615,7 +614,7 @@ export default class NavSection extends React.Component {
 
             const { activeIndex, noteList } = this.props.noteStore;
 
-            eventEmitter.emit('SKIM_ARTICLE', noteList[activeIndex]);
+            eventEmitter.emit('SKIM_ARTICLE', noteList[activeIndex] || {});
         }
     }
 
@@ -692,7 +691,7 @@ export default class NavSection extends React.Component {
                 const folderMenu = (
                     <Menu mode="vertical" style={{ width: 120 }} className="folder-menu">
                         <Menu.SubMenu key="sub1" title="新建" className="folder-submenu">
-                            <Menu.Item key="1" onClick={ this.addNewNote }>新建笔记</Menu.Item>
+                            <Menu.Item key="1" onClick={ () => this.addNewNote() }>新建笔记</Menu.Item>
                             <Menu.Item key="2" onClick={ () => this.createFolder(key) }>文件夹</Menu.Item>
                         </Menu.SubMenu>
                         {
@@ -777,7 +776,7 @@ export default class NavSection extends React.Component {
         const { selectedKey } = this.props.menuStore;
 
         const menu = (<Menu>
-            <Menu.Item onClick={ this.addNewNote }>新建笔记</Menu.Item>
+            <Menu.Item onClick={ () => this.addNewNote() }>新建笔记</Menu.Item>
             <Menu.Item onClick={ () => this.setModalVisible('templateModalVisible', true) }>新建模板笔记</Menu.Item>
             <Menu.Item onClick={ () => this.createFolder() }>新建文件夹</Menu.Item>
             <Menu.Item>导入Word文档</Menu.Item>
